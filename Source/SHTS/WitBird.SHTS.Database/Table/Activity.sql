@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Activity]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+	[UserId] INT NULL, 
+    [ActivityType] NVARCHAR(20) NULL,
+	[LocationId] NVARCHAR(100) NULL,  
+	[Adress] NVARCHAR(200) NULL,  
+	[StartTime] DATETIME NULL,
+	[EndTime] DATETIME NULL,
+	[HoldBy] NVARCHAR(200) NULL, 
+    [Title] NVARCHAR(100) NULL, 
+    [Keywords] NVARCHAR(200) NULL,
+	[Jingdu] NVARCHAR(100) NULL,
+	[Weidu] NVARCHAR(100) NULL,   
+    [Description] NVARCHAR(300) NULL, 
+    [ContentStyle] TEXT NULL, 
+    [ContentText] TEXT NULL, 
+    [ImageUrl] NVARCHAR(3000) NULL, 
+    [Link] NVARCHAR(300) NULL, 
+    [State] int NULL, 
+    [ViewCount] INT NULL, 
+    [CreatedTime] DATETIME NULL,
+	[LastUpdatedTime] DATETIME NULL, 
+    [IsFromMobile] BIT NULL
+)

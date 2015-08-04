@@ -1,0 +1,35 @@
+﻿@model Witbird.SHTS.Model.PublicConfig
+@{
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">站内搜索</a></li>
+            <li><a href="#">搜索库更新</a></li>
+        </ul>
+    </div>
+    <div class="formbody">
+        <div class="formtitle"><span>搜索库更新</span></div>
+        <form class="editform" method="post" action="#">
+            <ul class="forminfo">
+                <li>
+                    <label style="font-size: 1.5em; width: 140px;">最近更新时间 ：</label>
+                    <h2 style="color: blueviolet;font-size: 1.5em; height: 34px; padding-top: 5px;">@Model.LastUpdatedTime</h2>
+                </li>
+                 <label>&nbsp;</label><input name="" type="submit" class="btn" value="更新索引库" /></li>
+            </ul>
+        </form>
+    </div>
+</body>
+</html>

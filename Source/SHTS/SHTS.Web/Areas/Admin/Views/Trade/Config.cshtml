@@ -1,0 +1,125 @@
+﻿@{
+    Layout = null;
+}
+
+@model Witbird.SHTS.Web.Models.PublicConfigModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <script type="text/ecmascript">
+        var editorContent;//定义编辑器
+        KindEditor.ready(function (K) {
+            editorContent = K.create('#editorContent', {
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: true,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link']
+            });
+        });
+    </script>
+    <script src="/Areas/Admin/Content/js/trade.js"></script>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">中介申请</a></li>
+            <li><a href="#">参数设置</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+        <div id="usual1" class="usual">
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab1">中介申请提醒</a></li>
+                    <li><a href="#tab2">手续费设置</a></li>
+                </ul>
+            </div>
+            <div id="tab1" class="tabson">
+                <form id="tradeRemindingForm" method="post" action="/admin/trade/UpdateTradeReminding">
+                    <input type="hidden" name="configId" value="@Model.MultipleConfigs["TradeReminding"].ConfigId" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>提醒内容<b>*</b></label>
+                            <textarea id="editorContent" name="tradeReminding" style="border: 1px solid #cdcdcd; width: 800px; height: 350px;">
+                                @Model.MultipleConfigs["TradeReminding"].ConfigValue</textarea>
+
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input onclick="doUpdateTradeRemindingEvent();" type="button" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+            <div id="tab2" class="tabson">
+                <form id="payCommissionPercentForm" method="post" action="/admin/trade/UpdatePayCommissionPercent">
+                    <input type="hidden" name="configId" value="@Model.MultipleConfigs["PayCommissionPercent"].ConfigId" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>手续费比例<b>*</b></label>
+                            <input id="paycommissonpercent" name="paycommissonpercent" type="text" class="scinput" 
+                                value="@Model.MultipleConfigs["PayCommissionPercent"].ConfigValue" />&nbsp;%
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input onclick="doUpdatePayCommissionPercentEvent();" type="button" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+                <form id="minPayCommissionForm" method="post" action="/admin/trade/UpdateMinPayCommission">
+                    <input type="hidden" name="configId" value="@Model.MultipleConfigs["MinPayCommission"].ConfigId" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>最低手续费<b>*</b></label>
+                            <input id="minPaycommisson" name="minpaycommisson" type="text" class="scinput" 
+                                value="@Model.MultipleConfigs["MinPayCommission"].ConfigValue" />&nbsp;元
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input onclick="doUpdateMinPayCommissionEvent();" type="button" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+﻿@model Witbird.SHTS.Web.Models.GuestBookViewModel
+
+@{
+    ViewBag.Title = "留言板" + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/Resource/Pleople" class="blue">留言板</a>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Content)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Content)
+            @Html.ValidationMessageFor(model => model.Content)
+        </div>
+
+        <input type="submit" value="留言" />
+    }
+</div>
+

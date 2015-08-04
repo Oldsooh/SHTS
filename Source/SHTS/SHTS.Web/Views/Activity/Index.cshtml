@@ -1,0 +1,171 @@
+﻿@model Witbird.SHTS.Web.Models.ActivityModel.ActivitysViewModel
+@{
+    ViewBag.Title = "活动信息 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/activity.css" rel="stylesheet" />
+    <link href="/content/slide/lrtk.css" rel="stylesheet" />
+    <script src="/content/slide/koala.min.1.5.js"></script>
+    <style type="text/css">
+        .commonli_a
+        {
+            width: 400px;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/news/" class="blue">活动在线</a>
+    </div>
+    <div style="width: 100%; height: 200px;">
+        <!-- 幻灯 开始 -->
+        <div id="fsD1" class="focus" style="width: 65%; height: 300px; float: left;">
+            <div id="D1pic1" class="fPic">
+                @if (Model.Slides != null)
+                {
+                    foreach (var item in Model.Slides)
+                    {
+                    <div class="fcon" style="display: none;">
+                        @{ string url = "/activity/" + item.Id + ".html";}
+                        <a target="_blank" href="@url">
+                            <img src="@item.ImgUrls[0]" style="opacity: 1; width: 650px; height: 300px;"></a>
+                        <span class="shadow"><a target="_blank" href="@url">@item.Title</a></span>
+                    </div>
+                    }
+                }
+            </div>
+            <div class="fbg">
+                <div class="D1fBt" id="D1fBt">
+                    <a href="javascript:void(0)" hidefocus="true" target="_self" class="current"><i>1</i></a>
+                    <a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>2</i></a>
+                    <a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>3</i></a>
+                    <a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>4</i></a>
+                    <a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>5</i></a>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            Qfast.add('widgets', { path: "/Content/slide/terminator2.2.min.js", type: "js", requires: ['fx'] });
+            Qfast(false, 'widgets', function() {
+                K.tabs({
+                    id: 'fsD1', //焦点图包裹id  
+                    conId: "D1pic1", //** 大图域包裹id  
+                    tabId: "D1fBt",
+                    tabTn: "a",
+                    conCn: '.fcon', //** 大图域配置class       
+                    auto: 1, //自动播放 1或0
+                    effect: 'fade', //效果配置
+                    eType: 'click', //** 鼠标事件
+                    pageBt: true, //是否有按钮切换页码
+                    bns: ['.prev', '.next'], //** 前后按钮配置class                          
+                    interval: 3000 //** 停顿时间  
+                })
+            })
+        </script>
+        <div style="width: 330px; height: 200px; float: right;">
+            @if (Model.Slides != null && Model.Slides.Count > 0)
+            {
+                <div class="newsFirstTitle">
+                    <a href="@Html.CreateShowUrl("activity",Model.Slides[0].Id)" target="_blank">@Model.Slides[0].Title</a>
+                </div>
+                <div class="newsFirstDescription">
+                    @Model.Slides[0].Description
+                    <a href="@Html.CreateShowUrl("activity",Model.Slides[0].Id)" target="_blank">更多详情</a>
+                </div>
+            }
+            @if (Model.Slides != null && Model.Slides.Count > 1)
+            {
+                <div class="newsFirstTitle">
+                    <a href="@Html.CreateShowUrl("activity",Model.Slides[1].Id)" target="_blank">@Model.Slides[1].Title</a>
+                </div>
+                <div class="newsFirstDescription">
+                    @Model.Slides[1].Description
+                    <a href="@Html.CreateShowUrl("activity",Model.Slides[1].Id)" target="_blank">更多详情</a>
+                </div>
+            }
+            <div class="newsFour">
+                @if (Model.Slides != null && Model.Slides.Count > 1)
+                {
+                    for (int i = 1; i < Model.Slides.Count; i++)
+                    {
+                    <p>
+                        <a href="@Html.CreateShowUrl("activity",Model.Slides[i].Id)" target="_blank">@Model.Slides[i].Title</a>
+                        <span style="float: right; display: block;">@Model.Slides[i].CreatedTime.Value.ToString("yyyy-MM-dd")</span>
+                    </p>
+                    }
+                }
+            </div>
+        </div>
+        <!-- 幻灯 结束 -->
+    </div>
+    <div style="clear: both; height: 33px;"></div>
+    <div class="newsLeft">
+        <!--新闻列表开始-->
+        <div class="contentItem" style="border: 1px solid #E5E5E5; padding: 10px; margin-top: 0px;">
+            <ul class="commonul">
+                @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
+                {
+                    foreach (var item in Model.ActivityList)
+                    {
+                    <li class="commonli">
+                        <span class="commonli_status">[ @Model.GetTypeName(item.ActivityType) ]</span>
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <span class="commonli_image">[ 图 ]</span>
+                        }
+                        <a class="commonli_a" href="@Html.CreateShowUrl("activity",item.Id)" target="_blank">@item.Title</a>
+                        @if (item.CreatedTime.Value.Date == DateTime.Now.Date)
+                        {
+                            <span class="commonli_date" style="color: #ff0000;">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                        }
+                        else if (item.CreatedTime.Value.AddDays(1).Date == DateTime.Now.Date)
+                        {
+                            <span class="commonli_date" style="color: #ff9a15;">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="commonli_date">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                        }
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+        <!--新闻列表结束-->
+    </div>
+
+    <div class="newsRight">
+        @if (Model.PreTypeActivityList != null && Model.PreTypeActivityList.Count > 0)
+        {
+            foreach (var vtype in Model.ActivityTypes)
+            {
+            <div class="newsCagetory">
+                <div class="contentTitle">
+                    <h2>@vtype.ActivityTypeName</h2>
+                </div>
+                <div class="contentItem">
+                    <ul class="newsul">
+                       @foreach (var item in
+                           Model.PreTypeActivityList.FindAll(a => a.ActivityType == vtype.ActivityTypeId.ToString()))
+                      {
+                            <li class="newsli">
+                                @{ string url = "/activity/" + item.Id + ".html";}
+                                <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                                <span class="newsli_date">@item.CreatedTime.Value.ToString("MM-dd")</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            }
+        }
+    </div>
+
+    <div style="clear: both; height: 30px;"></div>
+
+</div>

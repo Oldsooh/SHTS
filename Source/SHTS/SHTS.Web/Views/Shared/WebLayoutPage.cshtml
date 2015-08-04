@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    <link rel="shortcut icon" href="/content/images/favicon.ico">
+    <link href="/content/css/css.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
+    @RenderSection("head", false)
+</head>
+<body>
+    @Html.Action("Header", "Common")
+    <!--主体内容:Start-->
+    @RenderBody()
+    <!--主体内容:End-->
+
+    <!-- 代码部分begin -->
+    @Html.Action("Footer", "Common")
+    <!-- 代码部分end -->
+
+    <div class="clear"></div>
+    <div id="toTop" style="cursor: pointer; display: block;" title="回顶部">
+        <span id="toTopHover" style="opacity: 0;"></span>
+    </div>
+
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="/Content/js/totop.js"></script>
+    <script src="~/Content/dialog/js/dsdialog.js"></script>
+    <script>
+        $(function () {
+            var vipCountDownTips = document.getElementById('vipCountDownTips');
+            if (vipCountDownTips != null && $("#vipCountDownTips").val() != "") {
+
+                ds.dialog({
+                    title: '消息提示',
+                    content: $("#vipCountDownTips").val(),
+                    icon: "/Content/dialog/images/info.png"
+                });
+                $("#vipCountDownTips").remove();
+            }
+        });
+    </script>
+    @RenderSection("FooterJS", false)
+    <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer" type="text/javascript" async="async"></script>
+    <script type="text/javascript">
+        function showewm(id) {
+            if (id == 1) {
+                ds.dialog({
+                    title: '扫描二维码访问手机站点',
+                    content: "<img src='/content/images/ewm_mobile.png' />",
+                    timeout: 20
+                });
+            } else {
+                ds.dialog({
+                    title: '扫描二维码访问电脑站点',
+                    content: "<img src='/content/images/ewm_weixin.png' />",
+                    timeout: 20
+                });
+            }
+        }
+    </script>
+
+    <!--QQ客服开始-->
+    <div class="keifu">
+        <div class="keifu_tab">
+            <div class="icon_keifu"></div>
+            <div class="keifu_box">
+                <div class="keifu_head"><a href="javascript:void(0)" class="keifu_close"></a></div>
+                <ul class="keifu_con">
+                    <li>
+                        <a title="点击这里给我发消息" href="http://wpa.qq.com/msgrd?v=3&amp;uin=@Witbird.SHTS.Web.Public.StaticUtility.Config.QQ1&amp;site=qq&amp;menu=yes" target="_blank">
+                            <img src="/content/images/qq.png" />
+                        </a>
+                    </li>
+                    <li>
+                        <a title="点击这里给我发消息" href="http://wpa.qq.com/msgrd?v=3&amp;uin=@Witbird.SHTS.Web.Public.StaticUtility.Config.QQ2&amp;site=qq&amp;menu=yes" target="_blank">
+                            <img src="/content/images/qq.png" />
+                        </a>
+                    </li>
+                    <li>
+                        <a title="点击这里给我发消息" href="http://wpa.qq.com/msgrd?v=3&amp;uin=@Witbird.SHTS.Web.Public.StaticUtility.Config.QQ3&amp;site=qq&amp;menu=yes" target="_blank">
+                            <img src="/content/images/qq.png" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="keifu_bot"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var KF = $(".keifu");
+            var wkbox = $(".keifu_box");
+            var kf_close = $(".keifu .keifu_close");
+            var icon_keifu = $(".icon_keifu");
+            var kH = wkbox.height();
+            var kW = wkbox.width();
+            var wH = $(window).height();
+            KF.css({ height: kH });
+            icon_keifu.css("top", parseInt((kH - 100) / 2));
+            var KF_top = (wH - kH) / 2 - 10;
+            if (KF_top < 0) KF_top = 0;
+            KF.css("top", KF_top);
+            $(kf_close).click(function () {
+                KF.animate({ width: "0" }, 200, function () {
+                    wkbox.hide();
+                    icon_keifu.show();
+                    KF.animate({ width: 26 }, 300);
+                });
+            });
+            $(icon_keifu).click(function () {
+                $(this).hide();
+                wkbox.show();
+                KF.animate({ width: kW }, 200);
+            });
+        });
+    </script>
+    <!--QQ客服结束-->
+</body>
+</html>

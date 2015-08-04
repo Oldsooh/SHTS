@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>WitBird.SHTS.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{0c149f98-184f-42e1-a67c-5e040490faf3}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>WitBird.SHTS.Database</RootNamespace>
+    <AssemblyName>WitBird.SHTS.Database</AssemblyName>
+    <ModelCollation>2052,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Chinese_PRC_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Table" />
+    <Folder Include="StoredProcedure" />
+    <Folder Include="StoredProcedure\User" />
+    <Folder Include="StoredProcedure\AccessAnalytics" />
+    <Folder Include="StoredProcedure\Trade" />
+    <Folder Include="StoredProcedure\PublicConfig" />
+    <Folder Include="StoredProcedure\UserBankInfo" />
+    <Folder Include="Table\Resource" />
+    <Folder Include="StoredProcedure\City" />
+    <Folder Include="StoredProcedure\SinglePage" />
+    <Folder Include="StoredProcedure\Activity" />
+    <Folder Include="InitData" />
+    <Folder Include="StoredProcedure\Demand" />
+    <Folder Include="Function" />
+    <Folder Include="StoredProcedure\Common" />
+    <Folder Include="Table\Resource\Meta" />
+    <Folder Include="StoredProcedure\Order" />
+    <Folder Include="StoredProcedure\Resource" />
+    <Folder Include="Index" />
+    <Folder Include="StoredProcedure\UserVip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Table\User.sql" />
+    <Build Include="StoredProcedure\Calc.sql" />
+    <Build Include="Table\Config.sql" />
+    <Build Include="Table\Image.sql" />
+    <Build Include="Table\AdminUser.sql" />
+    <Build Include="Table\ShortMessage.sql" />
+    <Build Include="Table\SinglePage.sql" />
+    <Build Include="Table\AdminRole.sql" />
+    <Build Include="Table\AccessAnalytics.sql" />
+    <Build Include="Table\GuestBook.sql" />
+    <Build Include="Table\Trade.sql" />
+    <Build Include="Table\TradeHistory.sql" />
+    <Build Include="Table\TradeOrder.sql" />
+    <Build Include="Table\UserBankInfo.sql" />
+    <Build Include="StoredProcedure\User\sp_AddAdminUser.sql" />
+    <Build Include="StoredProcedure\User\sp_AddSMSRecord.sql" />
+    <Build Include="StoredProcedure\User\sp_AdminLogin.sql" />
+    <Build Include="StoredProcedure\User\sp_DeleteUser.sql" />
+    <Build Include="StoredProcedure\User\sp_GetBackPassword.sql" />
+    <Build Include="StoredProcedure\User\sp_PageAccessTrack.sql" />
+    <Build Include="StoredProcedure\User\sp_QueryUsers.sql" />
+    <Build Include="StoredProcedure\User\sp_UserLogin.sql" />
+    <Build Include="StoredProcedure\User\sp_UserRegister.sql" />
+    <Build Include="StoredProcedure\User\sp_UserSelectById.sql" />
+    <Build Include="StoredProcedure\User\sp_UserUpdate.sql" />
+    <Build Include="StoredProcedure\User\sp_VerifyAccountInfo.sql" />
+    <Build Include="StoredProcedure\User\sp_QuersyUsersByCityAndResource.sql" />
+    <Build Include="StoredProcedure\AccessAnalytics\sp_QueryAccessAnalytics.sql" />
+    <Build Include="StoredProcedure\Trade\sp_AddNewTrade.sql" />
+    <Build Include="Table\Demand.sql" />
+    <Build Include="Table\DemandCategory.sql" />
+    <Build Include="Table\PublicConfig.sql" />
+    <Build Include="Table\UserProfile.sql" />
+    <Build Include="StoredProcedure\User\sp_CreateOrUpdateProfile.sql" />
+    <Build Include="StoredProcedure\User\sp_GetUserByUserName.sql" />
+    <Build Include="StoredProcedure\User\sp_GetUserProfiles.sql" />
+    <Build Include="Table\Resource\Resource.sql" />
+    <Build Include="StoredProcedure\PublicConfig\sp_GetConfigValueById.sql" />
+    <Build Include="StoredProcedure\PublicConfig\sp_GetConfigValueByConfigName.sql" />
+    <Build Include="StoredProcedure\PublicConfig\sp_AddOrUpdatePublicConfigValue.sql" />
+    <Build Include="StoredProcedure\PublicConfig\sp_DeletePublicConfigById.sql" />
+    <Build Include="StoredProcedure\UserBankInfo\sp_GetUserBankInfos.sql" />
+    <Build Include="StoredProcedure\UserBankInfo\sp_DeleteUserBankInfo.sql" />
+    <Build Include="StoredProcedure\UserBankInfo\sp_AddUserBankInfo.sql" />
+    <Build Include="StoredProcedure\UserBankInfo\sp_UpdateUserBankInfo.sql" />
+    <Build Include="StoredProcedure\UserBankInfo\sp_GetUserBankInfo.sql" />
+    <Build Include="Table\Activity.sql" />
+    <Build Include="Table\ActivityType.sql" />
+    <Build Include="StoredProcedure\City\sp_CitySelect.sql" />
+    <Build Include="StoredProcedure\City\sp_CitySelectByProvinceId.sql" />
+    <Build Include="StoredProcedure\City\sp_CitySelectByCityId.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageSelect.sql" />
+    <Build Include="StoredProcedure\Activity\sp_GetActivityById.sql" />
+    <Build Include="StoredProcedure\Activity\sp_CreateOrUpdateActivity.sql" />
+    <Build Include="StoredProcedure\Activity\sp_UpdateActivity.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageSelectSlide.sql" />
+    <Build Include="StoredProcedure\Activity\sp_QueryActivitys.sql" />
+    <Build Include="StoredProcedure\City\sp_CitySelectProvince.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelectByUserId.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelect.sql" />
+    <Build Include="StoredProcedure\Trade\sp_SelectTradeListByUserId.sql" />
+    <Build Include="StoredProcedure\Trade\sp_SelectTradeList.sql" />
+    <Build Include="StoredProcedure\Trade\sp_SelectTradeByTradeId.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelectByParameters.sql" />
+    <Build Include="Function\SplitStringToIds.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandCategory_Select.sql" />
+    <Build Include="StoredProcedure\Activity\sp_UpdateActivityStatu.sql" />
+    <Build Include="StoredProcedure\Trade\sp_ReplyTradeWithOperation.sql" />
+    <Build Include="StoredProcedure\Trade\sp_SelectTradeHistory.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelectByCity.sql" />
+    <Build Include="StoredProcedure\Trade\sp_UpdateTradeState.sql" />
+    <Build Include="StoredProcedure\Common\sp_SelectRight.sql" />
+    <Build Include="Table\Resource\Meta\SpaceFacility.sql" />
+    <Build Include="Table\Resource\Meta\SpaceType.sql" />
+    <Build Include="Table\Resource\Meta\SpaceFeature.sql" />
+    <Build Include="Table\Resource\Meta\SpaceSize.sql" />
+    <Build Include="Table\Resource\Meta\SpacePeople.sql" />
+    <Build Include="Table\Resource\Meta\ActorType.sql" />
+    <Build Include="Table\Resource\Meta\EquipType.sql" />
+    <Build Include="Table\Resource\Meta\OtherType.sql" />
+    <Build Include="Table\Resource\Comment.sql" />
+    <Build Include="StoredProcedure\Order\sp_SelectOrderByOrderId.sql" />
+    <Build Include="StoredProcedure\Order\sp_AddNewOrder.sql" />
+    <Build Include="StoredProcedure\Order\sp_UpdateOrderState.sql" />
+    <Build Include="StoredProcedure\Order\sp_SelectExistOrderId.sql" />
+    <Build Include="StoredProcedure\Trade\sp_UpdateTradeOrderId.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageSelectById.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelectById.sql" />
+    <Build Include="StoredProcedure\PublicConfig\sp_AddPublicConfigValueIgnoreExists.sql" />
+    <Build Include="StoredProcedure\Resource\sp_GetResourceByFilter.sql" />
+    <Build Include="Index\IX_Resource_CityId.sql" />
+    <Build Include="Table\City.sql" />
+    <Build Include="StoredProcedure\Resource\sp_GetUserResource.sql" />
+    <Build Include="Table\UserVip.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_SetUserToVip.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_SelectUserVipInfoByUserId.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_UpdateUserVipInfoByUserId.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandInsert.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandUpdate.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandDelete.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageInsert.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageUpdate.sql" />
+    <Build Include="StoredProcedure\SinglePage\sp_SinglePageDeleteById.sql" />
+    <Build Include="Table\Resource\Meta\ActorFrom.sql" />
+    <Build Include="Table\Resource\Meta\ActorSex.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WitBird.SHTS.Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />
+  </ItemGroup>
+</Project>

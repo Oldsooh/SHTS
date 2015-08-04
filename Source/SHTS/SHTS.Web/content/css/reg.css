@@ -1,0 +1,149 @@
+﻿.regheader {
+	height:50px;
+	border-bottom:1px solid #e2e2e2;
+	position:relative;
+	font-family:"Microsoft Yahei";
+    margin-bottom:10px;
+}
+.regheader .switch {
+	height:45px;
+	position:absolute;
+	left:60px;
+	bottom:0;
+	font-size:16px;
+}
+.regheader .switch #switch_qlogin {
+	margin-right:85px;
+}
+.regheader .switch .switch_btn {
+	color:#999;
+	display:inline-block;
+	height:45px;
+	line-height:45px;
+	outline:none;
+	*hide-focus:expression(this.hideFocus=true);
+}
+.regheader .switch .switch_btn_focus {
+	color:#333;
+	display:inline-block;
+	height:45px;
+	line-height:45px;
+	outline:none;
+	*hide-focus:expression(this.hideFocus=true);
+}
+.regheader .switch .switch_btn:hover {
+	color:#333;
+	text-decoration:none;
+}
+.regheader .switch .switch_btn_focus:hover {
+	text-decoration:none;
+}
+#switch_bottom {
+	position:absolute;
+	bottom:-1px;_bottom:-2px;
+	border-bottom:2px solid #848484;
+}
+
+.web_login {
+	width:370px;
+	position:relative;
+}
+#web_login{_left:60px;*left:0;}
+.container
+{
+    top:0px;
+    position:initial;
+    padding-top:20px;
+}
+.register-box
+{
+    position:inherit;
+        float:left;
+    width:400px;
+}
+.regwrap
+{
+    /*background-image: url('../images/mid_banner/');*/
+    background-color:#fff;
+    background-repeat: repeat-x;
+}
+
+.cell select
+{
+    height:100%;
+}
+
+.regyueding
+{
+float: right;
+width: 500px;
+margin-top: 15px;
+}
+    .regyueding textarea
+    {
+        width:100%;
+        height:700px;
+    }
+
+.gender
+{
+    width:80%;
+    float:left;
+    font-size:15px;
+    margin-top: 8px;
+}
+    .gender input
+    {
+        position:initial !important;
+        width:20% !important;
+        height:20px;
+    }
+
+.bottom button
+{
+    width: 100%;
+    cursor:pointer !important;
+}
+
+.reg-form .cell label
+{
+    position:absolute;
+    font-size:10px;
+    color:red !important;
+    top:30px;
+    padding-left:12px;
+}
+
+.cell .inputdiv
+{
+    text-align: center;
+    height:179px;
+    overflow:hidden;position:relative;
+    background-image: url('../images/photo.png');
+    background-repeat: round;
+    margin-left:40px;
+    cursor:pointer !important;
+}
+
+#js_email_IdentiyImg,#js_mobile_IdentiyImg
+{
+    background-color: transparent;
+    height:100%;
+    width:100%;
+    position:absolute;top:10px;
+    opacity:0;filter:alpha(opacity=0);
+    cursor: pointer;
+}
+.verifyblock
+{
+    float: right;
+padding-top: 5px;
+text-align: center;
+margin-right: -28px;
+display:none;
+}
+.showverifyblock
+{
+    display:block;
+}
+.cell a:hover{text-decoration:none;}

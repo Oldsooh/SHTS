@@ -1,0 +1,192 @@
+﻿@{
+    Layout = null;
+}
+
+@model Witbird.SHTS.Web.Models.PublicConfigModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <script src="/Areas/Admin/Content/js/trade.js"></script>
+    <style>
+        .w80 {
+            width: 80px;
+        }
+
+        .w200 {
+            width: 200px;
+        }
+
+        .bold {
+            font-weight:bold;
+        }
+
+        .tablelist-override td {
+            border-bottom: dotted 1px #c7c7c7;
+        }
+
+        .trade_history_item {
+            border: solid 1px #b6cad2;
+            cursor: default;
+            margin-top: 5px;
+        }
+
+            .trade_history_item:hover {
+                background: #e5ebee;
+            }
+
+        .trade_title {
+            font-weight: bold;
+            font-size: 14px;
+            /* border-bottom: solid 3px #66c9f3; */
+            float: left;
+            position: absolute;
+            z-index: 100;
+            /* bottom: -1px; */
+            padding: 0 3px;
+            height: 30px;
+            /* line-height: 30px; */
+        }
+
+        .trade_replay tr {
+            border: solid 1px #b6cad2;
+        }
+
+        .trade_replay textarea {
+            font-size: 16px;
+        }
+
+        .bankinput {
+            width:200px;
+            height:30px;
+            line-height:30px;
+            padding:2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">中介交易线下付款银行帐号配置</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+        <div id="usual1" class="usual">
+            <table class="tablelist tablelist-override">
+                <thead>
+                    <tr>
+                        <th colspan="9">
+                            <span>线下支付银行账户信息列表</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.MultipleConfigs != null && Model.MultipleConfigs.Count > 0)
+                    {
+                        foreach (var item in Model.MultipleConfigs)
+                        {
+                            string bankName = "";
+                            string bankAccount = "";
+                            string bankUserName = "";
+                            string bankAddress = "";
+                            string[] values = item.Value.ConfigValue.Split(Witbird.SHTS.Common.Constant.TradeBankInfoConfigSeperator);
+                            if (values.Length == 4)
+                            {
+                                bankName = values[0];
+                                bankAccount = values[1];
+                                bankUserName = values[2];
+                                bankAddress = values[3];
+                        <tr>
+                            <td class="w80">开户银行</td>
+                            <td class="w200 bold">@bankName</td>
+                            <td class="w80">银行帐号</td>
+                            <td class="w200 bold">@bankAccount</td>
+                            <td class="w80">开户名</td>
+                            <td class="w80 bold">@bankUserName</td>
+                            <td class="w80">开户行地址</td>
+                            <td class="w200 bold">@bankAddress</td>
+                            <td style="width: 50px;">
+                                <a href="javascript:void(0);" onclick="deleteTradeBankInfo(@item.Value.ConfigId);">删除</a>
+                            </td>
+                        </tr>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>暂无记录</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th colspan="9">
+                            添加新的中介银行帐号信息
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td class="w80">开户银行</td>
+                        <td class="w200 bold">
+                            <input type="text" id="newbankname" class="bankinput" placeholder="请输入开户银行名称" />
+                        </td>
+                        <td class="w80">银行帐号</td>
+                        <td class="w200 bold">
+                            <input type="text" id="newbankaccount" class="bankinput" placeholder="请输入银行帐号" />
+                        </td>
+                        <td class="w80">开户名</td>
+                        <td class="w80 bold">
+                            <input type="text" id="newbankusername" class="bankinput" style="width:80px;" placeholder="开户名" />
+                        </td>
+                        <td class="w80">开户行地址</td>
+                        <td class="w80 bold">
+                            <input type="text" id="newbankaddress" class="bankinput" placeholder="请输入开户行地址" />
+                        </td>
+                        <td style="width: 50px;">
+                            <a href="javascript:void(0);" onclick="addTradeBankInfo();">添加</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+    </div>
+</body>
+</html>

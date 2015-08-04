@@ -1,0 +1,54 @@
+﻿@model Witbird.SHTS.Model.User
+<div class="user_left2">
+    @if (Model.UserType == 0)
+    {
+        <p class="bt">个人账户信息</p>
+    }
+    else
+    {
+        <p class="bt">企业账户信息</p>
+    }
+    <ul>
+        <li><a href="/user/index">基本信息</a></li>
+        <li><a href="/user/identify">会员认证</a></li>
+        <li>
+            <a href="/user/tovip">
+                @if (Model.IsVip)
+                {
+                    <span>VIP信息</span>
+                }
+                else
+                {
+                    <span>升级VIP</span>
+                }
+            </a>
+        </li>
+        <li><a href="/user/UpdatePassword">密码管理</a></li>
+    </ul>
+    <p class="bt">我的需求</p>
+    <ul>
+        <li><a href="/demand/add">发布需求</a></li>
+        <li><a href="/demand/mydemands">需求列表</a></li>
+    </ul>
+    <p class="bt">我的资源</p>
+    <ul>
+        @if (Model.IsIdentified)
+        {
+            <li><a href="/resource/create">发布资源</a></li>
+        }
+        <li><a href="/resource/my">资源列表</a></li>
+    </ul>
+    <p class="bt">我的中介</p>
+    <ul>
+        <li><a href="/trade/new">中介申请</a></li>
+        <li><a href="/trade/mytradelist">中介列表</a></li>
+    </ul>
+    <p class="bt">活动在线</p>
+    <ul>
+        @if (Model.IsIdentified)
+        {
+            <li><a href="/user/shareactivity">发布活动</a></li>
+        }
+        <li><a href="/user/Activitys">活动列表</a></li>
+    </ul>
+</div>

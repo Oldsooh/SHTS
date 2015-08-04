@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Witbird.SHTS.Web.Models;
+
+namespace Witbird.SHTS.Web.Controllers
+{
+    public class GuestBookController : Controller
+    {
+        public ActionResult Index()
+        {
+            GuestBookViewModel model = new GuestBookViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(GuestBookViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Success");
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Success()
+        {
+            return View();
+        }
+    }
+}

@@ -1,0 +1,15 @@
+﻿{
+    "ServiceName": "Alipay",
+    "MerchantID": "testid",
+    "Key": "testkey"
+},
+{
+    "ServiceName": "Chinabank",
+    "MerchantID": "23133137",
+    "Key": "shtscs123456789"
+},
+{
+    "ServiceName": "Tenpay",
+    "MerchantID": "1900000113",
+    "Key": "e82573dc7e6136ba414f2e2affbe39fa"
+}

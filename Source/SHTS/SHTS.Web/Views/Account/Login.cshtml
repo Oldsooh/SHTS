@@ -1,0 +1,91 @@
+﻿@model Witbird.SHTS.Web.Models.Account.LoginViewModel
+@{
+    ViewBag.Title = "登录 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    ViewBag.Operation = "login";
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/content/css/login.css" rel="stylesheet" />
+    <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        #header {
+            margin-top: -115px;
+        }
+
+
+        .wrap {
+            position: relative;
+            height: 600px;
+        }
+    </style>
+}
+<div class="wrap" style="width: 100%">
+    <div class="banner-show" id="js_ban_content">
+        <div class="cell bns-01" style="display: none;">
+            <div class="con"></div>
+        </div>
+        <div class="cell bns-02">
+            <div class="con"></div>
+        </div>
+        <div class="cell bns-03" style="display: none;">
+            <div class="con"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="register-box" style="height: 396px; padding-top: 10px;">
+            <div class="reg-slogan" style="color: #333; font-size: 25px; margin-bottom: 10px;">会员登录
+            </div>
+            <form class="reg-form" id="js-form-mobile" method="post" action="#">
+                <div class="cell">
+                    <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
+                </div>
+                <div class="cell">
+                    <input type="password" name="password" id="js-mobile_pwd_ipt" placeholder="输入密码"
+                        class="text" />
+                </div>
+                <div class="cell vcode">
+                    <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码"
+                        maxlength="6" />
+                    <img src="./VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张"
+                        onclick=" this.src = './VerifyCode?date=' + (new Date()).getTime(); " />
+                </div>
+                <div class="cell" style="height: 25px; font-size: 16px;">
+                    <input type="hidden" id="IsAutoLogin" name="IsAutoLogin" value="0" />
+                    <input type="checkbox" style="width: 20px; height: 25px;" name="remberaccount" id="remberaccount"
+                        alt="记住我的账户" />
+                    <span for="remberaccount" style="float: left; margin-left: 30px;">记住我的账户</span>
+                    <a href="/account/forgetpassowrd" style="color: #0099FF; float: right;">忘记密码？</a>
+                </div>
+                <div class="bottom">
+                    <button type="submit" id="js-mobile_btn" href="javascript:;" class="button btn-green">
+                        登录</button>
+                </div>
+                <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                    <p>
+                        尚未注册？<a href="/account/register" style="color: #0099FF;">马上去注册</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="errormsg" value="@Model.ErrorMsg"/>
+@section FooterJS
+{
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/js/jquery.validate.min.js"></script>
+    <script src="~/Content/dialog/js/dsdialog.js"></script>
+    <script src="~/Content/js/Account/login.js" charset="utf-8"></script>
+}

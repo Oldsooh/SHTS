@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "中介列表 | 活动在线";
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+@section head
+{
+    <link href="/content/css/trade.css" rel="stylesheet" />
+    <script src="/content/js/jquery-1.11.1.min.js"></script>
+}
+
+@model Witbird.SHTS.Web.Models.TradeModel
+
+<div class="w1000 location">
+    您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/trade" class="blue">中介交易</a>
+</div>
+<div class="wrap">
+    @*<div class="nav_bar">
+        <div class="right fenye">
+            <span><a href="#" class="prv">上一页</a></span>
+            <span><a href="#">1</a></span>
+            <span><a href="#" class="no">2</a></span>
+            <span><a href="#">3</a></span>
+            <span><a href="#">4</a></span>
+            <span><a href="#">5</a></span>
+            <span><input type="text" value="10" /></span>
+            <span>/666页</span>
+            <span><a href="#" class="next">下一页</a></span>
+        </div>
+    </div>
+*@
+    <div class="nav_bar">
+        <div class="left">
+            <a class="btn" href="/trade/new" title="发起新的中介交易申请">发起中介</a>
+        </div>
+        <div class="right filter">
+            <ul>
+                <li id="all"><a href="/trade/index?page=1&filter=all">全部</a></li>
+                <li id="new"><a href="/trade/index?page=1&filter=new">中介申请</a><span class="num">7248</span></li>
+                <li id="inprogress"><a href="/trade/index?page=1&filter=inprogress">交易进行</a><span class="num">610</span></li>
+                <li id="completed"><a href="/trade/index?page=1&filter=completed">交易完成</a><span class="num">9951</span></li>
+                <li id="finished"><a href="/trade/index?page=1&filter=finished">终止交易</a><span class="num">458</span></li>
+                <li id="invalid"><a href="/trade/index?page=1&filter=invalid">违规交易</a><span class="num">7</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="b_cd list">
+        <div class="header">
+            <span class="name">中介交易列表
+            </span>
+            <span class="blank">
+                @*<label title="在新窗口中打开连接">
+                    <input type="checkbox" name="isBlank" value="true" />新窗</label>*@
+
+            </span>
+            <span class="author">创建者</span>
+            <span class="reply">回复/查看</span>
+            <span class="authorr">最后更新</span>
+        </div>
+        <ul>
+
+            @if (Model.TradeList != null && Model.TradeList.Count > 0)
+            {
+                foreach (var item in Model.TradeList)
+                {
+                    if (item != null)
+                    {
+                <li>
+                    <span class="icon">
+                        <img src="/content/images/pay/user_picture.gif" /></span>
+                    <span class="type">
+                        @switch (item.State)
+                        {
+                            case (int)Witbird.SHTS.Model.TradeState.Completed:
+                            <a href="/trade/index?page=1&filter=completed" style="color: #0a4407">[交易完成]</a>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.Finished:
+                            <a href="/trade/index?page=1&filter=finished" style="color: #cf9c9c">[交易终止]</a>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                            <a href="/trade/index?page=1&filter=inprogress" style="color: #1959bb">[交易进行]</a>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.New:
+                            <a href="/trade/index?page=1&filter=new" style="color: #23972b">[中介申请]</a>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                            <a href="/trade/index?page=1&filter=invalid" style="color: red;">[违规交易]</a>
+                                break;
+                            default:
+                                break;
+                        }</span>
+                    <span class="title"><a href="javacript:void(0);" title="@item.TradeSubject">@item.TradeSubject</a></span>
+                    <span class="up">@item.CreatedUserName</span>
+                    <span class="down">@item.CreatedTime.ToString("yyyy-MM-dd HH:mm")</span>
+                    <span class="up reply">2</span>
+                    <span class="down read">@item.ViewCount</span>
+                    <span class="up">小冯</span>
+                    <span class="down">@item.LastUpdatedTime.ToString("yyyy-MM-dd HH:mm")</span>
+                </li>
+                    }
+                }
+            }
+            else
+            {
+                <li>
+                    <span>没有记录</span>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="nav_bar">
+        @*<div class="left">
+            <a class="btn" href="/trade/new" title="发起新的中介交易申请">发起中介</a>
+        </div>*@
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                <span><a href="/trade/index?page=@(Model.PageIndex - 1)&filter=@Model.Filter" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                <span><a href="/trade/index?page=1&filter=@Model.Filter">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                <span><a href="/trade/index?page=@i&filter=@Model.Filter" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                <span><a href="/trade/index?page=@i&filter=@Model.Filter">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                <span><a href="/trade/index?page=@Model.PageCount&filter=@Model.Filter">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                <span><a href="/trade/index?page=@(Model.PageIndex + 1)&filter=@Model.Filter" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+        </div>
+        <!--分页结束-->
+    </div>
+    <script type="text/javascript">
+        var filter = 'all';
+        var href = window.location.href;
+        var params = href.split('&')
+
+        if (params.length > 0) {
+            for (var i = 0; i < params.length; i++) {
+                if (params[i].indexOf('filter') > -1) {
+                    try {
+                        filter = params[i].substring(params[i].indexOf('=') + 1);
+                    }
+                    catch (e) {
+                        filter = 'all';
+                    }
+                    break;
+                }
+            }
+        }
+        $('#' + filter).addClass('selected');
+    </script>
+
+</div>

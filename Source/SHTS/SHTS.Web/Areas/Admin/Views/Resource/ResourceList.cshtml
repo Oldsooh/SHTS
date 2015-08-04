@@ -1,0 +1,91 @@
+﻿@model Witbird.SHTS.Model.Extensions.QueryResourceResult
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>活动场地列表</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/resource/">活动场地管理</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+        @*@<div class="tools">
+                <ul class="toolbar">
+                    <li onclick="toggleselectall();">
+                        <span>
+                            <img src="/areas/admin/content/images/t01.png">
+                        </span>全选
+                    </li>
+                    <li onclick="deleteall()">
+                        <span>
+                            <img src="/areas/admin/content/images/t02.png">
+                        </span>删除
+                    </li>
+                    <li onclick="approall()">
+                        <span>
+                            <img src="/areas/admin/content/images/t03.png">
+                        </span>通过审核
+                    </li>
+                </ul>
+            </div>*@
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>发布人</th>
+                    <th>固定电话</th>
+                    <th>移动电话</th>
+                    <th>状态</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items != null && Model.Items.Count > 0)
+                {
+                    foreach (var space in Model.Items)
+                    {
+                        <tr>
+                            <td>@Html.CheckBox(string.Format("chk_{0}", @space.Id), new { @rid = space.Id })</td>
+                            <td>@space.Id</td>
+                            @*<td>@Html.ActionLink(space.Title, "show", new { @id = space.Id })</td>*@
+                            <td><a href="/resource/@(space.Id).html" target="_blank">@space.Title</a></td>
+                            <td>@space.UserId</td>
+                            <td>@space.Telephone</td>
+                            <td>@space.Mobile</td>
+                            <td>@space.State</td>
+                            <td>@space.CreateTime</td>
+                            <td>
+                                @*<a href="javascript:void(0)" class="appro" pid="@space.Id">审核通过</a>*@
+                                <a href="javascript:void(0)" class="del" pid="@space.Id">删除</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div style="margin-top:20px">
+            @Html.Partial("PagingPartial", Model.Paging)
+        </div>
+    </div>
+    @Html.Partial("MessageBoxPartial")
+    <script src="/Areas/Admin/Content/js/resource/resource.js"></script>
+</body>
+</html>

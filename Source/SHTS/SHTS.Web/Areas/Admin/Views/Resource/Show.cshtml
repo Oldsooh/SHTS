@@ -1,0 +1,44 @@
+﻿@model Witbird.SHTS.DAL.New.Resource
+@{
+    string actionName = "spacelist";
+    switch (Model.ResourceType)
+    {
+        case 2:
+            actionName = "actorlist";
+            break;
+        case 3:
+            actionName = "equipmentlist";
+            break;
+        case 4:
+            actionName = "otherlist";
+            break;
+        default:
+            break;
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ActorDetail</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="formbody">
+        <div class="formtitle"><span>@Model.Title</span></div>
+        <ul class="forminfo">
+            <li><label>所在城市</label><label>@Model.CityId</label></li>
+            <li><label>友情链接</label><label>@(Model.CanFriendlyLink ? "允许" : "拒绝")</label></li>
+            <li><label>链接</label><label>@Model.Href</label></li>
+            <li><label>创建时间</label><label>@Model.CreateTime</label></li>
+            <li><label>最后修改</label><label>@Model.LastUpdatedTime</label></li>
+            <li><label>当前状态</label><label>@Model.State</label></li>
+        </ul>
+    </div>
+    <div class="formbody">
+        <ul class="forminfo"><li> @Html.ActionLink("返回列表", actionName)</li></ul>
+    </div>
+</body>
+</html>

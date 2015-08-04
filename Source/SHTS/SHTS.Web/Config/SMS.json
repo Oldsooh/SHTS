@@ -1,0 +1,10 @@
+﻿{
+    "AccountSID": "aaf98f894a188342014a1951b65000da",
+    "AuthToken": "46e2b4a45de9440d8c9fa0b289e8823f",
+    "SendAdress": "sandboxapp.cloopen.com",
+    "CustomizedInfos": {
+        "port": "8883",
+		"appid": "8a48b5514a18861b014a1b5c4596029b",
+		"TemplateId": "12224"
+    }
+}

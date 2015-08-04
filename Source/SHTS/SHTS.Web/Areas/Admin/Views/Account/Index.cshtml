@@ -1,0 +1,292 @@
+﻿@using Witbird.SHTS.Common
+@model Witbird.SHTS.Web.Areas.Admin.Models.AdminUserViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>管理员列表</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <script src="~/Content/js/jquery.validate.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/Account/edit.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".tiptop a").click(function() {
+                $(".tip").fadeOut(200);
+            });
+
+            $(".sure").click(function() {
+                $(".tip").fadeOut(100);
+            });
+
+            $(".cancel").click(function() {
+                $(".tip").fadeOut(100);
+            });
+
+        });
+
+        function ShowTip(ele) {
+            if (ele == "edit") {
+                FillInfo();
+            }
+            else{
+                $("#" + ele).fadeIn(200);
+            }
+        }
+
+        function FillInfo() {
+            var userid;
+            $(".useritem").each(function() {
+                if ($(this).is(':checked')) {
+                    userid = $(this).val();
+                }
+            });
+            if (!userid) {
+                alert("请选择要编辑的项目");
+                return;
+            }
+            $("#allinputs").attr("userid", userid);
+            $("#AdminId").val(userid);
+            var inputs = $("#allinputs").find("input");
+            var trdata = $("#tr_" + userid).find("td");
+            
+            $(inputs[0]).val($(trdata[2]).text());
+            var roleid = $(trdata[3]).attr("roleid");
+            var count=$("#editselect")[0].options.length;
+            for(var i=0;i<count;i++){
+                if($("#editselect")[0].options[i].value == roleid)  
+                {
+                    $("#editselect")[0].options[i].selected = true;
+                    console.log("dddd")
+                    $(".uew-select-text").text($("#editselect")[0].options[i].innerHTML);
+                    break;  
+                }  
+            }
+            $(inputs[4]).val($(trdata[5]).attr("state"));
+            $("#edit").fadeIn(200);
+        }
+
+        function deleteadmin() {
+            if (!confirm("确定要删除？")) {
+                return;
+            }
+            var userids = new Array();
+            $(".useritem").each(function() {
+                if ($(this).is(':checked')) {
+                    userids.push($(this).val());
+                }
+            });
+            if (userids.length == 0) {
+                alert("请选择要删除的项目！");
+                return;
+            }
+            $.post("/admin/account/DeleteResult", { "ids": userids.toString() }, function(json) {
+                if (json.IsSuccess) {
+                    window.location.reload();
+
+                } else {
+                    alert("删除失败！");
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <style>
+        .tip {
+            height: auto;
+        }
+        .error {
+            background-image: none;
+            margin-top: 0px;
+            padding-top: 0px;
+            float: right;
+            color: red;
+        }
+        .error input {
+            float:left;
+        }
+        .forminfo li {
+            display: flex;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">管理员</a></li>
+            <li><a href="#">管理员列表</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+
+        <div class="tools">
+
+            <ul class="toolbar">
+                <li onclick="ShowTip('newadd');"><span>
+                    <img src="/areas/admin/content/images/t01.png" /></span>添加</li>
+                <li onclick="ShowTip('edit');"><span>
+                    <img src="/areas/admin/content/images/t02.png" /></span>修改</li>
+                <li onclick="deleteadmin();"><span>
+                    <img src="/areas/admin/content/images/t03.png" /></span>删除</li>
+                <li style="display: none;"><span>
+                    <img src="/areas/admin/content/images/t04.png" /></span>统计</li>
+            </ul>
+
+        </div>
+
+
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>
+                        </th>
+                    <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif" /></i></th>
+                    <th>账户名</th>
+                    <th>角色</th>
+                    <th>创建时间</th>
+                    <th>是否可用</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var n in Model.AllAdminUsers)
+                {
+                    <tr id='tr_@n.AdminId'>
+                        <td>
+                            <input type="checkbox" class="useritem" value="@n.AdminId" /></td>
+                        <td>@n.AdminId</td>
+                        <td>@n.UserName</td>
+                        <td roleid="@n.Role.ToString()">@Model.AllRoles.Find(a=>a.RoleId==n.Role).RoleNmae</td>
+                        <td>@n.CreateTime.ToString()</td>
+                        <td state="@n.State.ToString()">@(n.State==0 ? "可用":"未启用")</td>
+                        <td><a onclick="deleteadmin();" href="javascript:void(0);" class="tablelink">删除</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div class="pagin">
+            <div class="message">共<i class="blue">@Model.AllAdminUsers.Count</i>条记录，当前显示第&nbsp;<i class="blue">1&nbsp;</i>页</div>
+            <ul class="paginList">
+                <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
+                <li class="paginItem current"><a href="javascript:;">1</a></li>
+                <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+            </ul>
+        </div>
+        <div class="tip" id="newadd">
+            <div class="tiptop"><span>新增管理员</span><a></a>
+            </div>
+            <div class="tipinfo">
+                <div class="tipright">
+                    <form class="editform" id="AddNewAdmin" method="post" action="/admin/account/AddNewAdmin">
+                    <ul class="forminfo">
+                        <li>
+                            <label>账户名<b>*</b></label>
+                            <input name="UserName" type="text" class="scinput" /></li>
+
+                        <li>
+                            <label>密码<b>*</b></label><input name="EncryptedPassword" type="password" class="scinput"/></li>
+
+                        <li>
+                            <label>重复密码<b>*</b></label><input name="EncryptedPasswordRepter" type="password" class="scinput"/></li>
+
+                        <li>
+                            <label>角色<b>*</b></label>
+                            <div class="vocation">
+                                <select name="role" class="select2">
+                                    @if (Model != null && Model.AllRoles != null && Model.AllRoles.Count > 0)
+                                    {
+                                        foreach (var role in Model.AllRoles)
+                                        {
+                                            <option value="@role.RoleId">@role.RoleNmae</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>是否启用<b>*</b></label>
+                            <cite><input name="state" type="radio" value="0" checked="checked"/>是&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input name="state" type="radio" value="1"/>否</cite>
+                        </li>
+                        <li>
+                            <label>&nbsp;</label>
+                            <input type="submit" formid="AddNewAdmin" class="btn submitbtn" value="添 加"/></li>
+                    </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="edit" class="tip">
+            <div class="tiptop">
+                <span>编辑管理员信息</span><a></a>
+            </div>
+            <div class="tipinfo">
+                <div class="tipright">
+                    <form class="editform" method="post" action="/admin/account/UpdateAdmin">
+                        <input type="hidden" name="AdminId" id="AdminId" value="" />
+                        <ul class="forminfo" id="allinputs">
+                            <li>
+                                <label><b>账户名</b></label><input name="UserName" type="text" class="scinput"/></li>
+
+                            <li>
+                                <label>密码<b>*</b></label><input name="EncryptedPassword" type="password" class="scinput"/></li>
+
+                            <li>
+                                <label>重复密码<b>*</b></label><input name="EncryptedPasswordRepter" type="password" class="scinput"/></li>
+
+                            <li>
+                                <label>角色<b>*</b></label>
+                                <div class="vocation">
+                                    <select name="role" class="select2" id="editselect">
+                                        @if (Model != null && Model.AllRoles != null && Model.AllRoles.Count > 0)
+                                        {
+                                            foreach (var role in Model.AllRoles)
+                                            {
+                                                <option value="@role.RoleId">@role.RoleNmae</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <label>是否启用<b>*</b></label>
+                                <cite><input name="state" type="radio" value="0" checked="checked"/>是&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input name="state" type="radio" value="1"/>否</cite>
+                            </li>
+                            <li>
+                                <label>&nbsp;</label>
+                                <input type="submit" class="btn submitbtn" value="更 新"/></li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+    </script>
+</body>
+</html>

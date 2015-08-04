@@ -1,0 +1,239 @@
+﻿@model Witbird.SHTS.Web.Models.TradeModel
+@{
+    ViewBag.Title = "中介交易 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+@section head
+{
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <link href="/content/css/resource.css" rel="stylesheet" />
+    <style type="text/css">
+        #trade {
+            background-color: #ffffff;
+            margin-top: 0;
+            border-top: 3px solid #ff9a15;
+        }
+
+            #trade a {
+                color: #2577e3;
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+        .title {
+            height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            position: relative;
+        }
+
+            .title span {
+                right: 0;
+                bottom: 5px;
+                font-size: 12px;
+                font-weight: normal;
+                position: absolute;
+                color: #8f98a4;
+            }
+    </style>
+}
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><span>中介交易</span>
+    </div>
+    <div id="mainLeft">
+        <!-- Filter * -->
+        <div class="class">
+            <div class="class_list" style="border-bottom: none;">
+                <h2>交易状态：</h2>
+                <ul>
+                    <li><a id="all" href="/trade/index?page=1&filter=all">全部</a></li>
+                    <li><a id="new" href="/trade/index?page=1&filter=new">中介申请</a></li>
+                    <li><a id="inprogress" href="/trade/index?page=1&filter=inprogress">交易进行</a></li>
+                    <li><a id="completed" href="/trade/index?page=1&filter=completed">交易完成</a></li>
+                    <li><a id="finished" href="/trade/index?page=1&filter=finished">终止交易</a></li>
+                    <li><a id="invalid" href="/trade/index?page=1&filter=invalid">违规交易</a>@*<span class="num">7</span>*@</li>
+                </ul>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <div style="clear: both; height: 20px;"></div>
+        <div class="listdiv">
+            @if (Model.TradeList != null && Model.TradeList.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.TradeList)
+                {
+                    number += 1;
+                <div class="listdivitem">
+                    <div class="listdivitemnumber" style="width: 50px; height: 30px;">
+                        <p>@number</p>
+                    </div>
+                    <div class="listdivitemsummary" style="width: 680px; height: auto;">
+                        <div class="listdivitemtitle">
+                            @switch (item.State)
+                            {
+                                case (int)Witbird.SHTS.Model.TradeState.Completed:
+                                <a href="/trade/index?page=1&filter=completed" style="color: #0a4407">[@Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(item.State)]</a>
+                                    break;
+                                case (int)Witbird.SHTS.Model.TradeState.Finished:
+                                <a href="/trade/index?page=1&filter=finished" style="color: #cf9c9c">[@Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(item.State)]</a>
+                                    break;
+                                case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                                <a href="/trade/index?page=1&filter=inprogress" style="color: #1959bb">[@Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(item.State)]</a>
+                                    break;
+                                case (int)Witbird.SHTS.Model.TradeState.New:
+                                <a href="/trade/index?page=1&filter=new" style="color: #23972b">[@Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(item.State)]</a>
+                                    break;
+                                case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                                <a href="/trade/index?page=1&filter=invalid" style="color: red;">[@Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(item.State)]</a>
+                                    break;
+                                default:
+                                    break;
+                            }
+                            <a href="/trade/@(item.TradeId).html" title="@item.TradeSubject" target="_blank">@item.TradeSubject</a>
+                            <span>申请时间 @item.CreatedTime.ToString("yyyy-MM-dd hh:mm")</span>
+                        </div>
+                        <div class="listdivitemdescription">
+                            <table class="listdivitemtable">
+                                <tbody>
+                                    <tr>
+                                        <td>卖家：<span>@item.SellerName</span></td>
+                                        <td>买家：<span>@item.BuyerName</span></td>
+                                        <td>交易金额：<span>￥ @item.TradeAmount 元</span></td>
+                                        <td>支付状态：@if (item.IsBuyerPaid)
+                                                 {
+                                                    <span>买家已付款</span>
+                                                 }
+                                                 else
+                                                 {
+                                                     <span>等待买家付款</span>         
+                                                 }
+
+                                        </td>
+                                        @*<td>最后更新：<span>@item.LastUpdatedTime.ToString("yyyy-MM-dd hh:mm")</span></td>*@
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="listdivitemtext">
+                                @if (!string.IsNullOrEmpty(item.TradeBody))
+                                {
+                                    string bodyWithHtmlTags = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(item.TradeBody);
+                                    if (!string.IsNullOrEmpty(bodyWithHtmlTags) && bodyWithHtmlTags.Length > 150)
+                                    {
+                                    <span>@bodyWithHtmlTags.Substring(0, 150) ...</span>
+                                    }
+                                    else
+                                    {
+                                    <span>@bodyWithHtmlTags</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div class="listdivitemlink">
+                            <span class="r_url_loc hide">资源地址：<a href="@item.ResourceUrl"  title="查看资源信息" target="_blank">@item.ResourceUrl</a></span>
+                            <a href="/trade/@(item.TradeId).html" target="_blank">查看详情</a>
+                        </div>
+                    </div>
+
+                </div>
+                }
+            }
+            else
+            {
+                <div>没有中介记录。</div>
+            }
+        </div>
+
+        <div style="clear: both; height: 30px;"></div>
+        <a class="btn" href="/trade/new" title="发起新的中介交易申请">发起中介</a>
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                <span><a href="/trade/index?page=@(Model.PageIndex - 1)&filter=@Model.Filter" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                <span><a href="/trade/index?page=1&filter=@Model.Filter">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                <span><a href="/trade/index?page=@i&filter=@Model.Filter" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                <span><a href="/trade/index?page=@i&filter=@Model.Filter">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                <span><a href="/trade/index?page=@Model.PageCount&filter=@Model.Filter">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                <span><a href="/trade/index?page=@(Model.PageIndex + 1)&filter=@Model.Filter" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+        </div>
+        <!--分页结束-->
+    </div>
+
+    @Html.Action("Right", "Common")
+
+    <div style="clear: both; height: 30px;"></div>
+</div>
+
+<script type="text/javascript">
+    var filter = 'all';
+    var href = window.location.href;
+    var params = href.split('&')
+
+    if (params.length > 0) {
+        for (var i = 0; i < params.length; i++) {
+            if (params[i].indexOf('filter') > -1) {
+                try {
+                    filter = params[i].substring(params[i].indexOf('=') + 1);
+                }
+                catch (e) {
+                    filter = 'all';
+                }
+                break;
+            }
+        }
+    }
+
+    var obj = document.getElementById(filter);
+    if (obj != null) {
+        $('#' + filter).addClass('no');
+    }
+    else {
+        $('#all').addClass('no');
+    }
+</script>

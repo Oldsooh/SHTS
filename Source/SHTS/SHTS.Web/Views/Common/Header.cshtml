@@ -1,0 +1,89 @@
+﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
+<!--顶部信息:Start-->
+<div id="header" class="w100">
+    <div class="wrap">
+        <div class="top">
+            <div class="top_left">
+                @if (Model != null && Model.UserEntity != null)
+                {
+                    <span>@Model.UserEntity.UserName，欢迎来到 </span><strong>@Witbird.SHTS.Web.Public.StaticUtility.Config.Name！</strong>
+                    <a href="/user/index" class="blue">[用户中心]</a><span class="c1 ch">&nbsp;|&nbsp;</span> 
+                    <a href="/account/logout" class="blue">[退出]</a>
+                    
+                    if (!string.IsNullOrEmpty(Model.ErrorMsg))
+                    {
+                        <input type="hidden" id="vipCountDownTips" value="@Model.ErrorMsg" />
+                    }
+                }
+                else
+                {
+                    <span>您好，欢迎来到 </span><strong>@Witbird.SHTS.Web.Public.StaticUtility.Config.Name！</strong>
+                    <a href="/account/login" class="blue">[登录]</a><span class="c1 ch">|</span> 
+                    <a href="/account/register" class="blue">[注册]</a>
+                }
+                <span class="c1 ch">|</span> 
+                <a href="/m/" class="blue" target="_blank">手机版</a>
+            </div>
+            <div class="top_right">
+                <a href="/about/2.html" class="c3">联系我们</a><span class="c1 ch">&nbsp;|&nbsp;</span>
+                <a href="/about/1.html" class="c3">关于我们</a>
+            </div>
+        </div>
+        <div class="wrap" style="height: 83px;">
+            <div id="logo">
+                <a href="/">
+                    <img src="/content/images/logo.png" alt="活动在线" style="width: 220px; height: 45px;" /></a>
+            </div>
+            <div id="city">
+                <div id="currentCity">
+                    <div id="currentName">
+                        <div id="currentCityName" style="float: left;">@Session["CityName"].ToString()</div>
+                        <div style="float: left; padding: 2px 0 0 5px;">
+                            <img src="/content/images/citydown.jpg" style="width: 18px; height: 16px;" />
+                        </div>
+                    </div>
+                    <ul class="currentUl">
+                        <li class="currentLi"><a href="/city/current/china">全国</a></li>
+                        @if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                        {
+
+                            foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                            {
+                                if (item.EntityType == 2 && item.Sort < 100)
+                                {
+                            <li class="currentLi"><a href="/city/current/@item.Id">@item.Name</a></li>
+                                }
+                            }
+
+                        }
+                        <li class="currentLi"><a href="/city/" style="color: #ff9a15;">更多全国城市</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="search">
+                <form action="/Search/Result" method="GET">
+                <input id="search_txt" name="keyWords" type="text" placeholder="输入会议场地、设备、艺人......">
+                <input id="search_btn" type="submit" value="搜索"/>
+                </form>
+            </div>
+            <div id="posttask">
+                <a href="/trade/new">中介申请</a>
+                <a href="/demand/add">发布信息</a>
+            </div>
+        </div>
+        <div class="nav w1000">
+            <ul class="menu">
+                <li class="menu_li" id="home"><a href="/">首页</a></li>
+                <li class="menu_li" id="space"><a href="/resource/spacelist">活动场地</a></li>
+                <li class="menu_li" id="actor"><a href="/resource/actorlist">演艺人员</a></li>
+                <li class="menu_li" id="equipment"><a href="/resource/equipmentlist">活动设备</a></li>
+                <li class="menu_li" id="other"><a href="/resource/otherlist">其他资源</a></li>
+                <li class="menu_li" id="news"><a href="/news/">新闻公告</a></li>
+                <li class="menu_li" id="activity"><a href="/activity/">活动在线</a></li>
+                <li class="menu_li" id="trade"><a href="/trade/">中介交易</a></li>
+                <li class="menu_li" id="demand"><a href="/demand/">需求信息</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--顶部信息:End-->

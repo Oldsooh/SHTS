@@ -1,0 +1,124 @@
+﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
+@{
+    ViewBag.Title = "用户中心-升级为Vip | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Content/css/user.css" rel="stylesheet" />
+    <link href="~/Content/css/tovip.css" rel="stylesheet" />
+    <style type="text/css">
+        .ur_title {
+            width: 80px;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a
+            href="/user/" class="blue">用户中心</a><span class="ch">&nbsp;&gt;&nbsp;会员认证</span>
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">会员认证</p>
+        </div>
+        <div style="width: 48%; float: right; margin-top: 20px;">
+            @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+            {
+                <div class="ur_title" style="margin-top: 0px;">
+                    <span class="red ch"></span>
+                    示例图片：
+                </div>
+                <div class="ur_box">
+                    <div style="margin-top: 5px;">
+                        <img src="~/Content/images/user/IdentiyImg.jpg" width="370" height="300" />
+                    </div>
+                </div>
+            }
+        </div>
+
+        <form action="#" enctype="multipart/form-data" method="POST">
+            <div style="width: 48%; float: left;">
+                <div class="ur_title" style="width: auto; margin-top: 20px;">
+                    <span class="red ch"></span>
+                    @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                    {
+                        <span>@(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")</span>
+                    }
+                </div>
+                <div class="ur_box">
+                    @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+                    {
+                        <div>
+                            <input name="IdentiyImgFile" id="IdentiyImgFile" type="text" style="width: 255px;"
+                                class="ur_txt1" />
+                            <input name="IdentiyImg" id="IdentiyImg" type="file" style="opacity: 0; display: none;" />
+                            <input type="button" id="IdentiyImgBtn" class="ll_btn" value="选择文件…" />
+                        </div>
+                    }
+                    <div style="margin-top: 5px;">
+                        <img id="preview" src="@Model.VipInfo.IdentifyImg" width="370" height="300"/>
+                    </div>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+                        {
+                            <span style="color: #ff6a00; font-size: 17px;">@Model.ErrorMsg</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ur_tj" style="width: 670px;">
+                @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                {
+                    <div class="user_right_bt">
+                    </div>
+                    <input name="" type="submit" class="tjzl_btn userbtn" value="上传照片" />
+                }
+                else if (Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+                {
+                    <div class="user_right_bt">
+                    </div>
+                    <input name="" type="submit" class="tjzl_btn userbtn" value="重新上传" />
+                }
+                else
+                {
+                }
+            </div>
+        </form>
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        //上传图片实时预览
+        $(function () {
+            //建立一個可存取到該file的url
+            function getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
+            function uploadfile(ele) {
+                var objUrl = getObjectURL(ele.files[0]);
+                $("#preview").attr("src", objUrl);
+                $("#IdentiyImgFile").val($('#IdentiyImg').val());
+            }
+            $("#IdentiyImgBtn").click(function () {
+                $("#IdentiyImg").click();
+            });
+            $("#IdentiyImg").change(function () {
+                uploadfile(this);
+            });
+        });
+    </script>
+}

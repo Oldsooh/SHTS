@@ -1,0 +1,308 @@
+﻿@model Witbird.SHTS.Web.Models.DemandModel
+@{
+    ViewBag.Title = "编辑信息" + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <script src="/Content/upload/jquery-1.4.2.min.js"></script>
+    <script src="/Content/js/city.js"></script>
+
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+
+    <script type="text/javascript">
+        var editorContent;//定义编辑器
+        KindEditor.ready(function (K) {
+            editorContent = K.create('#editorContent', {
+                width: '780px',
+                height: '450px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: true,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'table']
+            });
+        });
+
+        function editDemand() {
+            $("#editorContent").val(editorContent.html());//把编辑器的内空复制到 textarea 标签
+            $.ajax({
+                url: '/demand/edit',
+                data: $("#addform").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        alert("更新成功");
+                        window.location.href = "/demand/mydemands";
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("网络异常，添加失败");
+                }
+            });
+        }
+
+        function demandCategoryChange() {
+            var categoryId = $("#categoryId").val();
+            if (categoryId == '2') {//2为演义人员
+                document.getElementById("peopleNumberBox").style.display = "block";
+            }
+            else {
+                document.getElementById("peopleNumberBox").style.display = "none";
+            }
+        }
+    </script>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="javascript:void(0)" class="blue">我的需求</a><span class="ch">&nbsp;&gt;&nbsp;编辑需求</span>
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">编辑需求</p>
+        </div>
+        <form id="addform" method="post">
+            <input type="hidden" name="id" value="@Model.Demand.Id" />
+
+            <div class="ur_title lh24"><span class="red ch"></span>类别：</div>
+            <div class="ur_box">
+                <select name="categoryId" id="categoryId" onchange="demandCategoryChange()">
+                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                    {
+                        foreach (var item in Model.DemandCategories)
+                        {
+                            if (item.IsActive)
+                            {
+                                if (item.Id == Model.Demand.CategoryId)
+                                {
+                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                }
+                                else
+                                {
+                        <option value="@item.Id">@item.Name</option> 
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <option value="">暂无类别</option>
+                    }
+                </select>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+            <div class="ur_title"><span class="red ch"></span>标题：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="title" maxlength="50" value="@Model.Demand.Title" />
+                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;请认真填写，方便提供商看到.</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+            <div class="ur_title lh24"><span class="red ch"></span>地区：</div>
+            <div class="ur_box">
+                <select id="ddlProvince" name="provinceId" onchange="loadCities()">
+                    <option value="">省份</option>
+                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    {
+                        foreach (var item in Model.Provinces)
+                        {
+                            if (!string.IsNullOrEmpty(Model.Demand.Province) && Model.Demand.Province == item.Id)
+                            {
+                        <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                        <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                <select id="ddlCity" name="cityId" onchange="loadAreas()">
+                    <option value="">全省/市</option>
+                    @if (Model.Cities != null && Model.Cities.Count > 0)
+                    {
+                        foreach (var item in Model.Cities)
+                        {
+                            if (!string.IsNullOrEmpty(Model.Demand.City) && Model.Demand.City == item.Id)
+                            {
+                        <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                        <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                <select id="ddlArea" name="areaId">
+                    <option value="">----</option>
+                    @if (Model.Areas != null && Model.Areas.Count > 0)
+                    {
+                        foreach (var item in Model.Areas)
+                        {
+                            if (!string.IsNullOrEmpty(Model.Demand.Area) && Model.Demand.Area == item.Id)
+                            {
+                        <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                        <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                <span style="color: #4193ff;">&nbsp;&nbsp; 选填.</span>
+                <br />
+                <input class="ur_txt1" name="address" maxlength="50" value="@Model.Demand.Address" />
+                <span style="color: #4193ff;">&nbsp;&nbsp; 详细地址.</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+
+
+
+            @{string st = string.Empty;
+              if (Model.Demand.StartTime.HasValue)
+              {
+                  st = Model.Demand.StartTime.Value.ToString("yyyy-MM-dd");
+              }
+              string et = string.Empty;
+              if (Model.Demand.EndTime.HasValue)
+              {
+                  et = Model.Demand.EndTime.Value.ToString("yyyy-MM-dd");
+              }
+            }
+            <div class="ur_title"><span class="red ch"></span>起止时间：</div>
+            <div class="ur_box">
+                <input class="ur_txt1 Wdate" name="startTime" maxlength="50" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="height: 32px; width:130px; border: #dddddd 1px solid;" value="@st" />
+                --
+                <input class="ur_txt1 Wdate" name="endTime" maxlength="50" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="height: 32px; width:130px; border: #dddddd 1px solid;" value="@et" />
+                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;如： 2015-01-12</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+            <div class="ur_title"><span class="red ch"></span>联系电话：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="phone" maxlength="50" value="@Model.Demand.Phone" />
+                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title"><span class="red ch"></span>QQ/微信：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="qqweixin" maxlength="50" value="@Model.Demand.QQWeixin" />
+                <span style="color: #4193ff;">&nbsp;&nbsp;必填</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title"><span class="red ch"></span>电子邮箱：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="email" maxlength="50" value="@Model.Demand.Email" />
+                <span style="color: #4193ff;">&nbsp;&nbsp;必填</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title"><span class="red ch"></span>预算金额：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="budget" maxlength="50" value="@Model.Demand.Budget" />
+                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;必须填写一个整数，如果面议，请填 0</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+            <div class="ur_title"><span class="red ch"></span>需求时长：</div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="timeLength" maxlength="50" value="@Model.Demand.TimeLength" />
+                <span style="color: #4193ff;">&nbsp;&nbsp; 如：2天、2-3周、约1个月、时长不定......</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+
+            @{ string peopleNumberBox = "none"; if (Model.Demand.CategoryId == 2) { peopleNumberBox = "block"; }}
+            <div id="peopleNumberBox" style="display: @peopleNumberBox;">
+                <div class="ur_title"><span class="red ch"></span>人员数量：</div>
+                <div class="ur_box">
+                    <input class="ur_txt1" name="peopleNumber" maxlength="50" value="@Model.Demand.PeopleNumber" />
+                    <span style="color: #4193ff;">&nbsp;&nbsp; 如：10人、20-50人、约100人、人数不定......</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
+
+
+
+            <div class="ur_title lh24"><span class="red ch"></span>简短描述：</div>
+            <div class="ur_box">
+                <textarea class="ur_tra" name="description" maxlength="300" rows="5">@Model.Demand.Description</textarea>
+                <span style="color: #4193ff;">
+                    <br />
+                    <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>300字最佳&nbsp;&nbsp;太少大多都不好. 用于列表页简短描述. 方便供应商看见，提高曝光率哦！</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+            @*<div class="ur_title lh24"><span class="red ch"></span>内容：</div>*@
+            <div class="ur_box">
+                <div style="height: 30px; line-height: 20px; color: #ff0000; font-size: 16px;">警告：禁止 详情内容 出现联系方法，一旦发现，系统将用星号 ** 代替</div>
+                <textarea id="editorContent" name="contentStyle">@(new HtmlString(Model.Demand.ContentStyle))</textarea>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_tj">
+                <input type="button" class="tjzl_btn" value="更 新" onclick="editDemand()" />
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title lh24"></div>
+            <div class="ur_box">
+                温馨提示：如果长时间未操作，发布时提示“请登录”，你可以在新的页面登录，然后再回到本页面继续发布。
+            </div>
+            <div class="clearfix"></div>
+
+        </form>
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>

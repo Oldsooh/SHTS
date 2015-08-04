@@ -1,0 +1,848 @@
+﻿@model Witbird.SHTS.Model.Extensions.UserFilter
+@{
+    //用于增加筛选项
+    RouteValueDictionary GeneralDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "province" || item.Key == "city" || item.Key == "ara")
+        {
+            continue;
+        }
+        GeneralDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制地区
+    RouteValueDictionary CountryDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "province" || item.Key == "city" || item.Key == "ara")
+        {
+            continue;
+        }
+        CountryDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地类型
+    RouteValueDictionary SptpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sptp")
+        {
+            continue;
+        }
+        SptpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地特点
+    RouteValueDictionary SpftDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spft")
+        {
+            continue;
+        }
+        SpftDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制配套设备
+    RouteValueDictionary SpfcDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spfc")
+        {
+            continue;
+        }
+        SpfcDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地面积
+    RouteValueDictionary SpszDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spsz")
+        {
+            continue;
+        }
+        SpszDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary SppcDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sppc")
+        {
+            continue;
+        }
+        SppcDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary SpttDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sptt")
+        {
+            continue;
+        }
+        SpttDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary AcwkDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "actp")
+        {
+            continue;
+        }
+        AcwkDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制设备类别
+    RouteValueDictionary EqtpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "eqtp")
+        {
+            continue;
+        }
+        EqtpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制其他类别
+    RouteValueDictionary OttpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "ottp")
+        {
+            continue;
+        }
+        OttpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+
+    //不限制演员组织类别
+    RouteValueDictionary AcfmDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "acfm")
+        {
+            continue;
+        }
+        AcfmDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制演员性别
+    RouteValueDictionary AcsxDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "acsx")
+        {
+            continue;
+        }
+        AcsxDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    @*//不限制时间
+        RouteValueDictionary RstmDictionary = new RouteValueDictionary();
+        foreach (var item in Model.SelectedFilter)
+        {
+            if (item.Key == "page" || item.Key == "rsst" || item.Key == "rsed")
+            {
+                continue;
+            }
+            RstmDictionary.Add(item.Key, (object)item.Value);
+        }*@
+
+    Dictionary<string, object> zindex77 = new Dictionary<string, object>();
+    zindex77.Add("style", (object)"z-index:777");
+
+    Dictionary<string, object> noClass = new Dictionary<string, object>();
+    noClass.Add("class", (object)"no");
+
+    Dictionary<string, object> zindex777_noClass = new Dictionary<string, object>();
+    zindex777_noClass.Add("class", (object)"no");
+    zindex777_noClass.Add("style", (object)"z-index:777");
+
+    Dictionary<string, object> curTimeClass = new Dictionary<string, object>();
+    curTimeClass.Add("id", (object)"curtime");
+    curTimeClass.Add("style", (object)"display:none;");
+}
+<div class="class">
+    @*if (Model.SelectedFilter.Count > 0)
+        {
+            <div class="class_list">
+                <h2>您已选择：</h2>
+                <ul>
+                    @foreach (var filter in Model.SelectedFilter)
+                    {
+                        switch (filter.Key)
+                        {
+                            case "province":
+                            case "city":
+                            case "ara":
+                                var city = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id == filter.Value);
+                                if (city != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@city.Name</a></li>
+                                }
+                                break;
+                            case "sptp":
+                                var tp = Witbird.SHTS.Web.Public.MiscData.GetSpaceTypeById(filter.Value);
+                                if (tp != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@tp.Name</a></li>
+                                }
+                                break;
+                            case "spft":
+                                var ft = Witbird.SHTS.Web.Public.MiscData.GetSpaceFeatureById(filter.Value);
+                                if (ft != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@ft.Name</a></li>
+                                }
+                                break;
+                            case "spfc":
+                                var fc = Witbird.SHTS.Web.Public.MiscData.GetSpaceFacilityById(filter.Value);
+                                if (fc != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@fc.Name</a></li>
+                                }
+                                break;
+                            case "spsz":
+                                var sz = Witbird.SHTS.Web.Public.MiscData.GetSpaceSizeById(filter.Value);
+                                if (sz != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@sz.Name</a></li>
+                                }
+                                break;
+                            case "sppc":
+                                var pc = Witbird.SHTS.Web.Public.MiscData.GetSpacePeopleById(filter.Value);
+                                if (pc != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@pc.Name</a></li>
+                                }
+                                break;
+                            case "sptt":
+                                if (filter.Value.Equals("0"))
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">不提供酒宴</a></li>
+                                }
+                                else if (filter.Value.Equals("1"))
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">提供酒宴</a></li>
+                                }
+                                break;
+                            case "actp":
+                                var wk = Witbird.SHTS.Web.Public.MiscData.GetActorTypeById(filter.Value);
+                                if (wk != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@wk.Name</a></li>
+                                }
+                                break;
+                            case "eqtp":
+                                var eqtp = Witbird.SHTS.Web.Public.MiscData.GetEquipTypeById(filter.Value);
+                                if (eqtp != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@eqtp.Name</a></li>
+                                }
+                                break;
+                            case "ottp":
+                                var ottp = Witbird.SHTS.Web.Public.MiscData.GetOtherTypeById(filter.Value);
+                                if (ottp != null)
+                                {
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@ottp.Name</a></li>
+                                }
+                                break;
+                            case "rsst":
+                                   <li><a style="color: #ffffff; background-color: #2577e3;">@filter.Value 之后</a></li>
+                                break;
+                            case "rsed":
+                                    <li><a style="color: #ffffff; background-color: #2577e3;">@filter.Value 之前</a></li>
+                                break;
+                            case "page":
+                                break;
+                            default:
+                            <li><a style="color: #ffffff; background-color: #2577e3;">@filter.Value</a></li>
+                                break;
+                        }
+                    }
+                </ul>
+            </div>
+        }*@
+
+    @*四大资源都需要地区筛选器*@
+    @*@<div class="class_list">
+            <h2>所在地区：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("province") || Model.SelectedFilter.ContainsKey("city") || Model.SelectedFilter.ContainsKey("ara"))
+                    {
+                        @Html.ActionLink("全国", Model.ActionName, CountryDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("全国", Model.ActionName, CountryDictionary, noClass)
+                    }
+                </li>
+                @if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                {
+                    Witbird.SHTS.Model.City colorprovince = null;
+                    if (Model.SelectedFilter.ContainsKey("province"))
+                    {
+                        colorprovince = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(Model.SelectedFilter["province"]));
+                    }
+                    if (colorprovince == null && Model.SelectedFilter.ContainsKey("city"))
+                    {
+                        var colorcity = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(Model.SelectedFilter["city"]));
+                        if (colorcity != null)
+                        {
+                            colorprovince = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(colorcity.ParentId));
+                        }
+                    }
+                    if (colorprovince == null && Model.SelectedFilter.ContainsKey("ara"))
+                    {
+                        var colorarea = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(Model.SelectedFilter["ara"]));
+                        if (colorarea != null)
+                        {
+                            var colorcity = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(colorarea.ParentId));
+                            if (colorcity != null)
+                            {
+                                colorprovince = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id.Equals(colorcity.ParentId));
+                            }
+                        }
+                    }
+                    foreach (var province in Witbird.SHTS.Web.Public.StaticUtility.AllCities.Where(v => v.EntityType == 1))
+                    {
+                        <li>
+                            @{
+                        CountryDictionary.Add("province", province.Id);
+                        if (colorprovince != null && colorprovince.Id.Equals(province.Id))
+                        {
+                            @Html.ActionLink(province.Name, Model.ActionName, CountryDictionary, zindex777_noClass)
+                        }
+                        else
+                        {
+                            @Html.ActionLink(province.Name, Model.ActionName, CountryDictionary, zindex77)
+                        }
+                        CountryDictionary.Remove("province");
+                            }
+                            <div style="z-index:788">
+                                @foreach (var city in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                                {
+                                    if (city.EntityType == 2 && city.ParentId == province.Id)
+                                    {
+                                        CountryDictionary.Add("city", city.Id);
+                                        @Html.ActionLink(city.Name, Model.ActionName, CountryDictionary)
+                                        CountryDictionary.Remove("city");
+                                    }
+                                }
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>*@
+    @if (Model.SelectedFilter.ContainsKey("province"))
+    {
+        var provincefilter = Model.SelectedFilter.First(v => v.Key == "province");
+        var province = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id == provincefilter.Value);
+
+        if (province != null)
+        {
+            var cities = Witbird.SHTS.Web.Public.StaticUtility.AllCities.Where(v => v.EntityType == 2 && v.ParentId == province.Id).ToList();
+            if (cities.Count > 0)
+            {
+                <div class="class_list">
+                    <h2>城市：</h2>
+                    <ul>
+                        @foreach (var city in cities)
+                        {
+                            CountryDictionary.Add("city", city.Id);
+                            <li>
+                                @Html.ActionLink(city.Name, Model.ActionName, CountryDictionary)
+                            </li>
+                            CountryDictionary.Remove("city");
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    }
+    @if (Model.SelectedFilter.ContainsKey("city"))
+    {
+        var cityfilter = Model.SelectedFilter.First(v => v.Key == "city");
+        var city = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id == cityfilter.Value);
+        if (city != null)
+        {
+            var cities = Witbird.SHTS.Web.Public.StaticUtility.AllCities.Where(v => v.EntityType == 3 && v.ParentId == city.Id).ToList();
+            if (cities.Count > 0)
+            {
+                <div class="class_list">
+                    <h2>区、县：</h2>
+                    <ul>
+                        <li>
+                            @if (Model.SelectedFilter.ContainsKey("ara"))
+                            {
+                                @Html.ActionLink("不限", Model.ActionName, CountryDictionary)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("不限", Model.ActionName, CountryDictionary, noClass)
+                            }
+                        </li>
+                        @foreach (var ct in cities)
+                        {
+                            CountryDictionary.Add("ara", ct.Id);
+                            <li>
+                                @if (Model.SelectedFilter.ContainsKey("ara") && Model.SelectedFilter["ara"].Equals(ct.Id))
+                                {
+                                    @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary, noClass)
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary)
+                                }
+                            </li>
+                                CountryDictionary.Remove("ara");
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    }
+    @if (Model.SelectedFilter.ContainsKey("sptp") || Model.UnselectFilter.ContainsKey("sptp"))
+    {
+        <div class="class_list">
+            <h2>场地类型：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("sptp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SptpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SptpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceTypeList)
+                {
+                    SptpDictionary.Add("sptp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("sptp") && Model.SelectedFilter["sptp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SptpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SptpDictionary)</li>
+                    }
+
+                    SptpDictionary.Remove("sptp");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spft") || Model.UnselectFilter.ContainsKey("spft"))
+    {
+        <div class="class_list">
+            <h2>场地特点：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spft"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpftDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpftDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList)
+                {
+                    SpftDictionary.Add("spft", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spft") && Model.SelectedFilter["spft"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpftDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpftDictionary)</li>
+                    }
+                    SpftDictionary.Remove("spft");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spfc") || Model.UnselectFilter.ContainsKey("spfc"))
+    {
+        <div class="class_list">
+            <h2>配套设施：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spfc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpfcDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpfcDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList)
+                {
+                    SpfcDictionary.Add("spfc", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spfc") && Model.SelectedFilter["spfc"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpfcDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpfcDictionary)</li>
+                    }
+                    SpfcDictionary.Remove("spfc");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spsz") || Model.UnselectFilter.ContainsKey("spsz"))
+    {
+        <div class="class_list">
+            <h2>场地面积：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spsz"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpszDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpszDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceSizeList)
+                {
+                    SpszDictionary.Add("spsz", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spsz") && Model.SelectedFilter["spsz"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpszDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpszDictionary)</li>
+                    }
+                    SpszDictionary.Remove("spsz");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("sppc") || Model.UnselectFilter.ContainsKey("sppc"))
+    {
+        <div class="class_list">
+            <h2>容纳人数：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("sppc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SppcDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SppcDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpacePeopleList)
+                {
+                    SppcDictionary.Add("sppc", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("sppc") && Model.SelectedFilter["sppc"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SppcDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SppcDictionary)</li>
+                    }
+                    SppcDictionary.Remove("sppc");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("sptt") || Model.UnselectFilter.ContainsKey("sptt"))
+    {
+        <div class="class_list">
+            <h2>提供酒宴：</h2>
+            <ul>
+                @if (Model.SelectedFilter.ContainsKey("sptt"))
+                {
+                    <li>@Html.ActionLink("不限", Model.ActionName, SpttDictionary)</li>
+                    if (Model.SelectedFilter["sptt"].Equals("1"))
+                    {
+                        SpttDictionary.Add("sptt", "1");
+                        <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary, noClass)</li>
+                        SpttDictionary.Remove("sptt");
+
+                        SpttDictionary.Add("sptt", "0");
+                        <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary)</li>
+                        SpttDictionary.Remove("sptt");
+                    }
+                    else
+                    {
+                        SpttDictionary.Add("sptt", "1");
+                        <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary)</li>
+                        SpttDictionary.Remove("sptt");
+
+                        SpttDictionary.Add("sptt", "0");
+                        <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary, noClass)</li>
+                        SpttDictionary.Remove("sptt");
+                    }
+                }
+                else
+                {
+                    <li>@Html.ActionLink("不限", Model.ActionName, SpttDictionary, noClass)</li>
+
+                    SpttDictionary.Add("sptt", "1");
+                    <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary)</li>
+                    SpttDictionary.Remove("sptt");
+
+                    SpttDictionary.Add("sptt", "0");
+                    <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary)</li>
+                    SpttDictionary.Remove("sptt");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("acfm") || Model.UnselectFilter.ContainsKey("acfm"))
+    {
+        <div class="class_list">
+            <h2>组织类型：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("acfm"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcfmDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcfmDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.ActorFromList)
+                {
+                    AcfmDictionary.Add("acfm", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("acfm") && Model.SelectedFilter["acfm"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcfmDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcfmDictionary)</li>
+                    }
+                    AcfmDictionary.Remove("acfm");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("acfm") && Model.SelectedFilter["acfm"] == "1")
+    {
+        if (Model.SelectedFilter.ContainsKey("acsx") || Model.UnselectFilter.ContainsKey("acsx"))
+        {
+            <div class="class_list">
+                <h2>演员性别：</h2>
+                <ul>
+                    <li>
+                        @if (Model.SelectedFilter.ContainsKey("acsx"))
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, AcsxDictionary)
+                        }
+                        else
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, AcsxDictionary, noClass)
+                        }
+                    </li>
+                    @foreach (var item in Witbird.SHTS.Web.Public.MiscData.ActorSexList)
+                    {
+                        AcsxDictionary.Add("acsx", item.Id);
+                        if (Model.SelectedFilter.ContainsKey("acsx") && Model.SelectedFilter["acsx"].Equals(item.Id.ToString()))
+                        {
+                            <li>@Html.ActionLink(item.Name, Model.ActionName, AcsxDictionary, noClass)</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink(item.Name, Model.ActionName, AcsxDictionary)</li>
+                        }
+                        AcsxDictionary.Remove("acsx");
+                    }
+                </ul>
+            </div>
+        }
+    }
+
+
+    @if (Model.SelectedFilter.ContainsKey("actp") || Model.UnselectFilter.ContainsKey("actp"))
+    {
+        <div class="class_list">
+            <h2>演出类别：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("actp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcwkDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcwkDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.ActorTypeList)
+                {
+                    AcwkDictionary.Add("actp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("actp") && Model.SelectedFilter["actp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcwkDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcwkDictionary)</li>
+                    }
+                    AcwkDictionary.Remove("actp");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("eqtp") || Model.UnselectFilter.ContainsKey("eqtp"))
+    {
+        <div class="class_list">
+            <h2>设备类别：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("eqtp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, EqtpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, EqtpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.EquipTypeList)
+                {
+                    EqtpDictionary.Add("eqtp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("eqtp") && Model.SelectedFilter["eqtp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, EqtpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, EqtpDictionary)</li>
+                    }
+                    EqtpDictionary.Remove("eqtp");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("ottp") || Model.UnselectFilter.ContainsKey("ottp"))
+    {
+        <div class="class_list">
+            <h2>类别：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("ottp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, OttpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, OttpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.OtherTypeList)
+                {
+                    OttpDictionary.Add("ottp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("ottp") && Model.SelectedFilter["ottp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, OttpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, OttpDictionary)</li>
+                    }
+                    OttpDictionary.Remove("ottp");
+                }
+            </ul>
+        </div>
+    }
+    @*@if (Model.SelectedFilter.ContainsKey("rsst") || Model.UnselectFilter.ContainsKey("rsst") ||
+            Model.SelectedFilter.ContainsKey("rsed") || Model.UnselectFilter.ContainsKey("rsed"))
+        {
+            <div class="class_list">
+                @Html.ActionLink("curtime", Model.ActionName, RstmDictionary, curTimeClass)
+                <h2>起止时间：</h2>
+                <ul>
+                    <li>
+                        @if (Model.SelectedFilter.ContainsKey("rsst") || Model.SelectedFilter.ContainsKey("rsed"))
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, RstmDictionary)
+                        }
+                        else
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, RstmDictionary, noClass)
+                        }
+                    </li>
+                    <li>
+                        @if (Model.SelectedFilter.ContainsKey("rsst"))
+                        {
+                            <input type="text" id="starttime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="@Model.SelectedFilter["rsst"]" />
+                        }
+                        else
+                        {
+                            <input type="text" id="starttime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                        }
+
+                        ~
+                        @if (Model.SelectedFilter.ContainsKey("rsed"))
+                        {
+                            <input type="text" id="endtime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="@Model.SelectedFilter["rsed"]" />
+                        }
+                        else
+                        {
+                            <input type="text" id="endtime" class="Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                        }
+                        &nbsp;
+                        <input type="button" value="确定" class="jgqj_btn" onclick="querytime()" />
+                    </li>
+                </ul>
+            </div>
+        }*@
+    <div style="clear: both;"></div>
+</div>
+<div style="clear: both;"></div>
+<script type="text/javascript">
+    function querytime() {
+        var href = $('#curtime').attr('href');
+        var starttime = $('#starttime').val();
+        if (starttime != "") {
+            if (href.indexOf('?') == -1) {
+                href = href + "?rsst=" + starttime;
+            }
+            else {
+                href = href + "&rsst=" + starttime;
+            }
+
+        }
+        var endtime = $('#endtime').val();
+        if (endtime != "") {
+            if (href.indexOf('?') == -1) {
+                href = href + "?rsed=" + endtime;
+            }
+            else {
+                href = href + "&rsed=" + endtime;
+            }
+        }
+        window.location.href = href;
+    }
+</script>

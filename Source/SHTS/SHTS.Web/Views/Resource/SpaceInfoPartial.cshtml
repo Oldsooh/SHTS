@@ -1,0 +1,58 @@
+﻿@using Witbird.SHTS.Model
+@model Witbird.SHTS.DAL.New.Resource
+@{
+    var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
+}
+<div class="fLeft" id="hotel_info_wrappper">
+    <div class="hotel_same_box">
+        <font color="black">场地类型</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        @HtmlHelperExtension.SpaceTypeListProperty.Find(t => t.Id == Model.SpaceTypeId).Name
+    </div>
+    <div class="hotel_same_box">
+        <font color="black">场地面积</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        @HtmlHelperExtension.SpaceSizeListProperty.Find(t => t.Id == Model.SpaceSizeId).Name
+    </div>
+    <div class="hotel_same_box">
+        <font color="black">配置设备</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList)
+        {
+            if ((Model.SpaceFacilityValue & (int)Math.Pow(2, item.Id - 1)) > 0)
+            {
+                <span>@item.Name</span>
+            }
+        }
+    </div>
+    <div class="hotel_same_box">
+        <font color="black">场地特点</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList)
+        {
+            if ((Model.SpaceFeatureValue & (int)Math.Pow(2, item.Id - 1)) > 0)
+            {
+                <span>@item.Name</span>
+            }
+        }
+    </div>
+    <div class="hotel_same_box">
+        <font color="black">容纳人数</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        @HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpaceSizeId).Name（人数可根据具体活动人数调整）
+    </div>
+    <div class="hotel_same_box">
+        <font color="black">联&nbsp;&nbsp;系&nbsp;&nbsp;人</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Contract
+    </div>
+
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Telephone
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Mobile
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">微信/QQ</font>&nbsp;&nbsp;&nbsp;&nbsp;@string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
+    </div>
+    <div class="hotel_same_box" style="display: inline-block;">
+        <font color="black">详细地址</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.DetailAddress
+    </div>
+</div>

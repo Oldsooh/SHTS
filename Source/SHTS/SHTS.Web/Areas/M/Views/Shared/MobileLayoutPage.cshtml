@@ -1,0 +1,69 @@
+﻿@using Witbird.SHTS.Web.Areas.M.Common
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="wap-font-scale" content="no" />
+    <title>@ViewBag.Title | @Witbird.SHTS.Web.Public.StaticUtility.Config.Name 移动版</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    <link href="/content/m/css/common.css" rel="stylesheet" />
+    @RenderSection("head", false)
+</head>
+<body>
+    <div class="wrap">
+        <div id="top">
+            <div id="logo">
+                <a href="/m/">
+                    <img src="/content/images/logo.png" alt="logo" /></a>
+        </div>
+            
+            @if (Session["CityName"] != null)
+            {
+                <div id="currentCityName">@Session["CityName"].ToString()</div>
+            }
+            else
+            {
+                <div id="currentCityName">全国</div>
+            }
+            
+            <div id="more">
+                @if (MobileHttpContext.IsLogin)
+                {
+                    <a href="~/M/user/" class="username">@MobileHttpContext.UserInfo.UserName</a>
+                    <a href="/M/account/LogOut">退出登录</a>
+                }
+                else
+                {
+                    <a href="/M/account/Register">用户注册</a>
+                    <a href="/M/account/login">用户登录</a>
+                }
+                <a href="/m/activity/ShareActivity">发布活动</a>
+                <a href="/m/demand/add">发布需求</a>
+            </div>
+        </div>
+        <div id="nav">
+            <ul id="navul">
+                <li class="navli" id="space"><a href="/m/resource/spacelist">活动场地</a></li>
+                <li class="navli" id="actor"><a href="/m/resource/actorlist">演艺人员</a></li>
+                <li class="navli" id="equipment"><a href="/m/resource/equipmentlist">活动设备</a></li>
+                <li class="navli" id="other"><a href="/m/resource/otherlist">其它资源</a></li>
+                <li class="navli" id="home"><a href="/m/">网站主页</a></li>
+                <li class="navli" id="news"><a href="/m/news/">新闻公告</a></li>
+                <li class="navli" id="activity"><a href="/m/activity/">活动在线</a></li>
+                <li class="navli" id="demand"><a href="/m/demand/">需求信息</a></li>
+            </ul>
+        </div>
+
+        @RenderBody()
+
+        <div id="footer">
+            Copyright©2014 &nbsp;&nbsp; @Witbird.SHTS.Web.Public.StaticUtility.Config.Domain<br />
+            @Witbird.SHTS.Web.Public.StaticUtility.Config.Name &nbsp;&nbsp; <a href="/">电脑版</a> &nbsp;&nbsp; <a href="/m/">手机版</a>
+        </div>
+    </div>
+    @RenderSection("FooterJS", false)
+</body>
+</html>
+

@@ -1,0 +1,140 @@
+﻿@model Witbird.SHTS.Model.Config
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <style type="text/css">
+        .scinput
+        {
+            width: 350px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/#/">首页</a></li>
+            <li><a href="#">在线支付配置</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab1">支付宝配置</a></li>
+                    <li><a href="#tab2">网银在线配置</a></li>
+                    <li><a href="#tab3">财付通配置</a></li>
+                </ul>
+            </div>
+
+            <div id="tab1" class="tabson">
+                <form id="alipayConfigForm" method="post" action="/admin/pay/UpdatePaymentServiceConfig">
+                    <input type="hidden" name="serviceName" value="@WitBird.Com.Pay.PaymentService.ALIPAYSERVICE" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>是否启用</label><input name="isEnabled" type="checkbox" />
+                        </li>
+                        <li>
+                            <label>支付宝ID<b>*</b></label><input name="merchantId" type="text" class="scinput" value="" />
+                        </li>
+                        <li>
+                            <label>支付宝密钥<b>*</b></label><input name="merchantKey" type="text" class="scinput" value="" />
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input type="submit" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+            <div id="tab2" class="tabson">
+                <form id="chinabankConfigForm" method="post" action="/admin/pay/UpdatePaymentServiceConfig">
+                    <input type="hidden" name="serviceName" value="@WitBird.Com.Pay.PaymentService.CHINABANKSERVICE" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>是否启用</label><input name="isEnabled" type="checkbox" />
+                        </li>
+                        <li>
+                            <label>网银在线ID<b>*</b></label><input name="merchantId" type="text" class="scinput"
+                                value="" />
+                        </li>
+                        <li>
+                            <label>网银在线密钥<b>*</b></label><input name="merchantKey" type="text" class="scinput"
+                                value="" />
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input type="submit" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+            <div id="tab3" class="tabson">
+                <form id="tenpayConfigForm" method="post" action="/admin/pay/UpdatePaymentServiceConfig">
+                    <input type="hidden" name="serviceName" value="@WitBird.Com.Pay.PaymentService.TENPAYSERVICE" />
+                    <ul class="forminfo">
+                        <li>
+                            <label>是否启用</label><input name="isEnabled" type="checkbox" />
+                        </li>
+                        <li>
+                            <label>财付通ID<b>*</b></label><input name="merchantId" type="text" class="scinput"
+                                value="" />
+                        </li>
+                        <li>
+                            <label>财付通密钥<b>*</b></label><input name="merchantKey" type="text" class="scinput"
+                                value="" />
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input type="submit" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+
+
+
+
+    </div>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,231 @@
+﻿@model Witbird.SHTS.Web.Models.ShareActivityViewModel
+@{
+    ViewBag.Title = "发布活动在线 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <script src="/Content/upload/jquery-1.4.2.min.js"></script>
+    <script src="/Content/js/city.js"></script>
+
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <script type="text/javascript">
+        var editorContent;//定义编辑器
+        KindEditor.ready(function (K) {
+            editorContent = K.create('#editorContent', {
+                width: '680px',
+                height: '450px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: true,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'table']
+            });
+        });
+    </script>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="javascript:void(0)" class="blue">用户中心</a><span class="ch">&nbsp;&gt;&nbsp;发布活动</span>
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">发布活动</p>
+        </div>
+        <form id="addform" method="post" enctype="multipart/form-data" action="#">
+            <input type="hidden" name="Id" value="@Model.Activity.Id"/>
+            <div class="ur_title lh24">
+                <span class="red ch"></span>类别：
+            </div>
+            <div class="ur_box">
+                <select name="ActivityType">
+                    @if (Model.ActivityTypes != null && Model.ActivityTypes.Count > 0)
+                    {
+                        foreach (var item in Model.ActivityTypes)
+                        {
+                            if (item.ActivityTypeId.ToString() == Model.Activity.ActivityType)
+                            {
+                                <option selected="selected" value="@item.ActivityTypeId">@item.ActivityTypeName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.ActivityTypeId">@item.ActivityTypeName</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <option value="-1">暂无类别</option>
+                    }
+                </select>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title">
+                <span class="red ch"></span>标题：
+            </div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="Title" value="@Model.Activity.Title"/>
+                <span style="color: #4193ff;">&nbsp;&nbsp;必填，活动标题，标题党也好.</span>
+            </div>
+            <div class="clearfix"></div>
+
+
+
+            <div class="ur_title">
+                <span class="red ch"></span>关键字：
+            </div>
+            <div class="ur_box">
+                <input class="ur_txt1" name="Keywords" value="@Model.Activity.Keywords"/>
+                <span style="color: #4193ff;">&nbsp;&nbsp;多个关键字请用英文半角逗号","隔开，不要使用中文全角逗号“，”哦！</span>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="ur_title lh24">
+                <span class="red ch"></span>地址：
+            </div>
+            <div class="ur_box">
+                <select id="ddlProvince" name="LocationId[]" onchange=" loadCities() ">
+                    <option value="">省份</option>
+                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    {
+                        foreach (var item in Model.Provinces)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+                <select id="ddlCity" name="LocationId[]" onchange=" loadAreas() ">
+                    <option value="">城市</option>
+                </select>
+                <select id="ddlArea" name="LocationId[]" value="@Model.Activity.LocationId">
+                    <option value="">县、区、商圈</option>
+                </select>
+                <span style="color: #4193ff;">&nbsp;&nbsp; 选填，无地区要求可不选.</span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ur_title">
+                <span class="red ch"></span>详细地址：
+            </div>
+            <div class="ur_box">
+                <input name="Adress" type="text" class="ur_txt1" value="@Model.Activity.Adress"/>
+                <span style="color: #4193ff;">&nbsp;&nbsp;详细活动地址.</span>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="ur_title lh24">
+                <span class="red ch"></span>组图：
+            </div>
+            <div class="ur_box">
+                <input type="hidden" id="ImageUrls" name="ImageUrl"/>
+                <input id="file_upload" name="file" type="file" multiple="true">
+                <span style="color: #4193ff; display: block; line-height: 20px;">添加几张照片，让您的信息更受欢迎（最多上传12张，每张最大10M）.</span>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="ur_title lh24">
+                <span class="red ch"></span>详细内容：
+            </div>
+            <div class="ur_box">
+                <textarea id="editorContent" name="contentStyle">@Model.Activity.ContentStyle</textarea>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ur_tj">
+                <input type="submit" class="tjzl_btn" value="发 布"/>
+                <span class="ur_box_radio" style="margin-left: 10px;">
+                 <input name="agreerule" type="checkbox" value="in" checked="checked">
+                我同意<a href="/about/3.html" class="blue" target="_blank" title="活动在线网站规则">活动在线网站规则</a>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+<input type="hidden" id="errormsg" value="@Model.ErrorMsg"/>
+<input type="hidden" id="resultcode" value="@Model.ErrorCode"/>
+@section FooterJS
+{
+    <script src="~/Content/uploadify/jquery.uploadify.js"></script>
+    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet"/>
+    <script src="~/Content/dialog/js/dsdialog.js"></script>
+    <script src="~/Content/js/Activity/shareactivity.js"></script>
+    <script>
+        $(function() {
+            if ($("#resultcode").val() != "") {
+                if ($("#resultcode").val() == "200") {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: $("#errormsg").val(),
+                        icon: "../Content/dialog/images/success.png"
+                    });
+                } else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: $("#errormsg").val(),
+                        icon: "../Content/dialog/images/info.png"
+                    });
+                }
+            }
+        });
+        //上传图片预览
+        $(function () {
+            var existImgCount = 0;
+            $(function() {
+                $("#file_upload").uploadify({
+                    swf: '/Content/uploadify/uploadify.swf',
+                    uploader: '/Content/upload/uploadimage.ashx',
+                    width: 120,
+                    height: 125,
+                    queueSizeLimit: 12,
+                    uploadLimit:12,
+                    buttonText: "",
+                    auto: true,
+                    removeCompleted: false,
+                    onSelect: function(file) {
+                        if (file.size >= 10 * 1024 * 1024) {
+                            alert(file.name + '每张图片最大10M');
+                            $("#file_upload").uploadify('cancel');
+                            return false;
+                        }
+                    },
+                    onUploadComplete: function(file) {
+                        var oTop = $("#file_upload-queue").offset().top;
+                        console.log(oTop);
+                        console.log(document.getElementById(file.id).offsetTop);
+                        $("#file_upload-queue").css("height", document.getElementById(file.id).offsetTop - oTop + 130);
+                    },
+                    onCancel: function (file) {
+                    },
+                    onUploadSuccess: function(file, data, response) {
+                        var postfile = JSON.parse(data);
+                        var urls = $('#ImageUrls').val();
+                        if (urls == "") {
+                            urls = postfile.OriginalImage;
+                        } else {
+                            urls = urls + "|" + postfile.OriginalImage;
+                        }
+                        $('#ImageUrls').val(urls);
+                        var itemid = "#" + file.id;
+                        var imgurl = "background-image:url('" + postfile.Big + "')";
+                        $(itemid).attr("style", imgurl);
+                        $(itemid).attr("rurl", postfile.OriginalImage);
+                    }
+                });
+            });
+        });
+    </script>
+}

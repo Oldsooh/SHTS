@@ -1,0 +1,1779 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="shtsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="shtsModelStoreContainer">
+          <EntitySet Name="AccessAnalytics" EntityType="shtsModel.Store.AccessAnalytics" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Activity" EntityType="shtsModel.Store.Activity" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ActivityType" EntityType="shtsModel.Store.ActivityType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Actor" EntityType="shtsModel.Store.Actor" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ActorType" EntityType="shtsModel.Store.ActorType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AdminRole" EntityType="shtsModel.Store.AdminRole" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AdminUser" EntityType="shtsModel.Store.AdminUser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="City" EntityType="shtsModel.Store.City" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Comment" EntityType="shtsModel.Store.Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Config" EntityType="shtsModel.Store.Config" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Demand" EntityType="shtsModel.Store.Demand" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DemandCategory" EntityType="shtsModel.Store.DemandCategory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Equipment" EntityType="shtsModel.Store.Equipment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EquipType" EntityType="shtsModel.Store.EquipType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Facility" EntityType="shtsModel.Store.Facility" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GuestBook" EntityType="shtsModel.Store.GuestBook" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Image" EntityType="shtsModel.Store.Image" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Other" EntityType="shtsModel.Store.Other" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OtherType" EntityType="shtsModel.Store.OtherType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PublicConfig" EntityType="shtsModel.Store.PublicConfig" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Resource" EntityType="shtsModel.Store.Resource" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ShortMessage" EntityType="shtsModel.Store.ShortMessage" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SinglePage" EntityType="shtsModel.Store.SinglePage" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Space" EntityType="shtsModel.Store.Space" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpaceFacility" EntityType="shtsModel.Store.SpaceFacility" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpaceFeature" EntityType="shtsModel.Store.SpaceFeature" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpacePeople" EntityType="shtsModel.Store.SpacePeople" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpaceSize" EntityType="shtsModel.Store.SpaceSize" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpaceType" EntityType="shtsModel.Store.SpaceType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Test" EntityType="shtsModel.Store.Test" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Trade" EntityType="shtsModel.Store.Trade" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TradeHistory" EntityType="shtsModel.Store.TradeHistory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TradeOrder" EntityType="shtsModel.Store.TradeOrder" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="shtsModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserBankInfo" EntityType="shtsModel.Store.UserBankInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfile" EntityType="shtsModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserVip" EntityType="shtsModel.Store.UserVip" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Video" EntityType="shtsModel.Store.Video" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="AccessAnalytics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="AccessUrl" Type="nvarchar(max)" />
+          <Property Name="ReferrerUrl" Type="nvarchar(max)" />
+          <Property Name="Operation" Type="nvarchar" MaxLength="50" />
+          <Property Name="PageTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="IP" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="Agent" Type="nvarchar" MaxLength="100" />
+          <Property Name="Device" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ActivityType" Type="nvarchar" MaxLength="20" />
+          <Property Name="LocationId" Type="nvarchar" MaxLength="100" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="200" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="HoldBy" Type="nvarchar" MaxLength="200" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="200" />
+          <Property Name="Jingdu" Type="nvarchar" MaxLength="100" />
+          <Property Name="Weidu" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="ContentStyle" Type="text" />
+          <Property Name="ContentText" Type="text" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="3000" />
+          <Property Name="Link" Type="nvarchar" MaxLength="300" />
+          <Property Name="State" Type="int" />
+          <Property Name="ViewCount" Type="int" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="IsFromMobile" Type="bit" />
+        </EntityType>
+        <EntityType Name="ActivityType">
+          <Key>
+            <PropertyRef Name="ActivityTypeId" />
+          </Key>
+          <Property Name="ActivityTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityTypeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nchar" MaxLength="10" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
+          <Property Name="ViewCount" Type="int" />
+          <Property Name="State" Type="int" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="ActorTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdminRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleNmae" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="int" />
+          <Property Name="Permission" Type="nvarchar(max)" />
+          <Property Name="LastUpdateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AdminUser">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EncryptedPassword" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Role" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EntityType" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ParentId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="Tel" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="QQ1" Type="nvarchar" MaxLength="50" />
+          <Property Name="QQ2" Type="nvarchar" MaxLength="50" />
+          <Property Name="QQ3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" />
+          <Property Name="Company" Type="nvarchar" MaxLength="50" />
+          <Property Name="Weixin" Type="nvarchar" MaxLength="50" />
+          <Property Name="ICP" Type="nvarchar" MaxLength="50" />
+          <Property Name="StatisticalCode" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Demand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="ContentStyle" Type="text" />
+          <Property Name="ContentText" Type="text" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Area" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="TimeLength" Type="nvarchar" MaxLength="50" />
+          <Property Name="PeopleNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Budget" Type="int" />
+          <Property Name="QQWeixin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="ViewCount" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="InsertTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="EquipTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EquipType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuestBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="Url" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="Other">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="OtherTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OtherType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PublicConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ConfigValue" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceType" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProvinceId" Type="nvarchar(max)" />
+          <Property Name="CityId" Type="nvarchar" MaxLength="50" />
+          <Property Name="AreaId" Type="nvarchar(max)" />
+          <Property Name="DetailAddress" Type="nvarchar(max)" />
+          <Property Name="CanFriendlyLink" Type="bit" Nullable="false" />
+          <Property Name="Href" Type="nvarchar(max)" />
+          <Property Name="ShortDesc" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ImageUrls" Type="nvarchar(max)" />
+          <Property Name="Contract" Type="nvarchar(max)" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="QQ" Type="varchar(max)" />
+          <Property Name="Telephone" Type="nvarchar(max)" />
+          <Property Name="Mobile" Type="varchar(max)" />
+          <Property Name="WeChat" Type="varchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="ReadCount" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="ClickCount" Type="int" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="int" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="int" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="int" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="int" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="int" Nullable="false" />
+          <Property Name="SpaceTreat" Type="int" Nullable="false" />
+          <Property Name="ActorTypeId" Type="int" Nullable="false" />
+          <Property Name="EquipTypeId" Type="int" Nullable="false" />
+          <Property Name="OtherTypeId" Type="int" Nullable="false" />
+          <Property Name="ActorFromId" Type="int" Nullable="false" />
+          <Property Name="ActorSex" Type="int" Nullable="false" />
+          <Property Name="ClickTime" Type="datetime" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ShortMessage">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Cellphone" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Provider" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="SinglePage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="EntityType" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="ContentStyle" Type="text" />
+          <Property Name="ContentText" Type="text" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
+          <Property Name="Link" Type="nvarchar" MaxLength="300" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="ViewCount" Type="int" />
+          <Property Name="InsertTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Space">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="int" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="int" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="int" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="int" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="int" Nullable="false" />
+          <Property Name="SpaceTreat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceFacility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Value" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceFeature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpacePeople">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="MinCount" Type="int" Nullable="false" />
+          <Property Name="MaxCount" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceSize">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="MinSize" Type="int" Nullable="false" />
+          <Property Name="MaxSize" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="PKG_PSID" />
+          </Key>
+          <Property Name="PKG_PSID" Type="int" Nullable="false" />
+          <Property Name="ProviderID" Type="int" Nullable="false" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="BrandName" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="ProviderPrefix" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="BrandPrefix" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="ProviderDesc" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="ProviderLogo" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="BrandLogo" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="ProviderCity" Type="int" Nullable="false" />
+          <Property Name="DataStatus" Type="int" Nullable="false" />
+          <Property Name="DataChange_CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="DataChange_Lasttime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="TradeId" />
+          </Key>
+          <Property Name="TradeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserQQ" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="UserCellPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="UserEmail" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserBankInfo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SellerId" Type="int" Nullable="false" />
+          <Property Name="BuyerId" Type="int" Nullable="false" />
+          <Property Name="TradeAmount" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="TradeSubject" Type="ntext" Nullable="false" />
+          <Property Name="TradeBody" Type="ntext" Nullable="false" />
+          <Property Name="Payer" Type="int" Nullable="false" />
+          <Property Name="PayCommission" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="PayCommissionPercent" Type="float" Nullable="false" />
+          <Property Name="CreatedTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="BuyerPay" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="SellerGet" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="ViewCount" Type="int" Nullable="false" />
+          <Property Name="ResourceUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsBuyerPaid" Type="bit" Nullable="false" />
+          <Property Name="TradeOrderId" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TradeHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="HistorySubject" Type="ntext" Nullable="false" />
+          <Property Name="HistoryBody" Type="ntext" Nullable="false" />
+          <Property Name="TradeId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IsAdminUpdate" Type="bit" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="TradeState" Type="int" Nullable="false" />
+          <Property Name="CreatedTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TradeOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="Body" Type="ntext" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="CreatedTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="ResourceUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="OrderType" Type="int" />
+          <Property Name="ResourceId" Type="int" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EncryptedPassword" Type="varchar(max)" Nullable="false" />
+          <Property Name="UserType" Type="int" />
+          <Property Name="Adress" Type="nvarchar(max)" />
+          <Property Name="LocationId" Type="nvarchar" MaxLength="200" />
+          <Property Name="Cellphone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="QQ" Type="nvarchar" MaxLength="20" />
+          <Property Name="UCard" Type="nvarchar(max)" />
+          <Property Name="SiteUrl" Type="nvarchar(max)" />
+          <Property Name="LoginIdentiy" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IdentiyImg" Type="nvarchar(max)" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="250" />
+          <Property Name="Vip" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="UserBankInfo">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BankName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="BankAccount" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="BankUserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="BankAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="CreatedTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="nchar" MaxLength="10" />
+          <Property Name="ProfileType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="UserVip">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdentifyImg" Type="nvarchar(max)" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="Amount" Type="decimal" Scale="2" />
+          <Property Name="State" Type="int" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ResourceId" Type="int" Nullable="false" />
+          <Property Name="Href" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="shtsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="shtsEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="AccessAnalytics" EntityType="shtsModel.AccessAnalytics" />
+          <EntitySet Name="Activity" EntityType="shtsModel.Activity" />
+          <EntitySet Name="ActivityType" EntityType="shtsModel.ActivityType" />
+          <EntitySet Name="Actor" EntityType="shtsModel.Actor" />
+          <EntitySet Name="ActorType" EntityType="shtsModel.ActorType" />
+          <EntitySet Name="AdminRole" EntityType="shtsModel.AdminRole" />
+          <EntitySet Name="AdminUser" EntityType="shtsModel.AdminUser" />
+          <EntitySet Name="City" EntityType="shtsModel.City" />
+          <EntitySet Name="Comment" EntityType="shtsModel.Comment" />
+          <EntitySet Name="Config" EntityType="shtsModel.Config" />
+          <EntitySet Name="Demand" EntityType="shtsModel.Demand" />
+          <EntitySet Name="DemandCategory" EntityType="shtsModel.DemandCategory" />
+          <EntitySet Name="Equipment" EntityType="shtsModel.Equipment" />
+          <EntitySet Name="EquipType" EntityType="shtsModel.EquipType" />
+          <EntitySet Name="Facility" EntityType="shtsModel.Facility" />
+          <EntitySet Name="GuestBook" EntityType="shtsModel.GuestBook" />
+          <EntitySet Name="Image" EntityType="shtsModel.Image" />
+          <EntitySet Name="Other" EntityType="shtsModel.Other" />
+          <EntitySet Name="OtherType" EntityType="shtsModel.OtherType" />
+          <EntitySet Name="PublicConfig" EntityType="shtsModel.PublicConfig" />
+          <EntitySet Name="Resource" EntityType="shtsModel.Resource" />
+          <EntitySet Name="ShortMessage" EntityType="shtsModel.ShortMessage" />
+          <EntitySet Name="SinglePage" EntityType="shtsModel.SinglePage" />
+          <EntitySet Name="Space" EntityType="shtsModel.Space" />
+          <EntitySet Name="SpaceFacility" EntityType="shtsModel.SpaceFacility" />
+          <EntitySet Name="SpaceFeature" EntityType="shtsModel.SpaceFeature" />
+          <EntitySet Name="SpacePeople" EntityType="shtsModel.SpacePeople" />
+          <EntitySet Name="SpaceSize" EntityType="shtsModel.SpaceSize" />
+          <EntitySet Name="SpaceType" EntityType="shtsModel.SpaceType" />
+          <EntitySet Name="Test" EntityType="shtsModel.Test" />
+          <EntitySet Name="Trade" EntityType="shtsModel.Trade" />
+          <EntitySet Name="TradeHistory" EntityType="shtsModel.TradeHistory" />
+          <EntitySet Name="TradeOrder" EntityType="shtsModel.TradeOrder" />
+          <EntitySet Name="User" EntityType="shtsModel.User" />
+          <EntitySet Name="UserProfile" EntityType="shtsModel.UserProfile" />
+          <EntitySet Name="UserVip" EntityType="shtsModel.UserVip" />
+          <EntitySet Name="Video" EntityType="shtsModel.Video" />
+          <EntitySet Name="UserBankInfo" EntityType="shtsModel.UserBankInfo" />
+        </EntityContainer>
+        <EntityType Name="AccessAnalytics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="AccessUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ReferrerUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Operation" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PageTitle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IP" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="Agent" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Device" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ActivityType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="LocationId" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Adress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="HoldBy" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Jingdu" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Weidu" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
+          <Property Name="Link" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="ViewCount" Type="Int32" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="IsFromMobile" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ActivityType">
+          <Key>
+            <PropertyRef Name="ActivityTypeId" />
+          </Key>
+          <Property Name="ActivityTypeId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityTypeName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="ViewCount" Type="Int32" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdminRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleNmae" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="Permission" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AdminUser">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="EntityType" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ParentId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="Tel" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Domain" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="QQ1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="QQ2" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="QQ3" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="Company" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Weixin" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ICP" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="StatisticalCode" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="Demand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Province" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="City" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Area" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="TimeLength" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="PeopleNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Budget" Type="Int32" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Type="String" Name="QQWeixin" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DemandCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EquipType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuestBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Other">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OtherType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PublicConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceType" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProvinceId" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CityId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AreaId" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DetailAddress" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CanFriendlyLink" Type="Boolean" Nullable="false" />
+          <Property Name="Href" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ShortDesc" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ImageUrls" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Contract" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="QQ" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Telephone" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Mobile" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="WeChat" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadCount" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="ClickCount" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
+          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
+          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ActorFromId" Type="Int32" Nullable="false" />
+          <Property Name="ActorSex" Type="Int32" Nullable="false" />
+          <Property Name="ClickTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ShortMessage">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Cellphone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Provider" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SinglePage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="EntityType" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Category" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="Link" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="ViewCount" Type="Int32" />
+          <Property Name="InsertTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Space">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceFacility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceFeature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpacePeople">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MinCount" Type="Int32" Nullable="false" />
+          <Property Name="MaxCount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceSize">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MinSize" Type="Int32" Nullable="false" />
+          <Property Name="MaxSize" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="PKG_PSID" />
+          </Key>
+          <Property Name="PKG_PSID" Type="Int32" Nullable="false" />
+          <Property Name="ProviderID" Type="Int32" Nullable="false" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="ProviderName" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="ProviderPrefix" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="BrandPrefix" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="ProviderDesc" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="ProviderLogo" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="BrandLogo" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="ProviderCity" Type="Int32" Nullable="false" />
+          <Property Name="DataStatus" Type="Int32" Nullable="false" />
+          <Property Name="DataChange_CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DataChange_Lasttime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="TradeId" />
+          </Key>
+          <Property Name="TradeId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserQQ" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="UserCellPhone" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserBankInfo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserAddress" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SellerId" Type="Int32" Nullable="false" />
+          <Property Name="BuyerId" Type="Int32" Nullable="false" />
+          <Property Name="TradeAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TradeSubject" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="TradeBody" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Payer" Type="Int32" Nullable="false" />
+          <Property Name="PayCommission" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PayCommissionPercent" Type="Double" Nullable="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="BuyerPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SellerGet" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <Property Name="ResourceUrl" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="IsBuyerPaid" Type="Boolean" Nullable="false" />
+          <Property Name="TradeOrderId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TradeHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="HistorySubject" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="HistoryBody" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="TradeId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IsAdminUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="TradeState" Type="Int32" Nullable="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="TradeOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="ResourceUrl" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="OrderType" Type="Int32" />
+          <Property Name="ResourceId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="Adress" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LocationId" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Cellphone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="QQ" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="UCard" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SiteUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LoginIdentiy" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="IdentiyImg" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Photo" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Name="Vip" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="ProfileType" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserVip">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OrderId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IdentifyImg" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="Href" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserBankInfo">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Type="Int32" Name="BankId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="BankName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BankAccount" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BankUserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BankAddress" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsDefault" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedTime" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastUpdatedTime" Nullable="false" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="shtsModelStoreContainer" CdmEntityContainer="shtsEntities">
+          <EntitySetMapping Name="AccessAnalytics">
+            <EntityTypeMapping TypeName="shtsModel.AccessAnalytics">
+              <MappingFragment StoreEntitySet="AccessAnalytics">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
+                <ScalarProperty Name="ReferrerUrl" ColumnName="ReferrerUrl" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="PageTitle" ColumnName="PageTitle" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Agent" ColumnName="Agent" />
+                <ScalarProperty Name="Device" ColumnName="Device" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Activity">
+            <EntityTypeMapping TypeName="shtsModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="HoldBy" ColumnName="HoldBy" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Jingdu" ColumnName="Jingdu" />
+                <ScalarProperty Name="Weidu" ColumnName="Weidu" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="IsFromMobile" ColumnName="IsFromMobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityType">
+            <EntityTypeMapping TypeName="shtsModel.ActivityType">
+              <MappingFragment StoreEntitySet="ActivityType">
+                <ScalarProperty Name="ActivityTypeId" ColumnName="ActivityTypeId" />
+                <ScalarProperty Name="ActivityTypeName" ColumnName="ActivityTypeName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Actor">
+            <EntityTypeMapping TypeName="shtsModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorType">
+            <EntityTypeMapping TypeName="shtsModel.ActorType">
+              <MappingFragment StoreEntitySet="ActorType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminRole">
+            <EntityTypeMapping TypeName="shtsModel.AdminRole">
+              <MappingFragment StoreEntitySet="AdminRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleNmae" ColumnName="RoleNmae" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminUser">
+            <EntityTypeMapping TypeName="shtsModel.AdminUser">
+              <MappingFragment StoreEntitySet="AdminUser">
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="shtsModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="shtsModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Config">
+            <EntityTypeMapping TypeName="shtsModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQ1" ColumnName="QQ1" />
+                <ScalarProperty Name="QQ2" ColumnName="QQ2" />
+                <ScalarProperty Name="QQ3" ColumnName="QQ3" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Weixin" ColumnName="Weixin" />
+                <ScalarProperty Name="ICP" ColumnName="ICP" />
+                <ScalarProperty Name="StatisticalCode" ColumnName="StatisticalCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demand">
+            <EntityTypeMapping TypeName="shtsModel.Demand">
+              <MappingFragment StoreEntitySet="Demand">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQWeixin" ColumnName="QQWeixin" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="TimeLength" ColumnName="TimeLength" />
+                <ScalarProperty Name="PeopleNumber" ColumnName="PeopleNumber" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandCategory">
+            <EntityTypeMapping TypeName="shtsModel.DemandCategory">
+              <MappingFragment StoreEntitySet="DemandCategory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipment">
+            <EntityTypeMapping TypeName="shtsModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EquipType">
+            <EntityTypeMapping TypeName="shtsModel.EquipType">
+              <MappingFragment StoreEntitySet="EquipType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facility">
+            <EntityTypeMapping TypeName="shtsModel.Facility">
+              <MappingFragment StoreEntitySet="Facility">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestBook">
+            <EntityTypeMapping TypeName="shtsModel.GuestBook">
+              <MappingFragment StoreEntitySet="GuestBook">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="shtsModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Other">
+            <EntityTypeMapping TypeName="shtsModel.Other">
+              <MappingFragment StoreEntitySet="Other">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OtherType">
+            <EntityTypeMapping TypeName="shtsModel.OtherType">
+              <MappingFragment StoreEntitySet="OtherType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PublicConfig">
+            <EntityTypeMapping TypeName="shtsModel.PublicConfig">
+              <MappingFragment StoreEntitySet="PublicConfig">
+                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resource">
+            <EntityTypeMapping TypeName="shtsModel.Resource">
+              <MappingFragment StoreEntitySet="Resource">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ClickTime" ColumnName="ClickTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
+                <ScalarProperty Name="CanFriendlyLink" ColumnName="CanFriendlyLink" />
+                <ScalarProperty Name="Href" ColumnName="Href" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
+                <ScalarProperty Name="Contract" ColumnName="Contract" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="WeChat" ColumnName="WeChat" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
+                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
+                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
+                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
+                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
+                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
+                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
+                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
+                <ScalarProperty Name="ActorFromId" ColumnName="ActorFromId" />
+                <ScalarProperty Name="ActorSex" ColumnName="ActorSex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShortMessage">
+            <EntityTypeMapping TypeName="shtsModel.ShortMessage">
+              <MappingFragment StoreEntitySet="ShortMessage">
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SinglePage">
+            <EntityTypeMapping TypeName="shtsModel.SinglePage">
+              <MappingFragment StoreEntitySet="SinglePage">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Space">
+            <EntityTypeMapping TypeName="shtsModel.Space">
+              <MappingFragment StoreEntitySet="Space">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
+                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
+                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
+                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
+                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
+                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceFacility">
+            <EntityTypeMapping TypeName="shtsModel.SpaceFacility">
+              <MappingFragment StoreEntitySet="SpaceFacility">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceFeature">
+            <EntityTypeMapping TypeName="shtsModel.SpaceFeature">
+              <MappingFragment StoreEntitySet="SpaceFeature">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpacePeople">
+            <EntityTypeMapping TypeName="shtsModel.SpacePeople">
+              <MappingFragment StoreEntitySet="SpacePeople">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceSize">
+            <EntityTypeMapping TypeName="shtsModel.SpaceSize">
+              <MappingFragment StoreEntitySet="SpaceSize">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MinSize" ColumnName="MinSize" />
+                <ScalarProperty Name="MaxSize" ColumnName="MaxSize" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceType">
+            <EntityTypeMapping TypeName="shtsModel.SpaceType">
+              <MappingFragment StoreEntitySet="SpaceType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test">
+            <EntityTypeMapping TypeName="shtsModel.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="PKG_PSID" ColumnName="PKG_PSID" />
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="ProviderPrefix" ColumnName="ProviderPrefix" />
+                <ScalarProperty Name="BrandPrefix" ColumnName="BrandPrefix" />
+                <ScalarProperty Name="ProviderDesc" ColumnName="ProviderDesc" />
+                <ScalarProperty Name="ProviderLogo" ColumnName="ProviderLogo" />
+                <ScalarProperty Name="BrandLogo" ColumnName="BrandLogo" />
+                <ScalarProperty Name="ProviderCity" ColumnName="ProviderCity" />
+                <ScalarProperty Name="DataStatus" ColumnName="DataStatus" />
+                <ScalarProperty Name="DataChange_CreateTime" ColumnName="DataChange_CreateTime" />
+                <ScalarProperty Name="DataChange_Lasttime" ColumnName="DataChange_Lasttime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade">
+            <EntityTypeMapping TypeName="shtsModel.Trade">
+              <MappingFragment StoreEntitySet="Trade">
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserQQ" ColumnName="UserQQ" />
+                <ScalarProperty Name="UserCellPhone" ColumnName="UserCellPhone" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserBankInfo" ColumnName="UserBankInfo" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+                <ScalarProperty Name="TradeAmount" ColumnName="TradeAmount" />
+                <ScalarProperty Name="TradeSubject" ColumnName="TradeSubject" />
+                <ScalarProperty Name="TradeBody" ColumnName="TradeBody" />
+                <ScalarProperty Name="Payer" ColumnName="Payer" />
+                <ScalarProperty Name="PayCommission" ColumnName="PayCommission" />
+                <ScalarProperty Name="PayCommissionPercent" ColumnName="PayCommissionPercent" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="BuyerPay" ColumnName="BuyerPay" />
+                <ScalarProperty Name="SellerGet" ColumnName="SellerGet" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
+                <ScalarProperty Name="IsBuyerPaid" ColumnName="IsBuyerPaid" />
+                <ScalarProperty Name="TradeOrderId" ColumnName="TradeOrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TradeHistory">
+            <EntityTypeMapping TypeName="shtsModel.TradeHistory">
+              <MappingFragment StoreEntitySet="TradeHistory">
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+                <ScalarProperty Name="HistorySubject" ColumnName="HistorySubject" />
+                <ScalarProperty Name="HistoryBody" ColumnName="HistoryBody" />
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IsAdminUpdate" ColumnName="IsAdminUpdate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="TradeState" ColumnName="TradeState" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TradeOrder">
+            <EntityTypeMapping TypeName="shtsModel.TradeOrder">
+              <MappingFragment StoreEntitySet="TradeOrder">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="shtsModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="UCard" ColumnName="UCard" />
+                <ScalarProperty Name="SiteUrl" ColumnName="SiteUrl" />
+                <ScalarProperty Name="LoginIdentiy" ColumnName="LoginIdentiy" />
+                <ScalarProperty Name="IdentiyImg" ColumnName="IdentiyImg" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Vip" ColumnName="Vip" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfile">
+            <EntityTypeMapping TypeName="shtsModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProfileType" ColumnName="ProfileType" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserVip">
+            <EntityTypeMapping TypeName="shtsModel.UserVip">
+              <MappingFragment StoreEntitySet="UserVip">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="IdentifyImg" ColumnName="IdentifyImg" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Video">
+            <EntityTypeMapping TypeName="shtsModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Href" ColumnName="Href" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserBankInfo">
+            <EntityTypeMapping TypeName="shtsModel.UserBankInfo">
+              <MappingFragment StoreEntitySet="UserBankInfo">
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
+                <ScalarProperty Name="BankUserName" ColumnName="BankUserName" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

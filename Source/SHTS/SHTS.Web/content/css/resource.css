@@ -1,0 +1,136 @@
+﻿.listdiv {
+    border: 1px solid #E5E5E5;
+    border-bottom: none;
+    background-color: #FDFDFD;
+}
+
+.listdivitem {
+    height: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid #E5E5E5;
+    float:left;
+    width:770px;
+}
+
+    .listdivitem:hover {
+        background: #f5f8fa;
+    }
+
+.listdivitemnumber {
+    width: 170px;
+    height: 180px;
+    float: left;
+}
+
+    .listdivitemnumber p {
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        background-color: #ff9a15;
+        color: #ffffff;
+        margin-left: 10px;
+        line-height: 28px;
+        font-size: 16px;
+    }
+
+    .listdivitemnumber img {
+        width: 140px;
+        height: 120px;
+        margin-left: 10px;
+        margin-top: 20px;
+    }
+
+.listdivitemsummary {
+    width: 580px;
+    /*height: 180px;*/
+    float: left;
+}
+
+.listdivitemtitle {
+    height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    position: relative;
+}
+
+    .listdivitemtitle span {
+        right: 0;
+        bottom: 5px;
+        font-size: 12px;
+        font-weight: normal;
+        position: absolute;
+        color: #8f98a4;
+    }
+
+.listdivitemdescription {
+    width: 100%;
+    /*height: 120px;*/
+}
+
+.listdivitemtable {
+    width: 100%;
+    height: 40px;
+}
+
+    .listdivitemtable tr td span {
+        color: #FD9102;
+        font-size: 15px;
+    }
+
+    .listdivitemtable tr td {
+        height: 40px;
+        font-size: 14px;
+        color: #2577e3;
+    }
+
+
+
+.listdivitemtext {
+    font-size: 14px;
+    line-height: 22px;
+    overflow: hidden;
+    /*height: 70px;*/
+    color: #777777;
+}
+
+.listdivitemlink {
+    height: 30px;
+    font-size: 14px;
+    color: #2577e3;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+    .listdivitemlink a {
+        display: block;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #2577e3;
+        color: #ffffff;
+        border-radius: 5px;
+        font-size: 12px;
+        float: right;
+        font-weight: normal;
+    }
+
+        .listdivitemlink a:hover {
+            background-color: #ff9a15;
+        }
+
+    .listdivitemlink .r_url_loc a {
+        width: auto;
+        height: 30px;
+        color: #2577e3;
+        line-height: 40px;
+        text-align: left;
+        background: none;
+        float: none;
+        display: inline;
+        font-weight: normal;
+    }
+
+        .listdivitemlink .r_url_loc a:hover {
+            color: #ff9a15;
+        }

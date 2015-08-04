@@ -1,0 +1,206 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.MemberViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>会员统计</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <style type="text/css">
+        .toolbar li {
+            padding-left: 2px;
+        }
+
+            .toolbar li span {
+                float: right;
+                margin-top: 0px;
+            }
+
+                .toolbar li span select {
+                    height: 100%;
+                    opacity: 1;
+                }
+    </style>
+    <script>
+        function searchusers() {  
+            var cityid = $("#citylist").val();
+            var resourceid = $("#resourcelist").val();
+            var Keyword = $("#Keyword").val();
+            var typeid = $("#usertypelist").val();
+            window.location.href = "/admin/member/tongji?city=" + cityid + "&resurce=" + resourceid
+                +"&querytype="+typeid+"&page=1&Keyword="+Keyword;
+        }
+
+        $(function() {
+            var resourceid=@Model.Resurce;
+            var count=$("#resourcelist")[0].options.length;
+            for(var i=0;i<count;i++){
+                if($("#resourcelist")[0].options[i].value == resourceid)  
+                {
+                    $("#resourcelist")[0].options[i].selected = true;
+                    break;  
+                }  
+            }
+
+            var typeid=@Model.QueryType;
+            count=$("#usertypelist")[0].options.length;
+            for(var i=0;i<count;i++){
+                if($("#usertypelist")[0].options[i].value == typeid)  
+                {
+                    $("#usertypelist")[0].options[i].selected = true;
+                    break;  
+                }  
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">会员管理</a></li>
+            <li><a href="#">会员统计</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+        <div class="tools">
+            <ul class="toolbar">
+                <li style=" width:150px;">城市：
+                    <span>
+                        <select id="citylist">
+                            @if (Model.City == "-1")
+                            {
+                                <option value="-1" selected="selected">--城市--</option> 
+                            }
+                            else
+                            {
+                                <option value="-1">--城市--</option> 
+                            }
+                            @if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                            {
+                                int cityCount = 0;
+                                foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                                {
+                                    if (string.IsNullOrEmpty(item.ParentId))
+                                    {
+                                        cityCount += 1;
+                                        if (cityCount == 35)
+                                        {
+                                            break;
+                                        }
+                                        if (item.Id == Model.City)
+                                        {
+                                <option value="@item.Id" selected="selected">@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                    </span></li>
+                <li style=" width:150px;">资源分类：
+                    <span>
+                        <select id="resourcelist">
+                            <option value="-1" selected="selected">--资源--</option>
+                            @foreach (var item in Html.ResourceList())
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </span></li>
+                <li style="width: 200px;">会员类型：
+                    <span>
+                        <select id="usertypelist">
+                            <option value="-1" selected="selected">--所有会员--</option>
+                            <option value="0">个人会员</option>
+                            <option value="1">企业会员</option>
+                        </select>
+                    </span></li>
+                <li style="width: 200px;">关键字：
+                    <input type="text" value="@Model.Keyword" name="Keyword" id="Keyword" style="border: solid 1px burlywood; height: 70%;"/>
+                </li>
+                <li onclick="searchusers();" style="background-color: rgb(212, 231, 240); background-image: none;">
+                    查询统计
+                </li>
+            </ul>
+        </div>
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif" /></i></th>
+                    <th>账户名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>注册时间</th>
+                    <th>会员等级</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.UserList != null && Model.UserList.Count > 0)
+            {
+                foreach (var n in Model.UserList)
+                 {
+                     <tr>
+                         <td>
+                             <input type="checkbox" class="useritem" value="@n.UserId"/></td>
+                         <td>@n.UserId</td>
+                         <td>@n.UserName</td>
+                         <td>@n.Cellphone</td>
+                         <td>@n.Adress</td>
+                         <td>@n.CreateTime.ToString()</td>
+                         <td>
+                             @if (n.Vip.Value == (int) Witbird.SHTS.Model.VipState.VIP)
+                             {
+                                 <span>VIP会员</span>
+                             }
+                             else if (n.Vip.Value == (int) Witbird.SHTS.Model.VipState.Identified)
+                             {
+                                 <span>认证会员</span>
+                             }
+                             else
+                             {
+                                 <span>普通会员</span>
+                             }
+                         </td>
+                         <td><a href="/admin/member/EditUser/@n.UserId" class="tablelink">查看</a></td>
+                     </tr>
+                 }
+            }
+            </tbody>
+        </table>
+        <div class="pagin">
+            <div class="message">共<i class="blue">@Model.TotalCount</i>条记录，当前显示第&nbsp;<i class="blue">@Model.CurrentPage</i>页
+            </div>
+            <ul class="paginList">
+                <li class="paginItem"><a href="/admin/member/tongji?page=@(Model.PrePageIndex)&city=@(Model.City)&resurce=@(Model.Resurce)&querytype=@Model.QueryType&Keyword=@Model.Keyword">
+                    <span class="pagepre"></span></a></li>
+                @for (int i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="paginItem current">
+                        <a href="/admin/member/tongji?page=@i.ToString()&city=@(Model.City)&resurce=@(Model.Resurce)&querytype=@Model.QueryType&Keyword=@Model.Keyword">
+                            @i.ToString()
+                        </a>
+                    </li>
+                }
+                <li class="paginItem"><a href="/admin/member/tongji?page=@(Model.NextPageIndex)&city=@(Model.City)&resurce=@(Model.Resurce)&querytype=@Model.QueryType&Keyword=@Model.Keyword">
+                    <span class="pagenxt"></span></a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+    </script>
+</body>
+</html>

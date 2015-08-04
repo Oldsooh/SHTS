@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>上传图片demo</title>
+    <script src="/Content/upload/jquery-1.4.2.min.js"></script>
+    <script src="/Content/upload/jquery.form.js"></script>
+    <script src="/Content/upload/uploadimage.js"></script>
+    <style type="text/css">
+        #image1
+        {
+            width:350px;
+            height:30px;
+            line-height:30px;
+            padding-left:10px;
+        }
+    </style>
+</head>
+<body>
+    <p>如何使用？</p>
+    <p>1.引用三个JS文件，如果在母版页已引用jquery.js，就不必再引用了</p>
+    <p>2.在input文本框上,添加一个 id</p>
+    <p>3.在input文本框上，加上一个 onclick="uploadimage(this)" </p>
+    <p>4.在input文本框上，加上一个 url="/content/upload/uploadimage300200.ashx" </p>
+    <p>5.点击input文本框即可上传图片</p>
+    <p></p>
+    
+    <p><input id="image1" name="image1" type="text" class="ur_txt1" onclick="uploadimage(this)" url="/content/upload/uploadimage300200.ashx" /></p>
+    <p></p>
+    <p>说明：</p>
+    <p>1. uploadimage300200.ashx 默认生成大小为300*200的图片，如果你想生成其他大小的图片，<br />请新建一个ashx, 复制代码并修改width, height</p>
+    <p>2. 如果想生成多张不同大小的图片，新建一个ashx，注释掉“删除原图”的代码，<br />
+        在input文本框上会生成 small="/.../.../xxx.jpg" , 用js根据id可以取属性small的值<br />
+        这样就可以同时获得多张图片的URL
+    </p>
+</body>
+</html>

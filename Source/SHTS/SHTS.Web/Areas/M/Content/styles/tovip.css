@@ -1,0 +1,228 @@
+/*login page css*/
+
+
+label {
+    color: #11B4A1;
+}
+
+.tips {
+color:#f60;
+height:20px;
+margin-bottom:10px
+}
+
+
+/*regist page css*/
+ul.regStep {
+    margin-top:0px;
+}
+.regStep li {
+   display: table-cell;
+   width: 1%;
+}
+ul.regStep > li {
+    padding:15px 0;
+    text-align:center;
+    border-bottom:3px solid #ccc;
+    font-size:16px;
+    color:#999;
+    font-weight:bold;
+}
+ul.regStep > li > span {
+    background-color:#ccc;
+    color:#fff;
+    padding:5px 10px;
+    border-radius:20em;
+    font-size:16px;
+    font-weight:bold;
+}
+ul.regStep > li.active {
+    border-bottom:3px solid #48b5a1;
+    color:#48b5a1
+}
+ul.regStep > li.active span {
+        background-color:#48b5a1;
+        color:#fff;
+}
+.regInfo {
+    margin-top:20px;
+    padding-top:10px;
+    padding-bottom:20px;
+    background:none;
+}
+
+.row .open > .dropdown-menu {
+    margin-top:1px !important;
+}
+.dropdown-toggle {
+    background-color:#fff !important;
+    border-color:#ccc  !important;
+    color:#333 !important;    
+    border-left-color:#ccc !important;
+    position:relative;
+}
+.nav .dropdown-toggle {
+    border:none
+}
+    .dropdown-toggle .caret {
+        position:absolute;
+        top:50%;
+        right:10px;
+        margin-top:-3px;
+        z-index:2;
+    }
+.nav .dropdown-toggle .caret {
+    right:0
+}
+    .dropdown-toggle > span:first-child {
+        display:block;
+        width:193px;
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+    }
+.dropdown-menu {
+    overflow:hidden
+}
+
+.input-group,.validate {
+    width:230px;
+}
+
+.regInfo .validate {
+    
+    color:white;
+   
+}
+.dropdown-huge {
+    width:230px;
+    height:30px;
+    border-radius:3px;    
+    border:1px solid red;
+}
+.btn-default .caret {
+    border-top-color: #333;
+}
+
+
+
+.regInfo > .row {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+.regInfo > .row >.col-xs-3{
+    text-indent:10px;
+}
+
+.regInfo > h3 {
+    font-size:18px;
+    color:#255a81;
+    font-weight:bold;
+    border-bottom:1px dashed #245881;
+    padding:0 10px 10px;
+}
+.regInfo > .nextBox {
+    margin-top:10px;
+}
+.regInfo > .nextBox  button {
+    width:100px;
+    height:36px
+
+}
+.check-agree {
+    float:left;
+    width:25px;
+    height:25px;
+    border-radius:4px;
+    background:white;
+    border:2px solid #a1a19f;
+    
+}
+.tip {
+    float:left;
+    margin-left:15px;
+    line-height:25px;
+}
+
+
+
+.regInfo {
+    box-shadow:none;
+}
+.regInfo .col-xs-3 {
+    text-align:right;
+   
+    }
+.regInfo button.mobile-toggle {
+    width:80px;
+    
+     }
+ .regInfo button.mobile-toggle .caret {
+     float:right;
+     margin:0;
+     padding:0;
+    
+    }
+.regInfo input.mobile-f-c {
+    margin-left:1px;
+    }
+.regInfo .row .row {
+    margin-top:15px;
+    }
+
+.regInfo .col-lg-6 {
+    padding:0
+    
+}
+
+.listBox {
+width:230px;
+border:1px solid #ccc !important;
+}
+
+.row .dropdown-menu li a {
+    width:228px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    
+}
+.has-error .listBox {
+    border:1px solid #ed1f24 !important;
+    color:#ed1f24 !important;
+}
+
+    /* step 3 css */
+.regSuccessBox {
+    position:relative;
+    width:100%;
+    height:100%;
+    clear:both
+}
+.regBg {
+    /*position:absolute;
+    top:0;
+    left:0;
+    z-index:2;*/
+}
+.regTipWords {
+    position:absolute;
+    top:10px;
+    left:50%;
+    width:30%;
+    min-width:200px;
+    height:150px;
+    margin-left:-100px;
+    background-color:#3872A0;
+    padding:20px 35px;
+    z-index:3;
+    color:#fff;
+    font-weight:bold;
+    font-size:12px;
+    zoom:1;
+    filter:alpha(opacity=60); 
+    -moz-opacity:0.6; 
+    opacity:0.6;
+}
+
+

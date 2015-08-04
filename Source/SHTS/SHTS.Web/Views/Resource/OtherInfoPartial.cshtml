@@ -1,0 +1,25 @@
+﻿@using Witbird.SHTS.Model
+@model Witbird.SHTS.DAL.New.Resource
+@{
+    var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
+}
+<div class="fLeft" id="hotel_info_wrappper">
+    <div class="hotel_same_box">
+        <font color="black">联&nbsp;系&nbsp;&nbsp;人</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Contract
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Telephone
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Mobile
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">微信/QQ</font>&nbsp;&nbsp;&nbsp;&nbsp;@string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
+    </div>
+    <div class="hotel_same_box" style="display: inline-block;">
+        <font color="black">详细地址</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.DetailAddress
+    </div>
+</div>

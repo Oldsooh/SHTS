@@ -1,0 +1,304 @@
+﻿@model Witbird.SHTS.Web.Models.DemandModel
+@{
+    ViewBag.Title = "需求信息 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/demand.css" rel="stylesheet" />
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function timeRedirect(obj) {
+            var url = obj.id;
+            var starttime = document.getElementById('starttime').value;
+            var endtime = document.getElementById('endtime').value;
+            if (starttime != "") {
+                url = url + "&starttime=" + starttime
+            }
+            if (endtime != "") {
+                url = url + "&endtime=" + endtime;
+            }
+            window.location.href = url;
+        }
+    </script>
+}
+
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/demand/" class="blue">需求信息</a>
+        @if (Model.PageIndex > 1)
+        {
+            <span class="ch">&nbsp;&gt;&nbsp;第 @Model.PageIndex 页</span>
+        }
+    </div>
+
+    <div id="mainLeft">
+
+
+        <div class="class">
+            <div class="class_list">
+                <h2>需求类型：</h2>
+                @{
+                    string urlCategory = "/demand/index?page=1";
+                    urlCategory = string.IsNullOrEmpty(Model.Area) ? urlCategory : urlCategory + "&area=" + Model.Area;
+                    urlCategory = string.IsNullOrEmpty(Model.StartBudget) ? urlCategory : urlCategory + "&startbudget=" + Model.StartBudget;
+                    urlCategory = string.IsNullOrEmpty(Model.EndBudget) ? urlCategory : urlCategory + "&endbudget=" + Model.EndBudget;
+                    urlCategory = string.IsNullOrEmpty(Model.StartTime) ? urlCategory : urlCategory + "&starttime=" + Model.StartTime;
+                    urlCategory = string.IsNullOrEmpty(Model.EndTime) ? urlCategory : urlCategory + "&endtime=" + Model.EndTime;
+                }
+                <ul>
+                    <li>
+                        @if (string.IsNullOrEmpty(Model.Category))
+                        {
+                            <a class="no" href="@urlCategory">不限</a>
+                        }
+                        else
+                        {
+                            <a href="@urlCategory">不限</a>
+                        }
+                    </li>
+                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                    {
+                        foreach (var item in Model.DemandCategories)
+                        {
+                            if (item.Id.ToString() == Model.Category)
+                            {
+                        <li><a class="no" href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                            }
+                            else
+                            {
+                        <li><a href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+            @if (Model.Areas != null && Model.Areas.Count > 0)
+            {
+                <div class="class_list">
+                    <h2>区域位置：</h2>
+                    @{
+                string urlArea = "/demand/index?page=1";
+                urlArea = string.IsNullOrEmpty(Model.Category) ? urlArea : urlArea + "&category=" + Model.Category;
+                urlArea = string.IsNullOrEmpty(Model.StartBudget) ? urlArea : urlArea + "&startbudget=" + Model.StartBudget;
+                urlArea = string.IsNullOrEmpty(Model.EndBudget) ? urlArea : urlArea + "&endbudget=" + Model.EndBudget;
+                urlArea = string.IsNullOrEmpty(Model.StartTime) ? urlArea : urlArea + "&starttime=" + Model.StartTime;
+                urlArea = string.IsNullOrEmpty(Model.EndTime) ? urlArea : urlArea + "&endtime=" + Model.EndTime;
+                    }
+                    <ul id="provin">
+                        <li>
+                            @if (string.IsNullOrEmpty(Model.Area))
+                            {
+                                <a href="@urlArea" class="no">不限</a>
+                            }
+                            else
+                            {
+                                <a href="@urlArea">不限</a>
+                            }
+                        </li>
+                        @foreach (var item in Model.Areas)
+                        {
+                            <li>@if (!string.IsNullOrEmpty(Model.Area) && Model.Area == item.Id)
+                                {
+                                <a class="no" href="@urlArea&area=@item.Id">@item.Name</a>
+                                }
+                                else
+                                {
+                                <a href="@urlArea&area=@item.Id">@item.Name</a>
+                                }
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            }
+
+
+
+
+            <div class="class_list bn">
+                <h2>预算金额：</h2>
+                @{
+                    string urlBudget = "/demand/index?page=1";
+                    urlBudget = string.IsNullOrEmpty(Model.Category) ? urlBudget : urlBudget + "&category=" + Model.Category;
+                    urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
+                    urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
+                    urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
+                }
+                <ul>
+                    <li><a id="budgetid" href="@urlBudget">不限</a></li>
+                    <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">¥1-¥1000</a></li>
+                    <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=5000">¥1001-¥5000</a></li>
+                    <li><a id="budgetid5001" href="@urlBudget&startbudget=5001&endbudget=10000">¥5001-¥10000</a></li>
+                    <li><a id="budgetid10001" href="@urlBudget&startbudget=10001&endbudget=50000">¥1万-¥5万</a></li>
+                    <li><a id="budgetid50001" href="@urlBudget&startbudget=50001&endbudget=1000000">¥5万以上</a></li>
+                </ul>
+                <script type="text/javascript">
+                    @{ string budgetid = "budgetid" + Model.StartBudget;}
+                    document.getElementById("@budgetid").setAttribute("class", "no");
+                </script>
+            </div>
+
+
+            <div class="class_list" style="border-bottom: none;">
+                <h2>需求时间：</h2>
+                @{
+                    string urlTime = "/demand/index?page=1";
+                    urlTime = string.IsNullOrEmpty(Model.Category) ? urlTime : urlTime + "&category=" + Model.Category;
+                    urlTime = string.IsNullOrEmpty(Model.Area) ? urlTime : urlTime + "&area=" + Model.Area;
+                    urlTime = string.IsNullOrEmpty(Model.StartBudget) ? urlTime : urlTime + "&startbudget=" + Model.StartBudget;
+                    urlTime = string.IsNullOrEmpty(Model.EndBudget) ? urlTime : urlTime + "&endbudget=" + Model.EndBudget;
+                }
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            @if (string.IsNullOrEmpty(Model.StartTime) && string.IsNullOrEmpty(Model.EndTime))
+                            {
+                                <a class="selecteditem selectedon" href="@urlTime">不限</a>
+                            }
+                            else
+                            {
+                                <a class="selecteditem" href="@urlTime">不限</a>
+                            }
+                        </td>
+                        <td>&nbsp;&nbsp;<input id="starttime" class="Wdate" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.StartTime"></td>
+                        <td>&nbsp; - &nbsp;</td>
+                        <td>
+                            <input id="endtime" class="Wdate" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.EndTime"></td>
+                        <td style="width: 10px;"></td>
+                        <td>
+                            <input name="" type="button" value="确定" class="jgqj_btn" onclick="timeRedirect(this)" id="@urlTime" /></td>
+                    </tr>
+                </table>
+
+
+
+            </div>
+
+            <div style="clear: both;"></div>
+        </div>
+
+
+        <div style="clear: both; height: 30px;"></div>
+
+
+        <div class="listdiv">
+            @if (Model.Demands != null && Model.Demands.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Demands)
+                {
+                    number += 1;
+                <div class="listdivitem">
+                    <div class="listdivitemnumber">
+                        <p>@number</p>
+                    </div>
+                    <div class="listdivitemsummary">
+                        <div class="title">
+                            @item.Title
+                            <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
+                        </div>
+                        <table class="listdivitemtable">
+                            <tr>
+                                <td>所在地区：<span>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></td>
+                                <td>需求类型：<span>@item.CategoryName</span></td>
+                                <td>参与人数：<span>@item.PeopleNumber</span></td>
+                            </tr>
+                            <tr>
+                                <td>需求时长：<span>@item.TimeLength</span></td>
+                                <td>开始时间：<span>@item.StartTime.Value.ToString("yyyy/MM/dd")</span></td>
+                                <td>预算金额：
+                                    @if (item.Budget == 0)
+                                    {
+                                        <span>面议</span> 
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Budget 元</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 60px; line-height: 20px; color: #868686; font-size:12px; overflow:hidden;">@item.Description</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="listdivitemlink">
+                        @{ string url = "/demand/" + item.Id + ".html"; }
+                        <a href="@url" target="_blank">查看详情</a>
+                    </div>
+                </div>
+                }
+            }
+        </div>
+
+        <div style="clear: both; height: 30px;"></div>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                string urlPage = string.Empty;
+                urlPage = string.IsNullOrEmpty(Model.Category) ? urlPage : urlPage + "&category=" + Model.Category;
+                urlPage = string.IsNullOrEmpty(Model.Area) ? urlPage : urlPage + "&area=" + Model.Area;
+                urlPage = string.IsNullOrEmpty(Model.StartBudget) ? urlPage : urlPage + "&startbudget=" + Model.StartBudget;
+                urlPage = string.IsNullOrEmpty(Model.EndBudget) ? urlPage : urlPage + "&endbudget=" + Model.EndBudget;
+                urlPage = string.IsNullOrEmpty(Model.StartTime) ? urlPage : urlPage + "&starttime=" + Model.StartTime;
+                urlPage = string.IsNullOrEmpty(Model.EndTime) ? urlPage : urlPage + "&endtime=" + Model.EndTime;
+
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                <span><a href="/demand/index?page=@(Model.PageIndex - 1)@urlPage" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                <span><a href="/demand/index?page=1@urlPage">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                <span><a href="/demand/index?page=@i@urlPage" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                <span><a href="/demand/index?page=@i@urlPage">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                <span><a href="/demand/index?page=@Model.PageCount@urlPage">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                <span><a href="/demand/index?page=@(Model.PageIndex + 1)@urlPage" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+        </div>
+        <!--分页结束-->
+
+    </div>
+
+    @Html.Action("Right", "Common")
+
+    <div style="clear: both; height: 60px;"></div>
+
+</div>

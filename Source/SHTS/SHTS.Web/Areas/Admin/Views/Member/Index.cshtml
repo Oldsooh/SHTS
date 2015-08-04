@@ -1,0 +1,196 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.MemberViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>会员列表</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <style type="text/css">
+        .toolbar li {
+            padding-left: 2px;
+        }
+
+        .toolbar li span {
+            float: right;
+            margin-top: 0px;
+        }
+
+        .toolbar li span select {
+            height: 100%;
+            opacity: 1;
+        }
+    </style>
+    <script>
+        function searchusers() {
+            var Keyword = $("#Keyword").val();
+            var typeid = $("#usertypelist").val();
+            window.location.href = "/admin/member/index?querytype="+typeid+"&page=1&Keyword="+Keyword;
+        }
+
+        $(function() {
+            var resourceid=@Model.Resurce;
+            var count=$("#resourcelist")[0].options.length;
+            for(var i=0;i<count;i++){
+                if($("#resourcelist")[0].options[i].value == resourceid)  
+                {
+                    $("#resourcelist")[0].options[i].selected = true;
+                    break;  
+                }  
+            }
+        });
+    </script>
+</head>
+<body>
+
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">会员管理</a></li>
+        <li><a href="#">会员列表</a></li>
+    </ul>
+</div>
+<div class="rightinfo">
+    <input type="hidden" value="@Model.QueryType" id="usertypelist" />
+    <div class="tools">
+        <ul class="toolbar">
+            <li style="width: 260px;">电话号码\用户名：
+                <input type="text" value="@Model.Keyword" name="Keyword" id="Keyword" style="border: solid 1px burlywood; height: 70%;"/>
+            </li>
+            <li onclick=" searchusers(); " style="background-color: rgb(212, 231, 240); background-image: none;">搜索会员
+            </li>
+        </ul>
+    </div>
+    <table class="tablelist">
+        <thead>
+        <tr>
+            <th></th>
+            <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif"/></i></th>
+            <th>账户名</th>
+            <th>电话</th>
+            <th>地址</th>
+            <th>注册时间</th>
+            <th>会员等级</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var n in Model.UserList)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" class="useritem" value="@n.UserId"/></td>
+                <td>@n.UserId</td>
+                <td>@n.UserName</td>
+                <td>@n.Cellphone</td>
+                <td>@n.Adress</td>
+                <td>@n.CreateTime.ToString()</td>
+                <td>
+                    @if (n.Vip.Value == (int) Witbird.SHTS.Model.VipState.Normal || n.Vip.Value == (int) Witbird.SHTS.Model.VipState.Invalid)
+                    {
+                        <span style="color: black;">普通会员</span>
+                    }
+                    else if (n.Vip.Value == (int) Witbird.SHTS.Model.VipState.Identified)
+                    {
+                        <span style="color: green;">认证会员&nbsp;&nbsp;</span>
+                        <a href="javascript:void(0);" class="tablelink" onclick=" CancelIdentify(@n.UserId) ">取消认证&nbsp;&nbsp;</a>
+                        <a href="javascript:void(0);" class="tablelink" onclick=" SetUserVip(@n.UserId) ">设置1年VIP</a>
+                    }
+                    else if (n.Vip.Value == (int) Witbird.SHTS.Model.VipState.VIP)
+                    {
+                        <span style="color: #ff6a00;">VIP 会员&nbsp;&nbsp;</span>
+                        <a href="javascript:void(0);" class="tablelink" onclick=" CancelUserVip(@n.UserId) ">取消VIP</a>
+                    }
+                </td>
+                <td><a href="/admin/member/EditUser/@n.UserId" class="tablelink">查看</a>&nbsp;&nbsp;<a onclick=" DeleteUser(@n.UserId); " href="javascript:void(0);" class="tablelink">删除</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="pagin">
+        <div class="message">
+            共<i class="blue">@Model.TotalCount</i>条记录，当前显示第&nbsp;<i class="blue">@Model.CurrentPage</i>页
+        </div>
+        <ul class="paginList">
+            <li class="paginItem"><a href="/admin/member/index?page=@(Model.PrePageIndex)&size=@Model.PageSize&querytype=@Model.QueryType"><span class="pagepre"></span></a></li>
+            @for (int i = 1; i <= Model.TotalPage; i++)
+            {
+                <li class="paginItem current">
+                    <a href="/admin/member/index?page=@i.ToString()&size=@Model.PageSize&querytype=@Model.QueryType">
+                        @i.ToString()
+                    </a>
+                </li>
+            }
+            <li class="paginItem"><a href="/admin/member/index?page=@(Model.NextPageIndex)&size=@Model.PageSize&querytype=@Model.QueryType"><span class="pagenxt"></span></a></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.tablelist tbody tr:odd').addClass('odd');
+
+    function DeleteUser(uid) {
+        if (!confirm("确定要删除会员吗？")) {
+            return;
+        }
+        $.post("/admin/member/DeleteUser", { "id": uid }, function(json) {
+            if (json.IsSuccess) {
+                window.location.reload();
+
+            } else {
+                alert("删除失败！");
+            }
+        });
+    }
+
+    function CancelIdentify(uid) {
+        if (!confirm("确定要取消会员认证吗？")) {
+            return;
+        }
+        $.post("/admin/member/CancelIdentify", { "id": uid }, function(json) {
+            if (json.IsSuccess) {
+                window.location.reload();
+
+            } else {
+                alert("取消会员认证失败！");
+            }
+        });
+    }
+
+    function SetUserVip(uid) {
+        if (!confirm("确定要将该用户手动设置为1年VIP会员吗？")) {
+            return;
+        }
+        $.post("/admin/member/SetUserVip",
+        { "id": uid }, function(json) {
+            if (json.IsSuccess) {
+                window.location.reload();
+
+            } else {
+                alert("设置VIP会员失败！");
+            }
+        });
+    }
+
+    function CancelUserVip(uid) {
+        if (!confirm("确定要强制取消该用户VIP会员吗？")) {
+            return;
+        }
+        $.post("/admin/member/CancelUserVip", { "id": uid }, function(json) {
+            if (json.IsSuccess) {
+                window.location.reload();
+
+            } else {
+                alert("取消VIP会员失败！");
+            }
+        });
+    }
+</script>
+</body>
+</html>

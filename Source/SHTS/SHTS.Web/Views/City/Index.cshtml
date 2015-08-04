@@ -1,0 +1,50 @@
+﻿@model Witbird.SHTS.Web.Models.CityModel
+@{
+    ViewBag.Title = "选择城市 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name; ;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/city.css" rel="stylesheet" />
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch">&nbsp;&gt;&nbsp;城市选择</span>
+    </div>
+    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+    {
+        foreach (var province in Model.Provinces)
+        {
+        <div class="cityItem">
+            <div class="cityLeft">@province.Name</div>
+            <div class="cityRight">
+                @if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                {
+                    <ul class="cityUl">
+                        @foreach (var city in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                        {
+                            if (city.ParentId == province.Id)
+                            {
+                                if (city.Sort < 100)
+                                {
+                            <li class="cityLi"><a class="mainCity" href="/city/current/@city.Id">@city.Name</a></li>
+                                }
+                                else
+                                {
+                            <li class="cityLi"><a href="/city/current/@city.Id">@city.Name</a></li>
+                                }
+                            }
+                        }
+                    </ul> 
+                }
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        }
+    }
+    <div style="clear: both; height: 30px;"></div>
+</div>
+

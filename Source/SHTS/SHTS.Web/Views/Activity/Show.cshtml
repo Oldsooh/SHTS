@@ -1,0 +1,211 @@
+﻿@model Witbird.SHTS.Web.Models.ActivityModel.ShowActivityViewModel
+@{
+    ViewBag.Title = Model.Activity.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name; ;
+    ViewBag.Keywords = Model.Activity.Keywords;
+    ViewBag.Description = Model.Activity.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/news.css" rel="stylesheet"/>
+    <link href="~/Content/css/activityview.css" rel="stylesheet" />
+    <link href="~/Content/css/topview.css" rel="stylesheet"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7b9155f8ef92e48c30256ae54c2ce009"></script>
+    <style type="text/css">
+        .showTitle h1 {
+            color: rgb(68, 68, 68);
+            display: block;
+            font-family: Tahoma, 'Microsoft Yahei', Simsun;
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: bold;
+            height: 40px;
+            line-height: 40px;
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            width: 639px;
+            word-wrap: break-word;
+            zoom: 1;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/news/" class="blue">活动详细</a><span class="ch">&nbsp;&gt;&nbsp;@Model.Activity.Title</span>
+    </div>
+    <div class="comeing_threadstation">
+        <table cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="comeing_threadstation_pics" style="width: 640px; position: relative;">
+                        <div class="comeing_threadstation_picsslide slidebox" slidenum="3" slidestep="1" style="width: 570px; display: block;" id="runslideshow">
+                            <div class="slideshow">
+                                 @if (Model.Activity != null && Model.Activity.ImgUrls.Length > 0)
+                                 {
+                                     for (int i = 0; i < Model.Activity.ImgUrls.Length; i++)
+                                     {
+                                     <div class="comeing_threadstation_pics_item" style="width: 180px; display: @(i < 3 ? "block" : "none");">
+                                         <div style="width: 180px; height: 135px">
+                                             <a href="@Html.CreateShowUrl("activity", Model.Activity.Id)">
+                                                 <img src="@Model.Activity.ImgUrls[i]" alt="@Model.Activity.Title" width="180" height="135"></a>
+                                         </div>
+                                         <h3 style="width: 180px"><a href="@Html.CreateShowUrl("activity", Model.Activity.Id)" title="@Model.Activity.Title">@Model.Activity.Title</a></h3>
+                                     </div>
+                                     }
+                                 }
+                            </div>
+                            <a href="javascript:void(0);" class="slidebarbtn slidebarup" onclick="prveimg();">&lt;</a>
+                            <a href="javascript:void(0);" class="slidebarbtn slidebardown" onclick="nextimg();">&gt;</a>
+                        </div>
+                    </td>
+                    <td class="comeing_threadstation_subs">
+                        <ul class="cl">
+                            @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
+                            {
+                                foreach (var item in Model.ActivityList)
+                                {
+                                   <li><span>@item.CreatedTime.Value.ToShortDateString()</span>
+                                       <a href="@Html.CreateShowUrl("activity", item.Id)">
+                                           @item.Title
+                                       </a></li> 
+                                }
+                            }
+                    </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="splitline"></div>
+    <div class="newsLeft showLeft">
+        <div class="showTitle">
+            <h1>@Model.Activity.Title</h1>
+            <p>
+                发布时间：@Model.Activity.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                阅读：@Model.Activity.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                来源：活动在线 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                发布：@Model.Activity.UserName
+            </p>
+             <p>
+                 活动时间：@Model.Activity.StartTime.Value.ToString("yyyy-MM-dd") 至
+                 @Model.Activity.EndTime.Value.ToString("yyyy-MM-dd")
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                地址：@Model.Activity.Adress &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        </div>
+        <div class="comeing_summary">
+              <div class="showContent"><strong>摘要</strong>:@Model.Activity.Description</div>
+         </div>
+        <div class="showContent">
+            @(new HtmlString(Model.Activity.ContentStyle))
+            @if (Model.Activity.IsFromMobile.Value)
+            {
+                if (Model.Activity != null && Model.Activity.ImgUrls.Length > 0)
+                {
+                    for (int i = 0; i < Model.Activity.ImgUrls.Length; i++)
+                    {
+                        <div style="margin-bottom: 10px;margin-top: 10px;">
+                            <img src="@Model.Activity.ImgUrls[i]" alt="@Model.Activity.Title" width="100%">
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+    <div class="newsRight">
+        <div class="newsCagetory">
+            <div class="contentItem">
+                <div id="diyrighttop" class="area" style="width: 300px; height: 300px;">
+                </div>
+                <input type="hidden" value="@Model.Activity.City" id="ACity" />
+                <input type="hidden" value="@Model.Activity.Adress" id="AAdress" />
+            </div>
+        </div>
+        @if (Model.PreTypeActivityList != null && Model.PreTypeActivityList.Count > 0)
+        {
+            foreach (var vtype in Model.ActivityTypes)
+            {
+                <div class="newsCagetory">
+                    <div class="contentTitle">
+                        <h2>@vtype.ActivityTypeName</h2>
+                    </div>
+                    <div class="contentItem">
+                        <ul class="newsul">
+                            @foreach (var item in
+                                Model.PreTypeActivityList.FindAll(a => a.ActivityType == vtype.ActivityTypeId.ToString()))
+                            {
+                                <li class="newsli">
+                                    <a class="newsa" href="@Html.CreateShowUrl("activity", item.Id)" target="_blank">@item.Title</a>
+                                    <span class="newsli_date">@item.CreatedTime.Value.ToString("MM-dd")</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        var currntindex = 2;
+        var changeindex;
+        var imgblocks;
+        var imgInterval;
+
+        function runslide() {
+            imgblocks = $(".comeing_threadstation_pics_item");
+            if (imgblocks.length > 3) {
+                imgInterval = setInterval(runstep, 2000);
+            }
+        }
+
+        function runstep() {
+            if (currntindex - 2 == imgblocks.length) {
+                currntindex = 2;
+            }
+            $(imgblocks[currntindex - 2]).css("display", "none");
+            currntindex++;
+            $(imgblocks[currntindex % imgblocks.length]).css("display", "block");
+
+        }
+
+        function prveimg() {
+            if (currntindex > 2) {
+                currntindex--;
+                runstep();
+            }
+        }
+
+        function nextimg() {
+            runstep();
+        }
+
+        $(function () {
+            runslide();
+            var ACity = $("#ACity").val();
+            var AAdress = $("#AAdress").val();
+            // 百度地图API功能
+            var map = new BMap.Map("diyrighttop");
+            map.addControl(new BMap.NavigationControl());
+            map.enableScrollWheelZoom();
+            map.enableContinuousZoom();
+            if (ACity != "") {
+                map.setCurrentCity(ACity);
+                var local = new BMap.LocalSearch(map, {
+                    renderOptions: { map: map }
+                });
+                local.search('@Model.Activity.Adress');
+            }
+            else {
+                map.centerAndZoom("北京", 16);
+            }
+        });
+
+    </script>
+}

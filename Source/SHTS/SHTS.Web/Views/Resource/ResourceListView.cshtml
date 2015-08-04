@@ -1,0 +1,148 @@
+﻿@model Witbird.SHTS.Model.Extensions.QueryResourceResult
+@{
+    ViewBag.Title = "活动场地 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+    var type = "space";
+    var typeName = "活动场地";
+    switch (Model.ResourceType)
+    {
+        case 2:
+            type = "actor";
+            typeName = "演艺人员";
+            break;
+        case 3:
+            type = "equipment";
+            typeName = "活动设备";
+            break;
+        case 4:
+            type = "other";
+            typeName = "其他资源";
+            break;
+        case 1:
+        default:
+            type = "space";
+            typeName = "活动场地";
+            break;
+    }
+}
+@section head
+{
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <link href="/content/css/resource.css" rel="stylesheet" />
+    <style type="text/css">
+        #@(type) {
+            background-color: #ffffff;
+            margin-top: 0;
+            border-top: 3px solid #ff9a15;
+        }
+
+            #@(type) a {
+                color: #2577e3;
+                font-weight: bold;
+                font-size: 16px;
+            }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><span>@(typeName)</span>
+    </div>
+    <div id="mainLeft">
+
+        @Html.Partial("FilterPartial", Model.Filter)
+
+        <div style="clear: both; height: 20px;"></div>
+
+        <div class="listdiv">
+            @if (Model.Items != null && Model.Items.Count > 0)
+            {
+                int number = 0;
+                foreach (var space in Model.Items)
+                {
+                    number += 1;
+                <div class="listdivitem">
+                    <div class="listdivitemnumber">
+                        <p>@number</p>
+                        @{
+                    string imageUrl = "/uploadfiles/2014/12/16/20141216011042342.jpg";
+                    if (!string.IsNullOrEmpty(space.ImageUrls))
+                    {
+                        string[] urls = space.ImageUrls.Split('|');
+                        if (urls.Count() > 0)
+                        {
+                            imageUrl = urls[0];
+                            if (imageUrl != null)
+                            {
+                                imageUrl = imageUrl.Replace(".jpg", "_small.jpg");
+                                imageUrl = imageUrl.Replace(".png", "_small.png");
+                            }
+                        }
+                    }
+                    
+                        }
+                        <img src="@imageUrl" />
+                    </div>
+                    <div class="listdivitemsummary">
+                        <div class="listdivitemtitle">
+                            @space.Title
+                            <span>发布 @space.CreateTime.ToString("yyyy-MM-dd")</span>
+                        </div>
+                        <div class="listdivitemdescription">
+                            <table class="listdivitemtable">
+                                <tbody>
+                                    <tr>
+                                        <td>地区：<span>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(space.ProvinceId, space.CityId, space.AreaId)</span></td>
+                                        <td>发布者：<span>@space.UserName</span></td>
+                                        @switch (space.ResourceType)
+                                        {
+                                            case 1:
+                                                <td>大小：<span>@Html.GetSpaceSizeById(space.SpaceSizeId)</span></td>
+                                                break;
+                                            case 2:
+                                                <td>演员类型：<span>@Html.GetActorTypeById(space.ActorTypeId)</span></td>
+                                                break;
+                                            case 3:
+                                                break;
+                                            case 4:
+                                                break
+                                                    ;
+                                            default:
+                                                break;
+                                        }
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="listdivitemtext">
+                                @space.ShortDesc
+                            </div>
+                        </div>
+                        <div class="listdivitemlink">
+                            @space.DetailAddress
+                            @Html.ActionLink("查看详情", "show", new { @id = space.Id }, new { @target = "_blank" })
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+            else
+            {
+                <div>没有找到相关资源。</div>
+            }
+        </div>
+
+        <div style="clear: both; height: 30px;"></div>
+
+        @Html.Partial("PagingPartial", Model.Paging)
+    </div>
+
+    @Html.Action("Right", "Common")
+
+    <div style="clear: both; height: 30px;"></div>
+</div>

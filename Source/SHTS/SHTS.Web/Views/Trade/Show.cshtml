@@ -1,0 +1,692 @@
+﻿@{
+    ViewBag.Title = " 中介交易 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@model Witbird.SHTS.Web.Models.TradeModel
+@section head
+{
+    <link href="/content/css/trade.css" rel="stylesheet" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <script type="text/javascript" src="/content/js/trade.js"></script>
+    <script type="text/javascript" src="/content/js/payment.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <style type="text/css">
+        #trade {
+            background-color: #ffffff;
+            margin-top: 0;
+            border-top: 3px solid #ff9a15;
+        }
+
+            #trade a {
+                color: #2577e3;
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+        .userbtn {
+            background-color: #ff9a15;
+            color: #ffffff;
+            border-radius: 4px;
+            border: none;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        <a href="/trade" class="blue">中介交易</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        @if (Model != null && Model.CurrentTrade != null && Model.CurrentTrade.TradeId > 0)
+        {
+            <span>@Model.CurrentTrade.TradeSubject</span>
+        }
+        else
+        {                 
+            <span>中介交易信息不存在</span>
+        }
+    </div>
+    <div class="nav_bar">
+        <div class="left">
+            <a class="btn" href="/trade/new" title="发起新的中介交易申请">中介申请</a>
+            @if (Model != null &&
+                Model.CurrentTrade != null &&
+                Model.CurrentTrade.TradeId > 0 &&
+                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.New &&
+                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid &&
+                Model.CurrentUser != null &&
+                (Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId ||
+                Model.CurrentUser.UserId == Model.CurrentTrade.SellerId))
+            {
+                <a class="btn" style="margin-left: 10px;" href="#reply" onclick="javascript:$('.ke-content').focus();"
+                    title="回复">回复</a>
+            }
+        </div>
+        <div class="right">
+            <a class="back" href="/trade" title="返回中介交易列表">返回列表</a>
+        </div>
+    </div>
+    <div class="clear" style="height: 20px;"></div>
+
+    @if (Model != null && Model.CurrentTrade != null && Model.CurrentTrade.TradeId > 0)
+    {
+        Witbird.SHTS.Model.User user;
+        if (Model.CurrentTrade.SellerId == Model.CurrentTrade.UserId)
+        {
+            user = Model.CurrentTrade.Seller;
+        }
+        else
+        {
+            user = Model.CurrentTrade.Buyer;
+        }
+        
+        <input type="hidden" name="currentTradeId" id="currentTradeId" value="@Model.CurrentTrade.TradeId" />
+        <div class="detail">
+            <div class="historyitem">
+                <div class="fl left-pannel">
+                    <table class="user">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="title">
+                                        @user.UserName
+                                    </span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+
+                                    <img class="photo" src="@user.Photo"
+                                        alt="用户头像" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>买卖关系</td>
+                                <td>
+                                    @if (Model.CurrentTrade.SellerId == Model.CurrentTrade.UserId)
+                                    {
+                                        <span>中介发起方&nbsp;卖家</span>   
+                                    }
+                                    else
+                                    {
+                                        <span>中介发起方&nbsp;买家</span> 
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>会员等级</td>
+                                <td>
+                                    @if (user.Vip.Value == (int)Witbird.SHTS.Model.VipState.VIP)
+                                    {
+                                        <span>VIP会员</span>
+                                    }
+                                    else if (user.Vip.Value == (int)Witbird.SHTS.Model.VipState.Identified)
+                                    {
+                                        <span>认证会员</span>
+                                    }
+                                    else
+                                    {
+                                        <span>普通会员</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>注册时间</td>
+                                <td><span>@user.CreateTime.Value.ToString("yyyy-MM-dd")
+                                </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="fl right-pannel">
+                    <table class="content">
+                        <tbody>
+                            <tr>
+                                <td class="title">
+                                    @switch (Model.CurrentTrade.State)
+                                    {
+                                        case (int)Witbird.SHTS.Model.TradeState.Completed:
+                                        <span style="color: #0a4407">[交易完成]</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.Finished:
+                                        <span style="color: #cf9c9c">[交易终止]</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                                        <span style="color: #1959bb">[交易进行]</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.New:
+                                        <span style="color: #23972b">[中介申请](<span style="color: red;">未审核</span>)</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                                        <span style="color: red;">[违规交易]</span>
+                                            break;
+                                        default:
+                                        <span style="color: red;">[未知类型]</span>
+                                            break;
+                                    }
+                                    @Model.CurrentTrade.TradeSubject
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>发布于 @Model.CurrentTrade.CreatedTime.ToString("yyyy-MM-dd hh:mm")<span class="fr floor">1#</span>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                @if (Model.CurrentUser != null &&
+                                    (Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId ||
+                                    Model.CurrentUser.UserId == Model.CurrentTrade.SellerId))
+                                {
+                                    <td class="body">
+                                        @if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.New)
+                                        {
+                                            <span>该中介交易还没有通过管理员审核，不支持查看及回复</span>
+                                        }
+                                        else if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.Invalid)
+                                        { 
+                                            <span>该中介交易已被管理员设置为违规交易，不支持查看及回复</span>
+                                        }
+                                        else
+                                        {
+                                            @(new HtmlString(Model.CurrentTrade.TradeBody))
+                                        }
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>中介交易只有中介买卖双方可以查看。买家卖家请重新
+                                <a href="/account/login" target="_self" title="点此登录" style="font-weight: bold; font-size: 18px;">
+                                    登录</a>
+                                        后查看。
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                    @if (Model.CurrentUser != null &&
+                        (Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId ||
+                        Model.CurrentUser.UserId == Model.CurrentTrade.SellerId) &&
+                        Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.New &&
+                        Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid)
+                    {
+                        <table class="tablelist tablelist-override">
+                            <thead>
+                                <tr>
+                                    <th colspan="6">
+                                        <span>交易信息</span>
+                                    </th>
+
+                                    @*<th style="text-align: right; padding-right: 5px;">
+                                    <span id="switch3" style="cursor: pointer;" onclick="expand('content3','switch3');">收缩</span>
+                                </th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="content3">
+                                <tr>
+                                    <td class="w80">交易金额</td>
+                                    <td class="w200 bold">￥ @Model.CurrentTrade.TradeAmount 元</td>
+                                    <td class="w80">买家应付</td>
+                                    <td class="w200 bold">￥ @Model.CurrentTrade.BuyerPay 元</td>
+                                    <td class="w80">支付状态</td>
+                                    <td class="w80 bold">
+                                        @if (Model.CurrentTrade.IsBuyerPaid)
+                                        {
+                                            <span style="color: green; font-size: 18px;">已付款</span>
+                                        }
+                                        else
+                                        {
+                                            if (Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.New &&
+                                                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid)// &&
+                                            //Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId)
+                                            {
+                                            <a href="javascript:void(0);" class="btn" title="立即支付交易款项" onclick="generateTradeOrder(@Model.CurrentTrade.TradeId);">
+                                                立即支付</a>
+                                            }
+                                            else
+                                            {
+                                            <span style="color: red; font-size: 18px;">等待买家付款</span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w80">手续费</td>
+                                    <td class="w200 bold">￥ @Model.CurrentTrade.PayCommission 元</td>
+                                    <td class="w80">手续费支付方</td>
+                                    <td class="w200 bold">卖家</td>
+                                    <td class="w80">卖家可得</td>
+                                    <td class="w200 bold">￥ @Model.CurrentTrade.SellerGet 元</td>
+                                </tr>
+                                <tr>
+                                <td>资源地址</td>
+                                <td colspan="4">
+                                <a href="@Model.CurrentTrade.ResourceUrl" title="点击查看中介交易资源" target="_blank">@Model.CurrentTrade.ResourceUrl</a>
+                                </td>
+                                <td><a href="@(Model.CurrentTrade.ResourceUrl)#comment" class="btn" style="background:#4193ff;" title="立即点评中介申请资源" target="_blank">
+                                    点评资源</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <table class="tablelist tablelist-override">
+                            <thead>
+                                <tr>
+                                    <th colspan="8">
+                                        <span>买家信息</span>
+                                    </th>
+
+                                    @*<th style="text-align: right; padding-right: 5px;">
+                                    <span id="switch2" style="cursor: pointer;" onclick="expand('content2','switch2');">展开</span>
+                                </th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="content2" class="">
+                                @if (Model.CurrentTrade.UserId == Model.CurrentTrade.Buyer.UserId)
+                                {
+                                    <tr>
+                                        <td class="w80">用户名</td>
+                                        <td class="w80 bold">@Model.CurrentTrade.Buyer.UserName</td>
+                                        <td class="w80">联系QQ</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserQQ</td>
+                                        <td class="w80">联系手机</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserCellPhone</td>
+                                        <td class="w80">联系邮箱</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserEmail</td>
+                                    </tr>
+                                    <tr>
+                                        <td>联系地址</td>
+                                        <td colspan="7" class="bold">
+                                            @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserAddress))
+                                            {
+                                                <span>@Model.CurrentTrade.UserAddress</span>
+                                                <br />
+                                            }
+                                            <span style="color: #178aa5">如果买家联系地址缺失或不正确，请联系买家进行确认并更新回复</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="w80">用户名</td>
+                                        <td class="w80 bold">@Model.CurrentTrade.Buyer.UserName</td>
+                                        <td class="w80">联系QQ</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Buyer.QQ</td>
+                                        <td class="w80">联系手机</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Buyer.Cellphone</td>
+                                        <td class="w80">联系邮箱</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Buyer.Cellphone</td>
+                                    </tr>
+                                    <tr>
+                                        <td>联系地址</td>
+                                        <td colspan="7" class="bold">
+                                            @if (!string.IsNullOrEmpty(Model.CurrentTrade.Buyer.Adress))
+                                            {
+                                                <span>@Model.CurrentTrade.Buyer.Adress</span>
+                                                <br />
+                                            }
+                                            <span style="color: #178aa5">如果买家联系地址缺失或不正确，请联系买家进行确认并更新回复</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <table class="tablelist tablelist-override">
+                            <thead>
+                                <tr>
+                                    <th colspan="8">
+                                        <span>卖家信息</span>
+                                    </th>
+                                    @*<th style="text-align: right; padding-right: 5px;">
+                                    <span id="switch1" style="cursor: pointer;" onclick="expand('content1','switch1');">展开</span>
+                                </th>*@
+                                </tr>
+                            </thead>
+                            <tbody id="content1" class="">
+
+                                @if (Model.CurrentTrade.UserId == Model.CurrentTrade.Seller.UserId)
+                                {
+                                    <tr>
+                                        <td class="w80">用户名</td>
+                                        <td class="w80 bold">@Model.CurrentTrade.Seller.UserName</td>
+                                        <td class="w80">联系QQ</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserQQ</td>
+                                        <td class="w80">联系手机</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserCellPhone</td>
+                                        <td class="w80">联系邮箱</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.UserEmail</td>
+                                    </tr>
+                                    <tr>
+                                        <td>联系地址</td>
+                                        <td colspan="7" class="bold">
+                                            @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserAddress))
+                                            {
+                                                <span>@Model.CurrentTrade.UserAddress</span>
+                                                <br />
+                                            }
+                                            <span style="color: #178aa5">如果卖家联系地址缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+
+                                        <td class="w80">用户名</td>
+                                        <td class="w80 bold">@Model.CurrentTrade.Seller.UserName</td>
+                                        <td class="w80">联系QQ</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Seller.QQ</td>
+                                        <td class="w80">联系手机</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Seller.Cellphone</td>
+                                        <td class="w80">联系邮箱</td>
+                                        <td class="w200 bold">@Model.CurrentTrade.Seller.Cellphone</td>
+                                    </tr>
+                                    <tr>
+                                        <td>联系地址</td>
+                                        <td colspan="7" class="bold">
+                                            @if (!string.IsNullOrEmpty(Model.CurrentTrade.Seller.Adress))
+                                            {
+                                                <span>@Model.CurrentTrade.Seller.Adress</span>
+                                                <br />
+                                            }
+                                            <span style="color: #178aa5">如果卖家联系地址缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    <br />
+                    <br />
+                </div>
+
+            </div>
+
+            <div class="clear line">
+                <span class="fl l"></span>
+                <span class="fr r"></span>
+            </div>
+
+            @if (Model.CurrentUser != null &&
+                (Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId ||
+                Model.CurrentUser.UserId == Model.CurrentTrade.SellerId))
+            {
+                if (Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.New &&
+                    Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid &&
+                    Model.CurrentTrade.Histories != null &&
+                    Model.CurrentTrade.Histories.Count > 0)
+                {
+                    var floorNumber = 2;
+                    foreach (var item in Model.CurrentTrade.Histories)
+                    {
+                        if (item != null)
+                        {        
+                <div class="clear historyitem">
+                    <div class="fl left-pannel">
+                        <table class="user">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"><span class="title">@item.UserName</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        @if (item.IsAdminUpdate)
+                                        {
+                                            <img class="photo" src="/Content/images/pay/user_picture.gif"
+                                                alt="用户头像" />
+                                        }
+                                        else if (item.UserId == Model.CurrentTrade.BuyerId)
+                                        {
+                                            <img class="photo" src="@Model.CurrentTrade.Buyer.Photo"
+                                            alt="用户头像" />
+                                        }
+                                        else if (item.UserId == Model.CurrentTrade.SellerId)
+                                        {
+                                            <img class="photo" src="@Model.CurrentTrade.Seller.Photo"
+                                            alt="用户头像" />
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>买卖关系</td>
+                                    <td>
+                                        @if (item.IsAdminUpdate)
+                                        {
+                                            <span>管理员</span>   
+                                        }
+                                        else if (item.UserId == Model.CurrentTrade.SellerId)
+                                        {
+                                            <span>卖家</span> 
+                                        }
+                                        else if (item.UserId == Model.CurrentTrade.BuyerId)
+                                        {
+                                            <span>买家</span>
+                                        }
+                                        else
+                                        {
+                                            <span>其他</span>
+                                        }
+                                    </td>
+                                </tr>
+                                @if (!item.IsAdminUpdate)
+                                {
+                                    if (item.UserId == Model.CurrentTrade.SellerId)
+                                    {
+                                    <tr>
+                                        <td>会员等级</td>
+                                        <td>
+                                            @if (Model.CurrentTrade.Seller.Vip.Value == 1)
+                                            {
+                                                <span>VIP会员</span>
+                                            }
+                                            else
+                                            {
+                                                <span>普通会员</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>注册时间</td>
+                                        <td><span>@Model.CurrentTrade.Seller.CreateTime.Value.ToString("yyyy-MM-dd")</span>
+                                        </td>
+                                    </tr>
+                                    }
+                                    else if (item.UserId == Model.CurrentTrade.BuyerId)
+                                    {
+                                    <tr>
+                                        <td>会员等级</td>
+                                        <td>
+                                            @if (Model.CurrentTrade.Buyer.Vip.Value == 1)
+                                            {
+                                                <span>VIP会员</span>
+                                            }
+                                            else
+                                            {
+                                                <span>普通会员</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>注册时间</td>
+                                        <td><span>@Model.CurrentTrade.Buyer.CreateTime.Value.ToString("yyyy-MM-dd")</span>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="fl right-pannel">
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td>发布于 @item.CreatedTime.ToString("yyyy-MM-dd hh:mm")<span class="fr floor">@(floorNumber++)
+                                        #</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="body">
+                                        @if (!string.IsNullOrEmpty(item.HistorySubject))
+                                        {
+                                            <span style="font-weight: bold;">@item.HistorySubject</span>
+                                            <br />
+                                            <br />
+                                        }
+                                        @(new HtmlString(item.HistoryBody))
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear line">
+                    <span class="fl l"></span>
+                    <span class="fr r"></span>
+                </div>
+                        }
+                    }
+                }
+
+                if (Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.New &&
+                    Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid)
+                {
+                <div class="clear historyitem" @*style="margin-top: 40px; border-top: 1px solid #E5E5E5"*@>
+                    <div class="fl left-pannel">
+                        <table class="user">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"><span class="title">@Model.CurrentUser.UserName</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <img class="photo" src="@Model.CurrentUser.Photo"
+                                        alt="用户头像" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>买卖关系</td>
+                                    <td>
+                                        @if (Model.CurrentUser.UserId == Model.CurrentTrade.SellerId)
+                                        {
+                                            <span>卖家</span> 
+                                        }
+                                        else if (Model.CurrentUser.UserId == Model.CurrentTrade.BuyerId)
+                                        {
+                                            <span>买家</span>
+                                        }
+                                        else
+                                        {
+                                            <span>注册会员</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>会员等级</td>
+                                    <td>
+                                        @if (user.Vip.Value == (int)Witbird.SHTS.Model.VipState.VIP)
+                                        {
+                                            <span>VIP会员</span>
+                                        }
+                                        else if (user.Vip.Value == (int)Witbird.SHTS.Model.VipState.Identified)
+                                        {
+                                            <span>认证会员</span>
+                                        }
+                                        else
+                                        {
+                                            <span>普通会员</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>注册时间</td>
+                                    <td><span>@Model.CurrentUser.CreateTime.Value.ToString("yyyy-MM-dd")</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="reply" class="fl right-pannel">
+                        <table class="content">
+                            <tbody>
+                                <tr>
+                                    <td class="title" style="font-size: 15px;">中介交易买卖双方回复</td>
+                                </tr>
+                                @if (Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Completed &&
+                                                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Finished &&
+                                                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid)
+                                {
+                                    <tr>
+                                        <td>
+                                            <textarea id="tradeReply" name="tradeReply" cols="" rows="" class="ur_tra" style="min-height: 4px;"
+                                                placeholder="请输入回复内容"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="fr listdivitemlink">
+                                                <a href="javascript:void(0);" class="btn" title="回复交易" onclick="doTradeReplyWithOperation(@Model.CurrentTrade.TradeId);">
+                                                    回复</a>
+                                            </div>
+                                            <div class="fr listdivitemlink" style="margin-right:5px;">
+                                                <a href="@(Model.CurrentTrade.ResourceUrl)#comment" class="btn" style="background:#4193ff;" title="立即点评中介申请资源" target="_blank">
+                                                    点评资源</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>该中介交易状态为<span style="font-weight: bold; font-size: 15px;"> @(Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(Model.CurrentTrade.State))
+                                        </span>，不再提供回复
+                                        <div class="fr listdivitemlink">
+                                            <a href="@(Model.CurrentTrade.ResourceUrl)#comment" target="_blank" class="btn" style="background:#4193ff;" title="立即点评中介申请资源">
+                                                点评资源</a>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear line">
+                    <span class="fl l"></span>
+                    <span class="fr r"></span>
+                </div>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <div class="detail">
+            中介交易信息不存在
+        </div>    
+    }
+</div>
+
+<div class="clear" style="height: 30px;"></div>
+
+@section FooterJS{
+
+}

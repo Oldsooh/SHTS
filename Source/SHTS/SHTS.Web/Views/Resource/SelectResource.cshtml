@@ -1,0 +1,24 @@
+﻿@model Witbird.SHTS.Web.Models.SelectResourceRequest
+
+@{
+    ViewBag.Title = "择资源类型 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+<h2>SelectResource</h2>
+
+@using (Html.BeginForm("SelectResource","Resource"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>SelectResourceRequest</legend>
+
+        请选择资源类型 @Html.DropDownListFor(model => model.ResType, Html.ResourceList(), "--请选择资源类型--")
+        @Html.ValidationMessageFor(model => model.ResType)
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

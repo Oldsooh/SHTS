@@ -1,0 +1,98 @@
+﻿#news
+{
+    background-color: transparent;
+    margin-top: 0;
+    border-top: none;
+}
+
+    #news a
+    {
+        color: white;
+        font-weight: normal;
+        font-size: 15px;
+    }
+#activity
+{
+    background-color: #ffffff;
+    margin-top: 0;
+    border-top: 3px solid #ff9a15;
+}
+
+    #activity a
+    {
+        color: #2577e3;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+#splitline {
+    border-bottom:2px solid #E5E5E5;
+    width: 100%;
+    height: 2px;
+    clear: both;
+}
+
+.showLeft {
+    padding: 20px;
+    width: 658px;
+    border-left: none;
+    border-top: none;
+    border-right-width: 2px;
+}
+.newsRight {
+  width: 300px;
+}
+
+.comeing_summary {
+    padding: 10px 20px;
+    background: #f6f6f6;
+    border: 1px solid #eee;
+    font: 12px/1.5 Tahoma,'Microsoft Yahei','Simsun';
+color: #444;
+}
+
+    .comeing_summary div {
+        line-height: 24px;
+        color: rgb(68, 68, 68);
+display: block;
+font-family: Tahoma, 'Microsoft Yahei', Simsun;
+font-size: 12px;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+height: 72px;
+line-height: 24px;
+width: 617px;
+word-wrap: break-word;
+zoom: 1;
+    }
+
+.comeing_summary strong, b {
+font-weight: bold;
+}
+
+.comeing_summary .showContent {
+    color: rgb(68, 68, 68);
+display: inline;
+empty-cells: show;
+font-family: Tahoma, 'Microsoft Yahei', Simsun;
+font-size: 16px;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+line-height: 28.7999992370605px;
+word-wrap: break-word;
+}
+
+.contentTitle {
+    background: url(../images/portalbm_h.gif) repeat-x 0 100%;
+    border: 0px;
+}
+.contentTitle h2 {
+    border: none;
+    background: url(../images/portalbm_h_a.gif) repeat-x 0 100%;
+}
+.newsCagetory {
+    border: none;
+    margin-bottom: 0px;
+}

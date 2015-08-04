@@ -1,0 +1,93 @@
+﻿@model Witbird.SHTS.Web.Models.DemandModel
+@{
+    ViewBag.Title = Model.Demand.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Model.Demand.Title;
+    ViewBag.Description = Model.Demand.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/Content/css/demand.css" rel="stylesheet" />
+    <style type="text/css">
+        .listdivitemtable tr td { border: 1px solid #f1f1f1; padding-left: 10px; }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/demand/" class="blue">需求信息</a><span class="ch">&nbsp;&gt;&nbsp;@Model.Demand.Title</span>
+    </div>
+    <div id="mainLeft">
+        <div class="showTitle">
+            <h2>@Model.Demand.Title</h2>
+            <p>
+                发布时间：@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                阅读：@Model.Demand.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                来源：活动在线 需求信息 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                发布会员：@Model.Demand.UserName
+            </p>
+        </div>
+        <table class="listdivitemtable">
+            <tr>
+                <td>需求类型：<span>@Model.Demand.CategoryName</span></td>
+                <td>
+                    预算金额：
+                    @if (Model.Demand.Budget == 0)
+                    {
+                        <span>面议</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Demand.Budget 元</span>
+                    }
+                </td>
+                <td>需求时长：<span>@Model.Demand.TimeLength</span></td>
+            </tr>
+
+            <tr>
+                <td>参与人数：<span>@Model.Demand.PeopleNumber</span></td>
+                <td>开始时间：<span>@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd")</span></td>
+                <td>结束时间：<span>@Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></td>
+            </tr>
+            <tr>
+
+                <td>
+                    联系电话：
+                    <span style="color: #4193ff;">@Model.Demand.Phone</span>
+                </td>
+                <td>
+                    QQ/微信：
+                    <span style="color: #4193ff;">@Model.Demand.QQWeixin</span>
+                </td>
+                <td>
+                    电子邮箱：
+                    <span style="color: #4193ff;">@Model.Demand.Email</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    地区：<span>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
+                    <span style="color: #4193ff;">@Model.Demand.Address</span>
+                </td>
+            </tr>
+        </table>
+        <div class="showContent">
+            @if (Model.IsMember)
+            {
+                @(new HtmlString(Model.Demand.ContentStyle))
+            }
+            else
+            {
+                <div style="font-size:26px; color: #4193ff; line-height:30px;">
+                    亲，只有会员才可以查询详情哦！你现在只能看到简短描述。
+                    <br />
+                    <br />
+                </div>
+                @(new HtmlString(Model.Demand.Description))
+            }
+        </div>
+    </div>
+    @Html.Action("Right", "Common")
+
+    <div style="clear: both; height: 30px;"></div>
+</div>

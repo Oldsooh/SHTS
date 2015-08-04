@@ -1,0 +1,143 @@
+﻿.payment {
+    width: 140px;
+    height: 35px;
+    display: inline-block;
+    border: 1px solid #E5E5E5;
+    cursor: pointer;
+    margin: 10px;
+    padding: 5px;
+    padding-right: 0px;
+}
+
+    .payment label {
+        float: left;
+    }
+
+    .payment input {
+        vertical-align: middle;
+        display: none;
+    }
+
+    .payment img {
+        max-width: 135px;
+        height: 35px;
+        cursor: pointer;
+    }
+
+    .payment:hover {
+        border: 1px solid #FD9102;
+    }
+
+.selected {
+    border: 1px solid #FD9102;
+}
+
+    .selected span {
+        float: right;
+        display: block;
+        width: 12px;
+        height: 13px;
+        margin-top: 27px;
+        background: url(http://static.wan.com/index/images/bank_current.png) no-repeat top center;
+    }
+
+.listdiv {
+    border: 1px solid #E5E5E5;
+}
+
+.listdivitem {
+    height: auto;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+.listdivitemsummary {
+    height: auto;
+}
+
+.listdivitemtitle {
+    height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    position: relative;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+.listdivitemdescription {
+    height: auto;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+.listdivitemtable {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+    .listdivitemtable tr {
+    }
+
+        .listdivitemtable tr td {
+            height: 30px;
+            font-size: 14px;
+            color: #2577e3;
+        }
+
+            .listdivitemtable tr td span {
+                color: #FD9102;
+                font-size: 15px;
+            }
+
+.listdivitemtext {
+    font-size: 14px;
+    line-height: 22px;
+    overflow: hidden;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #777777;
+}
+
+.listdivitemlink {
+    margin-top: 15px;
+    height: 45px;
+    font-size: 14px;
+    color: #2577e3;
+    line-height: 40px;
+    font-weight: bold;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+    .listdivitemlink a {
+        display: block;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #2577e3;
+        color: #ffffff;
+        border-radius: 5px;
+        font-size: 12px;
+        float: right;
+        font-weight: normal;
+    }
+
+        .listdivitemlink a:hover {
+            background-color: #ff9a15;
+        }
+
+    .listdivitemlink .r_url_loc a {
+        width: auto;
+        height: 30px;
+        color: #2577e3;
+        line-height: 40px;
+        text-align: left;
+        background: none;
+        float: none;
+        display: inline;
+        font-weight: normal;
+    }
+
+        .listdivitemlink .r_url_loc a:hover {
+            color: #ff9a15;
+        }

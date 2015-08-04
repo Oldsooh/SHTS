@@ -1,0 +1,114 @@
+﻿@model Witbird.SHTS.Web.Models.DemandModel
+@{
+    ViewBag.Title = "需求列表" + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="javascript:void(0)" class="blue">我的需求</a><span class="ch">&nbsp;&gt;&nbsp;需求列表</span>
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">需求列表</p>
+            <p class="n1" style="float: right;">总共 <span style="color: #ff9a15;">@Model.AllCount</span> 条</p>
+        </div>
+
+        <table class="usertable">
+            <tr>
+                <td style="width: 40px;">编号</td>
+                <td style="overflow: hidden; text-align: left;"><strong>标题</strong></td>
+                <td style="width: 55px;"><strong>需求类型</strong></td>
+                <td style="width: 120px;"><strong>地区</strong></td>
+                <td style="width: 60px;"><strong>预算</strong></td>
+                <td style="width: 90px;"><strong>开始/结束</strong></td>
+                <td style="width: 80px;"><strong>发布时间</strong></td>
+                <td style="width: 30px;"><strong>删除</strong></td>
+                <td style="width: 30px;"><strong>编辑</strong></td>
+            </tr>
+            @if (Model.Demands != null && Model.Demands.Count > 0)
+            {
+                foreach (var item in Model.Demands)
+                {
+                <tr>
+                    <td>@item.RowNumber</td>
+                    <td style="text-align: left;">
+                        <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                    </td>
+                    <td>
+                        @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                        {
+                            foreach (var category in Model.DemandCategories)
+                            {
+                                if (category.Id == item.CategoryId)
+                                {
+                            <span>@category.Name</span>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</td>
+                    <td>￥@item.Budget</td>
+                    <td>@item.StartTime.Value.ToString("MM/dd") &nbsp; @item.EndTime.Value.ToString("MM/dd")</td>
+                    <td>@item.InsertTime.ToString("yyyy-MM-dd")</td>
+                    <td><a href="/demand/delete/@item.Id" style="color: #3858FA;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a></td>
+                    <td><a href="/demand/edit/@item.Id" style="color: #3858FA;">编辑</a></td>
+                </tr>
+                }
+            }
+        </table>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                <span><a href="/demand/mydemands/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                <span><a href="/demand/mydemands/1">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                <span><a href="/demand/mydemands/@i" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                <span><a href="/demand/mydemands/@i">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                <span><a href="/demand/mydemands/@Model.PageCount">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                <span><a href="/demand/mydemands/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+        </div>
+        <!--分页结束-->
+
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>

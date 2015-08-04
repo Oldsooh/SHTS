@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Demand]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+	[UserId] INT NOT NULL, 
+    [CategoryId] INT NOT NULL,
+	[Title] NVARCHAR(100) NOT NULL, 
+    [Description] NVARCHAR(300) NULL, 
+    [ContentStyle] TEXT NULL, 
+    [ContentText] TEXT NULL,
+	[Province] NVARCHAR(50) NULL, 
+    [City] NVARCHAR(50) NULL, 
+    [Area] NVARCHAR(50) NULL , 
+	[Address] NVARCHAR(50) NULL, 
+    [Phone] NVARCHAR(50) NULL,
+	[StartTime] DATETIME NULL,
+	[EndTime] DATETIME NULL,
+	[TimeLength] NVARCHAR(50) NULL,
+	[PeopleNumber] NVARCHAR(50) NULL,
+	[Budget] INT NULL,
+	[QQWeixin] NVARCHAR(50) NULL,
+	[Email] NVARCHAR(50) NULL,
+    [ViewCount] INT NOT NULL,
+	[IsActive] BIT NOT NULL,  
+    [InsertTime] DATETIME NOT NULL
+)

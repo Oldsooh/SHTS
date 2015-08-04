@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>文件上传</title>
+    <link href="~/Content/dropzone/css/basic.css" rel="stylesheet" />
+    <link href="~/Content/dropzone/css/dropzone.css" rel="stylesheet" />
+    <script src="~/Content/dropzone/dropzone.min.js"></script>
+    <style type="text/css">
+        #dropzone {
+  -webkit-box-shadow: 0 0 50px rgba(0,0,0,0.13);
+  box-shadow: 0 0 50px rgba(0,0,0,0.13);
+  padding: 4px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+#dropzone .dropzone {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+    </style>
+</head>
+<body style="width:328px;height:360px">
+<form action="/Content/upload/uploadimage.ashx" enctype="multipart/form-data" class="dropzone" id="dropzone">
+    <input type="file" name="file" style="display: none;"/>
+</form>
+<script src="~/Content/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    var myDropzone = new Dropzone("#dropzone", {
+        url: "/Content/upload/uploadimage.ashx",
+        init: function () {
+            this.on("complete", function (json) {
+                var postfile = JSON.parse(json.xhr.responseText);
+                var urls = $('#ImageUrls', parent.document).val();
+                if (urls == "") {
+                    urls = postfile.OriginalImage;
+                } else {
+                    urls = urls + "|" + postfile.OriginalImage;
+                }
+                $('#ImageUrls', parent.document).val(urls);
+            });
+        }
+    });
+</script>
+</body>
+</html>

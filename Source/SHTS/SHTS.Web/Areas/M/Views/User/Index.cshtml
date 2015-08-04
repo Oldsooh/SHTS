@@ -1,0 +1,56 @@
+﻿@model Witbird.SHTS.Model.User
+@{
+    ViewBag.Title = "用户中心";
+    Layout = "~/Areas/M/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Areas/M/Content/styles/shouwei/active.css" rel="stylesheet"/>
+    <link href="~/Areas/M/Content/styles/58/all_v20150415181405.css" rel="stylesheet" />
+    <link href="~/Areas/M/Content/styles/58/ucenter_v20150331202541.css" rel="stylesheet" />
+    <link href="~/Areas/M/Content/styles/58/m-weidian_v0.css" rel="stylesheet" />
+}
+<div class="body_div" style="margin-top: 1px;margin-left: 4px;">
+    <!--登录后未绑定显示-->
+    <div class="c_center">
+        <ul>
+            <li class="border_m border_r"><a class="my_employ" href="~/m/user/ViewUser">
+                我的信息
+            </a></li>
+            <li class="border_m">
+                <a class="my_order" href="~/m/User/UpdatePassword">密码管理</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m">
+                <a class="my_collect" href="~/m/User/identify">会员认证</a>
+            </li>
+            <li class="border_m border_r">
+                <a class="my_publish" href="~/m/User/ToVip">Vip认证</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m border_r">
+                <a class="my_record" href="~/m/demand/add">发布需求</a>
+            </li>
+            <li class="border_m">
+                <a class="my_info" href="~/m/demand/">查看需求</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m border_r">
+                <a class="my_publish" href="~/m/activity/ShareActivity">发布活动
+                </a>
+            </li>
+            <li class="border_m"><a class="my_back " href="~/m/activity/">浏览活动</a></li>
+        </ul>
+        <ul>
+            <li class="border_m">
+                <a class="my_order" href="~/m/resource/spacelist">浏览资源</a>
+            </li>
+            <li class="border_m">
+            </li>>
+        </ul>
+    </div>
+</div>
+<div class="tg-bg" id="tg-bg"></div>

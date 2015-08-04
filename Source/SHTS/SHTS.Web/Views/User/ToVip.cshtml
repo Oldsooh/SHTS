@@ -1,0 +1,70 @@
+﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
+@{
+    ViewBag.Title = "用户中心-升级为Vip | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Content/css/user.css" rel="stylesheet"/>
+    <link href="~/Content/css/tovip.css" rel="stylesheet" />
+    <style type="text/css">
+        .ur_title {
+            width: 80px;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/user/" class="blue">用户中心</a><span class="ch">&nbsp;&gt;&nbsp;升级为Vip</span>
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">账户升级为Vip</p>
+        </div>
+        <div class="steptovip">
+            <ul class="nav nav-justified regStep">
+                <li class="active"><span>1</span> Vip会员协议</li>
+                <li><span>2</span> 充值Vip费用</li>
+                <li><span>3</span> 升级Vip成功</li>
+            </ul>
+        </div>
+        <form action="#" enctype="multipart/form-data" method="POST">
+            <div class="ur_title lh24" style="width: 100%; text-align: left; height: 300px;">
+                <div style="overflow: auto; height: 300px;">
+                    @if (Model.ToVipNotice != null)
+                    {
+                        @(new HtmlString(Model.ToVipNotice.ContentStyle))
+                    }
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="user_right_bt">
+            </div>
+            <div class="ur_tj fr">
+                <input type="checkbox" value="yes" name="vipnotice" id="js_mobile_chk"/>
+                <label for="js_mobile_chk">同意『活动在线Vip用户协议』</label>&nbsp;&nbsp;
+                <input name="" id="submit" type="button" class="tjzl_btn userbtn btndisabled" disabled="disabled" value="下一步"/>
+            </div>
+        </form>
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        $("#js_mobile_chk").change(function () {
+            $("#submit").removeAttr("disabled");
+            $("#submit").removeClass("btndisabled");
+            if (!$(this).is(':checked')) {
+                $("#submit").attr("disabled", "disabled");
+                $("#submit").addClass("btndisabled");
+            }
+        });
+        $("#submit").click(function() {
+            window.location.href = "/user/VipOrder";
+        });
+    </script>
+}

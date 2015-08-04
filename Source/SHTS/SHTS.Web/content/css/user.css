@@ -1,0 +1,13 @@
+﻿
+.userbtn {
+            background-color: #ff9a15;
+        color: #ffffff;
+        border-radius: 4px;
+    border: none;
+}
+
+.btndisabled {
+    background-color: #e7e7e7;
+color: #A1A1A1;
+cursor: not-allowed;
+}

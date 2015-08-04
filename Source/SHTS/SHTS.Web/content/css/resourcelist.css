@@ -1,0 +1,170 @@
+﻿.showLeft
+{
+    padding: 0 10px;
+    border: 1px solid #E5E5E5;
+}
+
+.newsLeft
+{
+    width: 660px;
+    float: left;
+}
+
+.newsRight
+{
+    width: 282px;
+    float: right;
+}
+
+.newsCagetory
+{
+    width: 260px;
+    min-height: 100px;
+    float: left;
+    border: 1px solid #E5E5E5;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.newsli
+{
+    width: 100%;
+    line-height: 24px;
+    height: 24px;
+    display: block;
+}
+
+    .newsli a
+    {
+        white-space: nowrap;
+        padding-right: 5px;
+        display: block;
+        float: left;
+        overflow: hidden;
+    }
+
+.newsli_date
+{
+    display: block;
+    float: right;
+}
+
+.newsa
+{
+    width: 200px;
+}
+
+.newsli_status
+{
+    color: #2C5FA3;
+    padding-right: 5px;
+    display: block;
+    float: left;
+}
+
+.newsli_date
+{
+    display: block;
+    float: right;
+}
+
+.newsFirstTitle
+{
+    height: 30px;
+    text-align: center;
+    font-family: 'Microsoft YaHei';
+    font-size: 18px;
+    line-height: 30px;
+    overflow: hidden;
+    padding: 0 30px;
+    font-weight: bold;
+}
+
+    .newsFirstTitle a
+    {
+        color: #357FE0;
+    }
+
+        .newsFirstTitle a:hover
+        {
+            color: #ff9a15;
+        }
+
+.newsFirstDescription
+{
+    width: 100%;
+    height: 75px;
+    line-height: 25px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .newsFirstDescription a
+    {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        color: #ff9a15;
+        display: block;
+        background-color: #ffffff;
+        padding: 0 3px 0 30px;
+    }
+
+.newsFour
+{
+    width: 100%;
+    height: 80px;
+    padding-top: 7px;
+}
+
+    .newsFour p
+    {
+        height: 22px;
+        line-height: 22px;
+        overflow: hidden;
+    }
+
+    .newsFour a
+    {
+        float: left;
+        display: block;
+        width: 230px;
+        color: #2577e3;
+    }
+
+        .newsFour a:hover
+        {
+            color: #ff9a15;
+        }
+
+.showTitle
+{
+    text-align: center;
+    padding: 15px 0;
+}
+
+    .showTitle h2
+    {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0 auto;
+    }
+
+    .showTitle p
+    {
+        height: 20px;
+        line-height: 20px;
+        border-bottom: 1px dashed #E5E5E5;
+        padding: 10px 0;
+        color: #888888;
+    }
+
+.showContent
+{
+    padding: 10px 0 40px 0;
+}
+
+    .showContent img
+    {
+        max-width: 600px;
+    }

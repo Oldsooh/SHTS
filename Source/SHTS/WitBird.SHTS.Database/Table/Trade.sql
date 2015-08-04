@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[Trade]
+(
+	[TradeId] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [UserId] INT NOT NULL, 
+    [UserQQ] NVARCHAR(20) NOT NULL, 
+    [UserCellPhone] NVARCHAR(20) NOT NULL, 
+    [UserEmail] NVARCHAR(MAX) NOT NULL, 
+    [UserBankInfo] NVARCHAR(MAX) NOT NULL, 
+	[UserAddress] NVARCHAR(MAX) NOT NULL,
+    [SellerId] INT NOT NULL, 
+    [BuyerId] INT NOT NULL, 
+    [TradeAmount] DECIMAL(18, 2) NOT NULL, 
+    [TradeSubject] NTEXT NOT NULL, 
+	[TradeBody] NTEXT NOT NULL, 
+    [Payer] INT NOT NULL, 
+	[PayCommission] DECIMAL(18, 2) NOT NULL, 
+    [PayCommissionPercent] FLOAT NOT NULL, 
+    [CreatedTime] DATETIME NOT NULL, 
+    [LastUpdatedTime] DATETIME NOT NULL, 
+    [State] INT NOT NULL, 
+    [BuyerPay] DECIMAL(18, 2) NOT NULL, 
+    [SellerGet] DECIMAL(18, 2) NOT NULL, 
+    [ViewCount] INT NOT NULL, 
+    [ResourceUrl] NVARCHAR(MAX) NOT NULL, 
+    [IsBuyerPaid] BIT NOT NULL, 
+    [TradeOrderId] NVARCHAR(50) NOT NULL
+)

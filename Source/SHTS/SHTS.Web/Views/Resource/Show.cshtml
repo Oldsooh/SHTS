@@ -1,0 +1,424 @@
+﻿@using Witbird.SHTS.Model
+@model Witbird.SHTS.DAL.New.Resource
+@{
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+
+    var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
+
+    ViewBag.Title = Model.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Model.Title;
+    ViewBag.Description = Model.Description;
+
+    var rightModel = ViewData["RightModel"] as Right;
+
+    List<string> imageurls = new List<string>();
+    if (!string.IsNullOrEmpty(Model.ImageUrls))
+    {
+        imageurls = Model.ImageUrls.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+    }
+
+    var sectionName = "space";
+    var sectionText = "活动场地";
+    var picTitle = "场地图片";
+    switch (Model.ResourceType)
+    {
+        case 2:
+            sectionName = "actorlist";
+            sectionText = "演艺人员";
+            picTitle = "演员图片";
+            break;
+        case 3:
+            sectionName = "equipmentlist";
+            sectionText = "活动设备";
+            picTitle = "设备图片";
+            break;
+        case 4:
+            sectionName = "otherlist";
+            sectionText = "其他资源";
+            picTitle = "资源图片";
+            break;
+        case 1:
+        default:
+            sectionName = "spacelist";
+            sectionText = "活动场地";
+            picTitle = "场地图片";
+            break;
+    }
+
+
+}
+@section head
+{
+    <link href="~/Content/css/topview.css" rel="stylesheet" />
+    <link href="~/Content/gallery/DB_gallery.css" rel="stylesheet" />
+    <link href="~/Content/css/resourceview.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7b9155f8ef92e48c30256ae54c2ce009"></script>
+    <style>
+        .commentcontent img {
+            max-width: 350px;
+            max-height: 200px;
+        }
+    </style>
+    <style type="text/css">
+        #@(sectionName) {
+            background-color: #ffffff;
+            margin-top: 0;
+            border-top: 3px solid #ff9a15;
+        }
+
+            #@(sectionName) a {
+                color: #2577e3;
+                font-weight: bold;
+                font-size: 16px;
+            }
+    </style>
+}
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span> @Html.ActionLink(sectionText, sectionName, null, new { @class = "blue" })<span class="ch">&nbsp;&gt;&nbsp;@Model.Title</span>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="comeing_threadstation">
+        <div id="DB_gallery">
+            <div class="DB_imgSet">
+                <div class="DB_imgWin">
+                    <img src="~/uploadfiles/2014/12/31/1.jpg" alt="" />
+                </div>
+                <div class="DB_page"><span class="DB_current">0</span>-<span class="DB_total">0</span></div>
+                <div class="DB_prevBtn">
+                    <img src="~/Content/gallery/img/prev_off.png" alt="jquery相册" />
+                </div>
+                <div class="DB_nextBtn">
+                    <img src="~/Content/gallery/img/next_off.png" alt="图片相册" />
+                </div>
+            </div>
+            <div class="DB_thumSet">
+                <ul class="DB_thumMove">
+                    @foreach (var url in Model.BigImgUrls)
+                    {
+                        <li>
+                            <a href="@url">
+                                <img src="@url" alt="@Model.Title" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="DB_thumLine"></div>
+                <div class="DB_prevPageBtn">
+                    <img src="~/Content/gallery/img/prev_page.png" alt="上一页" />
+                </div>
+                <div class="DB_nextPageBtn">
+                    <img src="~/Content/gallery/img/next_page.png" alt="下一页" />
+                </div>
+            </div>
+        </div>
+        <div id="rightInfoWrapper" class="fLeft">
+            <div id="price_wrapper">
+                <div class="cOverflow">
+                    <div class="fLeft">
+                        <font id="per_cost">@Model.Title</font>
+                    </div>
+                </div>
+                <div class="star cOverflow">
+                    <div class="noDate"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Model.ShortDesc</div>
+                </div>
+            </div>
+            <div id="meeeting_room_info" class="cOverflow" style="border-bottom: none;">
+                @switch (Model.ResourceType)
+                {
+                    case 1:
+                        @Html.Partial("SpaceInfoPartial", Model);
+                                                                break;
+                    case 2:
+                    @Html.Partial("ActorInfoPartial", Model);
+                                                            break;
+                    case 3:
+                    @Html.Partial("EquipInfoPartial", Model);
+                                                            break;
+                    case 4:
+                    @Html.Partial("OtherInfoPartial", Model);
+                                                            break;
+                    default:
+                                                            break;
+                }
+            </div>
+            <div class="submitWrap cf cOverflow" style="display: none;">
+                <div class="submit" id="seo_submit-4" onclick="_hmt.push(['_trackEvent', 'pkg-booking-btn','click']);">
+                    中介申请
+                </div>
+                <div class="customize-plan" style="clear: both;">
+                    申请与该活动场地发起中介交易
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="splitline"></div>
+    <div class="newsLeft showLeft" style="border-bottom: none;">
+        <div class="showTitle" style="text-align: left;border-bottom: 1px solid #B9B9B9;">
+            <h2 class="detail_title" style="font-family: 'microsoft yahei', simsun; font-size: 18px; font-weight: normal; color: #0066CC;">
+                详细介绍
+            </h2>
+        </div>
+        <div class="showContent" style="overflow: hidden;">
+            @(new HtmlString(Model.Description))
+        </div>
+        <div class="showTitle" style="text-align: left; border-bottom: 1px solid #B9B9B9;">
+            <h2 class="detail_title" style="font-family: 'microsoft yahei', simsun; font-size: 18px; font-weight: normal; color: #0066CC;">
+                @(picTitle)
+            </h2>
+        </div>
+        <div class="cOverflow">
+            @for (int i = 0; i < Model.BigImgUrls.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <div class="fLeft cOverflow intro_img_wrapper">
+                        <div class="itemimg">
+                            <a class="fancybox" href="@Model.ImgUrls[i]" data-fancybox-group="@Model.Id" title="@Model.Title">
+                                <img src="@Model.BigImgUrls[i]" alt="">
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="fRight cOverflow intro_img_wrapper ">
+                        <div class="itemimg">
+                            <a class="fancybox" href="@Model.ImgUrls[i]" data-fancybox-group="@Model.Id" title="@Model.Title">
+                                <img src="@Model.BigImgUrls[i]" alt="">
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div id="comment" class="showTitle" style="text-align: left; border-bottom: 1px solid #B9B9B9;">
+            <h2 class="detail_title" style="font-family: 'microsoft yahei', simsun; font-size: 18px; font-weight: normal; color: #0066CC;">
+                客户点评
+            </h2>
+        </div>
+        @if (Model.CommentList != null && Model.CommentList.Count > 0)
+        {
+            <div class="showContent rcomment" style="overflow: hidden;">
+                <ul>
+                    @foreach (var comment in Model.CommentList)
+                    {
+                        <li>
+                            <div class="commentposter">
+                                <span>用户</span>@comment.UserId
+                                <span class="commenttime">@comment.CreateTime.ToString("yyyy-MM-dd")</span>
+                            </div>
+                            <div class="commentcontent">
+                                @(new HtmlString(comment.Content))
+
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="showContent" style="overflow: hidden;">
+                暂无点评
+            </div>
+        }
+
+
+        <div class="showContent" style="overflow: hidden;">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <textarea id="resourceComments" name="resourceComments" cols="" rows=""
+                                  placeholder="请输入评论内容"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #ff6a00; font-size: 16px;">提示：只有对该资源进行过中介交易的客户才能评论该资源</td>
+                    <td>
+                        <div class="fr listdivitemlink" style="margin-top: 10px;">
+                            <a href="javascript:void(0);" class="btn" title="" onclick="doResourceComments(@Model.Id);">
+                                立即点评
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div class="newsRight">
+        <div class="newsCagetory">
+            <div class="contentItem">
+                <div id="diyrighttop" class="area" style="width: 300px; height: 300px;">
+                </div>
+                <input type="hidden" value="@Model.AreaId" id="ACity" />
+                <input type="hidden" value="@Model.DetailAddress" id="AAdress" />
+            </div>
+        </div>
+        @if (rightModel != null)
+        {
+            <div class="newsCagetory">
+                <div class="contentTitle">
+                    <h2>活动场地</h2>
+                </div>
+                <div class="contentItem">
+                    <ul class="newsul">
+                        @if (rightModel.Spaces != null && rightModel.Spaces.Count > 0)
+                        {
+                            foreach (var item in rightModel.Spaces)
+                            {
+                                <li class="newsli">
+                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="newsCagetory">
+                <div class="contentTitle">
+                    <h2>演艺人员</h2>
+                </div>
+                <div class="contentItem">
+                    <ul class="newsul">
+                        @if (rightModel.Actors != null && rightModel.Actors.Count > 0)
+                        {
+                            foreach (var item in rightModel.Actors)
+                            {
+                                <li class="newsli">
+                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="newsCagetory">
+                <div class="contentTitle">
+                    <h2>活动设备</h2>
+                </div>
+                <div class="contentItem">
+                    <ul class="newsul">
+                        @if (rightModel.Equipments != null && rightModel.Equipments.Count > 0)
+                        {
+                            foreach (var item in rightModel.Equipments)
+                            {
+                                <li class="newsli">
+                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="newsCagetory">
+                <div class="contentTitle">
+                    <h2>活动设备</h2>
+                </div>
+                <div class="contentItem">
+                    <ul class="newsul">
+                        @if (rightModel.Others != null && rightModel.Others.Count > 0)
+                        {
+                            foreach (var item in rightModel.Others)
+                            {
+                                <li class="newsli">
+                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section FooterJS
+{
+    <script src="~/Content/gallery/js/jquery.DB_gallery.js"></script>
+    <script src="~/Content/fancyBox/jquery.fancybox.js"></script>
+    <link href="~/Content/fancyBox/jquery.fancybox.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <script type="text/javascript">
+
+
+        var resourceComments;
+        KindEditor.ready(function (K) {
+            resourceComments = K.create('#resourceComments', {
+                width: '655px',
+                height: '250px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: false,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|',
+                     'emoticons', 'link', 'image']
+            });
+        });
+
+        function doResourceComments(rid) {
+            $.ajax({
+                url: '/Resource/Comment',
+                data: { rid: rid, content: resourceComments.html() },
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        alert("资源评论成功");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("网络异常，资源评论失败");
+                }
+            });
+        }
+
+        function runslide() {
+            $('#DB_gallery').DB_gallery({
+                thumWidth: 110,
+                thumGap: 8,
+                thumMoveStep: 4,
+                moveSpeed: 300,
+                fadeSpeed: 500
+            });
+        }
+
+        $(function () {
+            runslide();
+            var ACity = $("#ACity").val();
+            var AAdress = $("#AAdress").val();
+            // 百度地图API功能
+            var map = new BMap.Map("diyrighttop");
+            map.addControl(new BMap.NavigationControl());
+            map.enableScrollWheelZoom();
+            map.enableContinuousZoom();
+            if (ACity != "") {
+                map.setCurrentCity(ACity);
+                var local = new BMap.LocalSearch(map, {
+                    renderOptions: { map: map }
+                });
+                local.search('@Model.DetailAddress');
+            }
+            else {
+                map.centerAndZoom("北京", 16);
+            }
+
+            //fancy
+            $('.fancybox').fancybox();
+        });
+
+    </script>
+}

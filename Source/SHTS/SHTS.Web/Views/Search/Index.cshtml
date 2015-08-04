@@ -1,0 +1,140 @@
+﻿@model Witbird.SHTS.Web.Models.SearchViewModel
+@{
+    ViewBag.Title = "搜索" + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name; ;
+    ViewBag.Keywords = Model.KewWords;
+    ViewBag.Description = Model.KewWords;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/news.css" rel="stylesheet"/>
+    <link href="~/Content/css/activityview.css" rel="stylesheet" />
+    <link href="~/Content/css/topview.css" rel="stylesheet"/>
+    <link href="~/Content/css/search.css" rel="stylesheet" />
+    <style id="diy_style" type="text/css">
+        #frameELPj42 {
+            margin-bottom: 10px !important;
+        }
+
+        #portal_block_186 {
+            margin-bottom: 20px !important;
+        }
+
+        .sttl {
+            margin: 10px 0;
+            padding: 5px;
+            border-bottom: 1px solid #CCC;
+            background: #F5F5F5;
+        }
+        .desc {
+            display: block;
+        }
+    </style>
+}
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/news/" class="blue">搜索</a><span class="ch">&nbsp;&gt;&nbsp;@Model.Keywords</span>
+    </div>
+    <div class="comeing_ct2 cl" style="background-image: none;">
+        <div class="sttl mbn">
+            <h2>结果: <em>找到 “<span class="emfont">@Model.Keywords</span>” 相关内容 @Model.TotalHit 个</em>
+            </h2>
+        </div>
+        <div class="mn" style="width: inherit;">
+            <ul class="comeing_picnewslist">
+                @if (Model.resultList != null && Model.resultList.Count > 0)
+                {
+                    foreach (var n in Model.resultList)
+                    {
+                        <li class="cl on" onmouseover=" this.className = 'cl on' " onmouseout=" this.className = 'cl on' ">
+                            @if (n.ImgList != null && n.ImgList.Length > 0)
+                            {
+                                <a href="@n.Url" target="_blank">
+                                    <img src="@n.ImgList[0]" alt="@n.Title">
+                                </a>
+                            }
+                            <h3><a href="@n.Url" target="_blank" style="">
+                                    @(new HtmlString(n.Title))</a>
+                            </h3>
+                            <p class="about">
+                                @if (n.ImgList != null && n.ImgList.Length > 1)
+                                {
+                                    <p>
+                                        @for (int i = 1; i < n.ImgList.Length; i++)
+                                        {
+                                            <a href="@n.Url" target="_blank">
+                                                <img src="@n.ImgList[i]" alt="@n.Title" style="width: 50px; height: 50px;" width="50" height="50">
+                                            </a>
+                                        }
+                                    </p>
+                                }
+                                <div class="desc">@(new HtmlString(n.Content))...</div></p>
+                            <p class="info">
+                                <span>@n.Time</span>
+                            </p>
+                        </li>
+                    }
+                }
+            </ul>
+            <div class="pgs cl ptm pbn">
+
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="fenye" style="margin: 0 auto; margin-top: 20px; margin-bottom: 20px;">
+        @if (Model.PageCount > 1)
+        {
+            for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+            {
+                if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                {
+                    //上一页
+                    if (Model.PageIndex > 1)
+                    {
+            <span><a href="/Search/(@Model.Keywords)/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+            <span><a href="Search/@Model.Keywords/page=1">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+            <span><a href="/Search/@Model.Keywords/@i" class="no">@i</a></span>
+                                }
+                                else
+                                {
+            <span><a href="/Search/@Model.Keywords/@i">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+            <span><a href="Search/@Model.Keywords/@Model.PageCount">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+            <span><a href="/Search/@Model.Keywords/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+    </div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        $(function() {
+            document.getElementById("search_txt").value='@Model.Keywords';
+        });
+    </script>
+}

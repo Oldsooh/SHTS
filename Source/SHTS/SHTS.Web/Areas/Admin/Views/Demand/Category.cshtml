@@ -1,0 +1,175 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.DemandModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <style type="text/css">
+        .tablelink:hover
+        {
+            cursor: pointer;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+
+    <script type="text/ecmascript">
+        function edit(obj) {
+            document.getElementById("addC").style.display = 'none';
+            document.getElementById("editC").style.display = 'block';
+            document.getElementById("categoryId").value = obj.id;
+            document.getElementById("categoryName").value = obj.getAttribute("category");
+            document.getElementById("displayOrder").value = obj.getAttribute("order");
+        }
+        function cancelEdit() {
+            document.getElementById("addC").style.display = 'block';
+            document.getElementById("editC").style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/news/index">供求类别设置</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab1" class="selected">供求类别设置</a></li>
+                </ul>
+            </div>
+
+            <div id="tab1" class="tabson">
+
+                <div id="addC" style="padding-bottom: 10px; display: block;">
+                    <form action="/admin/demand/addcategory" method="post">
+                        类别名称
+                        <input name="name" type="text" class="scinput" />
+                        &nbsp;&nbsp;&nbsp;
+                        排列序号
+                        <input name="displayOrder" type="text" class="scinput" value="10" style="width: 50px;" />&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="添 加" class="btn" />
+                    </form>
+                </div>
+
+                <div id="editC" style="padding-bottom: 10px; display: none;">
+                    <form action="/admin/demand/editcategory" method="post">
+                        <input type="hidden" name="id" id="categoryId" value="0" />
+                        类别名称
+                        <input id="categoryName" name="name" type="text" class="scinput" />
+                        &nbsp;&nbsp;&nbsp;
+                        排列序号
+                        <input id="displayOrder" name="displayOrder" type="text" class="scinput" value="10" style="width: 50px;" />&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="更 新" class="btn" />&nbsp;&nbsp;&nbsp;
+                        <input type="button" value="取 消" class="btn" onclick="cancelEdit()" />
+                    </form>
+                </div>
+
+                <table class="tablelist">
+                    <thead>
+                        <tr>
+                            @*<th>
+                                <input name="" type="checkbox" value="" checked="checked" /></th>*@
+                            <th>类别ID</th>
+                            <th>类别名称</th>
+                            <th>排列序号</th>
+                            <th>是否启用</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                        {
+                            foreach (var item in Model.DemandCategories)
+                            {  
+                            <tr>
+                                @*<td>
+                                    <input name="" type="checkbox" value="" /></td>*@
+                                <td>
+                                    <span>@item.Id</span>
+                                </td>
+                                <td>
+                                    <span>@item.Name</span>
+                                </td>
+                                <td>
+                                    <span>@item.DisplayOrder</span>
+                                </td>
+                                <td>@if (item.IsActive)
+                                    {<span style="font-family: 'Microsoft YaHei';">√</span>}</td>
+                                <td>
+                                    <a class="tablelink" id="@item.Id" category="@item.Name" order="@item.DisplayOrder" onclick="edit(this)">编辑</a> &nbsp;&nbsp;
+                                    @if (item.IsActive)
+                                    {
+                                        <a href="/admin/demand/ActiveOrDeleteCategory?id=@item.Id&option=active" class="tablelink" style="color:#ff0000;">禁用</a> 
+                                    }
+                                    else
+                                    {
+                                        <a href="/admin/demand/ActiveOrDeleteCategory?id=@item.Id&option=active" class="tablelink">启用</a> 
+                                    }
+                                    &nbsp;&nbsp;
+                                    <a href="/admin/demand/ActiveOrDeleteCategory?id=@item.Id&option=delete" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>
+                                </td>
+                            </tr> 
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+
+
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+

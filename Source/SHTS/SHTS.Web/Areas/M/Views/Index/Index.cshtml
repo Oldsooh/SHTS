@@ -1,0 +1,203 @@
+﻿@model Witbird.SHTS.Web.Areas.M.Models.HomeModel
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Areas/M/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #home a
+        {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+}
+
+<div class="cotentMain">
+    <div class="slide">
+        <img src="/content/m/images/banner.jpg" alt="" />
+    </div>
+</div>
+
+<div class="cotentMain">
+    <!--需求列表开始-->
+    <div class="commonTitle">
+        <h3>需求信息</h3>
+        <a href="/m/demand/">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.Demands != null && Model.Demands.Count > 0)
+            {
+                foreach (var item in Model.Demands)
+                {
+                    if (item.InsertTime.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.InsertTime.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <div class="commonTitle">
+        <h3>活动在线</h3>
+        <a href="/m/activity/">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
+            {
+                foreach (var item in Model.ActivityList)
+                {
+                    if (item.CreatedTime.Value.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/activity/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/activity/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.CreatedTime.Value.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <!--需求列表结束-->
+
+
+    <!--四大资源开始-->
+    <div class="resourceFour">
+        <ul class="resourceFourUl">
+            <li class="resourceFourLi">
+                <img src="/content/m/images/functionare1.jpg" /></li>
+            <li class="resourceFourLi">
+                <img src="/content/m/images/functionare2.jpg" /></li>
+            <li class="resourceFourLi">
+                <img src="/content/m/images/functionare3.jpg" /></li>
+            <li class="resourceFourLi">
+                <img src="/content/m/images/functionare4.jpg" /></li>
+        </ul>
+    </div>
+    <div class="commonTitle">
+        <h3>活动场地</h3>
+        <a href="http://www.activity-line.com/m/resource/spacelist">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.Right.Spaces != null && Model.Right.Spaces.Count > 0)
+            {
+                foreach (var item in Model.Right.Spaces)
+                {
+                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.CreateTime.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <div class="commonTitle">
+        <h3>演艺人员</h3>
+        <a href="http://www.activity-line.com/m/resource/actorlist">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.Right.Actors != null && Model.Right.Actors.Count > 0)
+            {
+                foreach (var item in Model.Right.Actors)
+                {
+                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.CreateTime.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <div class="commonTitle">
+        <h3>活动设备</h3>
+        <a href="http://www.activity-line.com/m/resource/equipmentlist">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.Right.Equipments != null && Model.Right.Equipments.Count > 0)
+            {
+                foreach (var item in Model.Right.Equipments)
+                {
+                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.CreateTime.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <div class="commonTitle">
+        <h3>其他资源</h3>
+        <a href="http://www.activity-line.com/m/resource/otherlist">更多</a>
+    </div>
+    <div class="commonList">
+        <ul class="commonUl">
+            @if (Model.Right.Others != null && Model.Right.Others.Count > 0)
+            {
+                foreach (var item in Model.Right.Others)
+                {
+                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                    class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
+                    }
+
+                    else
+                    {
+                <li class="commonLi"><a href="/m/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                    <i class="p_newslist_ico_num">@item.CreateTime.ToString("MM-dd")</i></em> </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    <!--四大资源结束-->
+</div>
+
+
+@section FooterJS
+{
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+    <script src="/content/js/city.js"></script>
+    <script>
+        setLocalCity();
+    </script>
+}

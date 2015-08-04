@@ -1,0 +1,170 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.SinglePageModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <script src="/Content/upload/jquery.form.js"></script>
+    <script src="/Content/upload/uploadimage.js"></script>
+
+    <style type="text/css">
+        .scinput
+        {
+            width:500px;
+        }
+    </style>
+
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <script type="text/ecmascript">
+        var editorContent;//定义编辑器
+        KindEditor.ready(function (K) {
+            editorContent = K.create('#editorContent', {
+                height: '500px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: true,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'table']
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function editNews() {
+            $("#editorContent").val(editorContent.html());//把编辑器的内空复制到 textarea 标签
+            $.ajax({
+                url: '/admin/news/edit',
+                data: $("#newsform").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        window.location.href = "/admin/news/index";
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("网络异常，添加失败");
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="#">更新新闻公告</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab2">更新新闻公告</a></li>
+                </ul>
+            </div>
+
+
+
+
+            <div id="tab2" class="tabson">
+                <form id="newsform" method="post" action="/admin/news/edit">
+                    <input type="hidden" name="id" value="@Model.SinglePage.Id" />
+                    <ul class="forminfo">
+
+                        <li>
+                            <label>标题<b>*</b></label><input id="title" name="title" type="text" class="scinput" value="@Model.SinglePage.Title" />
+                            <span style="display:inline; padding-left:20px;">必填，非常重要</span>
+                        </li>
+                        <li>
+                            <label>关键字<b>*</b></label><input id="keywords" name="keywords" type="text" class="scinput" value="@Model.SinglePage.Keywords" />
+                            <span style="display:inline; padding-left:20px;">用于百度谷歌等搜索引擎</span>
+                        </li>
+                        <li>
+                            <label>描述<b>*</b></label><textarea id="description" name="description" rows="5"  style="width:500px; border:solid 1px #a7b5bc; text-indent: 10px; line-height:20px;">@Model.SinglePage.Description</textarea>
+                            <span style="display:inline; padding-left:20px;">300字最佳，用于列表页显示</span>
+                        </li>
+                        <li>
+                            <label>类型<b>*</b></label>
+                            <div class="vocation">
+                                <select name="category" class="select2">
+                                    <option value="Notice" id="Notice">网站公告</option>
+                                    <option value="Company" id="Company">公司新闻</option>
+                                    <option value="Industry" id="Industry">行业新闻</option>
+                                    <option value="Resource" id="Resource">资源新闻</option>
+                                    <option value="Supplydemand" id="Supplydemand">供求新闻</option>
+                                </select>
+                            </div>
+                            <script type="text/ecmascript">
+                                var option = document.getElementById("@Model.SinglePage.Category");
+                                option.setAttribute("selected", "selected");
+                            </script>
+                        </li>
+                        <li>
+                            <label>封面<b>*</b></label><input id="imageURl" name="imageURl" type="text" class="scinput" value="@Model.SinglePage.ImageUrl" onclick="uploadimage(this)" url="/content/upload/uploadimage300200.ashx" /></li>
+                        <li>
+                            <label>内容<b>*</b></label><textarea id="editorContent" name="contentStyle" style="border:1px solid #cdcdcd; width:800px; height:350px;" >@Model.SinglePage.ContentStyle</textarea></li>
+                        <li>
+                            <label>&nbsp;</label><input onclick="editNews()" type="button" class="btn" value="更 新" /></li>
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+    </div>
+
+
+</body>
+
+</html>
+

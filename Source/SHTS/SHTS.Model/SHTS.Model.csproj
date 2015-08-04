@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9DB3C7CC-FBCF-44BC-A839-F1AB320156E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Witbird.SHTS.Model</RootNamespace>
+    <AssemblyName>SHTS.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessAnalytics.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Activity.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Actor.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActorType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdminRole.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdminUser.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="City.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comment.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Config.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Criteria\QueryActivityCriteria.cs" />
+    <Compile Include="Demand.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DemandCategory.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\AccessAnalyticsWithUser.cs" />
+    <Compile Include="Equipment.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EquipType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\Activity.cs" />
+    <Compile Include="Extensions\Demand.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\Resource\Paging.cs" />
+    <Compile Include="Extensions\Resource\QueryResource.cs" />
+    <Compile Include="Extensions\Resource\QueryResourceResult.cs" />
+    <Compile Include="Extensions\Resource\UserFilter.cs" />
+    <Compile Include="Extensions\Right.cs" />
+    <Compile Include="Extensions\SinglePage.cs" />
+    <Compile Include="Extensions\Trade.cs" />
+    <Compile Include="Extensions\User.cs" />
+    <Compile Include="Facility.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GuestBook.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Image.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Other.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OtherType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Parameters\DemandParameters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicConfig.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Resource.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShortMessage.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SHTSModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SHTSModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SHTSModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SHTSModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SHTSModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SinglePage.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Space.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpaceFacility.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpaceFeature.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpacePeople.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpaceSize.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpaceType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Test.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Trade.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeHistory.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeOrder.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBankInfo.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserVip.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Video.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <EntityDeploy Include="SHTSModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SHTSModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="SHTSModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SHTSModel.edmx</DependentUpon>
+      <LastGenOutput>SHTSModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="SHTSModel.edmx.diagram">
+      <DependentUpon>SHTSModel.edmx</DependentUpon>
+    </None>
+    <None Include="SHTSModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SHTSModel.edmx</DependentUpon>
+      <LastGenOutput>SHTSModel.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,115 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.MemberViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>VIP会员审核列表</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">会员管理</a></li>
+            <li><a href="#">VIP会员审核</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif" /></i></th>
+                    <th>会员ID</th>
+                    <th style="width: 100px;">缩略图</th>
+                    <th>申请时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var n in Model.VipInfos)
+                {
+                    int number = 1;
+                    <tr>
+                        <td>@(number++)</td>
+                        <td><a href="/admin/member/EditUser/@n.UserId" class="tablelink" title="点击查看用户">@n.UserId &nbsp;&nbsp;(查看用户)</a></td>
+                        <td style="padding-top:7px;text-align:center;">
+                            <a href="@n.IdentifyImg" target="_blank" title="点击查看原图">
+                            <img width="60" height="60" src="@n.IdentifyImg" alt="VIP审核图片" title="点击查看原图" /></a>
+                        </td>
+                        <td>@n.LastUpdatedTime.ToString()</td>
+                        <td>
+                            <a href="@n.IdentifyImg" target="_blank" class="tablelink" title="点击查看原图">查看原图</a>&nbsp;&nbsp;
+                            <a href="/admin/member/EditUser/@n.UserId" class="tablelink">查看用户</a>&nbsp;&nbsp;
+                            <a onclick="ReviewedVipInfo(@n.Id, @n.UserId);" href="javascript:void(0);" class="tablelink">通过审核</a>&nbsp;&nbsp;
+                            <a onclick="DeleteVipInfo(@n.Id);" href="javascript:void(0);" class="tablelink">删除</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pagin">
+            <div class="message">共<i class="blue">@Model.TotalCount</i>条记录，当前显示第&nbsp;<i class="blue">@Model.CurrentPage</i>页
+            </div>
+            <ul class="paginList">
+                <li class="paginItem"><a href="/admin/member/VipUserReview?page=@(Model.PrePageIndex)&size=@Model.PageSize">
+                    <span class="pagepre"></span></a></li>
+                @for (int i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="paginItem current">
+                        <a href="/admin/member/VipUserReview?page=@i.ToString()&size=@Model.PageSize">
+                            @i.ToString()
+                        </a>
+                    </li>
+                }
+                <li class="paginItem"><a href="/admin/member/VipUserReview?page=@(Model.NextPageIndex)&size=@Model.PageSize">
+                    <span class="pagenxt"></span></a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+
+        function DeleteVipInfo(uid) {
+            if (!confirm("确定要删除吗？")) {
+                return;
+            }
+            $.post("/admin/member/DeleteVipInfo", { "id": uid }, function (json) {
+                if (json.IsSuccess) {
+                    alert('删除成功');
+                    window.location.reload();
+
+                } else {
+                    alert("删除失败！");
+                }
+            });
+        }
+
+        function ReviewedVipInfo(vipId, userId) {
+            if (!confirm("确定通过审核吗？")) {
+                return;
+            }
+            $.post("/admin/member/ReviewedVipInfo",
+                {
+                    "vipId": vipId,
+                    "userId": userId
+                }, function (json) {
+                if (json.IsSuccess) {
+                    alert('审核成功');
+                    window.location.reload();
+
+                } else {
+                    alert("审核失败！");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

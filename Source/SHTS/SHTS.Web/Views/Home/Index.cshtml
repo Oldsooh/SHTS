@@ -1,0 +1,184 @@
+﻿@model Witbird.SHTS.Web.Models.HomeModel
+@{
+    ViewBag.Title = Witbird.SHTS.Web.Public.StaticUtility.Config.Title;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <meta http-equiv="Access-Control-Allow-Origin" content="http://ip.taobao.com">
+    <link href="/content/css/home.css" rel="stylesheet" />
+    <style type="text/css">
+        .activitynews
+        {
+            width: 450px;
+        }
+    </style>
+}
+
+<div class="main w1000">
+    <!--幻灯片:Begin-->
+    <div class="banner w1000">
+        <img src="/content/images/banner.jpg" alt="" style="width: 1000px; height: 260px;" />
+        @*<div id="sliderbox">
+            <ul id="slider">
+                <li>
+                    <img src="/content/images/banner1.jpg" alt="" style="width: 1000px; height: 300px;" /></li>
+                <li>
+                    <img src="/content/images/banner2.jpg" alt="" style="width: 1000px; height: 300px;" /></li>
+                <li>
+                    <img src="/content/images/banner3.jpg" alt="" style="width: 1000px; height: 300px;" /></li>
+            </ul>
+            <ul id="slidertab">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+        </div>*@
+    </div>
+    <!--幻灯片:End-->
+
+    <!--功能区:Begin-->
+    <div class="functionarea w1000">
+        <ul class="functionarea_ul">
+            <li class="functionarea_li">
+                <a href="/resource/spacelist">
+                    <img src="/content/images/functionare1.jpg" /></a>
+                <p class="functionarea_li_zh">活动场地</p>
+                <p class="functionarea_li_en">Event venue</p>
+            </li>
+            <li class="functionarea_li">
+                <a href="/resource/actorlist">
+                    <img src="/content/images/functionare2.jpg" /></a>
+                <p class="functionarea_li_zh">演艺人员</p>
+                <p class="functionarea_li_en">Entertainers</p>
+            </li>
+            <li class="functionarea_li">
+                <a href="/resource/equipmentlist">
+                    <img src="/content/images/functionare3.jpg" /></a>
+                <p class="functionarea_li_zh">活动设备</p>
+                <p class="functionarea_li_en">Activity equipment</p>
+            </li>
+            <li class="functionarea_li">
+                <a href="/resource/otherlist">
+                    <img src="/content/images/functionare4.jpg" /></a>
+                <p class="functionarea_li_zh">其他资源</p>
+                <p class="functionarea_li_en">Other relevant</p>
+            </li>
+        </ul>
+    </div>
+    <!--功能区:End-->
+
+    <div id="listleft">
+        <div id="listleft_top">
+            <!--活动在线:Begin-->
+            <div class="contentTitle">
+                <h2>活动在线</h2>
+                <a href="javascript:void(0)">更多</a>
+            </div>
+            <div class="contentItem">
+                <ul class="tradeul">
+                    @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
+                    {
+                        foreach (var item in Model.ActivityList)
+                        {
+                        <li class="tradeli">
+                            @{ string url = "/activity/" + item.Id + ".html";}
+                            <a class="newsa activitynews" href="@url" target="_blank">@item.Title</a>
+                            <span class="tradeli_date">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <!--活动在线:End-->
+        </div>
+
+        <div id="listleft_bottom">
+            <!--新闻公告:Begin-->
+            <div style="width: 280px; height: 177px; float: left; border: 1px solid #cdcdcd; padding: 10px;">
+                <div class="contentTitle">
+                    <h2>新闻公告</h2>
+                    <a href="/news/">更多</a>
+                </div>
+                <div class="contentItem">
+                    <ul class="tradeul">
+                        @if (Model.Newses != null && Model.Newses.Count > 0)
+                        {
+                            foreach (var item in Model.Newses)
+                            {
+                            <li class="tradeli">
+                                @{ string url = "/news/" + item.Id + ".html";}
+                                <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                                <span class="tradeli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                            </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div style="width: 280px; height: 177px; float: right; border: 1px solid #cdcdcd; padding: 10px;">
+                <!--需求发布:Begin-->
+                <div class="contentTitle">
+                    <h2>中介交易</h2>
+                    <a href="/trade/">更多</a>
+                </div>
+                <div class="contentItem">
+                    <ul class="tradeul">
+                        @if (Model.Trades != null)
+                        {
+                            foreach (var item in Model.Trades)
+                            {
+                            <li class="tradeli">
+                                <a class="newsa" href="/trade/@(item.TradeId).html" target="_blank">@item.TradeSubject</a>
+                                <span class="tradeli_date">@item.CreatedTime.ToString("MM-dd")</span>
+                            </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <!--需求发布:End-->
+            </div>
+            <!--新闻公告:End-->
+        </div>
+    </div>
+
+    <div id="listright">
+        <!--中介交易:Begin-->
+        <div class="contentTitle">
+            <h2>需求发布</h2>
+            <a href="/demand/index">更多</a>
+        </div>
+        <div class="contentItem">
+            <ul class="tradeul">
+                @if (Model.Demands != null && Model.Demands.Count > 0)
+                {
+                    foreach (var item in Model.Demands)
+                    {
+                    <li class="tradeli">
+                        <span class="tradeli_status">[ @item.CategoryName ]</span>
+                        @{ string url = "/demand/" + item.Id + ".html";}
+                        <a class="tradea" href="@url" target="_blank">@item.Title</a>
+                        <span class="tradeli_date">@item.InsertTime.ToString("MM-dd")</span>
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+        <!--中介交易:End-->
+    </div>
+
+    <div style="clear: both; width: 100%; height: 30px;"></div>
+</div>
+
+
+@section FooterJS
+{
+
+    <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+    <script src="/content/js/city.js"></script>
+    <script>
+        setLocalCity();
+    </script>
+}

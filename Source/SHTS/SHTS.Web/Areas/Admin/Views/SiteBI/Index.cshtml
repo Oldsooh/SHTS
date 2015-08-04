@@ -1,0 +1,144 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>浏览统计</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+    <style type="text/css">
+        .toolbar li {
+            padding-left: 2px;
+        }
+        .toolbar li span {
+            float: right;
+            margin-top: 0px;
+        }
+        .toolbar li span select {
+            height: 100%;
+            opacity: 1;
+        }
+        #queryresult img {
+            top: 20%;
+            left: 44%;
+            position: absolute;
+        }
+        td a {
+            color: blue;
+        }
+        .Wdate {
+            width: 120px;
+        }
+    </style>
+    <script>
+        function searchusers() {
+            $("#loading").fadeIn();
+            var fromtime = $("#fromtime").val();
+            var totime = $("#totime").val();
+            var typeid = $("#usertypelist").val();
+            var operation = $("#operationlist").val();
+            if (operation == "login") {
+                typeid = 3;
+            }
+            if (operation == "viewmax") {
+                typeid = 4;
+            }
+            var href = "/admin/sitebi/QuerResult";
+            console.log(href);
+            $("#queryresult").load(href, {
+                "fromtime": fromtime,
+                "totime": totime,
+                "querytype": typeid
+            }, function () {
+                $("#loading").fadeOut();
+            });
+        }
+
+        function changepage(pageno) {
+            $("#loading").fadeIn();
+            var fromtime = $("#fromtime").val();
+            var totime = $("#totime").val();
+            var typeid = $("#usertypelist").val();
+            var href = "/admin/sitebi/QuerResult";
+            console.log(href);
+            $("#queryresult").load(href, {
+                "fromtime": fromtime,
+                "totime": totime,
+                "querytype": typeid,
+                "page": pageno
+            }, function () {
+                $("#loading").fadeOut();
+            });
+        }
+        $(function() {
+            searchusers();
+        });
+    </script>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">会员管理</a></li>
+            <li><a href="#">会员统计</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+        <div class="tools">
+            <ul class="toolbar">
+                <li style=" width:220px;">
+                    起始时间：
+                    <span>
+                        <input class="Wdate" type="text" onclick=" WdatePicker(); "
+                               value="@DateTime.Now.AddHours(-1).ToString()" id="fromtime" />
+                    </span>
+                </li>
+                <li style=" width:220px;">
+                    结束时间：
+                    <span>
+                        <input class="Wdate" type="text" onclick=" WdatePicker();"
+                               value="@DateTime.Now.ToString()" id="totime" />
+                    </span>
+                </li>
+                <li style=" width:200px;">
+                    浏览页：
+                    <span>
+                        <select id="operationlist">
+                            <option value="-1" selected="selected">--所有浏览--</option>
+                            <option value="login">登录</option>
+                            <option value="viewmax">浏览最多</option>
+                        </select>
+                    </span>
+                </li>
+                <li style=" width:200px;">
+                    会员类型：
+                    <span>
+                        <select id="usertypelist">
+                            <option value="-1" selected="selected">--所有浏览--</option>
+                            <option value="0">游客</option>
+                            <option value="1">个人会员</option>
+                            <option value="2">企业会员</option>
+                        </select>
+                    </span>
+                </li>
+                <li onclick=" searchusers(); " style="background-color: rgb(212, 231, 240); background-image: none;">
+                    查询统计
+                </li>
+            </ul>
+        </div>
+        <div id="queryresult">
+            <img src="~/Areas/Admin/Content/images/loading.GIF" id="loading" />
+        </div>
+ </div>
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+    </script>
+</body>
+</html>

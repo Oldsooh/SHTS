@@ -1,0 +1,66 @@
+﻿
+@model Witbird.SHTS.Web.Areas.Admin.Models.SiteBIViewModel
+<div style="width:100%; overflow: auto">
+    <table class="tablelist" style="width:150%">
+        <thead>
+            <tr>
+                <th>浏览时间</th>
+                <th>来源页面</th>
+                <th>访问页面</th>
+                <th>访问页面标题</th>
+                <th>IP</th>
+                <th>用户名</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var n in Model.AccessList)
+            {
+                <tr>
+                    <td>@n.CreateTime.ToString()</td>
+                    <td style="width: 255px;"><a href="@n.ReferrerUrl" target="_blank">@n.ReferrerUrl</a></td>
+                    <td><a href="@n.AccessUrl" target="_blank">@n.AccessUrl</a></td>
+                    <td>@n.PageTitle</td>
+                    <td>@n.IP</td>
+                    <td><a href="/admin/member/EditUser/@n.UserId" target="rightFrame">@n.UserName</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pagin">
+        <div class="message">共<i class="blue">@Model.TotalCount</i>条记录，当前显示第&nbsp;<i class="blue">@Model.CurrentPage</i>页</div>
+        <ul class="paginList">
+            <li class="paginItem"><a onclick="changepage(@Model.PrePageIndex);" href="javascript:void(0);"><span class="pagepre"></span></a></li>
+            @{
+            var startPage = 10*(Model.CurrentPage/10) + 1;
+            }
+            @for (int i = startPage; i <= Model.TotalPage && i < startPage+10; i++)
+        {
+            if (i == Model.CurrentPage)
+            {
+        <li class="paginItem current">
+            <a href="javascript:void(0);">
+                @i.ToString()
+            </a>
+        </li>
+            }
+            else
+            {
+        <li class="paginItem">
+            <a href="javascript:void(0);" onclick="changepage(@i);">
+                @i.ToString()
+            </a>
+        </li>
+            }
+        }
+            @if (Model.TotalPage >= (startPage+10))
+            {
+        <li class="paginItem">
+            <a href="javascript:void(0);" onclick="changepage(@(startPage+10));">
+                ....
+            </a>
+        </li>
+            }
+            <li class="paginItem"><a onclick="changepage(@Model.NextPageIndex);" href="javascript:void(0);"><span class="pagenxt"></span></a></li>
+        </ul>
+    </div>
+</div>

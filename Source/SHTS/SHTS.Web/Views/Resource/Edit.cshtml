@@ -1,0 +1,417 @@
+﻿@model Witbird.SHTS.Web.Models.ResourceViewModel
+@{
+    ViewBag.Title = "编辑资源 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+
+@section head
+{
+    <link href="/content/css/resourcelist.css" rel="stylesheet" />
+    <link href="~/Content/css/user.css" rel="stylesheet" />
+    <script src="~/Content/js/city.js"></script>
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <link href="/Content/kindeditor/themes/default/default.css" rel="stylesheet" />
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <style type="text/css">
+        .hd {
+            display: none;
+        }
+    </style>
+}
+
+<div class="main w1000">
+<div class="location">
+    您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><span class="ch">编辑资源</span>
+</div>
+@Html.Action("UserMenu", "User")
+<div class="user_right">
+<div class="user_right_bt">
+    <p class="n1">编辑资源</p>
+</div>
+@using (Html.BeginForm("edit", "resource", FormMethod.Post, new {@onsubmit = "return beforesubmit()", @style = "font-size:14px;"}))
+{
+    @Html.AntiForgeryToken()
+   @Html.HiddenFor(model => model.ResId);
+    <div class="ur_title lh24">
+        资源类型<span class="red ch">*</span>
+    </div>
+    <div class="ur_box">
+        @Html.DropDownListFor(model => model.ResType, Html.ResourceList(), new {@onchange = "changeResType(this)"})
+        @Html.ValidationMessageFor(model => model.ResType)
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="ur_title">
+        标题<span class="red ch">*</span>
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.Title, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.Title, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="ur_title sp">
+        具体类型<span class="red ch">*</span>
+    </div>
+    <div class="ur_box sp">
+        @Html.DropDownListFor(model => model.SpaceTypeId, Html.SpaceTypeList(), "不确定")
+        @Html.ValidationMessageFor(model => model.SpaceTypeId)
+    </div>
+    <div class="clearfix sp"></div>
+
+    <div class="ur_title lh24 ac hd">
+        具体类型<span class="red ch">*</span>
+    </div>
+    <div class="ur_box ac hd">
+        @Html.DropDownListFor(model => model.ActorTypeId, Html.ActorTypeList(), "不确定")
+        @Html.ValidationMessageFor(model => model.ActorTypeId, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix ac hd"></div>
+    <div class="ur_title lh24 ac hd">
+        所属组织<span class="red ch">*</span>
+    </div>
+    <div class="ur_box ac hd">
+        @Html.DropDownListFor(model => model.ActorFromId, Html.ActorFromList())
+        @Html.ValidationMessageFor(model => model.ActorFromId, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix ac hd"></div>
+    <div class="ur_title lh24 ac hd">
+        演员性别<span class="red ch">*</span>
+    </div>
+    <div class="ur_box ac hd">
+        @Html.DropDownListFor(model => model.ActorSex, Html.ActorSexList())
+        @Html.ValidationMessageFor(model => model.ActorSex, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix ac hd"></div>
+
+    <div class="ur_title lh24 eq hd">
+        具体类型<span class="red ch">*</span>
+    </div>
+    <div class="ur_box eq hd">
+        @Html.DropDownListFor(model => model.EquipTypeId, Html.EquipTypeList(), "不确定")
+        @Html.ValidationMessageFor(model => model.EquipTypeId, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix eq hd"></div>
+
+    <div class="ur_title lh24 ot hd">
+        具体类型<span class="red ch">*</span>
+    </div>
+    <div class="ur_box ot hd">
+        @Html.DropDownListFor(model => model.OtherTypeId, Html.OtherTypeList(), "不确定")
+        @Html.ValidationMessageFor(model => model.OtherTypeId, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix ot hd"></div>
+
+    <div class="ur_title lh24 sp">
+        场地特点<span class="red ch">*</span>
+    </div>
+    <div class="ur_box sp ">
+        @Html.HiddenFor(model => model.SpaceFeatures)
+        @Html.CheckboxGroupForSpaceFeatures(Model.SpaceFeatures)
+        @Html.ValidationMessageFor(model => model.SpaceFeatures, null, new {@style = "color: #4193f"})
+    </div>
+    <div class="clearfix sp"></div>
+    <div class="ur_title sp">
+        场地面积<span class="red ch">*</span>
+    </div>
+    <div class="ur_box sp">
+        @Html.DropDownListFor(model => model.SpaceSizeId, Html.SpaceSizeList(), "不确定")
+        @Html.ValidationMessageFor(model => model.SpaceSizeId)
+    </div>
+    <div class="clearfix sp"></div>
+    <div class="ur_title lh24 sp">
+        可容纳人数<span class="red ch">*</span>
+    </div>
+    <div class="ur_box sp">
+        @Html.DropDownListFor(model => model.SpacePeopleId, Html.SpacePeopleList(), "不确定")
+        @Html.ValidationMessageFor(model => model.SpacePeopleId, null, new {@style = "color: #4193f"})
+    </div>
+    <div class="clearfix sp"></div>
+    <div class="ur_title sp">
+        可配套设施
+    </div>
+    <div class="ur_box sp">
+        @Html.HiddenFor(model => model.SpaceFacilities)
+        @Html.CheckboxGroupForSpaceFacilities(Model.SpaceFacilities)
+        @Html.ValidationMessageFor(model => model.SpaceFacilities)
+    </div>
+    <div class="clearfix sp"></div>
+    <div class="ur_title lh24 sp">
+        提供酒宴
+    </div>
+    <div class="ur_box sp">
+        @Html.HiddenFor(model => model.SpaceTreat)
+        @if (Model.SpaceTreat == "1") // 1是选中，0和2是没选中
+        {
+            <input type="checkbox" name="chk_SpaceTreat" id="chk_SpaceTreat" checked="checked"/><text>可以提供酒宴</text>
+        }
+        else
+        {
+            <input type="checkbox" name="chk_SpaceTreat" id="chk_SpaceTreat"/>
+            <text>可以提供酒宴</text>
+        }
+        @Html.ValidationMessageFor(model => model.SpaceTreat)
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24"><span class="red ch"></span>地区：
+    </div>
+    <div class="ur_box">
+        @Html.DropDownListFor(model => model.ddlProvince, Html.ProviceList(), "省份", new {@onchange = "loadCities()"})
+        @Html.DropDownListFor(model => model.ddlCity, Html.CityList(Model.ddlProvince), "全省/市", new {@onchange = "loadAreas()"})
+        @Html.DropDownListFor(model => model.ddlArea, Html.AreaList(Model.ddlCity), "全县/区")
+        <!--<span style="color: #4193ff;">&nbsp;&nbsp; 选填，无地区要求可不选.</span>-->
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">详细地址<span class="red ch">*</span>：</div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.DetailAddress, new {@class = "ur_txt1", @style = "width:600px;"})
+        @Html.ValidationMessageFor(model => model.DetailAddress, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24 ac hd">演出视频：</div>
+    <div class="ur_box ac hd">
+        @Html.TextBoxFor(model => model.Href, new { @class = "ur_txt1", @style = "width:600px;" })
+        @Html.ValidationMessageFor(model => model.Href, null, new { @style = "color: #4193ff" })
+    </div>
+    <div class="clearfix ac hd"></div>
+    <div class="ur_title lh24">
+        联系人<span class="red ch">*</span>
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.Contact, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.Contact, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        固定电话
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.Telephone, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.Telephone, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        移动电话
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.Mobile, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.Mobile, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title">
+        QQ
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.QQ, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.QQ, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        微信账号
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.WeChat, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.WeChat, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title">
+        邮箱
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.Email, new {@class = "ur_txt1"})
+        @Html.ValidationMessageFor(model => model.Email, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        组图
+    </div>
+    <div class="ur_box">
+        <input id="ImageUrls" name="ImageUrls" type="hidden" value="@Model.ImageUrls">
+        @if (!string.IsNullOrEmpty(Model.ImageUrls))
+        {
+            var images = Model.SmallImgUrls;
+            if (images!=null && images.Count > 0)
+            {
+                <div id="file_upload-queue" class="uploadify-queue" style="height: 135px;">
+                    @for (int i = 0; i < images.Count; i++)
+                    {
+                        string id = string.Format("SWFUpload_0_{0}", 100 + i);
+                        <div id="@id" class="uploadify-queue-item" style="background-image:url('@images[i]')" rurl="@images[i]">
+                            <div class="uploadify-progress">
+                                <div class="uploadify-progress-bar" style="width: 100%;">
+                                    <!--Progress Bar-->
+                                </div>
+                            </div>
+                            <div class="cancel">
+                                <a href="javascript:$('#file_upload').uploadify('cancel', '@id')">X</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        <input id="file_upload" name="file" type="file" multiple="true">
+        <span style="color: #4193ff; display: block; line-height: 20px;">添加几张照片，让您的信息更受欢迎（最多上传12张，每张最大10M）.</span>
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        详细信息<span class="red ch">*</span>
+    </div>
+    <div class="ur_box">
+        @Html.HiddenFor(model => model.Description)
+        <textarea id="editorContent" name="contentStyle">@(new HtmlString(Model.Description))</textarea>
+        <br/>
+        @Html.ValidationMessageFor(model => model.Description, null, new {@style = "color: #4193ff"})
+    </div>
+    <div class="clearfix"></div>
+    <div class="ur_tj">
+        <input type="submit" value="发布" class="tjzl_btn"/>
+        <span class="ur_box_radio" style="margin-left: 10px;">
+            <input name="agreerule" type="checkbox" value="in" checked="checked">
+            我同意<a href="/about/3.html" class="blue" target="_blank" title="活动在线网站规则">活动在线网站规则</a>
+        </span>
+    </div>
+}
+</div>
+<div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script src="~/Content/uploadify/jquery.uploadify.js"></script>
+    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet"/>
+    <script src="~/Content/uploadify/jquery.uploadify.js"></script>
+    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet"/>
+    <script type="text/javascript">
+        var editorContent; //定义编辑器
+        KindEditor.ready(function (K) {
+            editorContent = K.create('#editorContent', {
+                width: '680px',
+                height: '450px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: true,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'image', 'link', 'table'
+                ]
+            });
+        });
+
+        function changeResType(obj) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (obj.value) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        changeResType(document.getElementById('ResType'));
+
+        function beforesubmit() {
+            var xx = "";
+            var isfirst = true;
+            $('.spfc').each(function () {
+                if (this.checked) {
+                    if (isfirst) {
+                        xx = this.value;
+                    } else {
+                        xx = xx + "," + this.value;
+                    }
+                    isfirst = false;
+                }
+            })
+            $('#SpaceFacilities').val(xx);
+
+            xx = "";
+            isfirst = true;
+            $('.spft').each(function () {
+                if (this.checked) {
+                    if (isfirst) {
+                        xx = this.value;
+                    } else {
+                        xx = xx + "," + this.value;
+                    }
+                    isfirst = false;
+                }
+            })
+            $('#SpaceFeatures').val(xx);
+
+            if ($('#chk_SpaceTreat')[0].checked) {
+                $('#SpaceTreat').val("1");
+            } else {
+                $('#SpaceTreat').val("2");
+            }
+
+            $('#Description').val(editorContent.html());
+
+            return true;
+        }
+
+        //上传图片预览
+        $(function () {
+            var existImgCount = 0;
+            $(function () {
+                $("#file_upload").uploadify({
+                    swf: '/Content/uploadify/uploadify.swf',
+                    uploader: '/Content/upload/uploadimage.ashx',
+                    width: 120,
+                    height: 125,
+                    queueSizeLimit: 12,
+                    uploadLimit: 12,
+                    buttonText: "",
+                    auto: true,
+                    removeCompleted: false,
+                    onSelect: function (file) {
+                        if (file.size >= 10 * 1024 * 1024) {
+                            alert(file.name + '每张图片最大10M');
+                            $("#file_upload").uploadify('cancel');
+                            return false;
+                        }
+                    },
+                    onUploadComplete: function (file) {
+                        var oTop = $("#file_upload-queue").offset().top;
+                        $("#file_upload-queue").css("height", document.getElementById(file.id).offsetTop - oTop + 130);
+                    },
+                    onCancel: function (file) {
+                    },
+                    onUploadSuccess: function (file, data, response) {
+                        var postfile = JSON.parse(data);
+                        var urls = $('#ImageUrls').val();
+                        if (urls == "") {
+                            urls = postfile.OriginalImage;
+                        } else {
+                            urls = urls + "|" + postfile.OriginalImage;
+                        }
+                        $('#ImageUrls').val(urls);
+                        var itemid = "#" + file.id;
+                        var imgurl = "background-image:url('" + postfile.OriginalImage + "')";
+                        $(itemid).attr("style", imgurl);
+                        $(itemid).attr("rurl", postfile.OriginalImage);
+                    }
+                });
+            });
+        });
+    </script>
+}

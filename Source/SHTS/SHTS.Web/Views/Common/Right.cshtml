@@ -1,0 +1,112 @@
+﻿@model Witbird.SHTS.Web.Models.RightModel
+<div id="mainRight">
+    <div class="contentTitle">
+        <h2>最新需求</h2>
+        <a href="/demand/">更多</a>
+    </div>
+    <div class="contentItem">
+        <ul class="rightul">
+            @if (Model.Right.Demands != null && Model.Right.Demands.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Right.Demands)
+                {
+                    number += 1;
+                <li class="rightli">
+                    <span class="rightli_number">@number</span>
+                    @{ string url = "/demand/" + item.Id + ".html";}
+                    <a class="righta" href="@url" target="_blank">@item.Title</a>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="rightseparate"></div>
+    <div class="contentItem">
+        <p class="right_li_zh">活动场地</p>
+        <p class="right_li_en">Event venue</p>
+        <img src="/content/m/images/functionare1.jpg" style="width: 180px; height: 108px;" />
+        <ul class="rightul">
+            @if (Model.Right.Spaces != null && Model.Right.Spaces.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Right.Spaces)
+                {
+                    number += 1;
+                <li class="rightli">
+                    <span class="rightli_number">@number</span>
+                    @{ string url = "/resource/" + item.Id + ".html";}
+                    <a class="righta" href="@url" target="_blank">@item.Title</a>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="rightseparate"></div>
+    <div class="contentItem">
+        <p class="right_li_zh">演艺人员</p>
+        <p class="right_li_en">Entertainers</p>
+        <img src="/content/m/images/functionare2.jpg" style="width: 180px; height: 108px;" />
+        <ul class="rightul">
+            @if (Model.Right.Actors != null && Model.Right.Actors.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Right.Actors)
+                {
+                    number += 1;
+                <li class="rightli">
+                    <span class="rightli_number">@number</span>
+                    @{ string url = "/resource/" + item.Id + ".html";}
+                    <a class="righta" href="@url" target="_blank">@item.Title</a>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="rightseparate"></div>
+    <div class="contentItem">
+        <p class="right_li_zh">活动设备</p>
+        <p class="right_li_en">Activity equipment</p>
+        <img src="/content/m/images/functionare3.jpg" style="width: 180px; height: 108px;" />
+        <ul class="rightul">
+            @if (Model.Right.Equipments != null && Model.Right.Equipments.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Right.Equipments)
+                {
+                    number += 1;
+                <li class="rightli">
+                    <span class="rightli_number">@number</span>
+                    @{ string url = "/resource/" + item.Id + ".html";}
+                    <a class="righta" href="@url" target="_blank">@item.Title</a>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+
+    <div class="rightseparate"></div>
+    <div class="contentItem">
+        <p class="right_li_zh">其他资源</p>
+        <p class="right_li_en">Other Resource</p>
+        <img src="/content/m/images/functionare4.jpg" style="width: 180px; height: 108px;" />
+        <ul class="rightul">
+            @if (Model.Right.Others != null && Model.Right.Others.Count > 0)
+            {
+                int number = 0;
+                foreach (var item in Model.Right.Others)
+                {
+                    number += 1;
+                <li class="rightli">
+                    <span class="rightli_number">@number</span>
+                    @{ string url = "/resource/" + item.Id + ".html";}
+                    <a class="righta" href="@url" target="_blank">@item.Title</a>
+                </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

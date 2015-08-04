@@ -1,0 +1,715 @@
+﻿@{
+    Layout = null;
+}
+
+@model Witbird.SHTS.Web.Models.TradeModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Show</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/common.js"></script>
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/kindeditor/kindeditor.js"></script>
+    <script src="~/Content/kindeditor/zh_CN.js"></script>
+    <script>
+
+        var tradeReply;
+        KindEditor.ready(function (K) {
+            tradeReply = K.create('#tradeReplyContent', {
+                width: '1080px',
+                height: '300px',
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                allowFileManager: false,
+                fillDescAfterUploadImage: true,
+                uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
+                fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
+                items: [
+                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                    'insertunorderedlist', '|', 'emoticons', 'link', 'image', 'multiimage', 'insertfile']
+            });
+        });
+        function doTradeReplyWithOperation() {
+            var operation = $('#tradeOperation').val();
+            var content = tradeReply.html();
+            var currentTradeId = $('#currentTradeId').val();
+
+            // Parameters checking here.
+            if (checkParameter(operation, content)) {
+                $.ajax({
+                    url: '/admin/trade/ReplyTradeWithOperation',
+                    data: {
+                        id: currentTradeId,
+                        operation: operation,
+                        content: content
+                    },
+                    type: 'POST',
+                    success: function (msg) {
+                        if (msg == "success") {
+                            alert("回复成功");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(msg);
+                        }
+                    },
+                    error: function (msg) {
+                        alert("网络异常，回复中介交易失败");
+                    }
+                });
+            }
+        }
+
+        function checkParameter(operation, content) {
+            if (operation != 'update' &&
+                operation != 'reviewed' &&
+                operation != 'delete' &&
+                operation != 'completed' &&
+                operation != 'finished' &&
+                operation != 'invalid' &&
+                operation != 'paid') {
+                alert('操作动作错误，请重新选择');
+                return false;
+            }
+            else if (content == '' || content.replace(' ', '') == '') {
+                alert('回复内容不能为空');
+                return false;
+            }
+            else {
+                // Nothing to do.
+            }
+
+            return true;
+
+        }
+
+        function confirmTradeOperation() {
+            var operation = $('#tradeOperation').val();
+
+            switch (operation) {
+                case 'reviewed':
+                    operation = '通过审核';
+                    break;
+                case 'delete':
+                    operation = '删除';
+                    break;
+                case 'completed':
+                    operation = '完成';
+                    break;
+                case 'finished':
+                    operation = '终止';
+                    break;
+                case 'invalid':
+                    operation = '违规';
+                    break;
+                case 'paid':
+                    operation = '买家已付款';
+                    break;
+                case 'update':
+                default:
+                    operation = '仅回复';
+                    break;
+            }
+            if (!confirm('确认' + operation + '吗')) {
+                var lastOperation = $('#lastTradeOperation').val();
+                $('#tradeOperation').val(lastOperation);
+            }
+        }
+
+        function selectBankInfoChanged(ddlBankInfo, sellerId) {
+            var bankInfo = $(ddlBankInfo).val();
+            $('#bankinfo-' + sellerId).html(bankInfo);
+        }
+    </script>
+    <style>
+        .w80 {
+            width: 60px;
+        }
+
+        .w200 {
+            width: 200px;
+        }
+
+        .bold {
+            /*font-weight:bold;*/
+        }
+
+        .tablelist-override td {
+            border-bottom: dotted 1px #c7c7c7;
+        }
+
+        .trade_history_item {
+            border: solid 1px #b6cad2;
+            cursor: default;
+            margin-top: 5px;
+        }
+
+            .trade_history_item:hover {
+                background: #e5ebee;
+            }
+
+        .trade_title {
+            font-weight: bold;
+            font-size: 14px;
+            /* border-bottom: solid 3px #66c9f3; */
+            float: left;
+            position: absolute;
+            z-index: 100;
+            /* bottom: -1px; */
+            padding: 0 3px;
+            height: 30px;
+            /* line-height: 30px; */
+        }
+
+        .trade_replay tr {
+            border: solid 1px #b6cad2;
+        }
+
+        .trade_replay textarea {
+            font-size: 16px;
+        }
+
+        img {
+            max-width: 1000px;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="javascript:void(0);">首页</a></li>
+            <li><a href="javascript:history.go(-1);">中介申请列表</a></li>
+            <li><span class="trade_title">@Model.CurrentTrade.TradeSubject</span></li>
+        </ul>
+    </div>
+    <div class="formbody">
+        <div class="forminfo">
+            <div class="tools">
+
+                <ul class="toolbar">
+                    <li class="click"><span>
+                        <img src="/areas/admin/content/images/t02.png" /></span><a href="#tradeReply" >快速回复</a></li>
+                </ul>
+                <ul class="toolbar1">
+                    <li><span></span><a href="javascript:history.go(-1);">返回列表</a></li>
+                </ul>
+
+            </div>
+            @if (Model.CurrentTrade.TradeId > 0)
+            {
+                <input type="hidden" name="currentTradeId" id="currentTradeId" value="@Model.CurrentTrade.TradeId" />
+                <table class="tablelist tablelist-override">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <span>交易信息</span>
+                            </th>
+
+                            <th style="text-align: right; padding-right: 5px;">
+                                <span id="switch3" style="cursor: pointer;" onclick="expand('content3','switch3');">
+                                    收缩</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="content3">
+                        <tr>
+                            <td class="w80">交易金额</td>
+                            <td class="w200 bold">￥ @Model.CurrentTrade.TradeAmount 元</td>
+                            <td class="w80">手续费</td>
+                            <td class="w200 bold">￥ @Model.CurrentTrade.PayCommission 元</td>
+                            <td class="w80">卖家可得</td>
+                            <td class="w200 bold">￥ @Model.CurrentTrade.SellerGet 元</td>
+                            <td class="w80">买家应付</td>
+                            <td class="w200 bold">￥ @Model.CurrentTrade.BuyerPay 元</td>
+                        </tr>
+                        <tr>
+                            <td class="w80">支付状态</td>
+                            <td class="w80 bold">
+                                @if (Model.CurrentTrade.IsBuyerPaid)
+                                {
+                                    <span style="color: green;">买家已付款</span>
+                                }
+                                else
+                                {
+                                    <span style="color: red;">等待买家付款</span>
+                                }
+                            </td>
+                            <td class="w80">交易状态</td>
+                            <td class="w200">
+                                @switch (Model.CurrentTrade.State)
+                                {
+                                    case (int)Witbird.SHTS.Model.TradeState.Completed:
+                                    <span style="color: #0a4407">交易完成</span>
+                                        break;
+                                    case (int)Witbird.SHTS.Model.TradeState.Finished:
+                                    <span style="color: #cf9c9c">交易终止</span>
+                                        break;
+                                    case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                                    <span style="color: #1959bb">交易进行</span>
+                                        break;
+                                    case (int)Witbird.SHTS.Model.TradeState.New:
+                                    <span style="color: #23972b">中介申请(<span style="color: red;">未审核</span>)</span>
+                                        break;
+                                    case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                                    <span style="color: red;">违规交易</span>
+                                        break;
+                                    default:
+                                    <span style="color: red;">未知交易类型</span>
+                                        break;
+                                }
+                            </td>
+                            <td>发布用户</td>
+                            <td class="w200 bold">
+                                @if (Model.CurrentTrade.Seller.UserId == Model.CurrentTrade.UserId)
+                                {
+                                    <span>@Model.CurrentTrade.Seller.UserName</span>
+                                }
+                                else if (Model.CurrentTrade.Buyer.UserId == Model.CurrentTrade.UserId)
+                                {
+                                    <span>@Model.CurrentTrade.Buyer.UserName</span>
+                                }
+                            </td>
+                            <td>发布时间</td>
+                            <td class="w200 bold">
+                                @Model.CurrentTrade.CreatedTime.ToString("yyyy-MM-dd hh:mm:ss")
+                            </td>
+                        </tr>
+                        <tr>
+                        <td>资源地址</td>
+                        <td colspan="7">
+                        <a href="@Model.CurrentTrade.ResourceUrl" title="点击查看中介交易资源" target="_blank">@Model.CurrentTrade.ResourceUrl</a> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <table class="tablelist tablelist-override">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <span>买家信息</span>
+                            </th>
+
+                            <th style="text-align: right; padding-right: 5px;">
+                                <span id="switch2" style="cursor: pointer;" onclick="expand('content2','switch2');">
+                                    展开</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="content2" class="hide">
+                        @if (Model.CurrentTrade.UserId == Model.CurrentTrade.Buyer.UserId)
+                        {
+                            <tr>
+                                <td class="w80">用户名</td>
+                                <td class="w80 bold">@Model.CurrentTrade.Buyer.UserName</td>
+                                <td class="w80">联系QQ</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserQQ</td>
+                                <td class="w80">联系手机</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserCellPhone</td>
+                                <td class="w80">联系邮箱</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserEmail</td>
+                            </tr>
+                            <tr>
+                                <td>联系地址</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserAddress))
+                                    {
+                                        <span>@Model.CurrentTrade.UserAddress</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果买家联系地址缺失或不正确，请联系买家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>银行信息</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserBankInfo))
+                                    {
+                                        <span>@Model.CurrentTrade.UserBankInfo</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果买家银行信息缺失或不正确，请联系买家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="w80">用户名</td>
+                                <td class="w80 bold">@Model.CurrentTrade.Buyer.UserName</td>
+                                <td class="w80">联系QQ</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Buyer.QQ</td>
+                                <td class="w80">联系手机</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Buyer.Cellphone</td>
+                                <td class="w80">联系邮箱</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Buyer.Cellphone</td>
+                            </tr>
+                            <tr>
+                                <td>联系地址</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.Buyer.Adress))
+                                    {
+                                        <span>@Model.CurrentTrade.Buyer.Adress</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果买家联系地址缺失或不正确，请联系买家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>银行信息</td>
+                                <td colspan="7" class="bold">
+                                    @if (Model.CurrentTrade.BankInfos != null && Model.CurrentTrade.BankInfos.Count > 0)
+                                    {
+                                        var defaultBankInfo = Model.CurrentTrade.BankInfos.FirstOrDefault(c => c.IsDefault);
+                                        defaultBankInfo = defaultBankInfo ?? Model.CurrentTrade.BankInfos[0];
+                                        string selectBankInfo = "银行名称：" + defaultBankInfo.BankName + "  银行账号：" + defaultBankInfo.BankAccount + "  开户姓名：" + defaultBankInfo.BankUserName + "  银行地址：" + defaultBankInfo.BankAddress;
+                                        
+                                        <div class="vocation">
+                                            <div class="uew-select">
+                                                <select id="bankinfoSelect-@Model.CurrentTrade.Buyer.UserId" class="select3" onchange="selectBankInfoChanged(this, @Model.CurrentTrade.Buyer.UserId);" style="font-size: 14px; height: 20px; line-height: 20px;">
+                                                    @foreach (Witbird.SHTS.Model.UserBankInfo bankInfo in Model.CurrentTrade.BankInfos)
+                                                    {
+                                                        string select = string.Empty;
+                                                        string bankValue = "银行名称：" + bankInfo.BankName + "  银行账号：" + bankInfo.BankAccount + "  开户姓名：" + bankInfo.BankUserName + "  银行地址：" + defaultBankInfo.BankAddress;
+                                                        if (bankInfo.IsDefault)
+                                                        {
+                                                            select = "selected='selected'";
+                                                        }
+                                            
+                                                        <option value="@bankValue" @select>@bankInfo.BankAccount</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <span id="bankinfo-@Model.CurrentTrade.Buyer.UserId">
+                                            @selectBankInfo
+                                        </span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果买家银行信息缺失或不正确，请联系买家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <br />
+                <table class="tablelist tablelist-override">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <span>卖家信息</span>
+                            </th>
+                            <th style="text-align: right; padding-right: 5px;">
+                                <span id="switch1" style="cursor: pointer;" onclick="expand('content1','switch1');">
+                                    展开</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="content1" class="hide">
+
+                        @if (Model.CurrentTrade.UserId == Model.CurrentTrade.Seller.UserId)
+                        {
+                            <tr>
+                                <td class="w80">用户名</td>
+                                <td class="w80 bold">@Model.CurrentTrade.Seller.UserName</td>
+                                <td class="w80">联系QQ</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserQQ</td>
+                                <td class="w80">联系手机</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserCellPhone</td>
+                                <td class="w80">联系邮箱</td>
+                                <td class="w200 bold">@Model.CurrentTrade.UserEmail</td>
+                            </tr>
+                            <tr>
+                                <td>联系地址</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserAddress))
+                                    {
+                                        <span>@Model.CurrentTrade.UserAddress</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果卖家联系地址缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>银行信息</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.UserBankInfo))
+                                    {
+                                        <span>@Model.CurrentTrade.UserBankInfo</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果卖家银行信息缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td class="w80">用户名</td>
+                                <td class="w80 bold">@Model.CurrentTrade.Seller.UserName</td>
+                                <td class="w80">联系QQ</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Seller.QQ</td>
+                                <td class="w80">联系手机</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Seller.Cellphone</td>
+                                <td class="w80">联系邮箱</td>
+                                <td class="w200 bold">@Model.CurrentTrade.Seller.Cellphone</td>
+                            </tr>
+                            <tr>
+                                <td>联系地址</td>
+                                <td colspan="7" class="bold">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentTrade.Seller.Adress))
+                                    {
+                                        <span>@Model.CurrentTrade.Seller.Adress</span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果卖家联系地址缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>银行信息</td>
+                                <td colspan="7" class="bold">
+                                    @if (Model.CurrentTrade.BankInfos != null && Model.CurrentTrade.BankInfos.Count > 0)
+                                    {
+                                        var defaultBankInfo = Model.CurrentTrade.BankInfos.FirstOrDefault(c => c.IsDefault);
+                                        defaultBankInfo = defaultBankInfo ?? Model.CurrentTrade.BankInfos[0];
+                                        string selectBankInfo = "银行名称：" + defaultBankInfo.BankName + "  银行账号：" + defaultBankInfo.BankAccount + "  开户姓名：" + defaultBankInfo.BankUserName + "  银行地址：" + defaultBankInfo.BankAddress;
+                                        
+                                        <div class="vocation">
+                                            <div class="uew-select">
+                                                <select id="bankinfoSelect-@Model.CurrentTrade.Seller.UserId" class="select3" onchange="selectBankInfoChanged(this, @Model.CurrentTrade.Seller.UserId);" style="font-size: 14px; height: 20px; line-height: 20px;">
+                                                    @foreach (Witbird.SHTS.Model.UserBankInfo bankInfo in Model.CurrentTrade.BankInfos)
+                                                    {
+                                                        string select = string.Empty;
+                                                        string bankValue = "银行名称：" + bankInfo.BankName + "  银行账号：" + bankInfo.BankAccount + "  开户姓名：" + bankInfo.BankUserName + "  银行地址：" + defaultBankInfo.BankAddress;
+                                                        if (bankInfo.IsDefault)
+                                                        {
+                                                            select = "selected='selected'";
+                                                        }
+                                            
+                                                        <option value="@bankValue" @select>@bankInfo.BankAccount</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <span id="bankinfo-@Model.CurrentTrade.Seller.UserId">
+                                            @selectBankInfo
+                                        </span>
+                                        <br />
+                                    }
+                                    <span style="color: #178aa5">如果卖家银行信息缺失或不正确，请联系卖家进行确认并更新回复</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <br />
+                <table class="tablelist tablelist-override">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <span>交易详情</span>
+                            </th>
+
+                            <th style="text-align: right; padding-right: 5px;">
+                                <span id="switch4" style="cursor: pointer;" onclick="expand('content4','switch4');">
+                                    展开</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="hide" id="content4">
+                        <tr class="nohoverbackground">
+                            <td colspan="8">
+                                <span>@(new HtmlString(Model.CurrentTrade.TradeBody))</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <table class="tablelist tablelist-override">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <span>交易记录</span>
+                            </th>
+                            <th style="text-align: right; padding-right: 5px;">
+                                <span id="switch5" style="cursor: pointer;" onclick="expandByClassName('trade_history_item','switch5');">
+                                    展开</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    @if (Model.CurrentTrade.Histories != null && Model.CurrentTrade.Histories.Count > 0)
+                    {
+                        foreach (var item in Model.CurrentTrade.Histories)
+                        {
+                            if (item != null)
+                            {
+                        <tbody class="trade_history_item hide">
+                            <tr style="background: none;">
+                                <td class="w80">用户名</td>
+                                <td class="w200 bold">@item.UserName</td>
+                                <td class="w80">买卖关系</td>
+                                <td class="w200 bold">
+                                    @if (item.IsAdminUpdate)
+                                    {
+                                        <span>管理员</span>
+                                    }
+                                    else if (item.UserId == Model.CurrentTrade.BuyerId)
+                                    {
+                                        <span>买家</span>
+                                    }
+                                    else if (item.UserId == Model.CurrentTrade.SellerId)
+                                    {
+                                        <span>卖家</span>
+                                    }
+                                    else
+                                    {
+                                        <span>未知用户操作</span>
+                                    }
+
+                                </td>
+                                <td class="w80">交易状态</td>
+                                <td class="w200 bold">
+                                    @switch (item.TradeState)
+                                    {
+                                        case (int)Witbird.SHTS.Model.TradeState.Completed:
+                                        <span style="color: #0a4407">交易完成</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.Finished:
+                                        <span style="color: #cf9c9c">交易终止</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                                        <span style="color: #1959bb">交易进行</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.New:
+                                        <span style="color: #23972b">中介申请(<span style="color: red;">未审核</span>)</span>
+                                            break;
+                                        case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                                        <span style="color: red;">违规交易</span>
+                                            break;
+                                        default:
+                                        <span style="color: red;">未知交易类型</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="w80">回复时间</td>
+                                <td class="w200 bold">@item.CreatedTime.ToString("yyyy-MM-dd hh:mm")</td>
+                            </tr>
+                            <tr style="background: none;">
+                                <td colspan="8">
+
+                                    @if (!string.IsNullOrEmpty(item.HistorySubject))
+                                    {
+                                        <span style="font-weight: bold;">@(new HtmlString(item.HistorySubject))</span>
+                                        <br />
+                                    }
+                                    <span>@(new HtmlString(item.HistoryBody))</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody class="trade_history_item hide">
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tbody class="trade_history_item hide">
+                            <tr style="background: none;">
+                                <td class="w80" colspan="8">暂无交易记录</td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+                <br />
+                <table class="tablelist tablelist_override">
+                    <thead>
+                        <tr>
+                            <th colspan="8">快速回复</th>
+                        </tr>
+                    </thead>
+                    <tbody class="trade_replay">
+                        @if (Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Completed &&
+                                                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Finished &&
+                                                Model.CurrentTrade.State != (int)Witbird.SHTS.Model.TradeState.Invalid)
+                        {
+                            <tr style="background: none;">
+                                <td class="w200">请先选择操作</td>
+                                <td colspan="7">
+                                    <div class="vocation">
+                                        <div class="uew-select">
+                                            <input type="hidden" id="lastTradeOperation" value="update" />
+                                            <select class="select3" id="tradeOperation" style="font-size: 14px; font-weight: bold;
+                                                height: 20px; line-height: 20px; color: #1127d4;"
+                                                onchange="confirmTradeOperation();">
+                                                <option value="update" style="color: #1959bb;">仅回复</option>
+
+                                                @if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.New)
+                                                {
+                                                    <option value="reviewed" style="color: #23972b;">通过审核</option>
+                                                    <option value="delete" style="color: red;">删除</option>
+                                                }
+
+                                                @if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                                                {
+
+                                                    if (!Model.CurrentTrade.IsBuyerPaid)
+                                                    {
+                                                    <option value="paid" style="color: green;">买家已线下付款</option>
+                                                    }
+                                                    else
+                                                    {
+                                                    <option value="completed" style="color: #0a4407;">交易完成</option>
+                                                    }
+                                                    <option value="finished" style="color: #f30ba8;">交易终止</option>
+                                                    <option value="invalid" style="color: red;">交易违规</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="background: none;" id="tradeReply">
+                                <td colspan="8">
+                                    <textarea id="tradeReplyContent" rows="5" cols="" placeholder="请输入回复内容" style="margin-top: 10px;
+                                        width: 100%; height: 97%;"></textarea>
+                                </td>
+                            </tr>
+                            <tr style="background: none;">
+                                <td colspan="8" style="padding-top: 10px; padding-right: 10px;">
+                                    <ul class="toolbar1">
+                                        <li><span></span><a href="javascript:void(0);" onclick="doTradeReplyWithOperation();">
+                                            提交回复</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background: none;">
+                                <td>该中介交易状态为 @(Witbird.SHTS.BLL.Services.TradeService.ConvertStateToDisplayMode(Model.CurrentTrade.State))
+                                    ，不再支持回复</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <span>数据加载失败，请返回后从新尝试</span> 
+            }
+        </div>
+    </div>
+</body>
+</html>

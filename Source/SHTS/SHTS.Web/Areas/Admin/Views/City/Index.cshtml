@@ -1,0 +1,281 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.CityModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <script src="/areas/admin/Content/js/city.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function addCity() {
+            $.ajax({
+                url: '/admin/city/add',
+                data: $("#cityform").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg.indexOf("http") > -1) {
+                        window.location.href = msg;
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("网络异常，添加失败");
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/city/">城市管理</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab1" class="selected">城市列表</a></li>
+                    <li><a href="#tab2">添加城市</a></li>
+                </ul>
+            </div>
+
+            <div id="tab1" class="tabson">
+
+                <form action="/admin/city/index" method="get">
+                    <ul class="seachform">
+
+                        <li>
+                            <label>请选择省份</label>
+                            <div class="vocation">
+                                <select class="select3" name="provinceId">
+                                    <option value="">主要城市</option>
+                                    @if (Model.Provices != null && Model.Provices.Count > 0)
+                                    {
+                                        foreach (var item in Model.Provices)
+                                        {
+                                            if (item.Id == Model.Province)
+                                            {
+                                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                        <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            <label>&nbsp;</label><input name="" type="submit" class="scbtn" value="确 定" /></li>
+                        <li>
+                            <br />
+                            前台页面顶部推荐 [主要城市] 排序为 0-100 &nbsp;&nbsp;&nbsp;&nbsp;
+                            省下面的 [一级城市] 排序从 101 开始 &nbsp;&nbsp;&nbsp;&nbsp;
+                            城市下面的 [区、县、商圈] 排序从 201 开始
+                        </li>
+
+                    </ul>
+                </form>
+
+                <table class="tablelist">
+                    <thead>
+                        <tr>
+                            @*<th>
+                                <input name="" type="checkbox" value="" checked="checked" /></th>*@
+                            <th>城市拼音</th>
+                            <th>城市名称</th>
+                            <th>上级城市</th>
+                            <th>排列顺序</th>
+                            <th>是否启用</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Cities != null && Model.Cities.Count > 0)
+                        {
+                            foreach (var item in Model.Cities)
+                            {  
+                            <tr>
+                                @*<td>
+                                    <input name="" type="checkbox" value="" /></td>*@
+                                <td>
+                                    @if (item.EntityType == 2)
+                                    {
+                                        <span>@item.Id</span>
+                                    }
+                                    else if (item.EntityType == 3)
+                                    {
+                                        <span style="color: #515151;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>@item.Id</i></span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.EntityType == 2)
+                                    {
+                                        <span>@item.Name</span>
+                                    }
+                                    else if (item.EntityType == 3)
+                                    {
+                                        <span style="color: #515151;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>@item.Name</i></span>
+                                    }
+                                </td>
+                                <td>@item.ParentId</td>
+                                <td>
+                                    @if (item.EntityType == 2)
+                                    {
+                                        <span>@item.Sort</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;@item.Sort</span>
+                                    }
+                                </td>
+                                <td>@if (item.IsActive)
+                                    {<span style="font-family: 'Microsoft YaHei';">√</span>}</td>
+                                <td>
+                                    @if (item.IsActive)
+                                    {
+                                        <a href="/admin/city/active?id=@item.Id&isActive=false" class="tablelink">禁用</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/admin/city/active?id=@item.Id&isActive=true" class="tablelink" style="color:#ff0000;">启用</a>
+                                    }
+
+                                    <a href="/admin/city/delete?id=@item.Id" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>
+                                </td>
+                            </tr> 
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+
+
+            <div id="tab2" class="tabson">
+                <form id="cityform" method="post" action="/admin/city/add">
+                    <ul class="forminfo">
+                        <li>
+                            <label>城市拼音<b>*</b></label><input id="id" name="id" type="text" class="scinput" /></li>
+
+                        <li>
+                            <label>城市名称<b>*</b></label><input id="name" name="name" type="text" class="scinput" /></li>
+
+                        <li>
+                            <label>排列序号<b>*</b></label><input id="sort" name="sort" type="text" class="scinput" value="101" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            前台页面顶部推荐 [主要城市] 排序为 0-100 &nbsp;&nbsp;&nbsp;&nbsp;
+                            省下面的 [一级城市] 排序从 101 开始 &nbsp;&nbsp;&nbsp;&nbsp;
+                            城市下面的 [区、县、商圈] 排序从 201 开始
+                        </li>
+                        <li>
+                            <label>所属省份<b>*</b></label>
+                            <div class="vocation">
+                                <select id="ddlProvince" name="provinceId" class="select2" onchange="loadCities()">
+                                    <option value="">选择省份</option>
+                                    @if (Model.Provices != null && Model.Provices.Count > 0)
+                                    {
+                                        foreach (var item in Model.Provices)
+                                        {
+                                            if (!string.IsNullOrEmpty(Model.Province) && Model.Province == item.Id)
+                                            {
+                                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                        <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>上级城市<b>*</b></label>
+                            <div class="vocation">
+                                <select id="ddlCity" name="parentId" class="select2">
+                                    <option value="">一级城市</option>
+                                    @if (Model.SelectCities != null && Model.SelectCities.Count > 0)
+                                    {
+                                        foreach (var item in Model.SelectCities)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>是否启用<b>*</b></label>
+                            <div class="vocation">
+                                <select name="isActive" class="select2">
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input onclick="addCity()" type="button" class="btn" value="添 加" /></li>
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+
+
+
+
+    </div>
+
+
+</body>
+
+</html>

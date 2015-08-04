@@ -1,0 +1,231 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //导航切换
+            $(".menuson li").click(function () {
+                $(".menuson li.active").removeClass("active")
+                $(this).addClass("active");
+            });
+
+            $('.title').click(function () {
+                var $ul = $(this).next('ul');
+                $('dd').find('ul').slideUp();
+                if ($ul.is(':visible')) {
+                    $(this).next('ul').slideUp();
+                } else {
+                    $(this).next('ul').slideDown();
+                }
+            });
+        })
+    </script>
+
+    <style type="text/css">
+        .title span img {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+
+<body style="background: #f0f9fd;">
+    <div class="lefttop"><span></span>导航菜单</div>
+
+    <dl class="leftmenu">
+
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/t05.png" />
+                </span>系统管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/config/index" target="rightFrame">参数设置</a><i></i></li>
+                <li><cite></cite><a href="/admin/city/index" target="rightFrame">城市管理</a><i></i></li>
+                <li><cite></cite><a href="/admin/Search/SiteSerach" target="rightFrame">搜索管理</a><i></i></li>
+                <li><cite></cite><a href="/admin/demand/sensitivewords/51" target="rightFrame">敏感词汇</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/d022.png" />
+                </span>公司信息管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/about/edit/1" target="rightFrame">关于我们</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/2" target="rightFrame">联系我们</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/3" target="rightFrame">网站规则</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/94" target="rightFrame">活动在线用户服务协议</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/4" target="rightFrame">会员须知</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/5" target="rightFrame">会员功能权限</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/95" target="rightFrame">升级VIP会员须知</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/9" target="rightFrame">客服功能</a><i></i></li>
+            </ul>
+        </dd>
+
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/d033.png" />
+                </span>新闻公告管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/news/add" target="rightFrame">发布新闻公告</a><i></i></li>
+                <li><cite></cite><a href="/admin/news/index" target="rightFrame">新闻公告列表</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/d033.png" />
+                </span>活动管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/activity/index" target="rightFrame">活动列表</a><i></i></li>
+                <li><cite></cite><a href="/admin/activity/tongji" target="rightFrame">活动统计</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/d044.png" />
+                </span>管理员管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/account/index" target="rightFrame">管理员</a><i></i></li>
+                <li><cite></cite><a href="/admin/account/permission" target="rightFrame">权限管理</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/i07ico.png" />
+                </span>会员管理
+            </div>
+            <ul class="menuson">
+                <li>
+                    <cite></cite><a href="/admin/member/index?querytype=0" target="rightFrame">
+                        个人会员
+                    </a><i></i>
+                </li>
+
+                <li>
+                    <cite></cite><a href="/admin/member/index?querytype=1" target="rightFrame">
+                        企业会员
+                    </a><i></i>
+                </li>
+                <li>
+                    <cite></cite><a href="/admin/member/VipUserReview" target="rightFrame">
+                        会员认证
+                    </a><i></i>
+                </li>
+                <li>
+                    <cite></cite><a href="/admin/member/tongji?city=-1&resurce=-1&querytype=-1" target="rightFrame">
+                        会员统计
+                    </a><i></i>
+                </li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/leftico05.png" />
+                </span>资源管理
+            </div>
+            <ul class="menuson">
+                <li><cite></cite><a href="/admin/resource/spacelist" target="rightFrame">活动场地</a><i></i></li>
+                <li><cite></cite><a href="/admin/resource/actorlist" target="rightFrame">演艺人员</a><i></i></li>
+                <li><cite></cite><a href="/admin/resource/equipmentlist" target="rightFrame">活动设备</a><i></i></li>
+                <li><cite></cite><a href="/admin/resource/otherlist" target="rightFrame">其他资源</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/d066.png" />
+                </span>中介管理
+            </div>
+            <ul class="menuson">
+
+                <li><cite></cite><a href="/admin/trade/list" target="rightFrame">中介申请列表</a><i></i></li>
+                <li><cite></cite><a href="/admin/trade/config" target="rightFrame">中介参数设置</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/6" target="rightFrame">中介交易流程</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/7" target="rightFrame">中介账号说明</a><i></i></li>
+                <li><cite></cite><a href="/admin/trade/bankconfig" target="rightFrame">中介账号配置</a><i></i></li>
+                <li><cite></cite><a href="/admin/about/edit/8" target="rightFrame">中介手续费说明</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/leftico02.png" />
+                </span>供求管理
+            </div>
+            <ul class="menuson">
+                @*<li><cite></cite><a href="/admin/demand/category" target="rightFrame">类别设置</a><i></i></li>*@
+                <li><cite></cite><a href="/admin/demand/index" target="rightFrame">供求列表</a><i></i></li>
+            </ul>
+        </dd>
+
+
+
+        <dd>
+            <div class="title">
+                <span>
+                    <img src="/areas/admin/content/images/leftico04.png" />
+                </span>网站统计
+            </div>
+            <ul class="menuson">
+                <li>
+                    <cite></cite>
+                    <a href="/admin/sitebi/index" target="rightFrame">网站浏览统计</a><i></i>
+                </li>
+                @*<li><cite></cite><a href="#" target="rightFrame">图形统计</a><i></i></li>*@
+            </ul>
+
+        </dd>
+        @*<dd>
+                <div class="title">
+                    <span>
+                        <img src="/areas/admin/content/images/leftico02.png" /></span>其他设置
+                </div>
+                <ul class="menuson">
+                    <li><cite></cite><a href="#">编辑内容</a><i></i></li>
+                    <li><cite></cite><a href="#">发布信息</a><i></i></li>
+                    <li><cite></cite><a href="#">档案列表显示</a><i></i></li>
+                </ul>
+            </dd>
+            <dd>
+                <div class="title">
+                    <span>
+                        <img src="/areas/admin/content/images/leftico01.png" /></span>统一参考模板
+                </div>
+                <ul class="menuson">
+                    <li><cite></cite><a href="/areas/admin/html/right.html" target="rightFrame">参数设置</a><i></i></li>
+                    <li><cite></cite><a href="/admin/city/index" target="rightFrame">城市管理</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/imgtable.html" target="rightFrame">图片数据表</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/form.html" target="rightFrame">添加编辑</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/imglist.html" target="rightFrame">图片列表</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/imglist1.html" target="rightFrame">自定义</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/tools.html" target="rightFrame">常用工具</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/filelist.html" target="rightFrame">信息管理</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/tab.html" target="rightFrame">Tab页</a><i></i></li>
+                    <li><cite></cite><a href="/areas/admin/html/error.html" target="rightFrame">404页面</a><i></i></li>
+                </ul>
+            </dd>
+        *@
+    </dl>
+
+</body>
+</html>

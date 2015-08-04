@@ -1,0 +1,111 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.SinglePageModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SensitiveWords</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function addSensitiveWords() {
+            $.ajax({
+                url: '/admin/Demand/SensitiveWords',
+                data: $("#aboutform").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        alert("更新成功");
+                    }
+                    else {
+                        alert(msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("网络异常，添加失败");
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="#">系统设置</a></li>
+            <li><a href="#">敏感词汇</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab2">敏感词汇</a></li>
+                </ul>
+            </div>
+
+
+
+
+            <div id="tab2" class="tabson">
+                <form id="aboutform" method="post">
+                    <input type="hidden" name="id" value="@Model.SinglePage.Id" />
+                    <ul class="forminfo">
+                        <li style="padding-left:85px;">敏感词汇之间请使用加号“+”隔开。</li>
+                        <li>
+                            <label>敏感词汇<b>*</b></label><textarea id="editorContent" name="contentStyle" style="border: 1px solid #cdcdcd; width: 600px; height: 300px; font-family:'Microsoft YaHei'; font-size:14px; line-height:20px; padding:5px;">@Model.SinglePage.ContentStyle</textarea></li>
+                        
+                        <li>
+                            <label>&nbsp;</label><input onclick="addSensitiveWords()" type="button" class="btn" value="更 新" /></li>
+                        
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+
+
+
+
+    </div>
+
+
+</body>
+
+</html>

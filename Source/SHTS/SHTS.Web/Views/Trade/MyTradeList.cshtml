@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "我的中介申请 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+@section head
+{
+    <style type="text/css">
+        .usertable tr:hover {
+            background: #f5f8fa;
+        }
+    </style>
+    <script type="text/javascript" src="/content/js/payment.js"></script>
+}
+@model Witbird.SHTS.Web.Models.TradeModel
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：
+        <a href="/" class="blue">首页</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        <a href="/user" class="blue">用户中心</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        我的中介申请
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">我的中介申请</p>
+            <p class="n1" style="float: right;">
+                总共 <span style="color: #ff9a15;">@Model.AllCount</span>
+                条
+            </p>
+        </div>
+        <table class="usertable">
+            <tr style="background: #f5f8fa;">
+                <td style="width: 30px;">编号</td>
+                <td style="overflow: hidden;"><strong>中介摘要</strong></td>
+                <td style="width: 100px;"><strong>卖家/买家</strong></td>
+                <td style="width: 150px;"><strong>交易金额</strong></td>
+                <td style="width: 60px;"><strong>支付状态</strong></td>
+                <td style="width: 60px;"><strong>中介状态</strong></td>
+                <td style="width: 110px;"><strong>创建/更新时间</strong></td>
+            </tr>
+            @if (Model.TradeList != null && Model.TradeList.Count > 0)
+            {
+                foreach (var item in Model.TradeList)
+                {
+                    if (item != null)
+                    {
+                <tr>
+                    <td>@item.RowNumber</td>
+                    <td style="text-align: left;">
+                        <a href="/trade/@(item.TradeId).html" target="_blank" style="color: #3858FA;">@item.TradeSubject</a>
+                    </td>
+                    <td>
+                        @*@item.SellerId*@
+
+                        @if (item.SellerId == Model.CurrentUser.UserId)
+                        {
+                            <span>@item.SellerName (我)</span>    
+                        }
+                        else
+                        {
+                            <span>@item.SellerName</span>
+                        }
+                        <br />
+
+                        @if (item.BuyerId == Model.CurrentUser.UserId)
+                        {
+                            <span>@item.BuyerName (我)</span>
+                        }
+                        else
+                        {
+                            <span>@item.BuyerName</span>
+                        }
+                    </td>
+                    <td>交易金额：￥ @item.TradeAmount 元
+                        <br />
+                        买家应付：￥ @item.BuyerPay 元
+                        <br />
+                        卖家可得：￥ @item.SellerGet 元
+                    </td>
+                    <td>@if (item.IsBuyerPaid)
+                        {
+                        <span style="color: green;">已支付</span>
+                        }
+                        else
+                        {
+
+                            if (item.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                            {
+                        <a href="javascript:void(0);" style="color: #1959bb" title="中介交易正在进行，请买家尽快支付交易款项" onclick="generateTradeOrder(@item.TradeId);">
+                            立即支付</a>
+                        @*<span style="color: red;">等待付款</span>
+                                if (item.BuyerId == Model.CurrentUser.UserId)
+                                {
+                        <br />
+                        <a href="javascript:void(0);" style="color: #1959bb" title="中介交易正在进行，请买家尽快支付交易款项" onclick="generateTradeOrder(@item.TradeId);">
+                            立即支付</a>
+                                }*@
+                            }
+                            else
+                            {
+                        <span style="color: red;" title="中介交易完成或没有通过审核，不能对其付款">不能付款</span>
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        @switch (item.State)
+                        {
+                            case (int)Witbird.SHTS.Model.TradeState.Completed:
+                            <span style="color: #0a4407">交易完成</span>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.Finished:
+                            <span style="color: #cf9c9c">交易终止</span>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                            <span style="color: #1959bb">交易进行</span>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.New:
+                            <span style="color: #23972b">中介申请</span>
+                                break;
+                            case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                            <span style="color: red;">违规交易</span>
+                                break;
+                            default:
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @item.CreatedTime.ToString("yyyy-MM-dd HH:mm")<br />
+                        @item.LastUpdatedTime.ToString("yyyy-MM-dd HH:mm")
+                    </td>
+                </tr>
+                    }
+                }
+            }
+        </table>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                <span><a href="/trade/mytradelist/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                <span><a href="/trade/mytradelist/1">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                <span><a href="/trade/mytradelist/@i" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                <span><a href="/trade/mytradelist/@i">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                <span><a href="/trade/mytradelist/@Model.PageCount">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                <span><a href="/trade/mytradelist/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        }
+                    }
+                }
+
+            }
+        </div>
+        <!--分页结束-->
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+

@@ -1,0 +1,239 @@
+﻿@{
+    ViewBag.Title = "中介申请 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/trade.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+}
+@model Witbird.SHTS.Web.Models.TradeModel
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：
+        <a href="/" class="blue">首页</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        <a href="/user" class="blue">用户中心</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        发起中介
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">发起中介</p>
+        </div>
+        <div class="trade_tips b_cd">
+            @(new HtmlString(Model.TradeConfig.MultipleConfigs["TradeReminding"].ConfigValue))
+        </div>
+        <div class="wrap b_cd new">
+            <form id="form_trade_new" enctype="multipart/form-data" method="post">
+
+                <div class="ur_title"><span class="red ch">*</span> 我的QQ：</div>
+                <div class="ur_box">
+                    <input id="txtqq" name="qq" type="text" class="ur_txt1" placeholder="请输入您的联系QQ号码" value="@Model.CurrentUser.QQ" />
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 联系手机：</div>
+                <div class="ur_box">
+                    <input name="phone" type="text" class="ur_txt1" placeholder="请输入您的联系手机" value="@Model.CurrentUser.Cellphone" />
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 联系邮箱：</div>
+                <div class="ur_box">
+                    <input name="email" type="text" class="ur_txt1" placeholder="请输入您的联系邮箱" value="@Model.CurrentUser.Email" />
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 联系地址：</div>
+                <div class="ur_box">
+                    <input name="address" type="text" class="ur_txt1" placeholder="请填写您的详细收货地址" style="width:660px;" value="@Model.CurrentUser.Adress" />
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 交易对象：</div>
+                <div class="ur_box">
+                    <input name="username" type="text" class="ur_txt1" placeholder="请输入交易对方在系统中的用户名" />
+                    <div style="margin-top:10px;">
+                    <span style="color: #4193ff;">如果您是买家，请输入卖家的用户名；如果您是卖家，请输入买家的用户名</span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title lh24"><span class="red ch">*</span> 买卖关系：</div>
+                <div class="ur_box">
+                    <span class="ur_box_radio">
+                        <input name="relationship" type="radio" value="seller" checked="checked" />
+                        卖（我是收款方）
+                    </span>
+
+                    <span class="ur_box_radio">
+                        <input name="relationship" type="radio" value="buyer" />
+                        买（我是付款方）
+                    </span>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 收款账号：</div>
+                <div class="ur_box">
+                    <select id="ddlBankInfo" name="bankInfo" onchange="selectBankInfoChanged(this);" class="ur_txt1">
+                        @if (Model.BankInfos != null && Model.BankInfos.Count > 0)
+                        {
+                            foreach (Witbird.SHTS.Model.UserBankInfo bankInfo in Model.BankInfos)
+                            {
+                                string bValue = bankInfo.BankName + "&" + bankInfo.BankAccount + "&" + bankInfo.BankUserName + "&" + bankInfo.BankId + "&" + bankInfo.BankAddress;
+                                string select = string.Empty;
+                                if (bankInfo.IsDefault)
+                                {
+                                    select = "selected='selected'";
+                                }
+                                <option value="@bValue" @select>@bankInfo.BankAccount</option>
+                            }
+                        }
+                        <option value="newbank">新建收款账号</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+                @if (Model.BankInfos != null && Model.BankInfos.Count > 0)
+                {
+                    Witbird.SHTS.Model.UserBankInfo defaultBank = Model.BankInfos.FirstOrDefault(c => c.IsDefault);
+                    if (defaultBank != null)
+                    {
+                        <input id="bankid" name="bankid" type="hidden" value="@defaultBank.BankId" />
+                        <div class="ur_title"><span class="red ch">*</span> 开户银行：</div>
+                        <div class="ur_box">
+                            <input id="bankname" name="bankname" type="text" placeholder="请输入开户银行" class="ur_txt1 lbltxt" readonly="true" value="@defaultBank.BankName" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title"><span class="red ch">*</span> 银行账号：</div>
+                        <div class="ur_box">
+                            <input id="bankaccount" name="bankaccount" type="text" placeholder="请输入银行账号" class="ur_txt1 lbltxt" readonly="true" value="@defaultBank.BankAccount" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title"><span class="red ch">*</span> 账户姓名：</div>
+                        <div class="ur_box">
+                            <input id="bankusername" name="bankusername" type="text" placeholder="请输入银行账户姓名" class="ur_txt1 lbltxt" readonly="true" value="@defaultBank.BankUserName" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title" style="font-size:13px;"><span class="red ch">*</span> 开户行地址：</div>
+                        <div class="ur_box">
+                            <input id="bankaddress" name="bankaddress" type="text" placeholder="请输入开户行地址" class="ur_txt1 lbltxt" readonly="true" value="@defaultBank.BankAddress" />
+                        </div>
+                    }
+                    else
+                    {
+                        <input id="bankid" name="bankid" type="hidden" value="-1" />
+                        <div class="ur_title"><span class="red ch">*</span> 开户银行：</div>
+                        <div class="ur_box">
+                            <input id="bankname" name="bankname" type="text" placeholder="请输入开户银行" class="ur_txt1" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title"><span class="red ch">*</span> 银行账号：</div>
+                        <div class="ur_box">
+                            <input id="bankaccount" name="bankaccount" type="text" class="ur_txt1" placeholder="请输入银行账号" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title"><span class="red ch">*</span> 账户姓名：</div>
+                        <div class="ur_box">
+                            <input id="bankusername" name="bankusername" type="text" class="ur_txt1" placeholder="请输入银行账户姓名" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ur_title" style="font-size: 13px;"><span class="red ch">*</span> 开户行地址：</div>
+                        <div class="ur_box">
+                            <input id="bankaddress" name="bankaddress" type="text" placeholder="请输入开户行地址" class="ur_txt1" value="" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <input id="bankid" name="bankid" type="hidden" value="-1" />
+                    <div class="ur_title"><span class="red ch">*</span> 开户银行：</div>
+                    <div class="ur_box">
+                        <input id="bankname" name="bankname" type="text" class="ur_txt1" placeholder="请输入开户银行" />
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ur_title"><span class="red ch">*</span> 银行账号：</div>
+                    <div class="ur_box">
+                        <input id="bankaccount" name="bankaccount" type="text" class="ur_txt1" placeholder="请输入银行账号" />
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ur_title"><span class="red ch">*</span> 账户姓名：</div>
+                    <div class="ur_box">
+                        <input id="bankusername" name="bankusername" type="text" class="ur_txt1" placeholder="请输入银行账户姓名" />
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ur_title" style="font-size: 13px;"><span class="red ch">*</span> 开户行地址：</div>
+                    <div class="ur_box">
+                        <input id="bankaddress" name="bankaddress" type="text" placeholder="请输入开户行地址" class="ur_txt1" value="" />
+                    </div>
+                }
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 交易金额：</div>
+                <div class="ur_box">
+                    <input id="tradeamount" name="amount" type="text" class="ur_txt1" onblur="onTradeAmountLostFocusEvent();" placeholder="请输入交易金额" />&nbsp;元
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title lh24"><span class="red ch">*</span> 手续费：</div>
+                <div class="ur_box">
+                    <input id="minpaycommission" type="hidden" value="@Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue" />
+                    <input id="paycommissionpercent" type="hidden" value="@Model.TradeConfig.MultipleConfigs["PayCommissionPercent"].ConfigValue" />
+                    @*<span class="ur_box_radio">
+                            <input name="payer" type="radio" value="buyer" checked="checked" onchange="onTradeAmountLostFocusEvent();" />
+                            买家支付</span>
+                        <span class="ur_box_radio">
+                            <input name="payer" type="radio" value="seller" onchange="onTradeAmountLostFocusEvent();" />
+                            卖家支付
+                        </span>
+                        <span class="ur_box_radio">
+                            <input name="payer" type="radio" value="both" onchange="onTradeAmountLostFocusEvent();" />
+                            双方平摊</span>*@
+                    卖家需支付手续费：<span id="sellerpay" class="red ch">￥&nbsp;@Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue</span>&nbsp;元
+                    <br />
+                    <span>
+                        <a href="/about/8.html" class="blue" target="_blank" title="查看中介手续费说明">【中介手续费】</a>为交易金额的 @Model.TradeConfig.MultipleConfigs["PayCommissionPercent"].ConfigValue %，
+                        <a href="/about/8.html" target="_blank" class="blue" title="查看中介手续费说明">【最低手续费】</a>为 @Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue 元
+                        &nbsp;&nbsp;<a href="/about/7.html" target="_blank" class="blue" title="点击查看中介交易金额线下付款帐号">【点击查看中介银行帐号】</a>
+                    </span>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 中介标题：</div>
+                <div class="ur_box">
+                    <input name="tradesubject" type="text" class="ur_txt1" style="width: 660px;" placeholder="请输入中介标题" />
+                </div>
+                <div class="clearfix"></div>
+                    <div class="ur_title"><span class="red ch">*</span> 资源连接：</div>
+                    <div class="ur_box">
+                        <input name="resourceurl" type="text" class="ur_txt1" style="width: 660px;" placeholder="请输如交易资源连接，如：http://www.activity-line.com/resource/123.html" />
+                    </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"><span class="red ch">*</span> 中介详情：</div>
+                <div class="ur_box" style="height: auto;">
+                    <textarea id="tradedetail" name="tradedetail" cols="" rows="" class="ur_tra" style="width: 810px; min-height: 300px;"></textarea>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"></div>
+                <div class="ur_box">
+                    <input type="button" id="btn_submit_new_trade" class="tjzl_btn" title="提交中介交易申请" value="提交申请" />
+                    <span class="ur_box_radio" style="margin-left: 10px;">
+                        <input name="agreerule" type="checkbox" value="in" checked="checked" />
+                        我同意<a href="/about/3.html" class="blue" target="_blank" title="点击查看活动在线网站规则">活动在线网站规则</a>
+                    </span>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ur_title"></div>
+                <div class="ur_box">
+                    温馨提示：如果长时间未操作，发布时提示“请登录”，你可以在新的页面登录，然后再回到本页面继续发布。
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section FooterJS
+{
+    <script src="/Content/kindeditor/kindeditor-min.js"></script>
+    <script src="/Content/kindeditor/zh_CN.js"></script>
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="/Content/js/jquery.validate.min.js"></script>
+    <script src="/Content/js/trade.js"></script>
+}

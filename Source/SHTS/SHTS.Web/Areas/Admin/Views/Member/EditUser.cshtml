@@ -1,0 +1,124 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.MemberViewModel
+@{
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <style>
+        .identifyImg {
+            cursor:pointer;
+            max-height:200px;
+            max-width:800px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">会员管理</a></li>
+            <li><a href="#">会员信息更新</a></li>
+        </ul>
+    </div>
+    <div class="formbody">
+        <div class="formtitle">
+            <span>基本信息</span><ul class="toolbar1">
+                <li>
+
+                    <a href="/admin/member/index?querytype=@Model.SingleUser.UserType">&nbsp;&nbsp;返回列表</a>
+                </li>
+            </ul>
+        </div>
+        <form class="editform" id="AddNewAdmin" method="post" action="#">
+            <input type="hidden" name="UserId" value="@Model.SingleUser.UserId"/>
+            <ul class="forminfo">
+                <li>
+                    <label>账户名</label>
+                    <input name="UserName" style="background-color: gainsboro;" disabled="disabled" title="不可编辑" value="@Model.SingleUser.UserName" type="text" class="dfinput"/>
+                    <i></i></li>
+                <li>
+                    <label>电话</label><input name="Cellphone" value="@Model.SingleUser.Cellphone" type="text" class="dfinput" /><i></i>
+                </li>
+                <li>
+                    <label>邮箱</label><input name="Email" value="@Model.SingleUser.Email" type="text" class="dfinput" /><i></i>
+                </li>
+                <li>
+                    <label>QQ</label><input name="QQ" value="@Model.SingleUser.QQ" type="text" class="dfinput" /><i></i>
+                </li>
+                <li>
+                    <label>地址</label><input name="Address"  value="@Model.SingleUser.Adress" type="text" class="dfinput" /><i></i>
+                </li>
+                <li>
+                    <label>会员类型</label>
+                    @{
+                        string typeName = "个人会员";
+                        if (Model.SingleUser.UserType != 0)
+                        {
+                            typeName = "企业会员";
+                        }
+                    }
+                    <input name="" type="text" style="background-color: gray;" disabled="disabled" title="不可编辑" value="@typeName" class="dfinput"/><i>企业或个人</i>
+                </li>
+                <li>
+                    <label>会员等级</label>
+                    @{
+                        string levelName = "";
+                        if (Model.SingleUser.Vip.Value == (int)Witbird.SHTS.Model.VipState.VIP)
+                        {
+                            levelName = "VIP 会员";
+                        }
+                        else if (Model.SingleUser.Vip.Value == (int)Witbird.SHTS.Model.VipState.Identified)
+                        {
+                            levelName = "认证会员";
+                        }
+                        else
+                        {
+                            levelName = "普通会员";
+                        }
+                    }
+                    <input type="text" style="background-color: gray;" disabled="disabled" title="不可编辑" value="@levelName" class="dfinput"/>
+                </li>
+                <li>
+                    @if (Model.SingleUser.UserType == 0)
+                    {  
+                        <label>身份证号</label>
+                    }
+                    else
+                    {
+                        <label>企业名称</label>
+                    }
+                    <input name="UCard" type="text" value="@Model.SingleUser.UCard" class="dfinput"/>
+                    <i></i>
+                </li>
+                <li>
+                    <label>链接</label><input name="SiteUrl" type="text" value="@Model.SingleUser.SiteUrl" class="dfinput" /><i></i>
+                </li>
+                <li>
+                    @if (Model.SingleUser.UserType == 0)
+                    {  
+                        <label>身份证照片</label>
+                    }
+                    else
+                    {
+                        <label>营业执照</label>
+                    }
+                    <span>
+                    
+                    <a href="@Model.SingleUser.IdentiyImg" target="_blank" title="点击查看原图">
+                        <img class="identifyImg" src="@Model.SingleUser.IdentiyImg" /></a>
+                    </span>
+                </li>
+                <li>
+                    <label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存" />
+                </li>
+            </ul>
+        </form>
+    </div>
+</body>
+</html>

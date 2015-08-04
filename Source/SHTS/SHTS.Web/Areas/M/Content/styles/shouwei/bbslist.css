@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*登录后显示用户信息样式*/
+/*.user_info{padding:5px 15px; border-bottom:1px solid #dadada; background:#f9f9f9;}*/
+
+/*首页样式，派头也用了该处的样式*/
+#main{background-color:#FFF; padding:0 15px 10px 15px; font-family:'微软雅黑'; }
+#main dl{width:100%; padding:10px 0px; border-bottom:1px solid #dcdcdc;}
+#main .pt0{ padding-top:0px;}
+#main .bbsdata_info{ width:100%; font-size:13px;color:#898989; text-align:left; margin-top: 15px;}
+#main dt{ text-align:left; pa}
+#main .hun dt{padding-bottom:10px;}
+#main dt font{ color:#FFF; font-family:Arial; width:21px; height:15px; line-height:15px; text-align:center; margin-top:4px; margin-right:5px; padding:0 3px; float:left; display:inline;}
+#main .bbsdata_info a{ color:#87C23A; font-size:13px;}
+#main dt .dry{background-color:#89c000; padding:0 3px;}
+#main dt .two_num{ font-size:13px;}
+#main dt .three_num{ font-size:10px;}
+#main dt .rpy{ background-color:#c8c8c8;}
+#main dt a{ font-size:16px; color:#000000; }
+#main img{ max-width:100%; }
+.read_num{ color:#898989;background:url(../../images/shouwei/read_icon_gray.gif) no-repeat 0 2px; padding-left:12px; margin-left:15px;}
+.collect_num{ color:#898989;background:url(../../images/shouwei/col_icon_gray.gif) no-repeat 0 2px; padding-left:12px; margin-left:15px;}
+.hight_read_num{ color:#898989; background:url(../../images/shouwei/read_icon.gif) no-repeat 0 2px; padding-left:12px; margin-left:3px; font-size:13px;}
+.hight_collect_num{ color:#898989;background:url(../../images/shouwei/col_icon.gif) no-repeat 0 2px; padding-left:12px; margin-left:3px; font-size:13px;}
+
+/*板块页*/
+#all_blocks{ width:100%;}
+#all_blocks a{ float:left; display:inline; width:30%; height:40px; line-height:40px; background-color:#FFF; font-size:14px; color:#646464; text-align:center; border:1px solid #DCDCDC; margin: 0px 5px 6px 0px; text-align:center;}
+#main h1{ width:100%; text-align:left;}
+
+/*文章详情页*/
+#main .bbsdata_info .col_art{padding:0 8px; height:22px; background-color:#C8C8C8; color:#FFF; text-align:center; font-size:11px; line-height:22px;}
+.content{ padding:10px 0px; text-align: justify; color:#000000; font-size:16px;word-wrap:break-word;word-break:break-all;}
+.content p{line-height:180%; margin-top:10px;word-wrap:break-word;word-break:break-all;}
+#main .replies{ border:0px; padding:0px;}
+#main .reply_title{ height:35px; line-height:35px; border-bottom:1px solid #dcdcdc; border-top:1px solid #dcdcdc; background:#E6E6E6 url(../../images/shouwei/reply_icon.gif) no-repeat 3px 10px; padding-left: 23px;}
+#main .reply_con{ padding:10px 0px;line-height:180%; border-bottom:1px solid #dcdcdc; text-align:left;word-wrap:break-word;word-break:break-all;} 
+#main .reply_con *{word-wrap:break-word;word-break:break-all;}
+.reply_btn{ width:30px; height:20px; line-height:20px; border:1px solid #dcdcdc; text-align:center;}
+#message{ width:93%; height:150px; background-color:#FFF; margin-top:12px; resize:none; border:1px solid #dcdcdc; padding:10px; font:12px; color:#323232;}
+#submit_mes,#per_reply{width:100%; background-color:#F1F1F1; border:1px solid #DCDCDC; height:36px; line-height:36px; text-align:center; margin-top:8px; color:#646464; font-size:14px; font-family:"微软雅黑";}
+#reply_box{ width:95%; height:120px; padding:5px; resize:none; font-size:12px; line-height:20px; border:1px solid #dcdcdc;outline:none;}

@@ -1,0 +1,291 @@
+﻿.comeing_ct2 {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.cl {
+    zoom: 1;
+}
+
+.sttl {
+    margin: 10px 0;
+    padding: 5px;
+    border-bottom: 1px solid #CCC;
+    background: #F5F5F5;
+}
+
+.mbn {
+    margin-bottom: 5px!important;
+}
+
+.sttl h2 {
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+.sttl em {
+    font-style: normal;
+}
+
+.sttl span {
+    font-style: normal;
+}
+
+.comeing_ct2 .mn {
+    float: left;
+    width: 659px;
+    overflow: hidden;
+    width: inherit;
+}
+
+.comeing_picnewslist {
+}
+
+    .comeing_picnewslist li {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+        .comeing_picnewslist li img {
+            width: 180px;
+            height: 110px;
+            float: left;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .comeing_picnewslist li h3 {
+            font-size: 16px;
+            font-weight: 400;
+            height: 40px;
+            line-height: 40px;
+            overflow: hidden;
+        }
+
+        .comeing_picnewslist li p.about {
+            color: #666;
+            line-height: 22px;
+        }
+
+        .comeing_picnewslist li p.info {
+            color: #ccc;
+            height: 34px;
+            line-height: 24px;
+        }
+
+            .comeing_picnewslist li p.info a {
+                color: #ccc;
+            }
+
+        .comeing_picnewslist li.on {
+            background: #f6f6f6;
+        }
+
+.comeing_portalbm, .comeing_portaldiy_comm {
+    border: 0px;
+    background: none;
+    margin-bottom: 0px;
+}
+
+    .comeing_portalbm .bm_h, .comeing_portaldiy_comm .frame-title {
+        height: 37px;
+        line-height: 24px;
+        padding: 0px;
+        border: 0px;
+        font-size: 18px;
+        background: url(../Images/template/comeing_news_02/comeing/portal/portalbm_h.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/portalbm_h.gif*/ repeat-x 0 100%;
+    }
+
+        .comeing_portalbm .bm_h span.a, .comeing_portaldiy_comm .frame-title .titletext {
+            float: left;
+            height: 37px;
+            padding: 0 10px;
+            font-weight: 400;
+            background: url(../Images/template/comeing_news_02/comeing/portal/portalbm_h_a.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/portalbm_h_a.gif*/ repeat-x 0 100%;
+        }
+
+            .comeing_portalbm .bm_h span.a:hover, .comeing_portaldiy_comm .frame-title .titletext:hover {
+                background: url(../Images/template/comeing_news_02/comeing/portal/portalbm_h_a_hover.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/portalbm_h_a_hover.gif*/ repeat-x 0 100%;
+            }
+
+    .comeing_portaldiy_comm .column {
+        padding: 5px 0;
+    }
+
+.comeing_pstslide {
+    height: 162px;
+    position: relative;
+}
+
+    .comeing_pstslide .slideshow h3 {
+        font-size: 14px;
+        height: 40px;
+        line-height: 40px;
+        font-weight: normal;
+        width: 100%;
+        overflow: hidden;
+    }
+
+        .comeing_pstslide .slideshow h3 a {
+            color: #369;
+        }
+
+    .comeing_pstslide .slideshow img {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .comeing_pstslide .slideshow p {
+        padding: 5px 0;
+        height: 80px;
+        line-height: 20px;
+        overflow: hidden;
+        color: #999;
+    }
+
+    .comeing_pstslide .slidebar {
+        position: absolute;
+        left: 90px;
+        bottom: 0px;
+        height: 12px;
+    }
+
+        .comeing_pstslide .slidebar em {
+            cursor: pointer;
+            float: left;
+            width: 22px;
+            height: 12px;
+            background: url(../Images/template/comeing_news_02/comeing/portal/pstslide.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/pstslide.gif*/ no-repeat 50% 0;
+        }
+
+            .comeing_pstslide .slidebar em.on {
+                background: url(../Images/template/comeing_news_02/comeing/portal/pstslide.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/pstslide.gif*/ no-repeat 50% -12px;
+            }
+
+.comeing_top10 {
+    line-height: 28px;
+    padding: 0 5px;
+    background: url(../Images/template/comeing_news_02/comeing/portal/top10.gif) /*tpa=http://www.ai021.cn/template/comeing_news_02/comeing/portal/top10.gif*/ no-repeat 5px 0;
+}
+
+    .comeing_top10 li {
+        height: 28px;
+        overflow: hidden;
+        padding-left: 29px;
+    }
+
+.comeing_diytab {
+    border: 0px;
+    background: none;
+    margin-bottom: 0px;
+}
+
+    .comeing_diytab .tab-title {
+        background: #ff6600;
+        height: 40px;
+    }
+
+    .comeing_diytab .tb {
+        padding-left: 0;
+        line-height: 40px;
+    }
+
+        .comeing_diytab .tb li {
+        }
+
+            .comeing_diytab .tb li a {
+                padding: 0 15px;
+                border: 0px;
+                border-right: 0px;
+                color: #fff;
+            }
+
+            .comeing_diytab .tb li.a a {
+                background: #0099cc;
+                font-weight: 400;
+                color: #fff;
+            }
+
+    .comeing_diytab .tb-c {
+        padding: 10px;
+    }
+
+.comeing_newtitle {
+    background: #fff;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+    .comeing_newtitle h1 {
+        font-size: 24px;
+        line-height: 40px;
+    }
+
+    .comeing_newtitle p {
+        color: #ccc;
+        line-height: 20px;
+        padding-top: 10px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+        .comeing_newtitle p a {
+            color: #ccc;
+        }
+
+.comeing_newscontent {
+    background: #fff;
+    margin-bottom: 10px;
+}
+
+.comeing_summary {
+    padding: 10px 20px;
+    background: #f6f6f6;
+    border: 1px solid #eee;
+}
+
+    .comeing_summary div {
+        line-height: 24px;
+    }
+
+.comeing_newscontent .d {
+    padding: 20px;
+}
+
+.comeing_newscontent #article_content {
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.comeing_newsmanage {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #eee;
+}
+
+.comeing_portalbox {
+    border: 0px;
+    background: none;
+}
+
+    .comeing_portalbox .bm_h {
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        font-weight: 400;
+        border: 0px;
+        border-top: 3px solid #ddd;
+        background: none;
+    }
+
+    .comeing_portalbox .bm_c {
+        padding: 10px;
+    }

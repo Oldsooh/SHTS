@@ -1,0 +1,57 @@
+﻿@model Witbird.SHTS.Web.Models.SinglePageModel
+@{
+    ViewBag.Title = Model.SinglePage.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        .aboutli
+        {
+            height: 30px;
+            line-height: 30px;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+            .aboutli a
+            {
+                color: #2577e3;
+            }
+
+                .aboutli a:hover
+                {
+                    color: #ff9a15;
+                }
+    </style>
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch">&nbsp;&gt;&nbsp;@Model.SinglePage.Title</span>
+    </div>
+    <div style="">
+        <div style="width: 130px; min-height: 300px; padding-top: 10px; border: 1px solid #E5E5E5; float: left;">
+            <ul class="aboutul">
+                <li class="aboutli"><a href="/about/1.html">关于我们</a></li>
+                <li class="aboutli"><a href="/about/2.html">联系我们</a></li>
+                <li class="aboutli"><a href="/about/3.html">网站规则</a></li>
+                <li class="aboutli"><a href="/about/4.html">会员须知</a></li>
+                <li class="aboutli"><a href="/about/5.html">会员功能权限</a></li>
+                <li class="aboutli"><a href="/about/6.html">中介交易流程</a></li>
+                <li class="aboutli"><a href="/about/7.html">中介账号</a></li>
+                <li class="aboutli"><a href="/about/8.html">中介手续费</a></li>
+                <li class="aboutli"><a href="/about/9.html">客服功能</a></li>
+            </ul>
+        </div>
+        <div style="width: 830px; min-height: 500px; border: 1px solid #E5E5E5; float: right; padding: 10px;">
+            <div style="text-align: center; padding: 15px 0;">
+                <h2 style="font-size: 20px; font-weight: bold; margin: 0 auto;">@Model.SinglePage.Title</h2>
+            </div>
+            @(new HtmlString(Model.SinglePage.ContentStyle))
+        </div>
+        <div style="clear: both; height: 30px;"></div>
+    </div>
+</div>

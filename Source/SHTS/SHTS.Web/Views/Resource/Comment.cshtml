@@ -1,0 +1,32 @@
+﻿@model Witbird.SHTS.Web.Models.CommentViewModel
+
+@{
+    ViewBag.Title = "评论 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+<style type="text/css">
+    textarea {
+        width: 600px;
+        height: 400px;
+    }
+</style>
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><span>点评资源</span><span class="ch c1">&nbsp;&gt;&nbsp;</span><span>@Model.Title</span>
+    </div>
+    <h2>
+        请在下方输入您对该资源的评价
+    </h2>
+    @using (Html.BeginForm())
+    {
+        <div>
+            @Html.HiddenFor(model => model.ResourceId)
+        </div>
+        <div>
+            @Html.TextAreaFor(model => model.Content)
+            @Html.ValidationMessageFor(model => model.Content)
+        </div>
+        <input type="submit" value="评论" />
+    }
+</div>

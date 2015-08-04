@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>欢迎登录后台管理系统</title>
+    <link href="~/Areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/js/jquery-1.4.4.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/cloud.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.loginbox').css({ 'position': 'absolute', 'left': ($(window).width() - 692) / 2 });
+            $(window).resize(function() {
+                $('.loginbox').css({ 'position': 'absolute', 'left': ($(window).width() - 692) / 2 });
+            });
+            if ($("#errormsg").val() != "") {
+                alert($("#errormsg").val());
+            }
+        });
+    </script>
+</head>
+
+<body style="background-color: #1c77ac; background-image: url('~/Areas/Admin/Content/images/light.png'); background-repeat: no-repeat; background-position: center top; overflow: hidden;">
+    <div id="mainBody">
+        <div id="cloud1" class="cloud"></div>
+        <div id="cloud2" class="cloud"></div>
+    </div>
+    <div class="logintop">
+        <span>欢迎登录后台管理界面平台</span>
+        <ul>
+            <li><a href="#">回首页</a></li>
+            <li><a href="#">帮助</a></li>
+            <li><a href="#">关于</a></li>
+        </ul>
+    </div>
+    <div class="loginbody">
+
+        <span class="systemlogo"></span>
+
+        <div class="loginbox">
+            <form action="#" method="POST">
+            <ul>
+                <li>
+                    <input name="username" type="text" value="" class="loginuser" placeholder="admin" /></li>
+                <li>
+                    <input name="password" type="password" value="" class="loginpwd" placeholder="密码"  /></li>
+                <li>
+                    <input name="" type="submit" class="loginbtn" value="登录"/><label>
+                </label><label><a href="#">忘记密码？</a></label></li>
+            </ul>
+</form>
+
+        </div>
+
+    </div>
+<div class="loginbm">版权所有 2014 <a href="#">智鸟</a>
+</div>
+    <input type="hidden" id="errormsg" value="@ViewBag.Message" />
+</body>
+
+</html>
+

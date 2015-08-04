@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "订单支付";
+}
+
+
+
+
+<style type="text/css">
+    .payment {
+        width: 180px;
+        height: auto;
+        background-repeat: no-repeat;
+        display: inline-block;
+        border: 1px solid #161515;
+        cursor:pointer;
+    }
+
+        .payment input {
+            vertical-align: middle;
+        }
+
+        .payment img {
+            max-width: 135px;
+            height: 45px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+</style>
+<script type="text/javascript">
+    function validateInput() {
+        var txtAmount = document.getElementById('txtAmount');
+        var amount = txtAmount.value;
+
+        if (amount == '') {
+            alert('Please input amount.');
+            return false;
+        }
+
+        if (Number(amount) != amount ||
+            (amount.indexOf('.') > -1 && amount.substring(amount.indexOf('.') + 1).length > 2)) {
+            alert("Nummeric and two points only.");
+            return false;
+        }
+
+        if (Number(amount) <= 0) {
+            alert('Amount should greater than 0.');
+            return false;
+        }
+
+        return confirm("Are you sure to pay for this?");
+    }
+</script>
+
+<form action="/pay/payonline" method="post">
+    <div>
+        Amount:&nbsp;&nbsp;
+        <input type="text" id="txtAmount" name="amount" required="required" placeholder="Please input the 
+amount" value="0.01" />
+    </div>
+    <br />
+    <div class="payment">
+        <label>
+            <input type="radio" name="payment" value="alipay" disabled="disabled" />
+            <img src="/content/images/pay/alipay_logo.gif" />
+        </label>
+    </div>
+
+    <div class="payment">
+        <label>
+            <input type="radio" name="payment" value="chinabank"  checked="checked" />
+            <img src="/content/images/pay/chinabank_logo.jpg" />
+        </label>
+    </div>
+
+    <div class="payment">
+        <label>
+            <input type="radio" name="payment" value="tenpay" />
+            <img src="/content/images/pay/tenpay_logo.gif" />
+        </label>
+    </div>
+    <br />
+     <br />
+    <div>
+        <button type="submit" onclick="return validateInput();">Submit</button>
+    </div>
+    <br /> <br />
+    <div style="color: red">支付宝由于无测试账号原因，所以不能使用。其他支付方式虽然可以手动输入资金，但后台
+强制设为1分钱，避免失误~~~~</div>
+    <br />
+    <br />
+    <div><a href="http://pay.sclyw.com/log.txt" target="_blank">点击查看支付LOG信息</a></div>
+    
+    <br />
+    <br />
+</form>

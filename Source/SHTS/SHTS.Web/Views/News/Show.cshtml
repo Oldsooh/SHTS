@@ -1,0 +1,139 @@
+﻿@model Witbird.SHTS.Web.Models.NewsModel
+@{
+    ViewBag.Title = Model.News.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Keywords = Model.News.Keywords;
+    ViewBag.Description = Model.News.Description;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/news.css" rel="stylesheet" />
+}
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/news/" class="blue">新闻公告</a><span class="ch">&nbsp;&gt;&nbsp;@Model.News.Title</span>
+    </div>
+    <div class="newsLeft showLeft">
+        <div class="showTitle">
+            <h2>@Model.News.Title</h2>
+            <p>
+                发布时间：@Model.News.InsertTime.Value.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                阅读：@Model.News.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                来源：活动在线 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                发布：管理员 
+            </p>
+        </div>
+        <div class="showContent">
+            @if (!string.IsNullOrEmpty(Model.News.ImageUrl))
+            {
+                <img src="@Model.News.ImageUrl" style="width:210px; height:140px; margin:0 10px 10px 0; float:left;" />
+            }
+            @(new HtmlString(Model.News.ContentStyle))
+        </div>
+    </div>
+    <div class="newsRight">
+        <div class="newsCagetory">
+            <div class="contentTitle">
+                <h2>网站公告</h2>
+            </div>
+            <div class="contentItem">
+                <ul class="newsul">
+                    @if (Model.Notices != null && Model.Notices.Count > 0)
+                    {
+                        foreach (var item in Model.Notices)
+                        {
+                        <li class="newsli">
+                            @{ string url = "/news/" + item.Id + ".html";}
+                            <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                            <span class="newsli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="newsCagetory">
+            <div class="contentTitle">
+                <h2>公司新闻</h2>
+            </div>
+            <div class="contentItem">
+                <ul class="newsul">
+                    @if (Model.Companys != null && Model.Companys.Count > 0)
+                    {
+                        foreach (var item in Model.Companys)
+                        {
+                        <li class="newsli">
+                            @{ string url = "/news/" + item.Id + ".html";}
+                            <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                            <span class="newsli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="newsCagetory">
+            <div class="contentTitle">
+                <h2>行业新闻</h2>
+            </div>
+            <div class="contentItem">
+                <ul class="newsul">
+                    @if (Model.Industrys != null && Model.Industrys.Count > 0)
+                    {
+                        foreach (var item in Model.Industrys)
+                        {
+                        <li class="newsli">
+                            @{ string url = "/news/" + item.Id + ".html";}
+                            <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                            <span class="newsli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="newsCagetory">
+            <div class="contentTitle">
+                <h2>资源新闻</h2>
+            </div>
+            <div class="contentItem">
+                <ul class="newsul">
+                    @if (Model.Resources != null && Model.Resources.Count > 0)
+                    {
+                        foreach (var item in Model.Resources)
+                        {
+                        <li class="newsli">
+                            @{ string url = "/news/" + item.Id + ".html";}
+                            <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                            <span class="newsli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="newsCagetory">
+            <div class="contentTitle">
+                <h2>供求新闻</h2>
+            </div>
+            <div class="contentItem">
+                <ul class="newsul">
+                    @if (Model.Supplydemands != null && Model.Supplydemands.Count > 0)
+                    {
+                        foreach (var item in Model.Supplydemands)
+                        {
+                        <li class="newsli">
+                            @{ string url = "/news/" + item.Id + ".html";}
+                            <a class="newsa" href="@url" target="_blank">@item.Title</a>
+                            <span class="newsli_date">@item.InsertTime.Value.ToString("MM-dd")</span>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style="clear: both; height: 30px;"></div>
+</div>
