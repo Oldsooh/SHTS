@@ -1,0 +1,102 @@
+﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
+@{
+    ViewBag.Title = "用户中心-升级为Vip | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name; Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Areas/Wechat/Content/styles/tovip.css" rel="stylesheet" />
+    <link href="~/Areas/Wechat/Content/styles/user.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.4.4.min.js"></script>
+    <style type="text/css">
+        .ur_title { width: 80px; }
+    </style>
+}
+
+<div class="wrap">
+    <br />
+    @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+    {
+        <div style="width:90%; margin: 0 auto;">
+            <span style="color: red;">@(new HtmlString(Model.ErrorMsg))</span>
+
+            <br />
+        </div>
+    }
+
+    <form action="#" enctype="multipart/form-data" method="POST">
+        <div style="width: 90%; margin: 0 auto;">
+            <div>
+
+                @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                {
+                    <span style="color: #ff6a00;">@(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")
+
+                        <br />
+                        <br />
+                    </span>
+                }
+            </div>
+            <div class="ur_box">
+                @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+                {
+                    <div>
+                        <input name="IdentiyImgFile" id="IdentiyImgFile" type="text" style="width: 155px;"
+                            class="ur_txt1" />
+                        <input name="IdentiyImg" id="IdentiyImg" type="file" style="opacity: 0; display: none;" />
+                        <input type="button" id="IdentiyImgBtn" class="ll_btn" value="选择文件…" />
+                        &nbsp;&nbsp;&nbsp;
+                        @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                        {
+                            <input name="" type="submit" class="tjzl_btn userbtn" value="上传照片" />
+                        }
+                        else if (Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+                        {
+                            <input name="" type="submit" class="tjzl_btn userbtn" value="重新上传" />
+                        }
+                        else
+                        {
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div style="margin-top: 5px; margin-left: 20px;">
+                        <img id="preview" src="@Model.VipInfo.IdentifyImg" width="200" height="200"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+    <div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        //上传图片实时预览
+        $(function () {
+            //建立一個可存取到該file的url
+            function getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
+            function uploadfile(ele) {
+                var objUrl = getObjectURL(ele.files[0]);
+                $("#preview").attr("src", objUrl);
+                $("#IdentiyImgFile").val($('#IdentiyImg').val());
+            }
+            $("#IdentiyImgBtn").click(function () {
+                $("#IdentiyImg").click();
+            });
+            $("#IdentiyImg").change(function () {
+                uploadfile(this);
+            });
+        });
+    </script>
+}

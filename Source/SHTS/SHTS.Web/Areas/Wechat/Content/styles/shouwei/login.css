@@ -1,0 +1,64 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*登录后显示用户信息样式*/
+.user_info {
+    padding: 5px 15px;
+    border-bottom: 1px solid #dadada;
+    background: #f9f9f9;
+}
+
+/*内容样式*/
+#main {
+    padding: 15px 10px 50px 10px;
+    background-color: #FFF;
+    font-family: '微软雅黑';
+}
+
+    #main label {
+        width: 100%;
+        text-align: left;
+        float: left;
+    }
+
+    #main #user_name, #main #password, #main #user_email, #main #new_pwd, #main #repwd {
+        width: 98%;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 5px;
+        text-indent: 5px;
+        border: 1px solid #dcdcdc;
+        outline: none;
+        color: #646464;
+    }
+
+    #main .login_btn {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        background: #89c000;
+        border: none;
+        color: #fff;
+        text-align: center;
+        border: 1px solid #dcdcdc;
+        margin-top: 20px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+#find_psd {
+    width: 100%;
+    text-align: left;
+    margin-top: 25px;
+}
+
+#user_advice {
+    width: 95%;
+    height: 210px;
+    padding: 5px;
+    resize: none;
+    font-size: 12px;
+    line-height: 20px;
+    border: 1px solid #dcdcdc;
+    outline: none;
+}

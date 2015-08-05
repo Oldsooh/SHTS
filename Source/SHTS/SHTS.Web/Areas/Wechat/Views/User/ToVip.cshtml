@@ -1,0 +1,55 @@
+﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
+@{
+    ViewBag.Title = "用户中心-升级为Vip | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Areas/Wechat/Content/styles/tovip.css" rel="stylesheet" />
+    <link href="~/Areas/Wechat/Content/styles/user.css" rel="stylesheet" />
+
+    <script src="~/Content/js/jquery-1.4.4.min.js"></script>
+    <style type="text/css">
+        .ur_title {
+            width: 80px;
+        }
+    </style>
+}
+
+<div class="wrap" style="width:90%; margin: 0 auto; ">
+<br />
+        <form action="#" enctype="multipart/form-data" method="POST">
+           
+                <div style="margin-bottom:30px;">
+                    @if (Model.ToVipNotice != null)
+                    {
+                        @(new HtmlString(Model.ToVipNotice.ContentStyle))
+                    }
+                </div>
+
+            <div class="clearfix"></div>
+            <div class="ur_tj fr">
+                <input type="checkbox" value="yes" name="vipnotice" id="js_mobile_chk"/>
+                <label for="js_mobile_chk">同意『活动在线Vip用户协议』</label>&nbsp;&nbsp;
+                <input name="" id="submit" type="button" class="tjzl_btn userbtn btndisabled" disabled="disabled"
+                    style="font-size: 16px;" value="下一步" />
+            </div>
+        </form>
+    </div>
+    <div style="clear: both; height: 30px;"></div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        $("#js_mobile_chk").change(function () {
+            $("#submit").removeAttr("disabled");
+            $("#submit").removeClass("btndisabled");
+            if (!$(this).is(':checked')) {
+                $("#submit").attr("disabled", "disabled");
+                $("#submit").addClass("btndisabled");
+            }
+        });
+        $("#submit").click(function() {
+            window.location.href = "/Wechat/user/VipOrder";
+        });
+    </script>
+}

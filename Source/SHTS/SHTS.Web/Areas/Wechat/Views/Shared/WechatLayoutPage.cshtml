@@ -1,0 +1,66 @@
+﻿@using Witbird.SHTS.Web.Areas.Wechat.Common
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="wap-font-scale" content="no" />
+    <title>@ViewBag.Title | @Witbird.SHTS.Web.Public.StaticUtility.Config.Name 微信版</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    <link href="/content/Wechat/css/common.css" rel="stylesheet" />
+    @RenderSection("head", false)
+</head>
+<body>
+    <div class="wrap">
+        <div id="top">
+            <div id="logo">
+                <a href="/Wechat/">
+                    <img src="/content/images/logo.png" alt="logo" />
+                </a>
+        </div>
+            
+            @if (Session["CityName"] != null)
+            {
+                <div id="currentCityName">@Session["CityName"].ToString()</div>
+            }
+            else
+            {
+                <div id="currentCityName">全国</div>
+            }
+            
+            <div id="more">
+                @if (WechatHttpContext.IsLogin)
+                {
+                    <a href="~/Wechat/user/" class="username">@WechatHttpContext.UserInfo.UserName</a>
+    <a href="/Wechat/account/LogOut">退出登录</a>
+                }
+                else
+                {
+                    <a href="/Wechat/account/Register">用户注册</a>
+    <a href="/Wechat/account/login">用户登录</a>
+                }
+                <a href="/Wechat/activity/ShareActivity">发布活动</a>
+                <a href="/Wechat/demand/add">发布需求</a>
+            </div>
+        </div>
+        <div id="nav">
+            <ul id="navul">
+                <li class="navli" id="space"><a href="/Wechat/resource/spacelist">活动场地</a></li>
+                <li class="navli" id="actor"><a href="/Wechat/resource/actorlist">演艺人员</a></li>
+                <li class="navli" id="equipment"><a href="/Wechat/resource/equipmentlist">活动设备</a></li>
+                <li class="navli" id="other"><a href="/Wechat/resource/otherlist">其它资源</a></li>
+                <li class="navli" id="home"><a href="/Wechat/">网站主页</a></li>
+                <li class="navli" id="news"><a href="/Wechat/news/">新闻公告</a></li>
+                <li class="navli" id="activity"><a href="/Wechat/activity/">活动在线</a></li>
+                <li class="navli" id="demand"><a href="/Wechat/demand/">需求信息</a></li>
+            </ul>
+        </div>
+
+        @RenderBody()
+
+    </div>
+    @RenderSection("FooterJS", false)
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.TradeModel
+@{
+    ViewBag.Title = "中介交易";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #trade a
+        {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+}
+
+<div id="main">
+    @if (Model.Trades != null && Model.Trades.Count > 0)
+    {
+        foreach (var item in Model.Trades)
+        {
+        <ul class="commonlist">
+            <li class="atitle">
+                <a href="/Wechat/trade/show/@item.TradeId" style="margin-right: 10px;">@item.TradeSubject</a>
+                <span class="state blue">11-12</span>
+            </li>
+            <li>需求类型：<span class="yellow">需求类型</span></li>
+            <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+            <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+            <li>参与人数：<span class="yellow">666人</span></li>
+            <li>预算金额：
+                    面议
+            </li>
+        </ul>
+        }
+    }
+    <ul class="commonlist">
+        <li class="atitle">
+            <a href="/Wechat/trade/show/1" style="margin-right: 10px;">上海成都重庆10000万大单交易</a>
+            <span class="state blue">11-12</span>
+        </li>
+        <li>需求类型：<span class="yellow">需求类型</span></li>
+        <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+        <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+        <li>参与人数：<span class="yellow">666人</span></li>
+        <li>预算金额：面议</li>
+    </ul>
+    <ul class="commonlist">
+        <li class="atitle">
+            <a href="/Wechat/trade/show/1" style="margin-right: 10px;">上海成都重庆10000万大单交易</a>
+            <span class="state blue">11-12</span>
+        </li>
+        <li>需求类型：<span class="yellow">需求类型</span></li>
+        <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+        <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+        <li>参与人数：<span class="yellow">666人</span></li>
+        <li>预算金额：面议</li>
+    </ul>
+    <ul class="commonlist">
+        <li class="atitle">
+            <a href="/Wechat/trade/show/1" style="margin-right: 10px;">上海成都重庆10000万大单交易</a>
+            <span class="state blue">11-12</span>
+        </li>
+        <li>需求类型：<span class="yellow">需求类型</span></li>
+        <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+        <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+        <li>参与人数：<span class="yellow">666人</span></li>
+        <li>预算金额：面议</li>
+    </ul>
+    <ul class="commonlist">
+        <li class="atitle">
+            <a href="/Wechat/trade/show/1" style="margin-right: 10px;">上海成都重庆10000万大单交易</a>
+            <span class="state blue">11-12</span>
+        </li>
+        <li>需求类型：<span class="yellow">需求类型</span></li>
+        <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+        <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+        <li>参与人数：<span class="yellow">666人</span></li>
+        <li>预算金额：面议</li>
+    </ul>
+    <ul class="commonlist">
+        <li class="atitle">
+            <a href="/Wechat/trade/show/1" style="margin-right: 10px;">上海成都重庆10000万大单交易</a>
+            <span class="state blue">11-12</span>
+        </li>
+        <li>需求类型：<span class="yellow">需求类型</span></li>
+        <li>区域位置：<span class="yellow">上海成都重庆</span></li>
+        <li>起止时间：<span class="yellow">2012/11/23 - 2015-01-05</span></li>
+        <li>参与人数：<span class="yellow">666人</span></li>
+        <li>预算金额：面议</li>
+    </ul>
+</div>
+

@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "订单支付 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@model Witbird.SHTS.Web.Models.OrderModel
+
+@section head
+{
+    <link href="~/areas/Wechat/content/styles/payment.css" rel="stylesheet" />
+
+    <link href="~/Areas/Wechat/Content/styles/user.css" rel="stylesheet" />
+}
+
+<div class="wrap">
+    <div class="listdiv">
+
+        @if (Model != null && Model.Order != null && !string.IsNullOrEmpty(Model.Order.OrderId))
+        {
+            <input id="isPaySucceed" type="hidden" value="@Model.Order.State" />
+    <input id="returnUrl" type="hidden" value="/Wechat/user/tovip" />
+            <div class="listdivitem">
+                <div class="listdivitemsummary">
+                    <div class="listdivitemtitle">
+                        订单信息
+                    </div>
+                    <div class="listdivitemdescription">
+                        <table class="listdivitemtable">
+                            <tbody>
+                                <tr>
+                                    <td>订单编号：<span>@Model.Order.OrderId</span></td>
+                                </tr>
+                                <tr>
+                                    <td>订单摘要：<span>@Model.Order.Subject</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>用户姓名：<span>@Model.Order.UserName</span></td>
+                                </tr>
+                                <tr>
+                                    <td>订单金额：<span>￥ @Model.Order.Amount 元</span></td>
+                                </tr>
+                                <tr>
+                                    <td>支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDiplayValue(Model.Order.State)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>订单备注：
+                            <span>@Model.Order.Body</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+
+                </div>
+            </div>
+
+            if (Model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
+                Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
+            {
+            <div class="listdivitem">
+                <div class="listdivitemtitle">
+                    请用支付宝支付该订单
+                </div>
+                <form id="payform" action="/Wechat/pay/payonline" method="post">
+                    <input type="hidden" name="orderId" value="@Model.Order.OrderId" />
+                    <div class="listdivitemsummary">
+                        <div class="listdivitemdescription">
+                            <div class="payment selected">
+                                <label>
+                                    <input type="radio" name="payment" value="alipay" checked="checked" onchange="onpaymentchange();" />
+                                    <img src="~/content/images/pay/alipay_logo.gif" alt="支付宝" />
+                                </label>
+                                <span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <input name="" type="button" class="tjzl_btn" value="取消" onclick=" window.location.href = '/Wechat/user/index'" />&nbsp;&nbsp;&nbsp;
+                    <input name="" type="button" class="tjzl_btn userbtn" style="font-size: 16px;"
+                           value="确定支付" onclick="doPayForOrderEvent();" />
+                    <br />
+                    <br />
+                </form>
+            </div>
+            }
+            else
+            {
+            <div class="listdivitem">
+                <table class="listdivitemtable">
+                    <tbody>
+                        <tr>
+                            <td>
+                                @*<span>该订单已不能支付</span>*@
+                                <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            }
+        }
+        else
+        {
+            <span>订单信息不存在</span>
+        }
+    </div>
+    <div style="height: 20px;"></div>
+</div>
+@section FooterJS
+{
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/payment.js"></script>
+    <script>
+        var seconds = 3;
+        function countDown() {
+            var isPaySucceed = $('#isPaySucceed').val();
+            if (isPaySucceed == 1) {
+                $('#countDownTime').html(seconds);
+            }
+            if (seconds < 1) {
+                var returnUrl = $('#returnUrl').val();
+                if (isPaySucceed == 1 && returnUrl != '') {
+                    window.location.href = returnUrl;
+                }
+            }
+            if (seconds > 0) {
+                seconds--;
+                setTimeout('countDown()', 1000);
+            }
+        }
+        countDown();
+    </script>
+}

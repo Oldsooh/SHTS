@@ -1,0 +1,44 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
+@{
+    ViewBag.Title = "需求列表";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #demand a
+        {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+}
+
+<div id="main">
+    @if (Model.Demands != null && Model.Demands.Count > 0)
+    {
+        foreach (var item in Model.Demands)
+        {
+        <ul class="commonlist">
+            <li class="atitle">
+                <a href="/Wechat/demand/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
+            </li>
+            <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
+            <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
+            <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+            <li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>
+            <li>预算金额：
+                    @if (item.Budget == 0)
+                    {
+                        <span class="yellow">面议</span>
+                    }
+                    else
+                    {
+                        <span class="yellow">@item.Budget</span>
+                    }
+            </li>
+        </ul>
+        }
+    }
+</div>
