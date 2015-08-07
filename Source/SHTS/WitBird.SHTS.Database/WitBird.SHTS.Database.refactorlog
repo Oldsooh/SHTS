@@ -336,4 +336,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="StatisticalCode" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="fed06184-8ff0-4b1e-8976-c2e4f55b31d2" ChangeDateTime="08/07/2015 15:35:04">
+    <Property Name="ElementName" Value="[dbo].[UserWeChat].[CreateDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserWeChat]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateTime" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8b24ec30-b3f9-413e-bc3c-756dab9d415d" ChangeDateTime="08/07/2015 15:35:12">
+    <Property Name="ElementName" Value="[dbo].[UserWeChat].[CreateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserWeChat]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="State" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ffd743d5-3e0e-4b6c-bc4d-84c0542a5da3" ChangeDateTime="08/07/2015 15:35:23">
+    <Property Name="ElementName" Value="[dbo].[UserWeChat].[CreateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserWeChat]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedTime" />
+  </Operation>
 </Operations>
