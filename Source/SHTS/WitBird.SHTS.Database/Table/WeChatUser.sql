@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[UserWeChat]
+﻿CREATE TABLE [dbo].[WeChatUser]
 (
 	[Id] INT NOT NULL PRIMARY KEY, 
     [UserId] INT NULL, 
