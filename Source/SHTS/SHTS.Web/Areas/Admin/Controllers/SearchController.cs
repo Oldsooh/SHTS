@@ -65,7 +65,6 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 
                 List<MetaSource> sourceList = new List<MetaSource>();
                 MetaSource source = null;
-                string channelName = null;
 
                 int newAddIndex = 0;
 

@@ -8,8 +8,6 @@ namespace Witbird.SHTS.Web.Areas.Admin.Models
 {
     public class CityModel : BaseModel
     {
-        public City City { get; set; }
-
         /// <summary>
         /// 省份
         /// </summary>

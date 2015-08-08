@@ -12,7 +12,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class NewsController : WechatBaseController
     {
-        protected const string USERINFO = "userinfo";
 
         SinglePageService singlePageService = new SinglePageService();
 
@@ -22,8 +21,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
-                int newsCount = 0;
-
                 //页码，总数重置
                 int page = 1;
                 if (!string.IsNullOrEmpty(id))

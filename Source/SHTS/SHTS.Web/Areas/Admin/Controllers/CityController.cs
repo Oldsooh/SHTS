@@ -86,27 +86,22 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         [Permission(EnumRole.Editer)]
         public ActionResult Active(string id, string isActive)
         {
-            string result = "启用设置失败";
-
             if (!string.IsNullOrEmpty(isActive))
             {
                 City city = cityManager.GetCityById(id);
                 city.IsActive = isActive.Equals("true");
                 if (cityManager.EditCity(city))
                 {
-                    result = "success";
                     Witbird.SHTS.Web.Public.StaticUtility.UpdateCities();
                 }
             }
 
-            //return Content(result);
             return Redirect(Request.UrlReferrer.AbsoluteUri);
         }
 
         [Permission(EnumRole.Editer)]
         public ActionResult Delete(string id)
         {
-            string result = "启用设置失败";
 
             if (!string.IsNullOrEmpty(id))
             {
@@ -120,7 +115,6 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 }
                 if (cityManager.DeleteCity(city))
                 {
-                    result = "success";
                     Witbird.SHTS.Web.Public.StaticUtility.UpdateCities();
                 }
             }

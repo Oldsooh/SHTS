@@ -12,8 +12,6 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
     public class DemandController : MobileBaseController
     {
-        protected const string USERINFO = "userinfo";
-
         DemandManager demandManager = new DemandManager();
         DemandService demandService = new DemandService();
         CityService cityService = new CityService();

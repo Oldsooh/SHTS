@@ -73,9 +73,9 @@ namespace WitBird.Com.SearchEngine
                 writer.AddDocument(document); 
             }
             //会自动解锁
-            writer.Close();
+            writer.Dispose();
             //不要忘了Close，否则索引结果搜不到
-            directory.Close();
+            directory.Dispose();
             directory.Dispose();
         }
 
@@ -113,9 +113,7 @@ namespace WitBird.Com.SearchEngine
             }
             finally
             {
-                writer.Close();
                 writer.Dispose();
-                directory.Close();
                 directory.Dispose();
             }
         }

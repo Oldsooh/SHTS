@@ -31,7 +31,7 @@ namespace WitBird.Com.Pay.Tenpay
 			{
 				inputBye = Encoding.GetEncoding(charset).GetBytes(encypStr);
 			}
-			catch (Exception ex)
+			catch
 			{
 				inputBye = Encoding.GetEncoding("GB2312").GetBytes(encypStr);
 			}

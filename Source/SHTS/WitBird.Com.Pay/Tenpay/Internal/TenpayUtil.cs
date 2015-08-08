@@ -32,7 +32,7 @@ namespace WitBird.Com.Pay.Tenpay
 					res = HttpUtility.UrlEncode(instr,Encoding.GetEncoding(charset));
 
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					res = HttpUtility.UrlEncode(instr,Encoding.GetEncoding("GB2312"));
 				}
@@ -56,7 +56,7 @@ namespace WitBird.Com.Pay.Tenpay
 					res = HttpUtility.UrlDecode(instr,Encoding.GetEncoding(charset));
 
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					res = HttpUtility.UrlDecode(instr,Encoding.GetEncoding("GB2312"));
 				}

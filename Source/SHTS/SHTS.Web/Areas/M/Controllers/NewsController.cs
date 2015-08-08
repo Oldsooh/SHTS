@@ -22,8 +22,6 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
 
             try
             {
-                int newsCount = 0;
-
                 //页码，总数重置
                 int page = 1;
                 if (!string.IsNullOrEmpty(id))

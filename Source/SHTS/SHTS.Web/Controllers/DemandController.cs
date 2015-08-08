@@ -13,8 +13,6 @@ namespace Witbird.SHTS.Web.Controllers
 {
     public class DemandController : BaseController
     {
-        protected const string USERINFO = "userinfo";
-
         DemandManager demandManager = new DemandManager();
         DemandService demandService = new DemandService();
         CityService cityService = new CityService();

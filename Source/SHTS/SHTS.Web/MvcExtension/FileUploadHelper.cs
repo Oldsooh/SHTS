@@ -23,11 +23,6 @@ namespace Witbird.SHTS.Web.MvcExtension
         {
             //存放图片的根目录 
             const string folderName = "/uploadfiles/user/";
-            const string mode = "HW";//生成缩略图的方式:HW(指定高宽缩放),W(指定宽，高按比例),H(指定高，宽按比例),Cut(指定高宽裁减)
-
-            bool action = true;
-            string big = "big.jpg";
-            string small = "small.jpg";
             string message = string.Empty;
             fileName = folderName;
             //定义错误消息
