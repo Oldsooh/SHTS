@@ -577,7 +577,7 @@
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="County" Type="nvarchar" MaxLength="50" />
           <Property Name="Photo" Type="nvarchar" MaxLength="50" />
-          <Property Name="AcccessToken" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessToken" Type="nvarchar" MaxLength="50" />
           <Property Name="AccessTokenExpired" Type="bit" />
           <Property Name="AccessTokenExpireTime" Type="datetime" />
           <Property Name="State" Type="int" />
@@ -1245,7 +1245,7 @@
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AcccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AccessTokenExpired" Type="Boolean" />
           <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
           <Property Name="State" Type="Int32" />
@@ -1862,7 +1862,7 @@
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="AccessTokenExpireTime" ColumnName="AccessTokenExpireTime" />
                 <ScalarProperty Name="AccessTokenExpired" ColumnName="AccessTokenExpired" />
-                <ScalarProperty Name="AcccessToken" ColumnName="AcccessToken" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
                 <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="County" ColumnName="County" />
                 <ScalarProperty Name="City" ColumnName="City" />

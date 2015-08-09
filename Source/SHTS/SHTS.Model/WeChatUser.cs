@@ -24,7 +24,7 @@ namespace Witbird.SHTS.Model
         public string City { get; set; }
         public string County { get; set; }
         public string Photo { get; set; }
-        public string AcccessToken { get; set; }
+        public string AccessToken { get; set; }
         public Nullable<bool> AccessTokenExpired { get; set; }
         public Nullable<System.DateTime> AccessTokenExpireTime { get; set; }
         public Nullable<int> State { get; set; }

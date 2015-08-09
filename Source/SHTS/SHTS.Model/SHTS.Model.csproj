@@ -113,6 +113,7 @@
     <Compile Include="Extensions\SinglePage.cs" />
     <Compile Include="Extensions\Trade.cs" />
     <Compile Include="Extensions\User.cs" />
+    <Compile Include="Extensions\WeChatUser.cs" />
     <Compile Include="Facility.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
