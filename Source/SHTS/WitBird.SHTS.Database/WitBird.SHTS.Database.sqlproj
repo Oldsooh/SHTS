@@ -191,6 +191,11 @@
     <Build Include="Table\Resource\Meta\ActorFrom.sql" />
     <Build Include="Table\Resource\Meta\ActorSex.sql" />
     <Build Include="Table\WeChatUser.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserRegister.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserUpdate.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserSelectById.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserDelete.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserSelectByWeChatId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
