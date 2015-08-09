@@ -23,6 +23,12 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_DeleteUser = "sp_DeleteUser";
         private const string sp_UpdateUser = "sp_UpdateUser";
 
+        private const string SP_WeChatUserSelectByWeChatId = "sp_WeChatUserSelectByWeChatId";
+        private const string SP_WeChatUserSelectById = "sp_WeChatUserSelectById";
+        private const string SP_WeChatUserRegister = "sp_WeChatUserRegister";
+        private const string SP_WeChatUserUpdate = "sp_WeChatUserUpdate";
+        private const string SP_WeChatUserDelete = "sp_WeChatUserDelete";
+
         private const string SP_AddUserBankInfo = "sp_AddUserBankInfo";
         private const string SP_UpdateUserBankInfo = "sp_UpdateUserBankInfo";
         private const string SP_DeleteUserBankInfo = "sp_DeleteUserBankInfo";
@@ -379,6 +385,138 @@ namespace Witbird.SHTS.DAL.Daos
 
         #endregion
 
+        #region WeChat User
+
+        /// <summary>
+        /// 根据Id查询微信用户
+        /// </summary>
+        /// <param name="conn">连接对象</param>
+        /// <returns>用户实体</returns>
+        public WeChatUser GetWeChatUserById(int id, SqlConnection conn)
+        {
+            WeChatUser user = null;
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@Id", id)
+            };
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectById, sqlParameters))
+            {
+                while (reader.Read())
+                {
+                    user = ConvertToWeChatUserObject(reader);
+                }
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// 根据WeChatId查询微信用户
+        /// </summary>
+        /// <param name="conn">连接对象</param>
+        /// <returns>用户实体</returns>
+        public WeChatUser GetWeChatUserByWeChatId(string weChatId, SqlConnection conn)
+        {
+            WeChatUser user = null;
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@WeChatId", weChatId)
+            };
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectByWeChatId, sqlParameters))
+            {
+                while (reader.Read())
+                {
+                    user = ConvertToWeChatUserObject(reader);
+                }
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// 注册微信用户。如果用户属于取消关注后重新关注，那么更新以前微信数据信息，不重新增加新数据
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool WeChatUserRegister(SqlConnection conn, WeChatUser user)
+        {
+            SqlParameter[] parameters = 
+            {
+                new SqlParameter("@Id", SqlDbType.Int, 4),
+				new SqlParameter("@UserId", user.UserId),
+				new SqlParameter("@WeChatId", user.WeChatId),
+				new SqlParameter("@OpenId", user.OpenId),
+				new SqlParameter("@NickName", user.NickName),
+				new SqlParameter("@Sex", user.Sex),
+				new SqlParameter("@Province", user.Province),
+				new SqlParameter("@City", user.City),
+				new SqlParameter("@County", user.County),
+				new SqlParameter("@Photo", user.Photo),
+				new SqlParameter("@AccessToken", user.AccessToken),
+				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
+				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
+				new SqlParameter("@State", user.State),
+				new SqlParameter("@CreateTime", user.CreatedTime)
+            };
+
+            parameters[0].Direction = ParameterDirection.Output;
+            DBHelper.CheckSqlSpParameter(parameters);
+
+            return DBHelper.RunNonQueryProcedure(conn, SP_WeChatUserRegister, parameters) > 0;
+        }
+
+        /// <summary>
+        /// 更新微信用户信息。
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool UpdateWeChatUser(SqlConnection conn, WeChatUser user)
+        {
+            SqlParameter[] parameters = 
+            {
+                new SqlParameter("@Id", user.Id),
+				new SqlParameter("@UserId", user.UserId),
+				new SqlParameter("@OpenId", user.OpenId),
+				new SqlParameter("@NickName", user.NickName),
+				new SqlParameter("@Sex", user.Sex),
+				new SqlParameter("@Province", user.Province),
+				new SqlParameter("@City", user.City),
+				new SqlParameter("@County", user.County),
+				new SqlParameter("@Photo", user.Photo),
+				new SqlParameter("@AccessToken", user.AccessToken),
+				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
+				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
+				new SqlParameter("@State", user.State)
+            };
+
+            DBHelper.CheckSqlSpParameter(parameters);
+            return DBHelper.RunNonQueryProcedure(conn, SP_WeChatUserUpdate, parameters) > 0;
+        }
+
+        /// <summary>
+        /// Updates WeChat user state as deleted(state = 1).
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="column"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool DeleteWeChatUser(SqlConnection conn, int id)
+        {
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+               new SqlParameter("@Id", id)
+            };
+
+            return DBHelper.RunNonQueryProcedure(conn,
+                SP_WeChatUserDelete, sqlParameters) > 0;
+        }
+
+        #endregion WeChat User
+
         #region User Bank Info
 
         /// <summary>
@@ -657,8 +795,7 @@ namespace Witbird.SHTS.DAL.Daos
             return bankInfo;
         }
 
-
-        private static UserVip ConvertToUserVipObject(SqlDataReader reader)
+        private UserVip ConvertToUserVipObject(SqlDataReader reader)
         {
             UserVip vipInfo = new UserVip
             {
@@ -676,6 +813,31 @@ namespace Witbird.SHTS.DAL.Daos
             };
             return vipInfo;
         }
+
+        private WeChatUser ConvertToWeChatUserObject(SqlDataReader reader)
+        {
+            WeChatUser weChatUser = new WeChatUser
+            {
+                AccessToken = reader["AccessToken"].DBToString(),
+                AccessTokenExpired = reader["AccessTokenExpired"].DBToBoolean(),
+                AccessTokenExpireTime = reader["AccessTokenExpireTime"].DBToDateTime(),
+                City = reader["City"].DBToString(),
+                County = reader["County"].DBToString(),
+                CreatedTime = reader["CreateTime"].DBToDateTime(),
+                Id = reader["Id"].DBToInt32(),
+                NickName = reader["NickName"].DBToString(),
+                OpenId = reader["OpenId"].DBToString(),
+                Photo = reader["Photo"].DBToString(),
+                Province = reader["Province"].DBToString(),
+                Sex = reader["Sex"].DBToInt32(),
+                State = reader["State"].DBToNullableInt32(),
+                UserId = reader["UserId"].DBToNullableInt32(),
+                WeChatId = reader["WeChatId"].DBToString()
+            };
+
+            return weChatUser;
+        }
+
         #endregion
 
         /// <summary>

@@ -155,6 +155,31 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
+        /// 用户注册，成功返回True
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool WeChatUserRegister(WeChatUser weChatUser)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                result = userDao.WeChatUserRegister(conn, weChatUser);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("微信用户注册失败--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 获取用户profile
         /// </summary>
         /// <param name="userId"></param>
