@@ -12,18 +12,22 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserVip
+    public partial class WeChatUser
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public string OrderId { get; set; }
-        public string IdentifyImg { get; set; }
-        public Nullable<System.DateTime> StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
-        public Nullable<int> Duration { get; set; }
-        public Nullable<decimal> Amount { get; set; }
+        public Nullable<int> UserId { get; set; }
+        public string WeChatId { get; set; }
+        public string OpenId { get; set; }
+        public string NickName { get; set; }
+        public Nullable<int> Sex { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string County { get; set; }
+        public string Photo { get; set; }
+        public string AcccessToken { get; set; }
+        public Nullable<bool> AccessTokenExpired { get; set; }
+        public Nullable<System.DateTime> AccessTokenExpireTime { get; set; }
         public Nullable<int> State { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
-        public Nullable<System.DateTime> LastUpdatedTime { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[WeChatUser]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [UserId] INT NULL, 
     [WeChatId] NVARCHAR(50) NULL, 
     [OpenId] NVARCHAR(50) NULL, 
@@ -14,6 +14,5 @@
     [AccessTokenExpired] BIT NULL DEFAULT 0, 
     [AccessTokenExpireTime] DATETIME NULL, 
     [State] INT NULL, 
-    [CreatedTime] DATETIME NULL, 
-    CONSTRAINT [FK_UserWeChat_User] FOREIGN KEY (UserId) REFERENCES [User]([UserId])
+    [CreatedTime] DATETIME NULL 
 )

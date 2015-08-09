@@ -64,6 +64,12 @@
     <Compile Include="Actor.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ActorFrom.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActorSex.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ActorType.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
@@ -194,6 +200,9 @@
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Video.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WeChatUser.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

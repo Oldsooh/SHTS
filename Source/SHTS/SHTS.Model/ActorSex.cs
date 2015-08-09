@@ -12,10 +12,11 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Actor
+    public partial class ActorSex
     {
         public int Id { get; set; }
-        public int ResourceId { get; set; }
-        public int ActorTypeId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool MarkForDelete { get; set; }
     }
 }

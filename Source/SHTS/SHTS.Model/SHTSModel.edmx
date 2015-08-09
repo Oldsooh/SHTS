@@ -4,52 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="shtsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="shtsModelStoreContainer">
-          <EntitySet Name="AccessAnalytics" EntityType="shtsModel.Store.AccessAnalytics" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Activity" EntityType="shtsModel.Store.Activity" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ActivityType" EntityType="shtsModel.Store.ActivityType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Actor" EntityType="shtsModel.Store.Actor" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ActorType" EntityType="shtsModel.Store.ActorType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="AdminRole" EntityType="shtsModel.Store.AdminRole" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="AdminUser" EntityType="shtsModel.Store.AdminUser" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="City" EntityType="shtsModel.Store.City" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Comment" EntityType="shtsModel.Store.Comment" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Config" EntityType="shtsModel.Store.Config" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Demand" EntityType="shtsModel.Store.Demand" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="DemandCategory" EntityType="shtsModel.Store.DemandCategory" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Equipment" EntityType="shtsModel.Store.Equipment" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EquipType" EntityType="shtsModel.Store.EquipType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Facility" EntityType="shtsModel.Store.Facility" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="GuestBook" EntityType="shtsModel.Store.GuestBook" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Image" EntityType="shtsModel.Store.Image" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Other" EntityType="shtsModel.Store.Other" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="OtherType" EntityType="shtsModel.Store.OtherType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PublicConfig" EntityType="shtsModel.Store.PublicConfig" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Resource" EntityType="shtsModel.Store.Resource" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ShortMessage" EntityType="shtsModel.Store.ShortMessage" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SinglePage" EntityType="shtsModel.Store.SinglePage" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Space" EntityType="shtsModel.Store.Space" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpaceFacility" EntityType="shtsModel.Store.SpaceFacility" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpaceFeature" EntityType="shtsModel.Store.SpaceFeature" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpacePeople" EntityType="shtsModel.Store.SpacePeople" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpaceSize" EntityType="shtsModel.Store.SpaceSize" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpaceType" EntityType="shtsModel.Store.SpaceType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Test" EntityType="shtsModel.Store.Test" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Trade" EntityType="shtsModel.Store.Trade" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TradeHistory" EntityType="shtsModel.Store.TradeHistory" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TradeOrder" EntityType="shtsModel.Store.TradeOrder" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="User" EntityType="shtsModel.Store.User" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserBankInfo" EntityType="shtsModel.Store.UserBankInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserProfile" EntityType="shtsModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserVip" EntityType="shtsModel.Store.UserVip" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Video" EntityType="shtsModel.Store.Video" store:Type="Tables" Schema="dbo" />
-        </EntityContainer>
+    <Schema Namespace="shtsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessAnalytics">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="AccessUrl" Type="nvarchar(max)" />
           <Property Name="ReferrerUrl" Type="nvarchar(max)" />
@@ -64,7 +24,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="ActivityType" Type="nvarchar" MaxLength="20" />
           <Property Name="LocationId" Type="nvarchar" MaxLength="100" />
@@ -91,7 +51,7 @@
           <Key>
             <PropertyRef Name="ActivityTypeId" />
           </Key>
-          <Property Name="ActivityTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActivityTypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nchar" MaxLength="10" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
@@ -104,16 +64,34 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="ActorTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorFrom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorSex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ActorType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -121,7 +99,7 @@
           <Key>
             <PropertyRef Name="RoleId" />
           </Key>
-          <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleNmae" Type="nvarchar" MaxLength="50" />
           <Property Name="State" Type="int" />
           <Property Name="Permission" Type="nvarchar(max)" />
@@ -131,8 +109,8 @@
           <Key>
             <PropertyRef Name="AdminId" />
           </Key>
-          <Property Name="AdminId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="AdminId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EncryptedPassword" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Role" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
@@ -143,10 +121,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EntityType" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="ParentId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Sort" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -154,7 +132,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
@@ -165,8 +143,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" />
           <Property Name="Keywords" Type="nvarchar" MaxLength="200" />
           <Property Name="Description" Type="nvarchar" MaxLength="300" />
@@ -187,10 +165,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="300" />
           <Property Name="ContentStyle" Type="text" />
           <Property Name="ContentText" Type="text" />
@@ -214,8 +192,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DisplayOrder" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -223,7 +201,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="EquipTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -231,8 +209,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -240,8 +218,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -249,9 +227,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Content" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
@@ -260,9 +238,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
-          <Property Name="Url" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Url" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
@@ -271,7 +249,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="OtherTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -279,8 +257,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -288,8 +266,8 @@
           <Key>
             <PropertyRef Name="ConfigId" />
           </Key>
-          <Property Name="ConfigId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ConfigName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ConfigId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConfigName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ConfigValue" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
@@ -298,7 +276,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceType" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
@@ -336,14 +314,14 @@
           <Property Name="ActorFromId" Type="int" Nullable="false" />
           <Property Name="ActorSex" Type="int" Nullable="false" />
           <Property Name="ClickTime" Type="datetime" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ShortMessage">
           <Key>
             <PropertyRef Name="MessageId" />
           </Key>
-          <Property Name="MessageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Cellphone" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="MessageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cellphone" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Provider" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="State" Type="int" />
@@ -352,10 +330,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="ParentId" Type="int" />
-          <Property Name="EntityType" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="EntityType" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Category" Type="nvarchar" MaxLength="50" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" />
           <Property Name="Keywords" Type="nvarchar" MaxLength="200" />
@@ -372,7 +350,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="SpaceTypeId" Type="int" Nullable="false" />
           <Property Name="SpaceFeatureValue" Type="int" Nullable="false" />
@@ -385,8 +363,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Value" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
@@ -395,8 +373,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -404,8 +382,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MinCount" Type="int" Nullable="false" />
           <Property Name="MaxCount" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
@@ -415,8 +393,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MinSize" Type="int" Nullable="false" />
           <Property Name="MaxSize" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
@@ -426,8 +404,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
@@ -438,13 +416,13 @@
           <Property Name="PKG_PSID" Type="int" Nullable="false" />
           <Property Name="ProviderID" Type="int" Nullable="false" />
           <Property Name="BrandID" Type="int" Nullable="false" />
-          <Property Name="ProviderName" Type="nvarchar" Nullable="false" MaxLength="500" />
-          <Property Name="BrandName" Type="nvarchar" Nullable="false" MaxLength="500" />
-          <Property Name="ProviderPrefix" Type="varchar" Nullable="false" MaxLength="10" />
-          <Property Name="BrandPrefix" Type="varchar" Nullable="false" MaxLength="10" />
-          <Property Name="ProviderDesc" Type="nvarchar" Nullable="false" MaxLength="1000" />
-          <Property Name="ProviderLogo" Type="nvarchar" Nullable="false" MaxLength="1000" />
-          <Property Name="BrandLogo" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ProviderPrefix" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BrandPrefix" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProviderDesc" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ProviderLogo" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BrandLogo" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="ProviderCity" Type="int" Nullable="false" />
           <Property Name="DataStatus" Type="int" Nullable="false" />
           <Property Name="DataChange_CreateTime" Type="datetime" Nullable="false" />
@@ -454,42 +432,42 @@
           <Key>
             <PropertyRef Name="TradeId" />
           </Key>
-          <Property Name="TradeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TradeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="UserQQ" Type="nvarchar" Nullable="false" MaxLength="20" />
-          <Property Name="UserCellPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="UserQQ" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserCellPhone" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UserBankInfo" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UserAddress" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SellerId" Type="int" Nullable="false" />
           <Property Name="BuyerId" Type="int" Nullable="false" />
-          <Property Name="TradeAmount" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="TradeAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TradeSubject" Type="ntext" Nullable="false" />
           <Property Name="TradeBody" Type="ntext" Nullable="false" />
           <Property Name="Payer" Type="int" Nullable="false" />
-          <Property Name="PayCommission" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="PayCommission" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PayCommissionPercent" Type="float" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
-          <Property Name="BuyerPay" Type="decimal" Nullable="false" Scale="2" />
-          <Property Name="SellerGet" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="BuyerPay" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SellerGet" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="ViewCount" Type="int" Nullable="false" />
           <Property Name="ResourceUrl" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsBuyerPaid" Type="bit" Nullable="false" />
-          <Property Name="TradeOrderId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="TradeOrderId" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TradeHistory">
           <Key>
             <PropertyRef Name="HistoryId" />
           </Key>
-          <Property Name="HistoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HistorySubject" Type="ntext" Nullable="false" />
           <Property Name="HistoryBody" Type="ntext" Nullable="false" />
           <Property Name="TradeId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="IsAdminUpdate" Type="bit" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TradeState" Type="int" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
         </EntityType>
@@ -497,11 +475,11 @@
           <Key>
             <PropertyRef Name="OrderId" />
           </Key>
-          <Property Name="OrderId" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Amount" Type="decimal" Nullable="false" Scale="2" />
-          <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="500" />
+          <Property Name="OrderId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Body" Type="ntext" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
@@ -513,8 +491,8 @@
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EncryptedPassword" Type="varchar(max)" Nullable="false" />
           <Property Name="UserType" Type="int" />
           <Property Name="Adress" Type="nvarchar(max)" />
@@ -536,11 +514,11 @@
           <Key>
             <PropertyRef Name="BankId" />
           </Key>
-          <Property Name="BankId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BankId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="BankName" Type="nvarchar" Nullable="false" MaxLength="200" />
-          <Property Name="BankAccount" Type="nvarchar" Nullable="false" MaxLength="200" />
-          <Property Name="BankUserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="BankAccount" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="BankUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BankAddress" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsDefault" Type="bit" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
@@ -550,7 +528,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="nchar" MaxLength="10" />
           <Property Name="ProfileType" Type="nvarchar" MaxLength="50" />
           <Property Name="Value" Type="nvarchar(max)" />
@@ -562,14 +540,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="OrderId" Type="nvarchar" MaxLength="50" />
           <Property Name="IdentifyImg" Type="nvarchar(max)" />
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="Duration" Type="int" />
-          <Property Name="Amount" Type="decimal" Scale="2" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="State" Type="int" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -580,11 +558,74 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
-          <Property Name="Href" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Href" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
         </EntityType>
+        <EntityType Name="WeChatUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="WeChatId" Type="nvarchar" MaxLength="50" />
+          <Property Name="OpenId" Type="nvarchar" MaxLength="50" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sex" Type="int" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="County" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcccessToken" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessTokenExpired" Type="bit" />
+          <Property Name="AccessTokenExpireTime" Type="datetime" />
+          <Property Name="State" Type="int" />
+          <Property Name="CreatedTime" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="shtsModelStoreContainer">
+          <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorFrom" EntityType="Self.ActorFrom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorSex" EntityType="Self.ActorSex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorType" EntityType="Self.ActorType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdminRole" EntityType="Self.AdminRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdminUser" EntityType="Self.AdminUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Demand" EntityType="Self.Demand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandCategory" EntityType="Self.DemandCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuestBook" EntityType="Self.GuestBook" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OtherType" EntityType="Self.OtherType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PublicConfig" EntityType="Self.PublicConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShortMessage" EntityType="Self.ShortMessage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SinglePage" EntityType="Self.SinglePage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Space" EntityType="Self.Space" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpaceFacility" EntityType="Self.SpaceFacility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpaceFeature" EntityType="Self.SpaceFeature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpacePeople" EntityType="Self.SpacePeople" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpaceSize" EntityType="Self.SpaceSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SpaceType" EntityType="Self.SpaceType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade" EntityType="Self.Trade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TradeHistory" EntityType="Self.TradeHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TradeOrder" EntityType="Self.TradeOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserBankInfo" EntityType="Self.UserBankInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeChatUser" EntityType="Self.WeChatUser" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -628,6 +669,9 @@
           <EntitySet Name="UserVip" EntityType="shtsModel.UserVip" />
           <EntitySet Name="Video" EntityType="shtsModel.Video" />
           <EntitySet Name="UserBankInfo" EntityType="shtsModel.UserBankInfo" />
+          <EntitySet Name="ActorFrom" EntityType="shtsModel.ActorFrom" />
+          <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
+          <EntitySet Name="WeChatUser" EntityType="shtsModel.WeChatUser" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -1168,6 +1212,44 @@
           <Property Type="Boolean" Name="IsDefault" Nullable="false" />
           <Property Type="DateTime" Name="CreatedTime" Nullable="false" Precision="3" />
           <Property Type="DateTime" Name="LastUpdatedTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ActorFrom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorSex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WeChatUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="WeChatId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="Int32" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessTokenExpired" Type="Boolean" />
+          <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1750,6 +1832,47 @@
                 <ScalarProperty Name="BankName" ColumnName="BankName" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="BankId" ColumnName="BankId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorFrom">
+            <EntityTypeMapping TypeName="shtsModel.ActorFrom">
+              <MappingFragment StoreEntitySet="ActorFrom">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorSex">
+            <EntityTypeMapping TypeName="shtsModel.ActorSex">
+              <MappingFragment StoreEntitySet="ActorSex">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeChatUser">
+            <EntityTypeMapping TypeName="shtsModel.WeChatUser">
+              <MappingFragment StoreEntitySet="WeChatUser">
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="AccessTokenExpireTime" ColumnName="AccessTokenExpireTime" />
+                <ScalarProperty Name="AccessTokenExpired" ColumnName="AccessTokenExpired" />
+                <ScalarProperty Name="AcccessToken" ColumnName="AcccessToken" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="WeChatId" ColumnName="WeChatId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -27,22 +27,25 @@
         <EntityTypeShape EntityType="shtsModel.PublicConfig" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.Resource" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.ShortMessage" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.SinglePage" Width="1.5" PointX="10.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.Space" Width="1.5" PointX="12.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.SpaceFacility" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.SpaceFeature" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.SpacePeople" Width="1.5" PointX="4.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.SinglePage" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.Space" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.SpaceFacility" Width="1.5" PointX="4.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.SpaceFeature" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.SpacePeople" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.SpaceSize" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.SpaceType" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.Test" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.Trade" Width="1.5" PointX="14.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.TradeHistory" Width="1.5" PointX="6.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="shtsModel.TradeOrder" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.User" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.UserProfile" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.UserVip" Width="1.5" PointX="16.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.Video" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="shtsModel.UserBankInfo" Width="1.5" PointX="16.75" PointY="11.75" />
+        <EntityTypeShape EntityType="shtsModel.User" Width="1.5" PointX="16.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.UserProfile" Width="1.5" PointX="8.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.UserVip" Width="1.5" PointX="16.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.Video" Width="1.5" PointX="10.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.UserBankInfo" Width="1.5" PointX="16.75" PointY="14.75" />
+        <EntityTypeShape EntityType="shtsModel.ActorFrom" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="shtsModel.ActorSex" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="shtsModel.WeChatUser" Width="1.5" PointX="18.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
