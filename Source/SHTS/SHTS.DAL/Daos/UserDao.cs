@@ -27,7 +27,8 @@ namespace Witbird.SHTS.DAL.Daos
         private const string SP_WeChatUserSelectById = "sp_WeChatUserSelectById";
         private const string SP_WeChatUserRegister = "sp_WeChatUserRegister";
         private const string SP_WeChatUserUpdate = "sp_WeChatUserUpdate";
-        private const string SP_WeChatUserDelete = "sp_WeChatUserDelete";
+        private const string SP_WeChatUserDeleteById = "sp_WeChatUserDeleteById";
+        private const string SP_WeChatUserDeleteByWeChatId = "sp_WeChatUserDeleteByWeChatId";
 
         private const string SP_AddUserBankInfo = "sp_AddUserBankInfo";
         private const string SP_UpdateUserBankInfo = "sp_UpdateUserBankInfo";
@@ -504,7 +505,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// <param name="column"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool DeleteWeChatUser(SqlConnection conn, int id)
+        public bool DeleteWeChatUserById(SqlConnection conn, int id)
         {
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
@@ -512,8 +513,27 @@ namespace Witbird.SHTS.DAL.Daos
             };
 
             return DBHelper.RunNonQueryProcedure(conn,
-                SP_WeChatUserDelete, sqlParameters) > 0;
+                SP_WeChatUserDeleteById, sqlParameters) > 0;
         }
+
+        /// <summary>
+        /// Updates WeChat user state as deleted(state = 1).
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="column"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool DeleteWeChatUserByWeChatId(SqlConnection conn, string weChatId)
+        {
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+               new SqlParameter("@WeChatId", weChatId)
+            };
+
+            return DBHelper.RunNonQueryProcedure(conn,
+                SP_WeChatUserDeleteByWeChatId, sqlParameters) > 0;
+        }
+
 
         #endregion WeChat User
 

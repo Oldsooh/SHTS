@@ -155,31 +155,6 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
-        /// 用户注册，成功返回True
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool WeChatUserRegister(WeChatUser weChatUser)
-        {
-            bool result = false;
-            var conn = DBHelper.GetSqlConnection();
-            try
-            {
-                conn.Open();
-                result = userDao.WeChatUserRegister(conn, weChatUser);
-            }
-            catch (Exception e)
-            {
-                LogService.Log("微信用户注册失败--" + e.Message, e.ToString());
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return result;
-        }
-
-        /// <summary>
         /// 获取用户profile
         /// </summary>
         /// <param name="userId"></param>
@@ -308,7 +283,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("删除用户失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("删除用户失败--" + e.Message, e.ToString());
             }
             finally
             {
@@ -379,6 +354,185 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         #endregion User
+
+        #region WeChat User
+
+        /// <summary>
+        /// 用户注册，成功返回True
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool WeChatUserRegister(WeChatUser weChatUser)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                result = userDao.WeChatUserRegister(conn, weChatUser);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("微信用户注册失败--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets wechat user information by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public WeChatUser GetWeChatUser(int id)
+        {
+            WeChatUser user = null;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+
+                // First Id has been set as 112816.
+                if (id >= 112816)
+                {
+                    user = userDao.GetWeChatUserById(id, conn);
+                }
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("根据ID获取微信用户失败， id=" + id, ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return user;
+        }
+        
+        /// <summary>
+        /// Gets wechat user information by wechat id.
+        /// </summary>
+        /// <param name="weChatId"></param>
+        /// <returns></returns>
+        public WeChatUser GetWeChatUser(string weChatId)
+        {
+            WeChatUser user = null;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+
+                // First Id has been set as 112816.
+                if (!string.IsNullOrEmpty(weChatId))
+                {
+                    user = userDao.GetWeChatUserByWeChatId(weChatId, conn);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("根据weChatId获取微信用户失败， weChatId=" + weChatId, ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// Updates wechat user information.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool UpdateWeChatUser(WeChatUser user)
+        {
+            bool result = false;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                result = userDao.UpdateWeChatUser(conn, user);
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("更新微信用户信息失败", ex.ToString());
+            }
+            finally
+            {
+                conn.Open();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates wechat user state as deleted when user unsubscribed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteWeChatUser(int id)
+        {
+            bool result = false;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                result = userDao.DeleteWeChatUserById(conn, id);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("删除微信用户信息失败", ex.ToString());
+            }
+            finally
+            {
+                conn.Open();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates wechat user state as deleted when user unsubscribed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteWeChatUser(string wechatId)
+        {
+            bool result = false;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                result = userDao.DeleteWeChatUserByWeChatId(conn, wechatId);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("删除微信用户信息失败", ex.ToString());
+            }
+            finally
+            {
+                conn.Open();
+            }
+
+            return result;
+        }
+
+        #endregion WeChat User
 
         #region User Bank Info
 
