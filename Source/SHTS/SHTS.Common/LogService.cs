@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,13 +10,23 @@ namespace Witbird.SHTS.Common
 {
     public class LogService
     {
-        private static string logPath = System.Configuration.ConfigurationManager.ConnectionStrings["logPath"].ConnectionString;
+        private static string logPath = ConfigurationManager.ConnectionStrings["logPath"].ConnectionString;
+        private static string wexinLogPath = ConfigurationManager.ConnectionStrings["wexinLogPath"].ConnectionString;
 
         public static void Log(string name,string message)
         {
             if (!string.IsNullOrEmpty(logPath))
             {
                 WitBirdLog loger = new WitBirdLog(logPath);
+                loger.SaveLog(name, message);
+            }
+        }
+
+        public static void LogWexin(string name, string message)
+        {
+            if (!string.IsNullOrEmpty(wexinLogPath))
+            {
+                WitBirdLog loger = new WitBirdLog(wexinLogPath);
                 loger.SaveLog(name, message);
             }
         }

@@ -23,6 +23,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_DeleteUser = "sp_DeleteUser";
         private const string sp_UpdateUser = "sp_UpdateUser";
 
+        private const string SP_WeChatUserSelectByOpenId = "sp_WeChatUserSelectByOpenId";
         private const string SP_WeChatUserSelectByWeChatId = "sp_WeChatUserSelectByWeChatId";
         private const string SP_WeChatUserSelectById = "sp_WeChatUserSelectById";
         private const string SP_WeChatUserRegister = "sp_WeChatUserRegister";
@@ -428,6 +429,26 @@ namespace Witbird.SHTS.DAL.Daos
             };
 
             using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectByWeChatId, sqlParameters))
+            {
+                while (reader.Read())
+                {
+                    user = ConvertToWeChatUserObject(reader);
+                }
+            }
+
+            return user;
+        }
+
+        public WeChatUser GetWeChatUserByOpenId(string openId, SqlConnection conn)
+        {
+            WeChatUser user = null;
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@OpenId", openId)
+            };
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectByOpenId, sqlParameters))
             {
                 while (reader.Read())
                 {

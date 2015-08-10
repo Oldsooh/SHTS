@@ -358,17 +358,22 @@ namespace Witbird.SHTS.BLL.Services
         #region WeChat User
 
         /// <summary>
-        /// 用户注册，成功返回True
+        /// 微信用户关注，注册。无失败操作
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool WeChatUserRegister(WeChatUser weChatUser)
+        public bool WeChatUserRegister(string weChatId)
         {
             bool result = false;
             var conn = DBHelper.GetSqlConnection();
             try
             {
                 conn.Open();
+                WeChatUser weChatUser = new WeChatUser 
+                {
+                    WeChatId = weChatId
+                };
+
                 result = userDao.WeChatUserRegister(conn, weChatUser);
             }
             catch (Exception e)
@@ -430,7 +435,6 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Open();
 
-                // First Id has been set as 112816.
                 if (!string.IsNullOrEmpty(weChatId))
                 {
                     user = userDao.GetWeChatUserByWeChatId(weChatId, conn);
@@ -439,6 +443,38 @@ namespace Witbird.SHTS.BLL.Services
             catch (Exception ex)
             {
                 LogService.Log("根据weChatId获取微信用户失败， weChatId=" + weChatId, ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// Gets wechat user information by open id.
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public WeChatUser GetWeChatUserByOpenId(string openId)
+        {
+            WeChatUser user = null;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+
+                if (!string.IsNullOrEmpty(openId))
+                {
+                    user = userDao.GetWeChatUserByOpenId(openId, conn);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("根据openId获取微信用户失败， openId=" + openId, ex.ToString());
             }
             finally
             {

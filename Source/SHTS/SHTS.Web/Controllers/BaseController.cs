@@ -57,7 +57,7 @@ namespace Witbird.SHTS.Web.Controllers
             return UserInfo.Vip>=0;
         }
 
-        public bool IsIdentified
+        public virtual bool IsIdentified
         {
             get
             {
@@ -87,12 +87,12 @@ namespace Witbird.SHTS.Web.Controllers
             }
         }
 
-        public bool IsUserLogin
+        public virtual bool IsUserLogin
         {
             get { return UserInfo != null; }
         }
 
-        public bool IsVip
+        public virtual bool IsVip
         {
             get
             {

@@ -197,6 +197,7 @@
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteById.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByWeChatId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByWeChatId.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserSelectByOpenId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
