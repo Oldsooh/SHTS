@@ -482,7 +482,7 @@ namespace Witbird.SHTS.DAL.Daos
 				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
 				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
 				new SqlParameter("@State", user.State),
-				new SqlParameter("@CreateTime", user.CreatedTime)
+				new SqlParameter("@CreatedTime", user.CreatedTime)
             };
 
             parameters[0].Direction = ParameterDirection.Output;

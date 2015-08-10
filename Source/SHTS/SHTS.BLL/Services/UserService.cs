@@ -371,7 +371,9 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 WeChatUser weChatUser = new WeChatUser 
                 {
-                    WeChatId = weChatId
+                    WeChatId = weChatId,
+                    State = 0,
+                    CreatedTime = DateTime.Now
                 };
 
                 result = userDao.WeChatUserRegister(conn, weChatUser);
