@@ -40,17 +40,18 @@ namespace Witbird.SHTS.Web
         /// <param name="e"></param>
         protected void Application_Error(object sender, EventArgs e)
         {
-            HttpException error = Server.GetLastError() as HttpException;
+            Exception ex = Server.GetLastError();
+            LogService.Log("程序发生了未知异常", ex.ToString());
+            HttpException error = ex as HttpException;
             if (error != null)
             {
                 if (error.GetHttpCode() != 404)
                 {
-                    LogService.Log("程序发生了未知异常", error.ToString());
-                    Server.ClearError();
-                    Response.Redirect("/common/Error");
-                    //Context.Handler = PageParser.GetCompiledPageInstance(path, Server.MapPath(path), Context); 
+                    //Response.Redirect("/common/Error");
                 }
             }
+
+            Server.ClearError();
         }
     }
 }

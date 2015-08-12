@@ -54,28 +54,29 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             switch (requestMessage.EventKey)
             {
                 //会员服务模块
-                case "UserRegister":
+                case "UserRegister"://会员注册
                     break;
-                case "UserLogin":
+                case "UserLogin"://账号绑定
                     break;
-                case "UserIdentity":
+                case "UserIdentity"://会员认证
                     break;
-                case "ActorList":
 
                 //资源信息模块
-                case "SpaceList":
+                case "SpaceList"://活动场地
                     break;
-                case "EquipmentList":
+                case "ActorList"://演艺人员
                     break;
-                case "OtherResourceList":
+                case "EquipmentList"://活动设备
+                    break;
+                case "OtherResourceList"://其他资源
                     break;
 
                 //需求信息模块
-                case "DemandList":
+                case "DemandList"://需求信息
                     break;
-                case "NewDemand":
+                case "NewDemand"://发布需求
                     break;
-                case "TradeList":
+                case "TradeList"://交易中介
                     break;
 
                 case "CLICK_EVENT":
