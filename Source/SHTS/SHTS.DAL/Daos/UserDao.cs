@@ -864,7 +864,7 @@ namespace Witbird.SHTS.DAL.Daos
                 AccessTokenExpireTime = reader["AccessTokenExpireTime"].DBToDateTime(),
                 City = reader["City"].DBToString(),
                 County = reader["County"].DBToString(),
-                CreatedTime = reader["CreateTime"].DBToDateTime(),
+                CreatedTime = reader["CreatedTime"].DBToDateTime(),
                 Id = reader["Id"].DBToInt32(),
                 NickName = reader["NickName"].DBToString(),
                 OpenId = reader["OpenId"].DBToString(),

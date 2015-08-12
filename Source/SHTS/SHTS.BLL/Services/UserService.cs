@@ -362,7 +362,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool WeChatUserRegister(string weChatId)
+        public bool WeChatUserRegisterWithWeChatId(string weChatId)
         {
             bool result = false;
             var conn = DBHelper.GetSqlConnection();
@@ -372,6 +372,38 @@ namespace Witbird.SHTS.BLL.Services
                 WeChatUser weChatUser = new WeChatUser 
                 {
                     WeChatId = weChatId,
+                    State = 0,
+                    CreatedTime = DateTime.Now
+                };
+
+                result = userDao.WeChatUserRegister(conn, weChatUser);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("微信用户注册失败--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 微信用户关注，注册。无失败操作
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool WeChatUserRegisterWithOpenId(string openId)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                WeChatUser weChatUser = new WeChatUser
+                {
+                    OpenId = openId,
                     State = 0,
                     CreatedTime = DateTime.Now
                 };
@@ -508,7 +540,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             finally
             {
-                conn.Open();
+                conn.Close();
             }
 
             return result;

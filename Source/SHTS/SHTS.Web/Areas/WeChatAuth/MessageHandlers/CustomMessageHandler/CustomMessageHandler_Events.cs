@@ -35,26 +35,22 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         public override IResponseMessageBase OnEvent_ClickRequest(RequestMessageEvent_Click requestMessage)
         {
             IResponseMessageBase reponseMessage = null;
-
-            //刷新用户Session
-            try
-            {
-                var user = userService.GetWeChatUser(requestMessage.FromUserName);
-
-                if (user != null)
-                {
-                    System.Web.HttpContext.Current.Session["WeChatUserInfo"] = user;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogService.Log("保存微信用户到Session失败", ex.ToString());
-            }
-
+            
             switch (requestMessage.EventKey)
             {
                 //会员服务模块
                 case "UserRegister"://会员注册
+                    {
+                        var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
+                        strongResponseMessage.Articles.Add(new Article
+                        {
+                            Title = "活动在线测试连接",
+                            Description = "活动在线测试连接",
+                            PicUrl = "http://test.xgdg.cn/content/images/banner.jpg",
+                            Url = "http://test.xgdg.cn/wechat/account/login/"
+                        });
+                        reponseMessage = strongResponseMessage;
+                    }
                     break;
                 case "UserLogin"://账号绑定
                     break;
@@ -119,7 +115,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             {
                 // 关注事件，下边边注册微信用户
                 UserService userService = new UserService();
-                bool result = userService.WeChatUserRegister(requestMessage.FromUserName);
+                bool result = userService.WeChatUserRegisterWithWeChatId(requestMessage.FromUserName);
                 if (!result)
                 {
                     LogService.Log("微信关注注册用户失败", "WeChatID = " + requestMessage.FromUserName);
@@ -145,7 +141,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             {
                 // 关注事件，下边边注册微信用户
                 UserService userService = new UserService();
-                bool result = userService.WeChatUserRegister(requestMessage.FromUserName);
+                bool result = userService.WeChatUserRegisterWithWeChatId(requestMessage.FromUserName);
                 if (!result)
                 {
                     LogService.Log("微信关注注册用户失败", "WeChatID = " + requestMessage.FromUserName);

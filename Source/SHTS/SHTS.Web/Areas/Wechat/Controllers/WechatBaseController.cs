@@ -1,11 +1,7 @@
-﻿using Senparc.Weixin;
-using Senparc.Weixin.MP;
+﻿using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
@@ -16,7 +12,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class WechatBaseController : BaseController
     {
+        //与QAuthCallController中定义的应该一致
         public const string WeChatUserInfo = "WeChatUserInfo";
+        public const string WeChatOpenIdCookieName = "WeChatOpenId";
+
+        /// <summary>
+        /// 请先关注我们的链接
+        /// </summary>
+        public const string AttentionUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210371076&idx=1&sn=206d0b4a6698e386f5960527a83a1320#rd";
+
         public WeChatUser CurrentWeChatUser
         {
             get
@@ -40,104 +44,38 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
-                bool needAuthorize = true;
+                var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
 
-                if (CurrentWeChatUser != null && !string.IsNullOrEmpty(CurrentWeChatUser.OpenId))
+                //用户还未关注，先授权拿到OpenId去创建一个用户，但这个用户还未真正关注服务号。
+                if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
                 {
-                    needAuthorize = false;
-                }
-
-                if (needAuthorize)
-                {
-                    var redirectUrl = GetUrl("/wechat/wechatbase/QAuthCallBack");
+                    // 授权回调页面
+                    var redirectUrl = "http://test.xgdg.cn/wechat/QAuthCallBack/CallBack";
+                    // 授权回调成功后跳转到用户一开始想访问的页面
                     var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
                     var appId = ConfigurationManager.AppSettings["WeixinAppId"];
                     var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
-                    filterContext.Result = Redirect(authUrl);
+                    LogService.LogWexin("访问该页面的用户OpenID Cookie不存在，callBackUrl：" + callBackUrl + "\r\nredirectUrl：" + redirectUrl, "");
+                    filterContext.Result = new RedirectResult(authUrl);
+                }
+                else
+                {
+                    var userService = new UserService();
+
+                    var wechatUser = userService.GetWeChatUserByOpenId(wechatOpenIdCookie.Value);
+
+                    //用户还未关注，提示用户关注我们先。
+                    if (wechatUser == null || string.IsNullOrEmpty(wechatUser.WeChatId))
+                    {
+                        filterContext.Result = new RedirectResult(AttentionUsUrl);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
             }
-        }
-
-        public ActionResult QAuthCallBack(string code, string state)
-        {
-            ActionResult result = null;
-
-            try
-            {
-                if (string.IsNullOrEmpty(code))
-                {
-                    result = Content("您拒绝了授权");
-                }
-                else
-                {
-                    var callBackUrl = state;
-                    var appId = ConfigurationManager.AppSettings["WeixinAppId"];
-                    var secret = ConfigurationManager.AppSettings["WeixinAppSecret"];
-
-                    OAuthAccessTokenResult accessTokenResult = null;
-
-                    //通过，用code换取access_token
-                    try
-                    {
-                        accessTokenResult = OAuthApi.GetAccessToken(appId, secret, code);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogService.LogWexin("获取AccessToken失败", ex.ToString());
-                        result = Content("用户授权失败");
-                    }
-
-                    if (accessTokenResult.errcode != ReturnCode.请求成功)
-                    {
-                        result = Content("授权失败");
-                    }
-                    else
-                    {
-                        //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
-
-                        UserService userService = new UserService();
-                        OAuthUserInfo userInfo = OAuthApi.GetUserInfo(accessTokenResult.access_token, accessTokenResult.openid);
-                        WeChatUser weChatUser = userService.GetWeChatUser(CurrentWeChatUser.Id);
-
-                        // Updates wechat user info
-                        weChatUser.AccessToken = accessTokenResult.access_token;
-                        weChatUser.AccessTokenExpired = false;
-                        weChatUser.AccessTokenExpireTime = DateTime.Now.AddSeconds(accessTokenResult.expires_in);
-                        weChatUser.City = userInfo.city;
-                        weChatUser.County = userInfo.country;
-                        weChatUser.NickName = userInfo.nickname;
-                        weChatUser.OpenId = userInfo.openid;
-                        weChatUser.Photo = userInfo.headimgurl;
-                        weChatUser.Province = userInfo.province;
-                        weChatUser.Sex = userInfo.sex;
-
-                        if (userService.UpdateWeChatUser(weChatUser))
-                        {
-                            //Updates current wechat user
-                            Session[WeChatUserInfo] = weChatUser;
-                        }
-                        else
-                        {
-                            LogService.LogWexin("保存微信用户资料失败", "");
-                        }
-
-                        // 跳转到用户一开始要进入的页面
-                        result = Redirect(callBackUrl);
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                LogService.LogWexin("QAuth获取用户信息失败", ex.ToString());
-                result = Content("获取用户信息失败");
-            }
-
-            return result;
         }
     }
 }

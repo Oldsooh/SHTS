@@ -206,6 +206,7 @@
     <Compile Include="Areas\Wechat\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
     <Compile Include="Areas\Wechat\Controllers\WechatBaseController.cs" />
     <Compile Include="Areas\Wechat\Controllers\NewsController.cs" />
     <Compile Include="Areas\Wechat\Controllers\PayController.cs" />
