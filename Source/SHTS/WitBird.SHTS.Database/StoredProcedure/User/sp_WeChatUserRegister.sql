@@ -11,7 +11,7 @@
     @AccessToken NVARCHAR(50), 
     @AccessTokenExpired BIT, 
     @AccessTokenExpireTime DATETIME, 
-    @HasSubscried BIT, 
+    @HasSubscribed BIT, 
 	@HasAuthorized BIT,
     @CreatedTime DATETIME 
 AS
@@ -32,7 +32,7 @@ BEGIN
 		Province = @Province,
 		Sex = @Sex,
 		HasAuthorized = @HasAuthorized,
-		HasSubscribed = @HasSubscried
+		HasSubscribed = @HasSubscribed
 	WHERE OpenId = @OpenId
 
 	SEt @Id = (SELECT Id FROM WeChatUser WHERE OpenId = @OpenId)
@@ -70,7 +70,7 @@ VALUES
 	@Photo,
 	@Province,
 	@Sex,
-	@HasSubscried,
+	@HasSubscribed,
 	@HasAuthorized,
 	@UserId
 )

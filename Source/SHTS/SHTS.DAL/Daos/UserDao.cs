@@ -486,7 +486,7 @@ namespace Witbird.SHTS.DAL.Daos
 				new SqlParameter("@AccessToken", user.AccessToken),
 				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
 				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
-				new SqlParameter("@HasSubscried", user.HasSubscribed),
+				new SqlParameter("@HasSubscribed", user.HasSubscribed),
                 new SqlParameter("@HasAuthorized", user.HasAuthorized)
             };
 

@@ -374,7 +374,6 @@ namespace Witbird.SHTS.BLL.Services
                 if (weChatUser != null)
                 {
                     weChatUser.HasSubscribed = hasSubscribed;
-                    weChatUser.HasAuthorized = hasAuthorized;
                     result = userDao.UpdateWeChatUser(conn, weChatUser);
                 }
                 else
@@ -515,7 +514,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             finally
             {
-                conn.Open();
+                conn.Close();
             }
 
             return result;
@@ -543,7 +542,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             finally
             {
-                conn.Open();
+                conn.Close();
             }
 
             return result;
