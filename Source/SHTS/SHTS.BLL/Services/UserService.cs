@@ -141,7 +141,9 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 user.Vip = (int)VipState.Normal;
                 user.EncryptedPassword = user.EncryptedPassword.ToMD5();
-                result = userDao.UserRegister(conn, user);
+
+                int userId;
+                result = userDao.UserRegister(conn, user, out userId);
             }
             catch (Exception e)
             {
@@ -356,6 +358,50 @@ namespace Witbird.SHTS.BLL.Services
         #endregion User
 
         #region WeChat User
+
+        /// <summary>
+        /// 微信端用户注册，成功后自动绑定该微信账号
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool WeChatUserRegister(User user, string openId)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                user.Vip = (int)VipState.Normal;
+                user.EncryptedPassword = user.EncryptedPassword.ToMD5();
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    int userId;
+                    result = userDao.UserRegister(conn, user, out userId);
+
+                    if (result)
+                    {
+                        WeChatUser wechatUser = userDao.GetWeChatUser(openId, conn);
+                        wechatUser.UserId = userId;
+
+                        result = userDao.UpdateWeChatUser(conn, wechatUser);
+
+                        if (result)
+                        {
+                            scope.Complete();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.Log("用户注册失败--" + e.Message, e.StackTrace.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
 
         /// <summary>
         /// 微信用户关注，注册。无失败操作

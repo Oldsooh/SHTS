@@ -90,8 +90,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 SinglePageService singlePageService = new SinglePageService();
                 model.RegNotice = singlePageService.GetSingPageById("94");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogService.LogWexin("微信会员注册页面访问异常", ex.ToString());
             }
             return View(model);
         }
@@ -124,10 +125,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     userService = new UserService();
                     user.LoginIdentiy = user.UserName;
                     user.Photo = ConfigurationManager.AppSettings["DefaultPhoto"];
-                    result = userService.UserRegister(user);
+                    result = userService.WeChatUserRegister(user, CurrentWeChatUser.OpenId);
+
                     if (result)
                     {
-                        return RedirectToAction("Login");
+                        CurrentWeChatUser = userService.GetWeChatUser(CurrentWeChatUser.OpenId);
+                        CurrentUser = userService.GetUserByUserName(user.UserName);
+
+                        return Redirect("/wechat/user/index");
                     }
                     else
                     {

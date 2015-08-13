@@ -144,12 +144,14 @@ namespace Witbird.SHTS.DAL.Daos
         }
 
         /// <summary>
-        /// 注册用户。
+        /// 注册用户。返回UserId
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool UserRegister(SqlConnection conn, User user)
+        public bool UserRegister(SqlConnection conn, User user, out int userId)
         {
+            bool result = false;
+            userId = -1;
             SqlParameter[] parameters = 
             {
                 new SqlParameter(column_UserId, SqlDbType.Int,4),
@@ -171,7 +173,11 @@ namespace Witbird.SHTS.DAL.Daos
            };
             parameters[0].Direction = ParameterDirection.Output;
             DBHelper.CheckSqlSpParameter(parameters);
-            return DBHelper.RunNonQueryProcedure(conn, SP_UserRegister, parameters) > 0;
+
+            result = DBHelper.RunNonQueryProcedure(conn, SP_UserRegister, parameters) > 0;
+            userId = Convert.ToInt32(parameters[0].Value);
+
+            return result;
         }
 
         /// <summary>

@@ -20,6 +20,18 @@ namespace Witbird.SHTS.Web.Controllers
             get { return Session[USERINFO] as User; }
         }
 
+        public User CurrentUser
+        {
+            get
+            {
+                return UserInfo;
+            }
+            set
+            {
+                Session[USERINFO] = value;
+            }
+        }
+
         /// <summary>
         /// Clears the current logged on user information.
         /// </summary>

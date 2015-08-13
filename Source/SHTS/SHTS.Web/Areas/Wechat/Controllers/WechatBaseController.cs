@@ -27,6 +27,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 return Session[WeChatUserInfo] as WeChatUser;
             }
+            set 
+            {
+                Session[WeChatUserInfo] = value; 
+            }
         }
         public override bool RequireLogin()
         {
@@ -49,6 +53,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 //用户还未授权或Cookie被清空, 重新授权。
                 if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
                 {
+                    //LogService.Log("用户OpenId Cookie为空，需要授权", "");
                     // 授权回调页面
                     var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
                     // 授权回调成功后跳转到用户一开始想访问的页面

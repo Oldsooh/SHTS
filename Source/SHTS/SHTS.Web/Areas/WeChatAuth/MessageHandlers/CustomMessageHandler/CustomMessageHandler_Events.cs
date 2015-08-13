@@ -41,14 +41,11 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 //会员服务模块
                 case "UserRegister"://会员注册
                     {
-                        var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
-                        strongResponseMessage.Articles.Add(new Article
-                        {
-                            Title = "活动在线测试连接",
-                            Description = "活动在线测试连接",
-                            PicUrl = "http://test.xgdg.cn/content/images/banner.jpg",
-                            Url = "http://test.xgdg.cn/wechat/account/login/"
-                        });
+                        var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
+                        var url = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Register\">点击这里，立即注册</a>";
+                        var content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的一个提供举办活动所需各类资源的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n" + url;
+
+                        strongResponseMessage.Content = content;
                         reponseMessage = strongResponseMessage;
                     }
                     break;
@@ -163,15 +160,11 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             {
                 // 取消关注事件，下边做些逻辑
                 UserService userService = new UserService();
-                bool result = userService.UnSubscribeWeChatUser(requestMessage.FromUserName);
-                if (!result)
-                {
-                    LogService.Log("微信关注注册用户失败", "WeChatID = " + requestMessage.FromUserName);
-                }
+                userService.UnSubscribeWeChatUser(requestMessage.FromUserName);
             }
             catch (Exception ex)
             {
-                LogService.Log("用户取消关注， WeChatID = " + requestMessage.FromUserName, ex.ToString());
+                LogService.Log("用户取消关注失败， WeChatID = " + requestMessage.FromUserName, ex.ToString());
             }
             return responseMessage;
         }
