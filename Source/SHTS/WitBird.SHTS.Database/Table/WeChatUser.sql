@@ -2,7 +2,6 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY(112816, 1), 
     [UserId] INT NULL, 
-    [WeChatId] NVARCHAR(50) NULL, 
     [OpenId] NVARCHAR(50) NULL, 
     [NickName] NVARCHAR(50) NULL, 
     [Sex] INT NULL DEFAULT 0, 
@@ -13,6 +12,7 @@
     [AccessToken] NVARCHAR(50) NULL, 
     [AccessTokenExpired] BIT NULL DEFAULT 0, 
     [AccessTokenExpireTime] DATETIME NULL, 
-    [State] INT NULL, 
+    [HasSubscribed] BIT NULL, 
+	[HasAuthorized] BIT NULL, 
     [CreatedTime] DATETIME NULL 
 )

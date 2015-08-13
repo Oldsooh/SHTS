@@ -569,7 +569,6 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
-          <Property Name="WeChatId" Type="nvarchar" MaxLength="50" />
           <Property Name="OpenId" Type="nvarchar" MaxLength="50" />
           <Property Name="NickName" Type="nvarchar" MaxLength="50" />
           <Property Name="Sex" Type="int" />
@@ -580,7 +579,8 @@
           <Property Name="AccessToken" Type="nvarchar" MaxLength="50" />
           <Property Name="AccessTokenExpired" Type="bit" />
           <Property Name="AccessTokenExpireTime" Type="datetime" />
-          <Property Name="State" Type="int" />
+          <Property Name="HasSubscribed" Type="bit" />
+          <Property Name="HasAuthorized" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
         </EntityType>
         <EntityContainer Name="shtsModelStoreContainer">
@@ -1237,7 +1237,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="WeChatId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Sex" Type="Int32" />
@@ -1248,7 +1247,8 @@
           <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AccessTokenExpired" Type="Boolean" />
           <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
+          <Property Name="HasSubscribed" Type="Boolean" />
+          <Property Name="HasAuthorized" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -1859,7 +1859,8 @@
             <EntityTypeMapping TypeName="shtsModel.WeChatUser">
               <MappingFragment StoreEntitySet="WeChatUser">
                 <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="HasAuthorized" ColumnName="HasAuthorized" />
+                <ScalarProperty Name="HasSubscribed" ColumnName="HasSubscribed" />
                 <ScalarProperty Name="AccessTokenExpireTime" ColumnName="AccessTokenExpireTime" />
                 <ScalarProperty Name="AccessTokenExpired" ColumnName="AccessTokenExpired" />
                 <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
@@ -1870,7 +1871,6 @@
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-                <ScalarProperty Name="WeChatId" ColumnName="WeChatId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

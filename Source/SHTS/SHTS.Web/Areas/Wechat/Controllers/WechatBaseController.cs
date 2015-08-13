@@ -46,29 +46,40 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
 
-                //用户还未关注，先授权拿到OpenId去创建一个用户，但这个用户还未真正关注服务号。
+                //用户还未授权或Cookie被清空, 重新授权。
                 if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
                 {
                     // 授权回调页面
-                    var redirectUrl = "http://test.xgdg.cn/wechat/QAuthCallBack/CallBack";
+                    var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
                     // 授权回调成功后跳转到用户一开始想访问的页面
                     var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
                     var appId = ConfigurationManager.AppSettings["WeixinAppId"];
                     var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
-                    LogService.LogWexin("访问该页面的用户OpenID Cookie不存在，callBackUrl：" + callBackUrl + "\r\nredirectUrl：" + redirectUrl, "");
                     filterContext.Result = new RedirectResult(authUrl);
                 }
                 else
                 {
                     var userService = new UserService();
 
-                    var wechatUser = userService.GetWeChatUserByOpenId(wechatOpenIdCookie.Value);
+                    var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
 
                     //用户还未关注，提示用户关注我们先。
-                    if (wechatUser == null || string.IsNullOrEmpty(wechatUser.WeChatId))
+                    if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
                     {
                         filterContext.Result = new RedirectResult(AttentionUsUrl);
+                    }
+                    // 用户还未授权，先授权
+                    else if (!wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                    {
+                        // 授权回调页面
+                        var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
+                        // 授权回调成功后跳转到用户一开始想访问的页面
+                        var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
+                        var appId = ConfigurationManager.AppSettings["WeixinAppId"];
+                        var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
+
+                        filterContext.Result = new RedirectResult(authUrl);
                     }
                 }
             }

@@ -16,7 +16,6 @@ namespace Witbird.SHTS.Model
     {
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
-        public string WeChatId { get; set; }
         public string OpenId { get; set; }
         public string NickName { get; set; }
         public Nullable<int> Sex { get; set; }
@@ -27,7 +26,8 @@ namespace Witbird.SHTS.Model
         public string AccessToken { get; set; }
         public Nullable<bool> AccessTokenExpired { get; set; }
         public Nullable<System.DateTime> AccessTokenExpireTime { get; set; }
-        public Nullable<int> State { get; set; }
+        public Nullable<bool> HasSubscribed { get; set; }
+        public Nullable<bool> HasAuthorized { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
     }
 }

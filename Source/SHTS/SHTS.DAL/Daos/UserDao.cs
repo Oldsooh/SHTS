@@ -24,12 +24,11 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_UpdateUser = "sp_UpdateUser";
 
         private const string SP_WeChatUserSelectByOpenId = "sp_WeChatUserSelectByOpenId";
-        private const string SP_WeChatUserSelectByWeChatId = "sp_WeChatUserSelectByWeChatId";
         private const string SP_WeChatUserSelectById = "sp_WeChatUserSelectById";
         private const string SP_WeChatUserRegister = "sp_WeChatUserRegister";
         private const string SP_WeChatUserUpdate = "sp_WeChatUserUpdate";
         private const string SP_WeChatUserDeleteById = "sp_WeChatUserDeleteById";
-        private const string SP_WeChatUserDeleteByWeChatId = "sp_WeChatUserDeleteByWeChatId";
+        private const string SP_WeChatUserDeleteByOpenId = "sp_WeChatUserDeleteByOpenId";
 
         private const string SP_AddUserBankInfo = "sp_AddUserBankInfo";
         private const string SP_UpdateUserBankInfo = "sp_UpdateUserBankInfo";
@@ -394,7 +393,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// </summary>
         /// <param name="conn">连接对象</param>
         /// <returns>用户实体</returns>
-        public WeChatUser GetWeChatUserById(int id, SqlConnection conn)
+        public WeChatUser GetWeChatUser(int id, SqlConnection conn)
         {
             WeChatUser user = null;
 
@@ -414,32 +413,7 @@ namespace Witbird.SHTS.DAL.Daos
             return user;
         }
 
-        /// <summary>
-        /// 根据WeChatId查询微信用户
-        /// </summary>
-        /// <param name="conn">连接对象</param>
-        /// <returns>用户实体</returns>
-        public WeChatUser GetWeChatUserByWeChatId(string weChatId, SqlConnection conn)
-        {
-            WeChatUser user = null;
-
-            SqlParameter[] sqlParameters = new SqlParameter[]
-            {
-                new SqlParameter("@WeChatId", weChatId)
-            };
-
-            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectByWeChatId, sqlParameters))
-            {
-                while (reader.Read())
-                {
-                    user = ConvertToWeChatUserObject(reader);
-                }
-            }
-
-            return user;
-        }
-
-        public WeChatUser GetWeChatUserByOpenId(string openId, SqlConnection conn)
+        public WeChatUser GetWeChatUser(string openId, SqlConnection conn)
         {
             WeChatUser user = null;
 
@@ -470,7 +444,6 @@ namespace Witbird.SHTS.DAL.Daos
             {
                 new SqlParameter("@Id", SqlDbType.Int, 4),
 				new SqlParameter("@UserId", user.UserId),
-				new SqlParameter("@WeChatId", user.WeChatId),
 				new SqlParameter("@OpenId", user.OpenId),
 				new SqlParameter("@NickName", user.NickName),
 				new SqlParameter("@Sex", user.Sex),
@@ -481,7 +454,8 @@ namespace Witbird.SHTS.DAL.Daos
 				new SqlParameter("@AccessToken", user.AccessToken),
 				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
 				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
-				new SqlParameter("@State", user.State),
+				new SqlParameter("@HasSubscribed", user.HasSubscribed),
+                new SqlParameter("@HasAuthorized", user.HasAuthorized),
 				new SqlParameter("@CreatedTime", user.CreatedTime)
             };
 
@@ -512,7 +486,8 @@ namespace Witbird.SHTS.DAL.Daos
 				new SqlParameter("@AccessToken", user.AccessToken),
 				new SqlParameter("@AccessTokenExpired", user.AccessTokenExpired),
 				new SqlParameter("@AccessTokenExpireTime", user.AccessTokenExpireTime),
-				new SqlParameter("@State", user.State)
+				new SqlParameter("@HasSubscried", user.HasSubscribed),
+                new SqlParameter("@HasAuthorized", user.HasAuthorized)
             };
 
             DBHelper.CheckSqlSpParameter(parameters);
@@ -544,15 +519,15 @@ namespace Witbird.SHTS.DAL.Daos
         /// <param name="column"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool DeleteWeChatUserByWeChatId(SqlConnection conn, string weChatId)
+        public bool DeleteWeChatUserByOpenId(SqlConnection conn, string openId)
         {
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-               new SqlParameter("@WeChatId", weChatId)
+               new SqlParameter("@OpenId", openId)
             };
 
             return DBHelper.RunNonQueryProcedure(conn,
-                SP_WeChatUserDeleteByWeChatId, sqlParameters) > 0;
+                SP_WeChatUserDeleteByOpenId, sqlParameters) > 0;
         }
 
 
@@ -871,9 +846,9 @@ namespace Witbird.SHTS.DAL.Daos
                 Photo = reader["Photo"].DBToString(),
                 Province = reader["Province"].DBToString(),
                 Sex = reader["Sex"].DBToInt32(),
-                State = reader["State"].DBToNullableInt32(),
                 UserId = reader["UserId"].DBToNullableInt32(),
-                WeChatId = reader["WeChatId"].DBToString()
+                HasSubscribed = reader["HasSubscribed"].DBToBoolean(),
+                HasAuthorized = reader["HasAuthorized"].DBToBoolean()
             };
 
             return weChatUser;

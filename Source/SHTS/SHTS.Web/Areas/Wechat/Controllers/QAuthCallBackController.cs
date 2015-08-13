@@ -48,44 +48,42 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     catch (Exception ex)
                     {
                         LogService.LogWexin("获取AccessToken失败", ex.ToString());
-                        result = Content("用户授权失败");
+                        result = Content("获取AccessToken失败");
                     }
 
-                    LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
+                    //LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
                     if (accessTokenResult.errcode != ReturnCode.请求成功)
                     {
-                        result = Content("授权失败");
+                        result = Content("获取AccessToken失败");
                     }
                     else
                     {
-                        LogService.LogWexin("把OpenId写入用户Cookie", accessTokenResult.openid);
                         //更新用户Cookie
                         Response.Cookies.Add(new HttpCookie(WeChatOpenIdCookieName, accessTokenResult.openid));
 
-                        var openIdCookie = Request.Cookies[WeChatOpenIdCookieName];
-                        if (openIdCookie == null || string.IsNullOrEmpty(openIdCookie.Value))
-                        {
-                            LogService.LogWexin("OpenID Cookie写入失败", "");
-                        }
+                        //var openIdCookie = Request.Cookies[WeChatOpenIdCookieName];
+                        //if (openIdCookie == null || string.IsNullOrEmpty(openIdCookie.Value))
+                        //{
+                        //    LogService.LogWexin("OpenID Cookie写入失败", "");
+                        //}
 
                         //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
                         UserService userService = new UserService();
                         OAuthUserInfo userInfo = OAuthApi.GetUserInfo(accessTokenResult.access_token, accessTokenResult.openid);
-                        WeChatUser wechatUser = userService.GetWeChatUserByOpenId(accessTokenResult.openid);
+                        WeChatUser wechatUser = userService.GetWeChatUser(accessTokenResult.openid);
 
-                        bool hasSuccess = false;
                         if (wechatUser == null)
                         {
-                            hasSuccess = userService.WeChatUserRegisterWithOpenId(accessTokenResult.openid);
-
-                            LogService.LogWexin("根据OpenID获取用户失败，创建一个。创建状态：", hasSuccess.ToString());
+                            userService.WeChatUserSubscribe(accessTokenResult.openid, false, true);
+                            wechatUser = userService.GetWeChatUser(accessTokenResult.openid);
+                        }
+                        else
+                        {
+                            wechatUser.HasAuthorized = true;
                         }
 
-                        if (hasSuccess)
+                        if (wechatUser != null)
                         {
-                            // 获取刚创建的用户信息
-                            wechatUser = userService.GetWeChatUserByOpenId(accessTokenResult.openid);
-
                             // Updates wechat user info
                             wechatUser.AccessToken = accessTokenResult.access_token;
                             wechatUser.AccessTokenExpired = false;
@@ -102,16 +100,16 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                 //Updates current wechat user
                                 Session[WeChatUserInfo] = wechatUser;
 
-                                LogService.LogWexin("保存微信用户资料成功", "");
+                                //LogService.LogWexin("保存微信用户资料成功", "");
                             }
                             else
                             {
-                                LogService.LogWexin("保存微信用户资料失败", "");
+                                LogService.LogWexin("保存微信用户资料失败", wechatUser.OpenId);
                             }
 
                             // 跳转到用户一开始要进入的页面
                             result = Redirect(callBackUrl);
-                            LogService.LogWexin("跳转到用户一开始要进入的页面", callBackUrl);
+                            //LogService.LogWexin("跳转到用户一开始要进入的页面", callBackUrl);
                         }
                     }
                 }

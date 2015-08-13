@@ -357,4 +357,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CreatedTime" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="8aa24c23-21ab-4660-8029-e3df91201c8c" ChangeDateTime="08/13/2015 11:13:18">
+    <Property Name="ElementName" Value="[dbo].[WeChatUser].[State]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WeChatUser]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HasSubscribed" />
+  </Operation>
 </Operations>

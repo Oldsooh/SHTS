@@ -11,7 +11,8 @@
     @AccessToken NVARCHAR(50), 
     @AccessTokenExpired BIT, 
     @AccessTokenExpireTime DATETIME, 
-    @State INT
+    @HasSubscribed BIT,
+	@HasAuthorized BIT
 AS
 
 UPDATE dbo.WeChatUser SET
@@ -25,6 +26,7 @@ UPDATE dbo.WeChatUser SET
 	Photo = @Photo,
 	Province = @Province,
 	Sex = @Sex,
-	State = @State,
+	HasSubscribed = @HasSubscribed,
+	HasAuthorized = @HasAuthorized,
 	UserId = @UserId
 WHERE Id = @Id

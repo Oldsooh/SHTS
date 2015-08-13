@@ -195,8 +195,7 @@
     <Build Include="StoredProcedure\User\sp_WeChatUserUpdate.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectById.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteById.sql" />
-    <Build Include="StoredProcedure\User\sp_WeChatUserSelectByWeChatId.sql" />
-    <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByWeChatId.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByOpentId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByOpenId.sql" />
   </ItemGroup>
   <ItemGroup>

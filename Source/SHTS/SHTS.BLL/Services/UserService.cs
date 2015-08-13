@@ -362,53 +362,32 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool WeChatUserRegisterWithWeChatId(string weChatId)
+        public bool WeChatUserSubscribe(string openId, bool hasSubscribed = true, bool hasAuthorized = false)
         {
             bool result = false;
             var conn = DBHelper.GetSqlConnection();
             try
             {
                 conn.Open();
-                WeChatUser weChatUser = new WeChatUser 
+                WeChatUser weChatUser = userDao.GetWeChatUser(openId, conn);
+
+                if (weChatUser != null)
                 {
-                    WeChatId = weChatId,
-                    State = 0,
-                    CreatedTime = DateTime.Now
-                };
-
-                result = userDao.WeChatUserRegister(conn, weChatUser);
-            }
-            catch (Exception e)
-            {
-                LogService.Log("微信用户注册失败--" + e.Message, e.ToString());
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 微信用户关注，注册。无失败操作
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool WeChatUserRegisterWithOpenId(string openId)
-        {
-            bool result = false;
-            var conn = DBHelper.GetSqlConnection();
-            try
-            {
-                conn.Open();
-                WeChatUser weChatUser = new WeChatUser
+                    weChatUser.HasSubscribed = hasSubscribed;
+                    weChatUser.HasAuthorized = hasAuthorized;
+                    result = userDao.UpdateWeChatUser(conn, weChatUser);
+                }
+                else
                 {
-                    OpenId = openId,
-                    State = 0,
-                    CreatedTime = DateTime.Now
-                };
+                    weChatUser = new WeChatUser();
 
-                result = userDao.WeChatUserRegister(conn, weChatUser);
+                    weChatUser.OpenId = openId;
+                    weChatUser.HasSubscribed = hasSubscribed;
+                    weChatUser.HasAuthorized = hasAuthorized;
+                    weChatUser.CreatedTime = DateTime.Now;
+
+                    result = userDao.WeChatUserRegister(conn, weChatUser);
+                }
             }
             catch (Exception e)
             {
@@ -439,44 +418,12 @@ namespace Witbird.SHTS.BLL.Services
                 // First Id has been set as 112816.
                 if (id >= 112816)
                 {
-                    user = userDao.GetWeChatUserById(id, conn);
-                }
-            }
-            catch(Exception ex)
-            {
-                LogService.Log("根据ID获取微信用户失败， id=" + id, ex.ToString());
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            return user;
-        }
-        
-        /// <summary>
-        /// Gets wechat user information by wechat id.
-        /// </summary>
-        /// <param name="weChatId"></param>
-        /// <returns></returns>
-        public WeChatUser GetWeChatUser(string weChatId)
-        {
-            WeChatUser user = null;
-
-            var conn = DBHelper.GetSqlConnection();
-
-            try
-            {
-                conn.Open();
-
-                if (!string.IsNullOrEmpty(weChatId))
-                {
-                    user = userDao.GetWeChatUserByWeChatId(weChatId, conn);
+                    user = userDao.GetWeChatUser(id, conn);
                 }
             }
             catch (Exception ex)
             {
-                LogService.Log("根据weChatId获取微信用户失败， weChatId=" + weChatId, ex.ToString());
+                LogService.Log("根据ID获取微信用户失败， id=" + id, ex.ToString());
             }
             finally
             {
@@ -491,7 +438,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="openId"></param>
         /// <returns></returns>
-        public WeChatUser GetWeChatUserByOpenId(string openId)
+        public WeChatUser GetWeChatUser(string openId)
         {
             WeChatUser user = null;
 
@@ -503,7 +450,7 @@ namespace Witbird.SHTS.BLL.Services
 
                 if (!string.IsNullOrEmpty(openId))
                 {
-                    user = userDao.GetWeChatUserByOpenId(openId, conn);
+                    user = userDao.GetWeChatUser(openId, conn);
                 }
             }
             catch (Exception ex)
@@ -534,7 +481,7 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 result = userDao.UpdateWeChatUser(conn, user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.Log("更新微信用户信息失败", ex.ToString());
             }
@@ -551,7 +498,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteWeChatUser(int id)
+        public bool UnSubscribeWeChatUser(int id)
         {
             bool result = false;
 
@@ -579,7 +526,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteWeChatUser(string wechatId)
+        public bool UnSubscribeWeChatUser(string openId)
         {
             bool result = false;
 
@@ -588,7 +535,7 @@ namespace Witbird.SHTS.BLL.Services
             try
             {
                 conn.Open();
-                result = userDao.DeleteWeChatUserByWeChatId(conn, wechatId);
+                result = userDao.DeleteWeChatUserByOpenId(conn, openId);
             }
             catch (Exception ex)
             {
@@ -955,8 +902,8 @@ namespace Witbird.SHTS.BLL.Services
             }
             return result;
         }
-        
-            /// <summary>
+
+        /// <summary>
         /// 取消会员认证
         /// </summary>
         /// <param name="user"></param>
