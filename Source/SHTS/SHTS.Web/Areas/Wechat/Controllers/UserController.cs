@@ -25,7 +25,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         public ActionResult Index()
         {
             RequireLogin();
-            return View(CurrentWeChatUser ?? new WeChatUser());
+            return View(CurrentUser);
         }
 
         public ActionResult ViewUser()

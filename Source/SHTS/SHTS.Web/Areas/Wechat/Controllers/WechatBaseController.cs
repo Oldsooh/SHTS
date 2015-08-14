@@ -34,7 +34,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
         public override bool RequireLogin()
         {
-            if (CurrentWeChatUser == null)
+            if (CurrentWeChatUser == null || CurrentUser == null)
             {
                 Response.Redirect("/wechat/account/login");
                 return true;
