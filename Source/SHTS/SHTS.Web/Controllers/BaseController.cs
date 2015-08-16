@@ -86,7 +86,7 @@ namespace Witbird.SHTS.Web.Controllers
                         User user = userService.GetUserById(UserInfo.UserId);
                         if (user != null)
                         {
-                            isIdentified = (user.Vip.Value == (int)VipState.Identified || UserInfo.Vip.Value == (int)VipState.VIP);
+                            isIdentified = (user.Vip.Value == (int)VipState.Identified || user.Vip.Value == (int)VipState.VIP);
                         }
                     }
                     catch

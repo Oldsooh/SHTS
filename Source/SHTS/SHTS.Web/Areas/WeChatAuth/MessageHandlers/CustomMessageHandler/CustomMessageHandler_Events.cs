@@ -11,6 +11,7 @@ using Senparc.Weixin.MP.MessageHandlers;
 using WitBird.SHTS.Areas.WeChatAuth.Utilities;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Model;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 {
@@ -19,6 +20,12 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
     /// </summary>
     public partial class CustomMessageHandler
     {
+
+        private static string UserLoginUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Login\">点击这里，立即绑定</a>";
+        private static string UserReLoginUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Login\">点击这里，重新绑定</a>";
+        private static string UserRegisterUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Register\">点击这里，立即注册</a>";
+        private static string UserIdentifyUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/User/Identify\">点击这里，立即认证</a>";
+
         UserService userService = new UserService();
 
         private Article GetWelcomeInfo()
@@ -34,61 +41,210 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
         public override IResponseMessageBase OnEvent_ClickRequest(RequestMessageEvent_Click requestMessage)
         {
-            IResponseMessageBase reponseMessage = null;
-            
+            IResponseMessageBase responseMessage = null;
+            var openId = requestMessage.FromUserName;
+            var content = "";
+
             switch (requestMessage.EventKey)
             {
-                //会员服务模块
-                case "UserRegister"://会员注册
+                #region 会员注册
+                case "UserRegister":
                     {
                         var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                        var url = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Register\">点击这里，立即注册</a>";
-                        var content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的一个提供举办活动所需各类资源的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n" + url;
+                        content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n" 
+                            + UserRegisterUrl;
 
                         strongResponseMessage.Content = content;
-                        reponseMessage = strongResponseMessage;
+                        responseMessage = strongResponseMessage;
                     }
                     break;
-                case "UserLogin"://账号绑定
-                    break;
-                case "UserIdentity"://会员认证
-                    break;
+                #endregion 
 
-                //资源信息模块
-                case "SpaceList"://活动场地
-                    break;
-                case "ActorList"://演艺人员
-                    break;
-                case "EquipmentList"://活动设备
-                    break;
-                case "OtherResourceList"://其他资源
-                    break;
-
-                //需求信息模块
-                case "DemandList"://需求信息
-                    break;
-                case "NewDemand"://发布需求
-                    break;
-                case "TradeList"://交易中介
-                    break;
-
-                case "CLICK_EVENT":
+                #region 账号绑定
+                case "UserLogin":
                     {
-                        var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
-                        strongResponseMessage.Articles.Add(GetWelcomeInfo());
-                        reponseMessage = strongResponseMessage;
+                        var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
+                        var hasUserLoggedIn = false;
+                        WeChatUser wechatUser = null;
+                        User user = null;
+
+                        try
+                        {
+                            wechatUser = userService.GetWeChatUser(openId);
+
+                            if (wechatUser != null)
+                            {
+                                if (wechatUser.UserId.HasValue)
+                                {
+                                    user = userService.GetUserById(wechatUser.UserId.Value);
+
+                                    if (user != null)
+                                    {
+                                        hasUserLoggedIn = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                content = "连接获取失败，请重新尝试。";
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            LogService.LogWexin("微信用户绑定发生错误", ex.ToString());
+                            content = "连接获取失败，请重新尝试。";
+                        }
+
+                        if (hasUserLoggedIn)
+                        {
+                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                            content = "您当前已绑定账号为：" + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
+                        }
+                        else if (string.IsNullOrEmpty(content))
+                        {
+                            content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，请立即绑定您的会员账号。\r\n\r\n"
+                                   + UserLoginUrl;
+                        }
+                        else
+                        {
+                            // do nothing.
+                        }
+
+                        strongResponseMessage.Content = content;
+                        responseMessage = strongResponseMessage;
                     }
+
                     break;
+                #endregion 
+
+                #region 会员认证
+                case "UserIdentity":
+                    {
+                        var hasUserIdentified = false;
+                        WeChatUser wechatUser = null;
+                        User user = null;
+
+                        try
+                        {
+                            wechatUser = userService.GetWeChatUser(openId);
+
+                            if (wechatUser != null)
+                            {
+                                if (wechatUser.UserId.HasValue)
+                                {
+                                    user = userService.GetUserById(wechatUser.UserId.Value);
+                                    
+                                    if(user != null 
+                                        && user.Vip.HasValue
+                                        && (user.Vip.Value == (int)VipState.Identified || user.Vip.Value == (int)VipState.VIP))
+                                    {
+                                        hasUserIdentified = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                content = "连接获取失败，请重新尝试。";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogService.LogWexin("微信用户会员认证发生错误", ex.ToString());
+                            content = "连接获取失败，请重新尝试。";
+                        }
+
+                        if (hasUserIdentified)
+                        {
+                            var newsMessage = CreateResponseMessage<ResponseMessageNews>();
+                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+
+                            newsMessage.Articles.Add(new Article 
+                            {
+                                Description = "点击消息查看认证详情。",
+                                PicUrl = user.IdentiyImg,
+                                Title = "您的账号：" + userName + "已认证。",
+                                Url = UserIdentifyUrl
+                            });
+
+                            responseMessage = newsMessage;
+                        }
+                        else if (user != null)
+                        {
+                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
+                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                            content = "您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
+
+                            strongResponseMessage.Content = content;
+                            responseMessage = strongResponseMessage;
+                        }
+                        else if (string.IsNullOrEmpty(content))
+                        {
+                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
+                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                            content = "您当前还未绑定账号。" + userName + "。\r\n\r\n" + UserLoginUrl;
+
+                            strongResponseMessage.Content = content;
+                            responseMessage = strongResponseMessage;
+                        }
+                        else
+                        {
+                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>(); 
+                            strongResponseMessage.Content = content;
+                            responseMessage = strongResponseMessage;
+                        }
+
+                    }
+
+                    break;
+                #endregion
+
+                #region 活动场地
+                case "SpaceList":
+                    break;
+                #endregion
+
+                #region 演艺人员
+                case "ActorList":
+                    break;
+                #endregion 
+
+                #region 活动设备
+                case "EquipmentList":
+                    break;
+                #endregion
+
+                #region 其他资源
+                case "OtherResourceList":
+                    break;
+                #endregion 
+                
+                #region 需求信息
+                case "DemandList":
+                    break;
+                #endregion 
+
+                #region 发布需求
+                case "NewDemand":
+                    break;
+                #endregion
+
+                #region 交易中介
+                case "TradeList":
+                    break;
+                #endregion 
+
+                #region 默认返回
                 default:
                     {
                         var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
                         strongResponseMessage.Articles.Add(GetWelcomeInfo());
-                        reponseMessage = strongResponseMessage;
+                        responseMessage = strongResponseMessage;
                     }
                     break;
+                #endregion
             }
 
-            return reponseMessage;
+            return responseMessage;
         }
 
         /// <summary>
