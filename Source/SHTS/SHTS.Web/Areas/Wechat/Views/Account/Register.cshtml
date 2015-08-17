@@ -319,7 +319,18 @@
                 });
             });
             if ($("#errormsg").val() != "") {
-                alert($("#errormsg").val());
+                var msg = $("#errormsg").val();
+                if (msg == "SUCCESS") {
+                    if (confirm("恭喜您成功注册会员账号，是否立即绑定该微信号？")){
+                        window.location = "/wechat/account/login";
+                    }
+                    else {
+                        window.location = "/wechat/index/index";
+                    }
+                }
+                else {
+                    alert($("#errormsg").val());
+                }
             }
     });
     </script>

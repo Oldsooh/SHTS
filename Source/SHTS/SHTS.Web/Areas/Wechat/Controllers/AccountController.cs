@@ -29,14 +29,33 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         private UserService userService = null;
 
+        public AccountController()
+        {
+            userService = new UserService();
+        }
+
         public ActionResult Login()
         {
-            LoginViewModel model=new LoginViewModel();
+            WeChatLoginViewModel model = new WeChatLoginViewModel();
+
+            try
+            {
+                if (CurrentWeChatUser.UserId.HasValue)
+                {
+                    var user = userService.GetUserById(CurrentWeChatUser.UserId.Value);
+                    model.User = user;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.LogWexin("账号绑定GET", ex.ToString());
+            }
+
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(WeChatLoginViewModel model)
         {
             var errorMsg = string.Empty;
             try
@@ -48,11 +67,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         Session["validataCode"].ToString(),
                         StringComparison.InvariantCultureIgnoreCase))
                     {
-                        userService = new UserService();
                         result = userService.Login(model.username, model.password);
                         if (result != null)
                         {
-                            Session[USERINFO] = result;
+                            CurrentUser = result;
                             return RedirectToAction("Index", "User", new { Area = "Wechat" });
                         }
                         else
@@ -64,6 +82,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     {
                         errorMsg = "验证码输入错误！";
                     }
+
+                    if (CurrentWeChatUser.UserId.HasValue)
+                    {
+                        var user = userService.GetUserById(CurrentWeChatUser.UserId.Value);
+                        model.User = user;
+                    }
                 }
                 else
                 {
@@ -72,7 +96,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.ToString());
+                LogService.Log("账号绑定POST", ex.ToString());
             }
             model.ErrorMsg = errorMsg;
             return View(model);
@@ -122,26 +146,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 if (vcodeVail)
                 {
-                    userService = new UserService();
                     user.LoginIdentiy = user.UserName;
                     user.Photo = !string.IsNullOrEmpty(CurrentWeChatUser.Photo) ? CurrentWeChatUser.Photo : ConfigurationManager.AppSettings["DefaultPhoto"];
                     result = userService.WeChatUserRegister(user, CurrentWeChatUser.OpenId);
 
                     if (result)
                     {
-                        CurrentWeChatUser = userService.GetWeChatUser(CurrentWeChatUser.OpenId);
-                        CurrentUser = userService.GetUserByUserName(user.UserName);
-
-                        return Redirect("/wechat/user/index");
+                        //return Redirect("/wechat/account/login");
+                        errorMsg = "SUCCESS";
                     }
                     else
                     {
-                        errorMsg = "注册失败";
+                        errorMsg = "注册会员账号失败";
                     }
                 }
+
+                userRegisterViewModel.ErrorMsg = errorMsg;
+
                 if (!result)
                 {
-                    userRegisterViewModel.ErrorMsg = errorMsg;
                     SinglePageService singlePageService = new SinglePageService();
                     userRegisterViewModel.RegNotice = singlePageService.GetSingPageById("94");
                 }

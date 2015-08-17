@@ -1,54 +1,73 @@
 ﻿@{
-    ViewBag.Title = "登录";
+    ViewBag.Title = "账号绑定";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 
+@model Witbird.SHTS.Web.Models.Account.WeChatLoginViewModel
+
 @section head
 {
-    <link href="~/content/css/login.css" rel="stylesheet"/>
+    <link href="~/content/css/login.css" rel="stylesheet" />
     <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
     <style type="text/css">
-        .reg-form .cell label
-{
-    position:absolute;
-    font-size:10px;
-    color:red !important;
-    top:30px;
-    padding-left:12px;
-}
-        .wrap {
-            height: auto;
-        }
-        .register-box {
-            position: initial;
-        }
+        .reg-form .cell label { position: absolute; font-size: 10px; color: red !important; top: 30px; padding-left: 12px; }
+        .wrap { height: auto; }
+        .register-box { position: initial; }
     </style>
 }
 <div class="wrap" style="width:100%">
- <div class="register-box" style="height: 376px; width: 100%;">
-      <div class="reg-slogan" style="color: #333;font-size:25px;margin-bottom: 10px;">会员登录</div>
-      <form class="reg-form" id="js-form-mobile" method="post" action="#">
-        <div class="cell">
-          <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
-        </div>
-        <div class="cell">
-          <input type="password" name="password" id="js-mobile_pwd_ipt" placeholder="输入密码" class="text" />
-        </div>
-          <div class="cell vcode">
-              <input type="hidden" id="IsAutoLogin" name="IsAutoLogin" value="0" />
-              <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
-              <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); "/>
-          </div>
-        <div class="bottom"> <button type="submit" id="js-mobile_btn" href="javascript:;" class="button btn-green"> 登录</button></div>
-      </form>
+    <div class="register-box" style="height: 376px; width: 100%;">
+        @*<div class="reg-slogan" style="color: #333;font-size:25px;margin-bottom: 10px;">账号绑定</div>*@
+        <form class="reg-form" id="js-form-mobile" method="post" action="#">
+            <div class="cell">
+                <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
+            </div>
+            <div class="cell">
+                <input type="password" name="password" id="js-mobile_pwd_ipt" placeholder="输入密码" class="text" />
+            </div>
+            <div class="cell vcode">
+                <input type="hidden" id="IsAutoLogin" name="IsAutoLogin" value="0" />
+                <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6" />
+                <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); " />
+            </div>
+            <div class="bottom"> <button type="submit" id="wechat-js-mobile_btn" href="javascript:;" class="button btn-green"> 立即绑定</button></div>
+        </form>
     </div>
 </div>
-<input type="hidden" id="errormsg" value="@Model.ErrorMsg"/>
+<input type="hidden" id="errormsg" value="@Model.ErrorMsg" />
+<input type="hidden" id="loggedusername" value="@(Model.User != null ? Model.User.UserName : string.Empty)" />
 @section FooterJS
 {
     <script src="~/Content/js/jquery-1.11.1.min.js"></script>
     <script src="~/Content/js/jquery.cookie.js"></script>
     <script src="~/Content/js/jquery.validate.min.js"></script>
-        <script src="~/Content/dialog/js/dsdialog.js"></script>
+    <script src="~/Content/dialog/js/dsdialog.js"></script>
     <script src="~/Content/js/Account/login.js"></script>
+    <script>
+        $(function () {
+            $("#wechat-js-mobile_btn").click(function () {
+                //检查是否已绑定账号
+                var loggedusername = $('#loggedusername').val();
+                if (loggedusername != "") {
+                    if (confirm("该微信号当前已绑定会员账号：" + loggedusername + ", 需要重新绑定吗？")) {
+                        $("#js-form-mobile").validate({
+                            submitHandler: function (form) {
+                                form.submit();
+                            }
+                        });
+                    }
+                    else {
+                        window.location = "/wechat/index/index";
+                    }
+                }
+                else {
+                    $("#js-form-mobile").validate({
+                        submitHandler: function (form) {
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }

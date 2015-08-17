@@ -246,6 +246,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\GetBackPasswordViewModel.cs" />
+    <Compile Include="Models\Account\WeChatLoginViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\ActivityModel\ActivitysViewModel.cs" />
     <Compile Include="Models\ActivityModel\ShowActivityViewModel.cs" />
