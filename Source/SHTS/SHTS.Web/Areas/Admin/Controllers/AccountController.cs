@@ -59,7 +59,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.StackTrace);
+                LogService.Log("注册用户", ex.ToString());
             }
             ViewBag.Message = errorMsg;
             return View();
@@ -78,7 +78,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("管理员列表", ex.StackTrace);
+                LogService.Log("管理员列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -100,7 +100,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("AddNewAdmin", ex.StackTrace);
+                LogService.Log("AddNewAdmin", ex.ToString());
             }
             return RedirectToAction("Index");
         }
@@ -120,7 +120,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("UpdateAdmin", ex.StackTrace);
+                LogService.Log("UpdateAdmin", ex.ToString());
             }
             return RedirectToAction("Index");
         }
@@ -144,7 +144,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("DeleteResult", ex.StackTrace);
+                LogService.Log("DeleteResult", ex.ToString());
             }
             return Json(result);
         }

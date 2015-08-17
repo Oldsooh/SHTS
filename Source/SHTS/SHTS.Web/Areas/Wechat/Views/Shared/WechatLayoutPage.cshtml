@@ -1,11 +1,10 @@
-﻿@using Witbird.SHTS.Web.Areas.Wechat.Common
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
     <meta name="wap-font-scale" content="no" />
-    <title>@ViewBag.Title | @Witbird.SHTS.Web.Public.StaticUtility.Config.Name 微信版</title>
+    <title>@ViewBag.Title</title>
     <meta name="keywords" content="@ViewBag.Keywords" />
     <meta name="description" content="@ViewBag.Description" />
     <link href="/content/Wechat/css/common.css" rel="stylesheet" />
@@ -30,18 +29,7 @@
             }
             
             <div id="more">
-                @if (WechatHttpContext.IsLogin)
-                {
-                    <a href="~/Wechat/user/" class="username">@WechatHttpContext.UserInfo.UserName</a>
-    <a href="/Wechat/account/LogOut">退出登录</a>
-                }
-                else
-                {
-                    <a href="/Wechat/account/Register">用户注册</a>
-    <a href="/Wechat/account/login">用户登录</a>
-                }
-                <a href="/Wechat/activity/ShareActivity">发布活动</a>
-                <a href="/Wechat/demand/add">发布需求</a>
+                @Html.Action("UserNavBar", "User")
             </div>
         </div>
         <div id="nav">

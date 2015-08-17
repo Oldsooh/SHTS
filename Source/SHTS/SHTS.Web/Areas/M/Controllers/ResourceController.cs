@@ -178,7 +178,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                 }
                 catch (Exception ex)
                 {
-                    LogService.Log("resource Show GetRight", ex.StackTrace);
+                    LogService.Log("resource Show GetRight", ex.ToString());
                 }
                 ViewData["UserInfo"] = this.UserInfo;
                 return View(space);

@@ -44,7 +44,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("用户中心-index", e.StackTrace);
+                LogService.Log("用户中心-index", e.ToString());
             }
             return View(model);
         }
@@ -74,7 +74,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return RedirectToAction("ViewUser");
         }
@@ -109,7 +109,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("UpdatePassword 出错了！", e.StackTrace);
+                LogService.Log("UpdatePassword 出错了！", e.ToString());
                 message = "密码更新失败！";
             }
             model.ErrorMsg = message;
@@ -140,7 +140,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("ToVip 出错了！", e.StackTrace);
+                LogService.Log("ToVip 出错了！", e.ToString());
             }
             return View(model);
         }
@@ -155,7 +155,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("ToVip 出错了！", e.StackTrace);
+                LogService.Log("ToVip 出错了！", e.ToString());
             }
             return View();
         }
@@ -175,7 +175,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Identify 出错了！", e.StackTrace);
+                LogService.Log("Identify 出错了！", e.ToString());
             }
             model.ErrorMsg = GetErrorMessage(model.VipInfo);
             return View(model);

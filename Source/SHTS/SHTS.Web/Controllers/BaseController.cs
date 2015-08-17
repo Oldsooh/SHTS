@@ -20,7 +20,7 @@ namespace Witbird.SHTS.Web.Controllers
             get { return Session[USERINFO] as User; }
         }
 
-        public User CurrentUser
+        public virtual User CurrentUser
         {
             get
             {

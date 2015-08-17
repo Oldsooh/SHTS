@@ -83,7 +83,7 @@ namespace Witbird.SHTS.Web.MvcExtension
             }
             catch (Exception e)
             {
-                LogService.Log("上传图片", e.StackTrace);
+                LogService.Log("上传图片", e.ToString());
                 message = "出错了！";
             }
             return message;

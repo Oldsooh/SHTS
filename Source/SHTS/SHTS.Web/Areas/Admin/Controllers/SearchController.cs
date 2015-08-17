@@ -41,7 +41,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Cretae Serach index", e.StackTrace);
+                LogService.Log("Cretae Serach index", e.ToString());
             }
             return View(serachConfig);
         }
@@ -171,7 +171,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Cretae Serach index", e.StackTrace);
+                LogService.Log("Cretae Serach index", e.ToString());
             }
             return View(serachConfig);
         }

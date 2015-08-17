@@ -38,7 +38,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("记录短信发送", e.StackTrace.ToString());
+                LogService.Log("记录短信发送", e.ToString().ToString());
             }
             finally
             {

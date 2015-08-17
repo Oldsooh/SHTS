@@ -72,7 +72,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.StackTrace);
+                LogService.Log("注册用户", ex.ToString());
             }
             model.ErrorMsg = errorMsg;
             return View(model);
@@ -124,7 +124,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     userService = new UserService();
                     user.LoginIdentiy = user.UserName;
-                    user.Photo = ConfigurationManager.AppSettings["DefaultPhoto"];
+                    user.Photo = !string.IsNullOrEmpty(CurrentWeChatUser.Photo) ? CurrentWeChatUser.Photo : ConfigurationManager.AppSettings["DefaultPhoto"];
                     result = userService.WeChatUserRegister(user, CurrentWeChatUser.OpenId);
 
                     if (result)
@@ -148,7 +148,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.StackTrace);
+                LogService.Log("注册用户", ex.ToString());
             }
             return View(userRegisterViewModel);
         }
@@ -170,7 +170,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("LogOut-失败", ex.StackTrace);
+                LogService.Log("LogOut-失败", ex.ToString());
             }
             return Redirect("/Wechat/account/login");
         }

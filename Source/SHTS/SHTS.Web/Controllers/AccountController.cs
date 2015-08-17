@@ -55,7 +55,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("VerifyCellphone", ex.StackTrace);
+                LogService.Log("VerifyCellphone", ex.ToString());
                 result.ExceptionInfo = "出错了！";
                 result.ErrorCode = 102;
             }
@@ -94,7 +94,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("发送验证码", ex.StackTrace);
+                LogService.Log("发送验证码", ex.ToString());
                 result.ExceptionInfo = "发送验证码失败";
                 result.ErrorCode = 102;
             }
@@ -163,7 +163,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("用户登陆", ex.StackTrace);
+                LogService.Log("用户登陆", ex.ToString());
             }
             model.ErrorMsg = errorMsg;
             return View(model);
@@ -252,7 +252,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch(Exception ex)
             {
-                LogService.Log("注册用户",ex.StackTrace);
+                LogService.Log("注册用户",ex.ToString());
             }
             return View(userRegisterViewModel);
         }
@@ -283,7 +283,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("LogOut-失败", ex.StackTrace);
+                LogService.Log("LogOut-失败", ex.ToString());
             }
             return Redirect("~/account/login");
         }
@@ -346,7 +346,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("修改密码", ex.StackTrace);
+                LogService.Log("修改密码", ex.ToString());
                 getBackPasswordViewModel.Message = "修改密码失败";
             }
             return View(getBackPasswordViewModel);

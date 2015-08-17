@@ -65,7 +65,7 @@ namespace Witbird.SHTS.Web
                 }
                 catch (Exception exception)
                 {
-                    LogService.Log("记录用户行为失败", exception.StackTrace);
+                    LogService.Log("记录用户行为失败", exception.ToString());
                 }
             }, access);
         }

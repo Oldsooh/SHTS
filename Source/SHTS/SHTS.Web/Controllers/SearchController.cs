@@ -48,7 +48,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("搜索失败---"+e.Message,e.StackTrace);
+                LogService.Log("搜索失败---"+e.Message,e.ToString());
             }
             return View(viewModel);
         }

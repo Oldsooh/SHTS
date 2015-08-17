@@ -44,7 +44,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("获取订单信息失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("获取订单信息失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -92,7 +92,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("添加订单信息失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("添加订单信息失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {

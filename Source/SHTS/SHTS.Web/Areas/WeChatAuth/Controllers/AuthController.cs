@@ -72,7 +72,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
                     tw.WriteLine("Time:" + DateTime.Now);
                     tw.WriteLine("ExecptionMessage:" + ex.Message);
                     tw.WriteLine(ex.Source);
-                    tw.WriteLine(ex.StackTrace);
+                    tw.WriteLine(ex.ToString());
                     if (messageHandler.ResponseDocument != null)
                     {
                         tw.WriteLine(messageHandler.ResponseDocument.ToString());
@@ -83,7 +83,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
                         tw.WriteLine("========= InnerException =========");
                         tw.WriteLine(ex.InnerException.Message);
                         tw.WriteLine(ex.InnerException.Source);
-                        tw.WriteLine(ex.InnerException.StackTrace);
+                        tw.WriteLine(ex.InnerException.ToString());
                     }
 
                     tw.Flush();

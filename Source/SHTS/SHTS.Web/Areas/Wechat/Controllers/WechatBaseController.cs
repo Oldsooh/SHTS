@@ -32,20 +32,23 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 Session[WeChatUserInfo] = value; 
             }
         }
-        public override bool RequireLogin()
+
+        public override User CurrentUser
         {
-            if (CurrentWeChatUser == null || CurrentUser == null)
+            get
             {
-                Response.Redirect("/wechat/account/login");
-                return true;
+                return base.CurrentUser ?? new User();
             }
-            return false;
+            set
+            {
+                base.CurrentUser = value;
+            }
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
+            
             try
             {
                 var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
@@ -85,6 +88,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
                         filterContext.Result = new RedirectResult(authUrl);
+                    }
+                    else
+                    {
+                        if (wechatUser.UserId.HasValue)
+                        {
+                            var user = userService.GetUserById(wechatUser.UserId.Value);
+                            CurrentUser = user;
+                        }
+
+                        CurrentWeChatUser = wechatUser;
+                        
                     }
                 }
             }

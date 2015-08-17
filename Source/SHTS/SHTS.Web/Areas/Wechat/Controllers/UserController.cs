@@ -24,14 +24,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
         public ActionResult Index()
         {
-            RequireLogin();
-            return View(CurrentUser);
+            return View(CurrentWeChatUser);
+        }
+
+        public PartialViewResult UserNavBar()
+        {
+            return PartialView(CurrentWeChatUser);
         }
 
         public ActionResult ViewUser()
         {
-            RequireLogin();
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo };
+            WeChatUserViewModel model = new WeChatUserViewModel { WeChatUserEntity = CurrentWeChatUser, UserEntity = CurrentUser };
             try
             {
                 CityService cityService = new CityService();
@@ -44,7 +47,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("用户中心-index", e.StackTrace);
+                LogService.Log("用户中心-viewuser", e.ToString());
             }
             return View(model);
         }
@@ -74,14 +77,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return RedirectToAction("ViewUser");
         }
 
         public ActionResult UpdatePassword()
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             return View(model);
         }
@@ -89,7 +91,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult UpdatePassword(string oldpassword, string newpassword)
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             string message = null;
             try
@@ -109,7 +110,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("UpdatePassword 出错了！", e.StackTrace);
+                LogService.Log("UpdatePassword 出错了！", e.ToString());
                 message = "密码更新失败！";
             }
             model.ErrorMsg = message;
@@ -124,7 +125,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult ToVip()
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             try
             {
@@ -140,7 +140,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("ToVip 出错了！", e.StackTrace);
+                LogService.Log("ToVip 出错了！", e.ToString());
             }
             return View(model);
         }
@@ -155,7 +155,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("ToVip 出错了！", e.StackTrace);
+                LogService.Log("ToVip 出错了！", e.ToString());
             }
             return View();
         }
@@ -166,7 +166,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult Identify()
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             try
             {
@@ -175,7 +174,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Identify 出错了！", e.StackTrace);
+                LogService.Log("Identify 出错了！", e.ToString());
             }
             model.ErrorMsg = GetErrorMessage(model.VipInfo);
             return View(model);
@@ -184,7 +183,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult Identify(FormCollection form)
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             UserService service = new UserService();
             try
@@ -244,7 +242,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult VipOrder()
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
             UserService service = new UserService();
 
@@ -368,7 +365,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult VipInfo()
         {
-            RequireLogin();
             UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
             UserService service = new UserService();
 

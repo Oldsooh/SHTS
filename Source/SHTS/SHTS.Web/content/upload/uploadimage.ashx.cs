@@ -84,7 +84,7 @@ namespace Witbird.SHTS.Web.Content.upload
                         catch(Exception ex)
                         {
                             message = "上传失败";
-                            LogService.Log("上传失败--" + postFile.FileName, ex.StackTrace);
+                            LogService.Log("上传失败--" + postFile.FileName, ex.ToString());
                         }
 
                     }
@@ -101,7 +101,7 @@ namespace Witbird.SHTS.Web.Content.upload
             catch (Exception e)
             {
                 message = e.Message;
-                LogService.Log("上传失败", e.StackTrace);
+                LogService.Log("上传失败", e.ToString());
             }
             var ajaxfile = new AjaxFile
             {

@@ -72,7 +72,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.StackTrace);
+                LogService.Log("注册用户", ex.ToString());
             }
             model.ErrorMsg = errorMsg;
             return View(model);
@@ -143,7 +143,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("注册用户", ex.StackTrace);
+                LogService.Log("注册用户", ex.ToString());
             }
             return View(userRegisterViewModel);
         }
@@ -165,7 +165,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("LogOut-失败", ex.StackTrace);
+                LogService.Log("LogOut-失败", ex.ToString());
             }
             return Redirect("/m/account/login");
         }

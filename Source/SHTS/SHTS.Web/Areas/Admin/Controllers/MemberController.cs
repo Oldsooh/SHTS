@@ -36,7 +36,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -51,7 +51,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -82,7 +82,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -102,7 +102,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("DeleteUser", ex.StackTrace);
+                LogService.Log("DeleteUser", ex.ToString());
                 result.ExceptionInfo = "删除失败";
             }
             return Json(result);
@@ -135,7 +135,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -154,7 +154,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("VIP会员审核列表", ex.StackTrace);
+                LogService.Log("VIP会员审核列表", ex.ToString());
             }
             return View(viewModel);
         }
@@ -179,7 +179,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("DeleteVipInfo", ex.StackTrace);
+                LogService.Log("DeleteVipInfo", ex.ToString());
                 result.ExceptionInfo = "删除失败";
             }
             return Json(result);
@@ -200,7 +200,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("ReviewedVipInfo", ex.StackTrace);
+                LogService.Log("ReviewedVipInfo", ex.ToString());
                 result.ExceptionInfo = "审核失败";
             }
             return Json(result);
@@ -231,7 +231,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("SetUserVip", ex.StackTrace);
+                LogService.Log("SetUserVip", ex.ToString());
                 result.ExceptionInfo = "用户升级1年VIP失败";
             }
             return Json(result);
@@ -258,7 +258,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("CancelIdentify", ex.StackTrace);
+                LogService.Log("CancelIdentify", ex.ToString());
                 result.ExceptionInfo = "取消会员认证失败";
             }
             return Json(result);
@@ -279,7 +279,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("CancelUserVip", ex.StackTrace);
+                LogService.Log("CancelUserVip", ex.ToString());
                 result.ExceptionInfo = "取消用户VIP失败";
             }
             return Json(result);

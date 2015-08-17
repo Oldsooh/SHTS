@@ -43,7 +43,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Activitys List 出错了！", e.StackTrace);
+                LogService.Log("Activitys List 出错了！", e.ToString());
             }
             ViewBag.Status = Status;
             return View(model);
@@ -63,7 +63,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Update Status Activitys 出错了！", e.StackTrace);
+                LogService.Log("Update Status Activitys 出错了！", e.ToString());
                 result.ExceptionInfo = "出错了";
                 result.ErrorCode = 102;
             }
@@ -100,7 +100,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Activitys TongJi 出错了！", e.StackTrace);
+                LogService.Log("Activitys TongJi 出错了！", e.ToString());
             }
             return View(model);
         }

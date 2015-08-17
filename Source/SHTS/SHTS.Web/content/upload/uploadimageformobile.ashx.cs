@@ -91,7 +91,7 @@ namespace Witbird.SHTS.Web.Content.upload
                         {
                             action = false;
                             message = "上传失败";
-                            LogService.Log("上传失败--" + postFile.FileName, ex.StackTrace);
+                            LogService.Log("上传失败--" + postFile.FileName, ex.ToString());
                         }
 
                     }

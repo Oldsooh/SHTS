@@ -41,7 +41,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("会员列表", ex.StackTrace);
+                LogService.Log("会员列表", ex.ToString());
             }
             return PartialView(viewModel);
         }

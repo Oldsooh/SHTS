@@ -1,4 +1,4 @@
-﻿@model Witbird.SHTS.Model.User
+﻿@model Witbird.SHTS.Model.WeChatUser
 @{
     ViewBag.Title = "用户中心";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
@@ -18,17 +18,14 @@
     我的信息
 </a></li>
             <li class="border_m">
-                <a class="my_order" href="~/Wechat/User/UpdatePassword">密码管理</a>
-            </li>
-        </ul>
-        <ul>
-            <li class="border_m">
                 <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
             </li>
+        </ul>
+        @*<ul>
             <li class="border_m border_r">
                 <a class="my_publish" href="~/Wechat/User/ToVip">Vip认证</a>
             </li>
-        </ul>
+        </ul>*@
         <ul>
             <li class="border_m border_r">
                 <a class="my_record" href="~/Wechat/demand/add">发布需求</a>
@@ -43,11 +40,11 @@
                     发布活动
                 </a>
             </li>
-            <li class="border_m"><a class="my_back " href="~/Wechat/activity/">浏览活动</a></li>
+            <li class="border_m"><a class="my_back " href="~/Wechat/activity/">查看活动</a></li>
         </ul>
         <ul>
             <li class="border_m">
-                <a class="my_order" href="~/Wechat/resource/spacelist">浏览资源</a>
+                <a class="my_order" href="~/Wechat/resource/spacelist">查看资源</a>
             </li>
             <li class="border_m">
             </li>>

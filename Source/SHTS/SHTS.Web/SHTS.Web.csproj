@@ -201,7 +201,6 @@
     <Compile Include="Areas\WeChatAuth\MessageHandlers\CustomMessageHandler\CustomMessageHandler_Events.cs" />
     <Compile Include="Areas\WeChatAuth\Utilities\Server.cs" />
     <Compile Include="Areas\WeChatAuth\WeChatAreaRegistration.cs" />
-    <Compile Include="Areas\Wechat\Common\WechatHttpContext.cs" />
     <Compile Include="Areas\Wechat\Controllers\AccountController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="Models\UserRegisterViewModel.cs" />
     <Compile Include="Models\User\UpdatePasswordViewModel.cs" />
     <Compile Include="Models\User\UserSummary.cs" />
+    <Compile Include="Models\User\WeChatUserViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="MvcExtension\FileUploadHelper.cs" />
     <Compile Include="MvcExtension\HtmlHelperExtension.cs" />
@@ -908,6 +908,7 @@
     <Content Include="Areas\Wechat\Views\Web.config" />
     <Content Include="Areas\WeChatAuth\Views\Auth\CreateMenu.cshtml" />
     <Content Include="Areas\WeChatAuth\Views\Web.config" />
+    <Content Include="Areas\Wechat\Views\User\UserNavBar.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
@@ -1325,6 +1326,7 @@
   <ItemGroup>
     <Folder Include="Areas\WeChatAuth\Models\" />
     <Folder Include="Areas\WeChatAuth\Views\Shared\" />
+    <Folder Include="Areas\Wechat\Common\" />
     <Folder Include="Content\kindeditor\attached\" />
     <Folder Include="Content\m\js\" />
     <Folder Include="Content\wechat\js\" />

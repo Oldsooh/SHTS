@@ -39,7 +39,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (SqlException ex)
             {
-                LogService.Log("记录用户行为失败", ex.StackTrace);
+                LogService.Log("记录用户行为失败", ex.ToString());
             }
             finally
             {
@@ -68,7 +68,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (SqlException ex)
             {
-                LogService.Log("记录用户行为失败", ex.StackTrace);
+                LogService.Log("记录用户行为失败", ex.ToString());
             }
             finally
             {

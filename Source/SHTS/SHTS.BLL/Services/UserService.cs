@@ -91,7 +91,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("用户登录失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("用户登录失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -118,7 +118,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("用户注册信息验证失败-" + e.Message, e.StackTrace.ToString());
+                LogService.Log("用户注册信息验证失败-" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -147,7 +147,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("用户注册失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -172,7 +172,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("获取用户profile--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("获取用户profile--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -210,7 +210,7 @@ namespace Witbird.SHTS.BLL.Services
             catch (Exception e)
             {
                 tran.Rollback();
-                LogService.Log("修改用户信息失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("修改用户信息失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -235,7 +235,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("修改用户失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("修改用户失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -260,7 +260,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("用户注册失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -315,7 +315,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("分页查询会员信息--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("分页查询会员信息--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -346,7 +346,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("分页查询会员信息--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("分页查询会员信息--" + e.Message, e.ToString().ToString());
             }
             finally
             {
@@ -394,7 +394,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("用户注册失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {

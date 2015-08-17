@@ -128,7 +128,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             base.OnException(filterContext);
             var e = filterContext.Exception;
 
-            LogService.Log(e.Message, e.StackTrace.ToString());
+            LogService.Log(e.Message, e.ToString().ToString());
         }
 
         #endregion

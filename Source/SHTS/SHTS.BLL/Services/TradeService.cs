@@ -38,7 +38,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("中介申请失败--" + e.Message, e.StackTrace.ToString());
+                LogService.Log("中介申请失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {

@@ -46,7 +46,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Activitys List 出错了！", e.StackTrace);
+                LogService.Log("Activitys List 出错了！", e.ToString());
             }
             return View(model);
         }
@@ -76,7 +76,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception e)
             {
-                LogService.Log("Show Activity出错了！", e.StackTrace);
+                LogService.Log("Show Activity出错了！", e.ToString());
             }
             return View(model);
         }

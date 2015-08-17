@@ -98,7 +98,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         if (hasUserLoggedIn)
                         {
                             var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "您当前已绑定账号为：" + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
+                            content = "绑定活动在线网(www.activity-line.com)会员账号，微信登录即可同步PC端会员账号数据。您当前已绑定账号为：" 
+                                + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
                         }
                         else if (string.IsNullOrEmpty(content))
                         {
@@ -172,7 +173,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         {
                             var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
                             var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
+                            content = "活动在线认证会员可以发布资源信息、需求信息及活动在线，并且能够查看所有资源信息的联系方式。您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
 
                             strongResponseMessage.Content = content;
                             responseMessage = strongResponseMessage;
@@ -181,7 +182,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         {
                             var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
                             var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "您当前还未绑定账号。" + userName + "。\r\n\r\n" + UserLoginUrl;
+                            content = "您当前还未绑定账号。" + userName + "。请先绑定活动在线会员账号，如还未注册，请点击会员注册。\r\n\r\n" + UserLoginUrl;
 
                             strongResponseMessage.Content = content;
                             responseMessage = strongResponseMessage;

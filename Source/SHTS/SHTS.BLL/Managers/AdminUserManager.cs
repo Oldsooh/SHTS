@@ -80,7 +80,7 @@ namespace Witbird.SHTS.BLL.Managers
             }
             catch (Exception e)
             {
-                LogService.Log("增加管理员失败", e.StackTrace.ToString());
+                LogService.Log("增加管理员失败", e.ToString().ToString());
                 throw;
             }
             return result;
@@ -106,7 +106,7 @@ namespace Witbird.SHTS.BLL.Managers
             }
             catch (Exception e)
             {
-                LogService.Log("跟新管理员失败", e.StackTrace.ToString());
+                LogService.Log("跟新管理员失败", e.ToString().ToString());
                 throw;
             }
             return result;
@@ -122,7 +122,7 @@ namespace Witbird.SHTS.BLL.Managers
             }
             catch (Exception e)
             {
-                LogService.Log("增加管理员失败", e.StackTrace.ToString());
+                LogService.Log("增加管理员失败", e.ToString().ToString());
                 throw;
             }
             return result;
