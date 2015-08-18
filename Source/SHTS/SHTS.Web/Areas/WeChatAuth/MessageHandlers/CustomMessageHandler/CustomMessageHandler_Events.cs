@@ -27,15 +27,15 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         private static string UserIdentifyUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/User/Identify\">点击这里，立即认证</a>";
 
         private static string PlaceListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
-        private static string ActorListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
-        private static string EquipmentListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
-        private static string OtherResourceUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
+        private static string ActorListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/actorlist";
+        private static string EquipmentListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/equipmentlist";
+        private static string OtherResourceUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/otherlist";
 
         private static string DemandListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/index";
         private static string DemandAddUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/add";
         private static string TradeListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/trade/index";
 
-        private static string BannerImgUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/banner.jpg";
+        private static string BannerImgUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/banner.jpg";
 
         UserService userService = new UserService();
 
@@ -334,7 +334,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             Description = "点击进入发布需求页面。",
                             PicUrl = BannerImgUrl,
                             Title = "发布需求",
-                            Url = DemandListUrl
+                            Url = DemandAddUrl
                         });
 
                         responseMessage = newsResponseMessage;
