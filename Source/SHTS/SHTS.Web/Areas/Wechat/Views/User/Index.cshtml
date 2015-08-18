@@ -14,18 +14,45 @@
     <!--登录后未绑定显示-->
     <div class="c_center">
         <ul>
-            <li class="border_m border_r"><a class="my_employ" href="~/Wechat/user/ViewUser">
-    我的信息
-</a></li>
-            <li class="border_m">
-                <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
-            </li>
+            @{
+                if (!Model.UserId.HasValue)
+                {
+
+                    <li class="border_m border_r">
+                        <a class="my_employ" href="~/Wechat/account/login">
+                            绑定账号
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="border_m border_r">
+                        <a class="my_employ" href="~/Wechat/user/ViewUser">
+                            我的信息
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (!Model.UserId.HasValue)
+                {
+                    <li class="border_m">
+                        <a class="my_collect" href="~/Wechat/account/login">会员认证</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="border_m">
+                        <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
+                    </li>
+                }
+}
         </ul>
         @*<ul>
-            <li class="border_m border_r">
-                <a class="my_publish" href="~/Wechat/User/ToVip">Vip认证</a>
-            </li>
-        </ul>*@
+                <li class="border_m border_r">
+                    <a class="my_publish" href="~/Wechat/User/ToVip">Vip认证</a>
+                </li>
+            </ul>*@
         <ul>
             <li class="border_m border_r">
                 <a class="my_record" href="~/Wechat/demand/add">发布需求</a>
@@ -47,7 +74,7 @@
                 <a class="my_order" href="~/Wechat/resource/spacelist">查看资源</a>
             </li>
             <li class="border_m">
-            </li>>
+            </li>
         </ul>
     </div>
 </div>

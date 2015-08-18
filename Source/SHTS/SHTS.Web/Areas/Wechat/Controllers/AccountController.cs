@@ -60,18 +60,27 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             var errorMsg = string.Empty;
             try
             {
-                User result = null;
+                User user = null;
                 if (ModelState.IsValid)
                 {
                     if (string.Equals(model.code,
                         Session["validataCode"].ToString(),
                         StringComparison.InvariantCultureIgnoreCase))
                     {
-                        result = userService.Login(model.username, model.password);
-                        if (result != null)
+                        user = userService.Login(model.username, model.password);
+                        if (user != null)
                         {
-                            CurrentUser = result;
-                            return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                            CurrentWeChatUser.UserId = user.UserId;
+
+                            if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                            {
+                                CurrentUser = user;
+                                return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                            }
+                            else
+                            {
+                                errorMsg = "绑定用户失败！";
+                            }
                         }
                         else
                         {
@@ -85,7 +94,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     if (CurrentWeChatUser.UserId.HasValue)
                     {
-                        var user = userService.GetUserById(CurrentWeChatUser.UserId.Value);
+                        user = userService.GetUserById(CurrentWeChatUser.UserId.Value);
                         model.User = user;
                     }
                 }

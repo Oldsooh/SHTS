@@ -37,6 +37,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             WeChatUserViewModel model = new WeChatUserViewModel { WeChatUserEntity = CurrentWeChatUser, UserEntity = CurrentUser };
             try
             {
+                if (CurrentUser == null)
+                {
+                    return Redirect("/wechat/account/login");
+                }
+
                 CityService cityService = new CityService();
                 model.Provinces = cityService.GetProvinces(true);
                 if (!string.IsNullOrEmpty(model.UserEntity.LocationId))

@@ -26,6 +26,17 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         private static string UserRegisterUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/Account/Register\">点击这里，立即注册</a>";
         private static string UserIdentifyUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/WeChat/User/Identify\">点击这里，立即认证</a>";
 
+        private static string PlaceListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
+        private static string ActorListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
+        private static string EquipmentListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
+        private static string OtherResourceUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/resource/spacelist";
+
+        private static string DemandListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/index";
+        private static string DemandAddUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/add";
+        private static string TradeListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/trade/index";
+
+        private static string BannerImgUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/banner.jpg";
+
         UserService userService = new UserService();
 
         private Article GetWelcomeInfo()
@@ -45,17 +56,56 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             var openId = requestMessage.FromUserName;
             var content = "";
 
+            var textResponseMessage = CreateResponseMessage<ResponseMessageText>();
+            var newsResponseMessage = CreateResponseMessage<ResponseMessageNews>();
+
             switch (requestMessage.EventKey)
             {
                 #region 会员注册
                 case "UserRegister":
                     {
-                        var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                        content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n" 
-                            + UserRegisterUrl;
+                        WeChatUser wechatUser = null;
+                        User user = null;
 
-                        strongResponseMessage.Content = content;
-                        responseMessage = strongResponseMessage;
+                        try
+                        {
+                            wechatUser = userService.GetWeChatUser(openId);
+
+                            if (wechatUser != null)
+                            {
+                                if (wechatUser.UserId.HasValue)
+                                {
+                                    user = userService.GetUserById(wechatUser.UserId.Value);
+                                }
+                            }
+                            else
+                            {
+                                content = "连接获取失败，请重新尝试。";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogService.LogWexin("微信用户绑定发生错误", ex.ToString());
+                            content = "连接获取失败，请重新尝试。";
+                        }
+
+                        if (string.IsNullOrEmpty(content))
+                        {
+                            if (user != null)
+                            {
+                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                                content = "您当前已绑定会员账号：" + userName + "，无需重复注册。如要重新注册新的会员账号，请点击如下链接。\r\n\r\n"
+                                    + UserRegisterUrl;
+                            }
+                            else
+                            {
+                                content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n"
+                                    + UserRegisterUrl;
+                            }
+                        }
+
+                        textResponseMessage.Content = content;
+                        responseMessage = textResponseMessage;
                     }
                     break;
                 #endregion 
@@ -63,7 +113,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 账号绑定
                 case "UserLogin":
                     {
-                        var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
                         var hasUserLoggedIn = false;
                         WeChatUser wechatUser = null;
                         User user = null;
@@ -95,24 +144,23 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             content = "连接获取失败，请重新尝试。";
                         }
 
-                        if (hasUserLoggedIn)
+                        if (string.IsNullOrEmpty(content))
                         {
-                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "绑定活动在线网(www.activity-line.com)会员账号，微信登录即可同步PC端会员账号数据。您当前已绑定账号为：" 
-                                + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
-                        }
-                        else if (string.IsNullOrEmpty(content))
-                        {
-                            content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，请立即绑定您的会员账号。\r\n\r\n"
-                                   + UserLoginUrl;
-                        }
-                        else
-                        {
-                            // do nothing.
+                            if (hasUserLoggedIn)
+                            {
+                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                                content = "绑定活动在线网(www.activity-line.com)会员账号，微信登录即可同步PC端会员账号数据。您当前已绑定账号为："
+                                    + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
+                            }
+                            else
+                            {
+                                content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，请立即绑定您的会员账号。\r\n\r\n"
+                                       + UserLoginUrl;
+                            }
                         }
 
-                        strongResponseMessage.Content = content;
-                        responseMessage = strongResponseMessage;
+                        textResponseMessage.Content = content;
+                        responseMessage = textResponseMessage;
                     }
 
                     break;
@@ -154,46 +202,45 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             content = "连接获取失败，请重新尝试。";
                         }
 
-                        if (hasUserIdentified)
+                        if (string.IsNullOrEmpty(content))
                         {
-                            var newsMessage = CreateResponseMessage<ResponseMessageNews>();
-                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-
-                            newsMessage.Articles.Add(new Article 
+                            if (hasUserIdentified)
                             {
-                                Description = "点击消息查看认证详情。",
-                                PicUrl = user.IdentiyImg,
-                                Title = "您的账号：" + userName + "已认证。",
-                                Url = UserIdentifyUrl
-                            });
+                                var newsMessage = CreateResponseMessage<ResponseMessageNews>();
+                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
 
-                            responseMessage = newsMessage;
-                        }
-                        else if (user != null)
-                        {
-                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "活动在线认证会员可以发布资源信息、需求信息及活动在线，并且能够查看所有资源信息的联系方式。您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
+                                newsMessage.Articles.Add(new Article
+                                {
+                                    Description = "点击消息查看认证详情。",
+                                    PicUrl = user.IdentiyImg,
+                                    Title = "您的账号：" + userName + "已认证。",
+                                    Url = UserIdentifyUrl
+                                });
 
-                            strongResponseMessage.Content = content;
-                            responseMessage = strongResponseMessage;
-                        }
-                        else if (string.IsNullOrEmpty(content))
-                        {
-                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                            content = "您当前还未绑定账号。" + userName + "。请先绑定活动在线会员账号，如还未注册，请点击会员注册。\r\n\r\n" + UserLoginUrl;
+                                responseMessage = newsMessage;
+                            }
+                            else if (user != null)
+                            {
+                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                                content = "活动在线认证会员可以发布资源信息、需求信息及活动在线，并且能够查看所有资源信息的联系方式。您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
 
-                            strongResponseMessage.Content = content;
-                            responseMessage = strongResponseMessage;
+                                textResponseMessage.Content = content;
+                                responseMessage = textResponseMessage;
+                            }
+                            else
+                            {
+                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                                content = "您当前还未绑定账号。" + userName + "。请先绑定活动在线会员账号，如还未注册，请点击会员注册。\r\n\r\n" + UserLoginUrl;
+
+                                textResponseMessage.Content = content;
+                                responseMessage = textResponseMessage;
+                            }
                         }
                         else
                         {
-                            var strongResponseMessage = CreateResponseMessage<ResponseMessageText>(); 
-                            strongResponseMessage.Content = content;
-                            responseMessage = strongResponseMessage;
+                            textResponseMessage.Content = content;
+                            responseMessage = textResponseMessage;
                         }
-
                     }
 
                     break;
@@ -201,36 +248,107 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
                 #region 活动场地
                 case "SpaceList":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击查看详情。",
+                            PicUrl = BannerImgUrl,
+                            Title = "活动场地信息",
+                            Url = PlaceListUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion
 
                 #region 演艺人员
                 case "ActorList":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击查看详情。",
+                            PicUrl = BannerImgUrl,
+                            Title = "演艺人员信息",
+                            Url = ActorListUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion 
 
                 #region 活动设备
                 case "EquipmentList":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击查看详情。",
+                            PicUrl = BannerImgUrl,
+                            Title = "活动设备信息",
+                            Url = EquipmentListUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion
 
                 #region 其他资源
                 case "OtherResourceList":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击查看详情。",
+                            PicUrl = BannerImgUrl,
+                            Title = "其他资源信息",
+                            Url = OtherResourceUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion 
                 
                 #region 需求信息
                 case "DemandList":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击查看详情。",
+                            PicUrl = BannerImgUrl,
+                            Title = "需求信息",
+                            Url = DemandListUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion 
 
                 #region 发布需求
                 case "NewDemand":
+                    {
+                        newsResponseMessage.Articles.Add(new Article
+                        {
+                            Description = "点击进入发布需求页面。",
+                            PicUrl = BannerImgUrl,
+                            Title = "发布需求",
+                            Url = DemandListUrl
+                        });
+
+                        responseMessage = newsResponseMessage;
+                    }
                     break;
                 #endregion
 
                 #region 交易中介
                 case "TradeList":
+                    {
+                        textResponseMessage.Content = "欲查看交易中介信息，请用电脑访问" + TradeListUrl;
+
+                        responseMessage = textResponseMessage;
+                    }
                     break;
                 #endregion 
 

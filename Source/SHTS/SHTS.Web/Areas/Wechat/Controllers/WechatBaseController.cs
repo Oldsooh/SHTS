@@ -37,7 +37,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             get
             {
-                return base.CurrentUser ?? new User();
+                return base.CurrentUser;
             }
             set
             {

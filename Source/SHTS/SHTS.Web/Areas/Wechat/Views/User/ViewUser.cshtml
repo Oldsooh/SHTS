@@ -1,6 +1,6 @@
 ﻿@model Witbird.SHTS.Web.Models.User.WeChatUserViewModel
 @{
-    ViewBag.Title = "ViewUser";
+    ViewBag.Title = "会员信息";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 
@@ -93,10 +93,10 @@
 
 <div class="wrap" style="width: 100%">
     <div class="register-box" style="height: auto; width: 100%;">
-        <div class="reg-slogan" style="color: #333; font-size: 25px; margin-bottom: 10px;">更新信息</div>
+        <div class="reg-slogan" style="color: #333;font-size:25px;margin-bottom: 10px;">会员信息</div>
         <form action="EditUser" class="reg-form" method="POST" id="multipart/form-data">
             <div class="cell" style="margin-bottom: 0px;">
-                <h3>微信账号：</h3><span>@Model.WeChatUserEntity.NickName</span>
+                <h3>会员账号：</h3><span>@Model.UserEntity.UserName</span>
             </div>
             <div class="cell" style="margin-bottom: 0px;">
                 <h3>手机号码：</h3><span>@Model.UserEntity.Cellphone</span>
@@ -209,7 +209,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <button type="submit" style="width: 100%;" onclick=" addact(); " id="updatepasswordbtn" href="javascript:;" class="button btn-green">确认修改</button>
+                <button type="submit" style="width: 100%;" onclick=" addact(); " id="updatepasswordbtn" href="javascript:;" class="button btn-green">更新信息</button>
             </div>
         </form>
         <div style="opacity: 0;">
