@@ -171,6 +171,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult Identify()
         {
+            if (CurrentWeChatUser.UserId == null || CurrentUser == null)
+            {
+                return Redirect("/wechat/account/login");
+            }
+
             UserViewModel model = new UserViewModel { UserEntity = UserInfo };
             try
             {

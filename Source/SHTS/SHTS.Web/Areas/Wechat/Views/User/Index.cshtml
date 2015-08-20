@@ -33,20 +33,9 @@
                     </li>
                 }
             }
-            @{
-                if (!Model.UserId.HasValue)
-                {
-                    <li class="border_m">
-                        <a class="my_collect" href="~/Wechat/account/login">会员认证</a>
-                    </li>
-                }
-                else
-                {
-                    <li class="border_m">
-                        <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
-                    </li>
-                }
-}
+            <li class="border_m">
+                <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
+            </li>
         </ul>
         @*<ul>
                 <li class="border_m border_r">

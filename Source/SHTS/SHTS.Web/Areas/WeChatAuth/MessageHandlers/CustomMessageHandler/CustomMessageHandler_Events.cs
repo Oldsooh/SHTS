@@ -33,7 +33,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
         private static string DemandListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/index";
         private static string DemandAddUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/add";
-        private static string TradeListUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/trade/index";
+        private static string TradeListUrl = Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/trade/index";
 
         private static string BannerImgUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/banner.jpg";
 

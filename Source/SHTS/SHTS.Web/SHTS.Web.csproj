@@ -900,7 +900,6 @@
     <Content Include="Areas\Wechat\Views\Shared\WechatLayoutPage.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\User\Identify.cshtml" />
-    <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\User\ToVip.cshtml" />
     <Content Include="Areas\Wechat\Views\User\UpdatePassword.cshtml" />
     <Content Include="Areas\Wechat\Views\User\ViewUser.cshtml" />
@@ -910,6 +909,7 @@
     <Content Include="Areas\WeChatAuth\Views\Auth\CreateMenu.cshtml" />
     <Content Include="Areas\WeChatAuth\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\User\UserNavBar.cshtml" />
+    <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
