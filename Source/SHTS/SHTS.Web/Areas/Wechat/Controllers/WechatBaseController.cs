@@ -19,7 +19,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <summary>
         /// 请先关注我们的链接
         /// </summary>
-        public const string AttentionUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210371076&idx=1&sn=206d0b4a6698e386f5960527a83a1320#rd";
+        public const string AttentionUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615414&idx=1&sn=b70bdf52770352541897d47f416e11d8#rd";
 
         public WeChatUser CurrentWeChatUser
         {

@@ -649,6 +649,7 @@
     <Content Include="Areas\Wechat\Content\images\shouwei\zhaopin\money.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\zhaopin\right_gray.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\zhaopin\school.png" />
+    <Content Include="Areas\Wechat\Content\images\usercenter.png" />
     <Content Include="Areas\Wechat\Content\images\user_picture.gif" />
     <Content Include="Areas\Wechat\Content\scipts\payment.js" />
     <Content Include="Areas\Wechat\Content\styles\58\all_v20150415181405.css" />
