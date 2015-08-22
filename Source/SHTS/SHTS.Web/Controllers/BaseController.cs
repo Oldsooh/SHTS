@@ -74,7 +74,7 @@ namespace Witbird.SHTS.Web.Controllers
             get
             {
                 bool isIdentified = false;
-                if (UserInfo == null)
+                if (CurrentUser == null)
                 {
                     isIdentified = false;
                 }

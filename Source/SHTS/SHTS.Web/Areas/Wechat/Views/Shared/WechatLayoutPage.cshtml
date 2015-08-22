@@ -8,6 +8,11 @@
     <meta name="keywords" content="@ViewBag.Keywords" />
     <meta name="description" content="@ViewBag.Description" />
     <link href="/content/Wechat/css/common.css" rel="stylesheet" />
+    <style>
+        .location { margin-top:15px; margin-bottom:15px; padding-left: 10px; font-size: 14px; }
+        #nav{ margin-top:10px; height: auto;}
+        .navli { width:20%;}
+    </style>
     @RenderSection("head", false)
 </head>
 <body>
@@ -20,31 +25,63 @@
             </div>
 
             <div id="city">
-                <select>
-                    <option>全国</option>
-                    <option>北京</option>
-                    <option>上海</option>
-                    <option>重庆</option>
-                    <option>四个字的</option>
-                </select>
+                @{
+                    if (Session["CityName"] != null)
+                    {
+
+                <span id="currentCityName">@Session["CityName"].ToString()</span>
+                    }
+                    else
+                    {
+                <span id="currentCityName">全国</span>
+                    }
+
+                <a href="/wechat/city/index">切换</a>
+                }
             </div>
-            <div id="usercenter" style="width:150px;">
+            <div id="usercenter">
                 @Html.Action("UserNavBar", "User")
             </div>
-
-            @*@if (Session["CityName"] != null)
-                {
-                    <div id="currentCityName">@Session["CityName"].ToString()</div>
-                }
-                else
-                {
-                    <div id="currentCityName">全国</div>
-                }*@
         </div>
 
+        @*<div class="location">
+            当前位置：<a href="/wechat/user/index">会员中心</a><span class="ch">&nbsp;&gt;&nbsp;@ViewBag.Title</span>
+        </div>*@
+
+        <div id="nav">
+            <ul id="navul">
+                <li class="navli" id="space"><a href="/wechat/resource/spacelist">活动场地</a></li>
+                <li class="navli" id="actor"><a href="/wechat/resource/actorlist">演艺人员</a></li>
+                <li class="navli" id="equipment"><a href="/wechat/resource/equipmentlist">活动设备</a></li>
+                <li class="navli" id="other"><a href="/wechat/resource/otherlist">其它资源</a></li>
+                <li class="navli" id="demand"><a href="/wechat/demand/index">需求信息</a></li>
+            </ul>
+        </div>
         @RenderBody()
 
     </div>
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+    <script>
+        function setLocalCity() {
+            // 新浪根据ip获取地址
+            var localprovince = '';
+            var localcity = '';
+            localprovince = remote_ip_info["province"];
+            localcity = remote_ip_info["city"];
+            var nowTime = new Date().getTime();
+            var url = encodeURI("/wechat/city/setlocalcity?cityName=" + localcity + "&time" + nowTime);
+            $.get(url, function (data, status) {
+                if (status == "success") {
+                    if (data != "" && data != "no") {
+                        document.getElementById("currentCityName").innerHTML = data;
+                    }
+                }
+            });
+        }
+
+        setLocalCity();
+    </script>
     @RenderSection("FooterJS", false)
 </body>
 </html>

@@ -53,11 +53,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [ActionName("spacelist")]
-        public ActionResult SpaceList()
+        public ActionResult SpaceList(int page = 0)
         {
             var query = new Witbird.SHTS.Model.Extensions.QueryResource();
             query.ResourceType = 1;
 
+            query.PageIndex = page < 0 ? 0 : page;
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
@@ -82,11 +83,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [ActionName("actorlist")]
-        public ActionResult ActorList()
+        public ActionResult ActorList(int page = 0)
         {
             var query = new Witbird.SHTS.Model.Extensions.QueryResource();
             query.ResourceType = 2;
 
+            query.PageIndex = page < 0 ? 0 : page;
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
@@ -109,13 +111,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [ActionName("equipmentlist")]
-        public ActionResult EquipmentList()
+        public ActionResult EquipmentList(int page = 1)
         {
             var query = new Witbird.SHTS.Model.Extensions.QueryResource();
             query.ResourceType = 3;
 
-            query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
+            query.PageIndex = page < 1 ? 1 : page;
 
+            query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
             if (Session["CityId"] != null)
@@ -137,11 +140,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [ActionName("otherlist")]
-        public ActionResult OtherList()
+        public ActionResult OtherList(int page = 0)
         {
             var query = new Witbird.SHTS.Model.Extensions.QueryResource();
             query.ResourceType = 4;
 
+            query.PageIndex = page < 0 ? 0 : page;
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
@@ -171,6 +175,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             else
             {
+                if (!IsIdentified)
+                {
+                    space.Telephone = "认证会员可见";
+                    space.Mobile = "认证会员可见";
+                    space.QQ = "认证会员可见";
+                    space.WeChat = string.Empty;
+                    space.Email = "认证会员可见";
+                    space.Contract = "认证会员可见";
+                    space.DetailAddress = "认证会员可见";
+                }
+
                 try
                 {
                     CommonService commonService = new CommonService();

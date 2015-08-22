@@ -11,7 +11,7 @@
     <link href="~/Content/webuploader/webuploader.css" rel="stylesheet" />
     <style type="text/css">
         .reg-form .cell h3 {
-            font-size: 16px;
+            font-size: 14px;
             color: black;
             font-family: 'Microsoft YaHei';
             width: 30%;
@@ -93,7 +93,6 @@
 
 <div class="wrap" style="width: 100%">
     <div class="register-box" style="height: auto; width: 100%;">
-        <div class="reg-slogan" style="color: #333;font-size:25px;margin-bottom: 10px;">会员信息</div>
         <form action="EditUser" class="reg-form" method="POST" id="multipart/form-data">
             <div class="cell" style="margin-bottom: 0px;">
                 <h3>会员账号：</h3><span>@Model.UserEntity.UserName</span>
@@ -187,10 +186,10 @@
                 }
             </div>
             <div class="cell">
-                <input name="Adress" type="text" class="text" style="display: block;" value="@Model.UserEntity.Adress"/>
+                <input name="Adress" type="text" placeholder="详细地址" class="text" style="display: block;" value="@Model.UserEntity.Adress"/>
             </div>
             <div class="cell">
-                <input name="QQ" type="text" id="oldpsw" value="@Model.UserEntity.QQ" placeholder="QQ" class="text"/>
+                <input name="QQ" type="text" id="oldpsw" value="@Model.UserEntity.QQ" placeholder="QQ号码" class="text"/>
             </div>
             <div class="cell" style="height: auto;">
                 <div id="uploader-demo">

@@ -15,6 +15,7 @@ namespace Witbird.SHTS.Model.Extensions
         /// 4
         /// </summary>
         public int ResourceType { get; set; }
+        public string ResourceTypeName { get;set; }
 
         public int TotalCount { get; set; }
 

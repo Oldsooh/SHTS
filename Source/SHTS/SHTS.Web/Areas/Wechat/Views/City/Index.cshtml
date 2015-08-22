@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "切换城市";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@model Witbird.SHTS.Web.Models.CityModel
+
+@section head
+{
+    <link href="/content/css/city.css" rel="stylesheet" />
+    @*Override .cityLeft .cityRight in city.css*@
+    <style>
+        .cityLeft { float: left; width: 15%; height: 30px; font-weight: bold; text-align: right; font-size: 14px; }
+        .cityRight { float: right; width: 84%; min-height: 30px; display: inline; }
+    </style>
+}
+<div class="main w1000">
+    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+    {
+        foreach (var province in Model.Provinces)
+        {
+            <div class="cityItem">
+                <div class="cityLeft">@province.Name</div>
+                <div class="cityRight">
+                    @if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                    {
+                        <ul class="cityUl">
+                            @foreach (var city in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                            {
+                                if (city.ParentId == province.Id)
+                                {
+                                    if (city.Sort < 100)
+                                    {
+                                        <li class="cityLi"><a class="mainCity" href="/wechat/city/current/@city.Id">@city.Name</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="cityLi"><a href="/wechat/city/current/@city.Id">@city.Name</a></li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    }
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        }
+    }
+    <div style="clear: both; height: 30px;"></div>
+</div>

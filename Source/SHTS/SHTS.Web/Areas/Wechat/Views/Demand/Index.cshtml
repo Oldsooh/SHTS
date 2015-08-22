@@ -6,11 +6,7 @@
 @section head
 {
     <style type="text/css">
-        #demand a
-        {
-            color: #ffffff;
-            background-color: #2577e3;
-        }
+        #demand a { color: #ffffff; background-color: #2577e3; }
     </style>
 }
 
@@ -19,16 +15,17 @@
     {
         foreach (var item in Model.Demands)
         {
-        <ul class="commonlist">
-            <li class="atitle">
-                <a href="/Wechat/demand/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
-                <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
-            </li>
-            <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
-            <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
-            <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
-            <li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>
-            <li>预算金额：
+            <ul class="commonlist">
+                <li class="atitle">
+                    <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
+                    <a href="/Wechat/demand/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                </li>
+                <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
+                <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
+                <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+                <li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>
+                <li>
+                    预算金额：
                     @if (item.Budget == 0)
                     {
                         <span class="yellow">面议</span>
@@ -37,8 +34,17 @@
                     {
                         <span class="yellow">@item.Budget</span>
                     }
-            </li>
-        </ul>
+                </li>
+            </ul>
         }
     }
+
+    else
+    {
+        <div>没有找到相关需求.</div>
+    }
+
+    <div style="clear: both; height: 30px;"></div>
+
+    @Html.Partial("PagingPartial", Model.Paging)
 </div>

@@ -135,15 +135,19 @@ namespace Witbird.SHTS.DAL.Daos
             {
                 case 1:
                     result.Paging.ActionName = "spacelist";
+                    result.ResourceTypeName = "活动场地";
                     break;
                 case 2:
                     result.Paging.ActionName = "actorlist";
+                    result.ResourceTypeName = "演艺人员";
                     break;
                 case 3:
                     result.Paging.ActionName = "equipmentlist";
+                    result.ResourceTypeName = "活动设备";
                     break;
                 case 4:
                     result.Paging.ActionName = "otherlist";
+                    result.ResourceTypeName = "其他资源";
                     break;
                 default:
                     break;

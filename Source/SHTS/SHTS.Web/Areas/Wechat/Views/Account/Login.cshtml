@@ -17,7 +17,6 @@
 }
 <div class="wrap" style="width:100%">
     <div class="register-box" style="height: 376px; width: 100%;">
-        <div class="reg-slogan" style="color: #333;font-size:25px;margin-bottom: 10px;">账号绑定</div>
         <form class="reg-form" id="js-form-mobile" method="post" action="#">
             <div class="cell">
                 <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
@@ -31,11 +30,11 @@
                 <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); " />
             </div>
             <div class="bottom">
-                <button type="submit" id="js_mail_btn" class="button btn-green">绑定账号</button>
+                <button type="submit" id="js_mobile_btn" style="width:100%;" class="button btn-green">绑定账号</button>
             </div>
             <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                 <p>
-                    还没有账号？<a href="/Wechat/account/login" style="color: #0099FF;">立即注册</a>
+                    还没有账号？<a href="/Wechat/account/register" style="color: #0099FF;">立即注册</a>
                 </p>
             </div>
         </form>

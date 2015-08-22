@@ -23,6 +23,7 @@
 }
 @section head
 {
+    <link href="~/Content/css/resourceview.css" rel="stylesheet" />
     <style type="text/css">
         #@(xx) a {
             color: #ffffff;
@@ -38,6 +39,26 @@
         </li>
         <li>发布时间：<span class="yellow2">@Model.CreateTime.ToString("yyyy-MM-dd HH:mm")</span></li>
 
+
+        @{
+            switch (Model.ResourceType)
+            {
+                case 1:
+                    @Html.Partial("SpaceInfoPartial", Model);
+                                                            break;
+                case 2:
+                @Html.Partial("ActorInfoPartial", Model);
+                                                        break;
+                case 3:
+                @Html.Partial("EquipInfoPartial", Model);
+                                                        break;
+                case 4:
+                @Html.Partial("OtherInfoPartial", Model);
+                                                        break;
+                default:
+                                                        break;
+            }
+        }
     </ul>
     <div class="active_info">
         @(new HtmlString(Model.Description))

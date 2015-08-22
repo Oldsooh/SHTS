@@ -1,0 +1,35 @@
+﻿@using Witbird.SHTS.Model
+@model Witbird.SHTS.DAL.New.Resource
+@{
+    var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
+}
+<li>
+    联&nbsp;&nbsp;系&nbsp;人: <span class="yellow2">
+        @Model.Contract
+</span>
+</li>
+<li>
+    座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
+        @Model.Telephone
+</span>
+</li>
+<li>
+    手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
+        @Model.Mobile
+</span>
+</li>
+<li>
+    微信/QQ: <span class="yellow2">
+        @string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
+</span>
+</li>
+<li>
+    邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱: <span class="yellow2">
+        @Model.Email
+</span>
+</li>
+<li>
+    详细地址: <span class="yellow2">
+        @Model.DetailAddress
+</span>
+</li>
