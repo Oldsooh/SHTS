@@ -39,7 +39,7 @@
                 //首页
                 if (Model.PageStep < Model.PageIndex)
                 {
-                    <span>@Html.ActionLink("首页", Model.ActionName)</span>
+                    <span>@Html.ActionLink("1", Model.ActionName)</span><span>...</span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -64,7 +64,7 @@
                 if (step + Model.PageStep <= Model.PageCount)
                 {
                     dictionary.Add("page", Model.PageCount.ToString());
-                    <span>@Html.ActionLink("末页", Model.ActionName, dictionary) </span>
+                    <span>@Html.ActionLink(Model.PageCount.ToString(), Model.ActionName, dictionary) </span><span>...</span>
                     dictionary.Remove("page");
                 }
                 //下一页

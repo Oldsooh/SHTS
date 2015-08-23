@@ -101,7 +101,7 @@ namespace Witbird.SHTS.Web.Controllers
 
         public virtual bool IsUserLogin
         {
-            get { return UserInfo != null; }
+            get { return CurrentUser != null; }
         }
 
         public virtual bool IsVip
@@ -110,7 +110,7 @@ namespace Witbird.SHTS.Web.Controllers
             {
                 bool isVip = false;
 
-                if (UserInfo == null)
+                if (CurrentUser == null)
                 {
                     return false;
                 }

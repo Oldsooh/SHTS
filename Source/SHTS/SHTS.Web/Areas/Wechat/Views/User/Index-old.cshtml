@@ -1,0 +1,73 @@
+﻿@model Witbird.SHTS.Model.WeChatUser
+@{
+    ViewBag.Title = "会员中心";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="~/Areas/Wechat/Content/styles/shouwei/active.css" rel="stylesheet" />
+    <link href="~/Areas/Wechat/Content/styles/58/all_v20150415181405.css" rel="stylesheet" />
+    <link href="~/Areas/Wechat/Content/styles/58/ucenter_v20150331202541.css" rel="stylesheet" />
+    <link href="~/Areas/Wechat/Content/styles/58/m-weidian_v0.css" rel="stylesheet" />
+}
+<div class="body_div" style="margin-top: 1px;margin-left: 4px;">
+    <!--登录后未绑定显示-->
+    <div class="c_center">
+        <ul>
+            @{
+                if (!Model.UserId.HasValue)
+                {
+                    <li class="border_m border_r">
+                        <a class="my_employ" href="~/Wechat/account/login">
+                            绑定账号
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="border_m border_r">
+                        <a class="my_employ" href="~/Wechat/user/ViewUser">
+                            我的信息
+                        </a>
+                    </li>
+                }
+            }
+            <li class="border_m">
+                <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m border_r">
+                <a class="my_record" href="~/Wechat/demand/add">发布需求</a>
+            </li>
+            <li class="border_m">
+                <a class="my_info" href="~/Wechat/demand/">需求信息</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m">
+                <a class="my_order" href="~/Wechat/resource/spacelist">活动场地</a>
+            </li>
+            <li class="border_m">
+                <a class="my_order" href="~/Wechat/resource/actorlist">演艺人员</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m">
+                <a class="my_order" href="~/Wechat/resource/equipmentlist">活动设备</a>
+            </li>
+            <li class="border_m">
+                <a class="my_order" href="~/Wechat/resource/otherlist">其他资源</a>
+            </li>
+        </ul>
+        <ul>
+            <li class="border_m border_r">
+                <a class="my_publish" href="~/Wechat/activity/ShareActivity">
+                    发布活动
+                </a>
+            </li>
+            <li class="border_m"><a class="my_back " href="~/Wechat/activity/">活动在线</a></li>
+        </ul>
+    </div>
+</div>
+<div class="tg-bg" id="tg-bg"></div>

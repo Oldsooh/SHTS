@@ -128,7 +128,7 @@ namespace Witbird.SHTS.DAL.Daos
             result.Paging = new Paging
             {
                 PageCount = result.TotalCount / pagesize + (result.TotalCount % pagesize == 0 ? 0 : 1),
-                PageStep = 10,
+                PageStep = 5,
                 PageIndex = pageindex + 1
             };
             switch (resourceType)

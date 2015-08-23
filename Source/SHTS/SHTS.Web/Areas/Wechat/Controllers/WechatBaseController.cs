@@ -94,7 +94,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         if (wechatUser.UserId.HasValue)
                         {
                             var user = userService.GetUserById(wechatUser.UserId.Value);
+
                             CurrentUser = user;
+                            wechatUser.IsUserLoggedIn = wechatUser.UserId.HasValue && IsUserLogin;
+                            wechatUser.IsUserIdentified = wechatUser.UserId.HasValue && IsIdentified;
+                            wechatUser.IsUserVip = wechatUser.UserId.HasValue && IsVip;
                         }
 
                         CurrentWeChatUser = wechatUser;

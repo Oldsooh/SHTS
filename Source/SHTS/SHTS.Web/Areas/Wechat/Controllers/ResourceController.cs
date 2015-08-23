@@ -90,7 +90,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             query.PageIndex = page < 0 ? 0 : page;
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
-            query.PageSize = 15;
+            query.PageSize = 10;
             query.State = 2;
             if (Session["CityId"] != null)
             {

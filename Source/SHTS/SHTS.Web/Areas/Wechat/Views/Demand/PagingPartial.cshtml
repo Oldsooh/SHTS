@@ -1,17 +1,6 @@
-﻿@model Witbird.SHTS.Model.Extensions.Paging
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
 @{
     RouteValueDictionary dictionary = new RouteValueDictionary();
-    if (Model.SelectedFilters != null && Model.SelectedFilters.Count > 0)
-    {
-        foreach (var filter in Model.SelectedFilters)
-        {
-            if (filter.Key == "page")
-            {
-                continue;
-            }
-            dictionary.Add(filter.Key, filter.Value);
-        }
-    }
 
     Dictionary<string, object> prv = new Dictionary<string, object>();
     prv.Add("class", "prv");
@@ -33,13 +22,13 @@
                 if (Model.PageIndex > 1)
                 {
                     dictionary.Add("page", (Model.PageIndex - 1).ToString());
-                    <span>@Html.ActionLink("上一页", Model.ActionName, dictionary, prv) </span>
+                    <span>@Html.ActionLink("上一页", "Index", dictionary, prv) </span>
                     dictionary.Remove("page");
                 }
                 //首页
                 if (Model.PageStep < Model.PageIndex)
                 {
-                    <span>@Html.ActionLink("首页", Model.ActionName)</span>
+                    <span>@Html.ActionLink("1", "Index")</span><span>...</span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -49,13 +38,13 @@
                         if (i == Model.PageIndex)
                         {
                             dictionary.Add("page", i.ToString());
-                            <span> @Html.ActionLink(i.ToString(), Model.ActionName, dictionary, no)</span>
+                            <span> @Html.ActionLink(i.ToString(), "Index", dictionary, no)</span>
                             dictionary.Remove("page");
                         }
                         else
                         {
                             dictionary.Add("page", i.ToString());
-                            <span> @Html.ActionLink(i.ToString(), Model.ActionName, dictionary)</span>
+                            <span> @Html.ActionLink(i.ToString(), "Index", dictionary)</span>
                             dictionary.Remove("page");
                         }
                     }
@@ -64,14 +53,14 @@
                 if (step + Model.PageStep <= Model.PageCount)
                 {
                     dictionary.Add("page", Model.PageCount.ToString());
-                    <span>@Html.ActionLink("末页", Model.ActionName, dictionary) </span>
+                    <span>@Html.ActionLink(Model.PageCount.ToString(), "Index", dictionary) </span><span>...</span>
                     dictionary.Remove("page");
                 }
                 //下一页
                 if (Model.PageIndex < Model.PageCount)
                 {
                     dictionary.Add("page", (Model.PageIndex + 1).ToString());
-                    <span> @Html.ActionLink("下一页", Model.ActionName, dictionary, next)</span>
+                    <span> @Html.ActionLink("下一页", "Index", dictionary, next)</span>
                     dictionary.Remove("page");
                 }
             }

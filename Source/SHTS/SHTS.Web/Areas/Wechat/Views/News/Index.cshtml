@@ -6,11 +6,7 @@
 @section head
 {
     <style type="text/css">
-        #news a
-        {
-            color: #ffffff;
-            background-color: #2577e3;
-        }
+        #news a { color: #ffffff; background-color: #2577e3; }
     </style>
 }
 
@@ -19,36 +15,36 @@
     {
         foreach (var item in Model.Newses)
         {
-        <ul class="commonlist">
-            <li class="atitle">
-                @if (item.Category == Witbird.SHTS.Model.EnumNews.Notice.ToString())
-                {
-                    <span class="yellow">[公告]</span>
-                }
-                else if (item.Category == Witbird.SHTS.Model.EnumNews.Company.ToString())
-                {
-                    <span class="yellow">[公司]</span>
-                }
-                else if (item.Category == Witbird.SHTS.Model.EnumNews.Industry.ToString())
-                {
-                    <span class="yellow">[行业]</span>
-                }
-                else if (item.Category == Witbird.SHTS.Model.EnumNews.Resource.ToString())
-                {
-                    <span class="yellow">[资源]</span>
-                }
-                else if (item.Category == Witbird.SHTS.Model.EnumNews.Supplydemand.ToString())
-                {
-                    <span class="yellow">[供求]</span>
-                }
-                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                {
-                    <span class="yellow" style="color:#ff0000;">[图]</span>
-                }
-                <a href="/Wechat/news/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
-                <span class="state blue">@item.InsertTime.Value.ToString("MM-dd")</span>
-            </li>
-        </ul>
+            <ul class="commonlist">
+                <li class="atitle">
+                    @if (item.Category == Witbird.SHTS.Model.EnumNews.Notice.ToString())
+                    {
+                        <span class="yellow">[公告]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Company.ToString())
+                    {
+                        <span class="yellow">[公司]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Industry.ToString())
+                    {
+                        <span class="yellow">[行业]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Resource.ToString())
+                    {
+                        <span class="yellow">[资源]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Supplydemand.ToString())
+                    {
+                        <span class="yellow">[供求]</span>
+                    }
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <span class="yellow" style="color:#ff0000;">[图]</span>
+                    }
+                    <a href="/Wechat/news/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                    <span class="state blue">@item.InsertTime.Value.ToString("MM-dd")</span>
+                </li>
+            </ul>
         }
     }
 </div>
@@ -63,7 +59,7 @@
                 //上一页
                 if (Model.PageIndex > 1)
                 {
-        <span><a href="/Wechat/news/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                    <span><a href="/Wechat/news/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -72,18 +68,18 @@
                     {
                         if (i == Model.PageIndex)
                         {
-        <span><a href="/Wechat/news/index/@i" class="no">@i</a></span>
+                            <span><a href="/Wechat/news/index/@i" class="no">@i</a></span>
                         }
                         else
                         {
-        <span><a href="/Wechat/news/index/@i">@i</a></span>
+                            <span><a href="/Wechat/news/index/@i">@i</a></span>
                         }
                     }
                 }
                 //下一页
                 if (Model.PageIndex < Model.PageCount)
                 {
-        <span><a href="/Wechat/news/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                    <span><a href="/Wechat/news/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
                 }
             }
         }
@@ -91,4 +87,3 @@
     }
 </div>
 <!--分页结束-->
-

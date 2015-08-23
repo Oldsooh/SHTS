@@ -8,7 +8,7 @@
     [Province] NVARCHAR(50) NULL, 
     [City] NVARCHAR(50) NULL, 
     [County] NVARCHAR(50) NULL, 
-    [Photo] NVARCHAR(50) NULL, 
+    [Photo] NVARCHAR(500) NULL, 
     [AccessToken] NVARCHAR(50) NULL, 
     [AccessTokenExpired] BIT NULL DEFAULT 0, 
     [AccessTokenExpireTime] DATETIME NULL, 

@@ -621,6 +621,9 @@
     <Content Include="Areas\WeChatAuth\Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Areas\WeChatAuth\Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Areas\WeChatAuth\Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Areas\Wechat\Content\images\arr-right.png" />
+    <Content Include="Areas\Wechat\Content\images\bg.png" />
+    <Content Include="Areas\Wechat\Content\images\projection.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\button_bg.gif" />
     <Content Include="Areas\Wechat\Content\images\shouwei\col_icon.gif" />
     <Content Include="Areas\Wechat\Content\images\shouwei\col_icon_gray.gif" />
@@ -667,6 +670,7 @@
     <Content Include="Areas\Wechat\Content\styles\shouwei\login.css" />
     <Content Include="Areas\Wechat\Content\styles\tovip.css" />
     <Content Include="Areas\Wechat\Content\styles\user.css" />
+    <Content Include="Areas\Wechat\Content\styles\user\style.css" />
     <Content Include="Config\PanGu.xml" />
     <Content Include="Config\SMS.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -912,7 +916,7 @@
     <Content Include="Areas\WeChatAuth\Views\Auth\CreateMenu.cshtml" />
     <Content Include="Areas\WeChatAuth\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\User\UserNavBar.cshtml" />
-    <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
+    <Content Include="Areas\Wechat\Views\User\Index-old.cshtml" />
     <Content Include="Areas\Wechat\Views\City\Index-old.cshtml" />
     <Content Include="Areas\Wechat\Views\City\Index.cshtml" />
     <Content Include="Areas\M\Views\City\Index.cshtml" />
@@ -921,6 +925,9 @@
     <Content Include="Areas\Wechat\Views\Resource\OtherInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\SpaceInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Demand\PagingPartial.cshtml" />
+    <Content Include="Areas\Wechat\Views\User\Index-new.cshtml" />
+    <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
+    <Content Include="Areas\Wechat\Content\styles\user\myfont.TTC" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

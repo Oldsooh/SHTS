@@ -1,73 +1,223 @@
-﻿@model Witbird.SHTS.Model.WeChatUser
-@{
-    ViewBag.Title = "会员中心";
-    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+﻿@{
+    Layout = null;
 }
-@section head
-{
-    <link href="~/Areas/Wechat/Content/styles/shouwei/active.css" rel="stylesheet" />
-    <link href="~/Areas/Wechat/Content/styles/58/all_v20150415181405.css" rel="stylesheet" />
-    <link href="~/Areas/Wechat/Content/styles/58/ucenter_v20150331202541.css" rel="stylesheet" />
-    <link href="~/Areas/Wechat/Content/styles/58/m-weidian_v0.css" rel="stylesheet" />
-}
-<div class="body_div" style="margin-top: 1px;margin-left: 4px;">
-    <!--登录后未绑定显示-->
-    <div class="c_center">
-        <ul>
-            @{
-                if (!Model.UserId.HasValue)
-                {
-                    <li class="border_m border_r">
-                        <a class="my_employ" href="~/Wechat/account/login">
-                            绑定账号
-                        </a>
-                    </li>
+
+@model Witbird.SHTS.Model.WeChatUser
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>会员中心</title>
+
+    <link href="~/Areas/Wechat/Content/styles/user/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="_centent">
+
+        <div class="head">
+            <div class="head-img">
+                <img src="@Model.Photo">
+            </div>
+            <div class="head-dsb">
+                <p class="dsb-name">欢迎您，@Model.NickName</p>
+                <p class="dsb-id">ID  @Model.Id.ToString()</p>
+            </div>
+        </div>
+
+        <section class="mt-1">
+            <div class="ps-lt">
+                @{
+                    if (!Model.IsUserLoggedIn)
+                    {
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/account/register">
+                                <p>会员注册</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        </div>
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/account/login">
+                                <p>绑定会员账号</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/user/ViewUser">
+                                <p>修改会员信息</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        </div>
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/user/Identify">
+                                <p>会员认证</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        </div>
+                        @*<p>修改个人资料</p>*@
+                    }
                 }
-                else
-                {
-                    <li class="border_m border_r">
-                        <a class="my_employ" href="~/Wechat/user/ViewUser">
-                            我的信息
-                        </a>
-                    </li>
-                }
-            }
-            <li class="border_m">
-                <a class="my_collect" href="~/Wechat/User/identify">会员认证</a>
-            </li>
-        </ul>
-        <ul>
-            <li class="border_m border_r">
-                <a class="my_record" href="~/Wechat/demand/add">发布需求</a>
-            </li>
-            <li class="border_m">
-                <a class="my_info" href="~/Wechat/demand/">需求信息</a>
-            </li>
-        </ul>
-        <ul>
-            <li class="border_m">
-                <a class="my_order" href="~/Wechat/resource/spacelist">活动场地</a>
-            </li>
-            <li class="border_m">
-                <a class="my_order" href="~/Wechat/resource/actorlist">演艺人员</a>
-            </li>
-        </ul>
-        <ul>
-            <li class="border_m">
-                <a class="my_order" href="~/Wechat/resource/equipmentlist">活动设备</a>
-            </li>
-            <li class="border_m">
-                <a class="my_order" href="~/Wechat/resource/otherlist">其他资源</a>
-            </li>
-        </ul>
-        <ul>
-            <li class="border_m border_r">
-                <a class="my_publish" href="~/Wechat/activity/ShareActivity">
-                    发布活动
-                </a>
-            </li>
-            <li class="border_m"><a class="my_back " href="~/Wechat/activity/">活动在线</a></li>
-        </ul>
+            </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/resource/spacelist">
+                        <p>查看活动场地资源</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/resource/actorlist">
+                        <p>查看演艺人员资源</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/resource/equipmentlist">
+                        <p>查看活动设备资源</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/resource/otherlist">
+                        <p>查看其它资源</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    @{
+                        if (!Model.IsUserIdentified)
+                        {
+                            <a href="javascript:showIdentifiyMessage();">
+                                <p>发布需求信息</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="~/Wechat/demand/add">
+                                <p>发布需求信息</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/demand/index">
+                        <p>查看需求信息</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="javascript:void(0);">
+                        <p>我的购买记录(developing...)</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    @{
+                        if (!Model.IsUserLoggedIn)
+                        {
+                            <a href="javascript:showLogInMessage();">
+                                <p>发布活动在线</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="~/Wechat/activity/ShareActivity">
+                                <p>发布活动在线</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/activity/index">
+                        <p>查看活动在线</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/news/index">
+                        <p>新闻公告</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615532&idx=1&sn=7188493d42c8633421c78667266e17f2#rd">
+                        <p>关于我们</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="jg"></div>
     </div>
-</div>
-<div class="tg-bg" id="tg-bg"></div>
+
+    <script>
+        function showLogInMessage() {
+            alert("您需要绑定会员账号后发布活动在线。可登录在PC端同步查看我的活动在线。");
+        }
+
+        function showIdentifiyMessage() {
+            alert("为确保需求信息的真实性和有效性，您需要会员认证通过后才可以发布需求信息。可登录在PC端同步查看我发布的需求信息。");
+        }
+
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+              resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+              recalc = function () {
+                  var clientWidth = docEl.clientWidth;
+                  if (!clientWidth) return;
+                  docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+              };
+
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+</body>
+</html>

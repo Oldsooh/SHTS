@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Models;
 
@@ -16,8 +17,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         DemandService demandService = new DemandService();
         CityService cityService = new CityService();
 
-        public ActionResult Index(string id)
+        public ActionResult Index(string page)
         {
+            LogService.LogWexin("DemandIndex", "Enter");
             DemandModel model = new DemandModel();
             model.DemandCategories = demandManager.GetDemandCategories();
 
@@ -26,28 +28,29 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 city = Session["CityId"].ToString();
             }
-
+            LogService.LogWexin("DemandIndex", "City = " + city);
             //页码，总数重置
-            int page = 1;
-            if (!string.IsNullOrEmpty(id))
+            int pageIndex = 1;
+            if (!string.IsNullOrEmpty(page))
             {
-                Int32.TryParse(id, out page);
+                Int32.TryParse(page, out pageIndex);
             }
             int allCount = 0;
             if (string.IsNullOrEmpty(city))
             {
-                model.Demands = demandService.GetDemands(10, page, out allCount);//每页显示10条
+                model.Demands = demandService.GetDemands(10, pageIndex, out allCount);//每页显示10条
             }
             else
             {
-                model.Demands = demandService.GetDemandsByCity(10, page, city, out allCount);//每页显示10条
+                model.Demands = demandService.GetDemandsByCity(10, pageIndex, city, out allCount);//每页显示10条
             }
+            LogService.LogWexin("DemandIndex", "Demands.Count = " + model.Demands.Count);
             //分页
             if (model.Demands != null && model.Demands.Count > 0)
             {
-                model.PageIndex = page;//当前页数
+                model.PageIndex = pageIndex;//当前页数
                 model.PageSize = 10;//每页显示多少条
-                model.PageStep = 10;//每页显示多少页码
+                model.PageStep = 5;//每页显示多少页码
                 model.AllCount = allCount;//总条数
                 if (model.AllCount % model.PageSize == 0)
                 {
@@ -58,7 +61,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     model.PageCount = model.AllCount / model.PageSize + 1;
                 }
             }
-
+            LogService.LogWexin("DemandIndex", "End");
             return View(model);
         }
 

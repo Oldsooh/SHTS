@@ -7,7 +7,7 @@
     @Province NVARCHAR(50), 
     @City NVARCHAR(50), 
     @County NVARCHAR(50), 
-    @Photo NVARCHAR(50), 
+    @Photo NVARCHAR(500), 
     @AccessToken NVARCHAR(50), 
     @AccessTokenExpired BIT, 
     @AccessTokenExpireTime DATETIME, 
