@@ -916,8 +916,6 @@
     <Content Include="Areas\WeChatAuth\Views\Auth\CreateMenu.cshtml" />
     <Content Include="Areas\WeChatAuth\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\User\UserNavBar.cshtml" />
-    <Content Include="Areas\Wechat\Views\User\Index-old.cshtml" />
-    <Content Include="Areas\Wechat\Views\City\Index-old.cshtml" />
     <Content Include="Areas\Wechat\Views\City\Index.cshtml" />
     <Content Include="Areas\M\Views\City\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\ActorInfoPartial.cshtml" />
@@ -925,7 +923,6 @@
     <Content Include="Areas\Wechat\Views\Resource\OtherInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\SpaceInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Demand\PagingPartial.cshtml" />
-    <Content Include="Areas\Wechat\Views\User\Index-new.cshtml" />
     <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
     <Content Include="Areas\Wechat\Content\styles\user\myfont.TTC" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
