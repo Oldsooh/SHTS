@@ -180,7 +180,6 @@
     <Compile Include="Areas\M\Common\MobileHttpContext.cs" />
     <Compile Include="Areas\M\Controllers\AccountController.cs" />
     <Compile Include="Areas\M\Controllers\ActivityController.cs" />
-    <Compile Include="Areas\M\Controllers\CityController.cs" />
     <Compile Include="Areas\M\Controllers\DemandController.cs" />
     <Compile Include="Areas\M\Controllers\IndexController.cs" />
     <Compile Include="Areas\M\Controllers\MobileBaseController.cs" />
@@ -917,7 +916,6 @@
     <Content Include="Areas\WeChatAuth\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\User\UserNavBar.cshtml" />
     <Content Include="Areas\Wechat\Views\City\Index.cshtml" />
-    <Content Include="Areas\M\Views\City\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\ActorInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\EquipInfoPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\OtherInfoPartial.cshtml" />
