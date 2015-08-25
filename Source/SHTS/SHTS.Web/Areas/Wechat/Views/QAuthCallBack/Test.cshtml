@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>发布需求</title>
+
+
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="~/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label { position: absolute; font-size: 10px; color: red !important; top: 30px; padding-left: 12px; }
+        #uploader-demo label { position: inherit; font-size: 10px; color: transparent; top: 0px; padding-left: 0px; width: 80% !important; }
+        .wrap { height: auto; }
+        .register-box { position: initial; margin-bottom: 20px; }
+        .reg-form { height: auto; padding-left: 5px; padding-right: 5px; }
+            .reg-form .cell select { height: 100%; width: 32%; }
+            .reg-form .cell textarea { height: 100%; width: 96%; }
+    </style>
+    <link href="~/Content/webuploader/demo.css" rel="stylesheet" />
+    <style>
+        .upbtn { position: absolute; top: 0px; left: 0px; width: 77px; height: 37px; overflow: hidden; bottom: auto; right: auto; }
+        #fileform { width: 100%; height: 100%; cursor: pointer; }
+        #fileheer { opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .webuploader-element-invisible { position: inherit !important; }
+    </style>
+
+    <script src="/Content/js/city.js"></script>
+    <script src="/Content/dialog/js/dsdialog.js"></script>
+    <script src="~/Content/js/jquery-1.4.4.min.js"></script>
+    <script src="~/Content/js/jquery.form.js"></script>
+    <script src="~/Content/js/template.js"></script>
+    <script>
+        $(function () {
+            if ($("#resultcode").val() != "") {
+                if ($("#resultcode").val() == "200") {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: $("#errormsg").val(),
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                    window.location.href = '/Wechat/activity/';
+                } else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: $("#errormsg").val(),
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        });
+
+        function addact() {
+            if ($("#title").val() == "") {
+                ds.dialog({
+                    title: '消息提示',
+                    content: "标题不能为空",
+                    icon: "/Content/dialog/images/info.png"
+                });
+                return false;
+            }
+            if ($("#Adress").val() == "" || $("#ddlArea").val() == "") {
+                ds.dialog({
+                    title: '消息提示',
+                    content: "地址不能为空",
+                    icon: "/Content/dialog/images/info.png"
+                });
+                return false;
+            }
+            $("#js-form-mobile").submit();
+        }
+        //上传图片预览
+    </script>
+    <script type="text/javascript">
+        var imgcount = 0;
+        $(function () {
+            $("#upbtn").click(function () {
+                if (imgcount > 12) {
+                    alert("最多上传12张照片！");
+                } else {
+                    //$("#fileheer").click();
+                    document.getElementById("fileheer").click();
+                }
+            });
+        });
+
+        function btnUpload() {
+            $('#fileform').ajaxSubmit({
+                dataType: 'json',
+                success: function (msg) {
+                    var postfile = msg;
+                    if (postfile.Action) {
+                        var urls = $('#ImageUrls').val();
+                        if (urls == "") {
+                            urls = postfile.OriginalImage;
+                        } else {
+                            urls = urls + "|" + postfile.OriginalImage;
+                        }
+                        $('#ImageUrls').val(urls);
+                        imgcount++;
+                        var item = template('file', postfile);
+                        $("#fileList").append(item);
+                    } else {
+                        alert(postfile.Message);
+                    }
+                }
+            });
+        }
+    </script>
+    <script id="file" type="text/html">
+        <div class="file-item thumbnail upload-state-done">
+            <img src="{{Small}}" width="110px" height="110px">
+        </div>
+    </script>
+</head>
+<body>
+
+    <div class="wrap" style="width: 100%">
+        <div class="register-box" style="width: 100%;">
+            <form class="reg-form" id="js-form-mobile" enctype="multipart/form-data" method="post" action="#">
+                <div class="cell">
+                    <select name="ActivityType" class="text">
+                        
+                            <option value="-1">暂无类别</option>
+                    </select>
+                </div>
+                <div class="cell">
+                    <input type="text" name="Title" id="js-mobile_ipt" value="" placeholder="活动标题" class="text" />
+                </div>
+                <div class="cell">
+                    <input type="text" name="Keywords" value=""
+                           placeholder="标签"
+                           class="text" />
+                </div>
+                <div class="cell">
+                    <select id="ddlProvince" class="text" name="LocationId[]" onchange=" loadCities() ">
+                        <option value="">省份</option>
+                        
+                                <option value="">----</option>
+                            
+                    </select>
+                    <select id="ddlCity" class="text" name="LocationId[]" onchange=" loadAreas() ">
+                        <option value="">城市</option>
+                    </select>
+                    <select id="ddlArea" class="text" name="LocationId[]" style="float: right;" value="">
+                        <option value="">县、区、商圈</option>
+                    </select>
+                </div>
+                <div class="cell">
+                    <input type="text" name="Adress" value=""
+                           placeholder="详细地址"
+                           class="text" maxlength="11" />
+                </div>
+                <div class="cell" style="height: 80px;">
+                    <textarea name="Description" id="js-mobile_pwd_ipt" placeholder="活动描述" class="text"></textarea>
+                </div>
+                <div class="cell" style="height: auto;">
+                    <div id="uploader-demo">
+                        <input type="hidden" id="ImageUrls" name="ImageUrl" />
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list">
+
+                        </div>
+                        <div id="filePicker" class="webuploader-container">
+                            <div class="webuploader-pick">选择图片</div>
+                            <div class="upbtn" id="upbtn" style="cursor: pointer;">
+                            </div>
+                        </div>
+                    </div>
+                    <span style="color: #4193ff; display: block; line-height: 10px; margin-top: 10px;">添加照片,让信息更受欢迎（最多上传12张,每张最大10M）.</span>
+                </div>
+                <span class="ur_box_radio" style="margin-left: 10px;">
+                    <input name="agreerule" type="checkbox" value="in" checked="checked">
+                    我同意<a href="/about/3.html" class="blue" target="_blank" title="活动在线网站规则">活动在线网站规则</a>
+                </span>
+                <div class="bottom">
+                    <button type="button" onclick=" addact(); " id="js-mobile_btn" class="button btn-green">发布活动</button>
+                </div>
+            </form>
+            <div style="opacity:0;">
+                <form id="fileform" method="post" action="/Content/upload/uploadimageformobile.ashx" enctype="multipart/form-data">
+                    <input type="file" id="fileheer" name="file" onchange="btnUpload();" class="webuploader-element-invisible" multiple="multiple" accept="image/*">
+                </form>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

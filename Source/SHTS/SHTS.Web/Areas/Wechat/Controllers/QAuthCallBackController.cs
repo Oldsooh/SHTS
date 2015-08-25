@@ -123,5 +123,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return result;
         }
 
+
+        public ActionResult Test()
+        {
+            return View();
+        }
     }
 }
