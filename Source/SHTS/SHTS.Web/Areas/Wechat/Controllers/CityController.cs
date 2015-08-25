@@ -11,14 +11,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
     {
         CityService cityService = new CityService();
 
+        const string RedirectUrl = "/wechat/user/index";
+
         public ActionResult Index()
         {
             CityModel model = new CityModel();
             model.Provinces = cityService.GetProvinces(true);
+            model.ReturnUrl = Request.UrlReferrer.AbsoluteUri;
             return View(model);
         }
 
-        public ActionResult Current(string id)
+        public ActionResult Current(string id, string returnUrl)
         {
             if (!string.IsNullOrEmpty(id) && id.Equals("china"))
             {
@@ -36,14 +39,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     }
                 }
             }
-            if (Request.UrlReferrer.AbsolutePath == "/city/")
+
+            if (string.IsNullOrEmpty(returnUrl))
             {
-                return Redirect("/wechat/user/index");
+                returnUrl = RedirectUrl;
             }
-            else
-            {
-                return Redirect(Request.UrlReferrer.AbsolutePath);
-            }
+
+            return Redirect(returnUrl);
         }
 
         [HttpPost]

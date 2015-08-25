@@ -38,7 +38,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                         queryActivityCriteria.ResultTotalCount;
                 }
                 model.PageSize = queryActivityCriteria.PageSize;
-                model.CurrentPage = queryActivityCriteria.StartRowIndex;
+                model.PageIndex = queryActivityCriteria.StartRowIndex;
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 model.StartTime = queryActivityCriteria.StartTime.Value;
                 model.EndTime = queryActivityCriteria.EndTime.Value;
                 model.PageSize = queryActivityCriteria.PageSize;
-                model.CurrentPage = queryActivityCriteria.StartRowIndex;
+                model.PageIndex = queryActivityCriteria.StartRowIndex;
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
             }
             catch (Exception e)

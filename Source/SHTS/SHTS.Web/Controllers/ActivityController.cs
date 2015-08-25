@@ -41,7 +41,7 @@ namespace Witbird.SHTS.Web.Controllers
                         queryActivityCriteria.ResultTotalCount;
                 }
                 model.PageSize = 35;
-                model.CurrentPage = page;
+                model.PageIndex = page;
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
             }
             catch (Exception e)

@@ -9,9 +9,9 @@
     <meta name="description" content="@ViewBag.Description" />
     <link href="/content/Wechat/css/common.css" rel="stylesheet" />
     <style>
-        .location { margin-top:15px; margin-bottom:15px; padding-left: 10px; font-size: 14px; }
-        #nav{ margin-top:10px; height: auto;}
-        .navli { width:20%;}
+        .location { margin-top: 15px; margin-bottom: 15px; padding-left: 10px; font-size: 14px; }
+        #nav { margin-top: 10px; height: auto; }
+        .navli { width: 20%; }
     </style>
     @RenderSection("head", false)
 </head>
@@ -29,14 +29,14 @@
                     if (Session["CityName"] != null)
                     {
 
-                <span id="currentCityName">@Session["CityName"].ToString()</span>
+                        <span id="currentCityName">@Session["CityName"].ToString()</span>
                     }
                     else
                     {
-                <span id="currentCityName">全国</span>
+                        <span id="currentCityName">正在定位</span>
                     }
 
-                <a href="/wechat/city/index">切换</a>
+                    <a href="/wechat/city/index">切换</a>
                 }
             </div>
             <div id="usercenter">
@@ -45,35 +45,46 @@
         </div>
 
         @*<div class="location">
-            当前位置：<a href="/wechat/user/index">会员中心</a><span class="ch">&nbsp;&gt;&nbsp;@ViewBag.Title</span>
-        </div>*@
+                当前位置：<a href="/wechat/user/index">会员中心</a><span class="ch">&nbsp;&gt;&nbsp;@ViewBag.Title</span>
+            </div>*@
 
         @RenderBody()
 
     </div>
-    <script src="/Content/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
-    <script>
-        function setLocalCity() {
-            // 新浪根据ip获取地址
-            var localprovince = '';
-            var localcity = '';
-            localprovince = remote_ip_info["province"];
-            localcity = remote_ip_info["city"];
-            var nowTime = new Date().getTime();
-            var url = encodeURI("/wechat/city/setlocalcity?cityName=" + localcity + "&time" + nowTime);
-            $.get(url, function (data, status) {
-                if (status == "success") {
-                    if (data != "" && data != "no") {
-                        document.getElementById("currentCityName").innerHTML = data;
-                    }
-                }
-            });
-        }
+    @{
+        if (Session["CityId"] == null)
+        {
 
-        setLocalCity();
-    </script>
+            <script src="/Content/js/jquery-1.11.1.min.js"></script>
+            <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+            <script>
+                function setLocalCity() {
+                    // 新浪根据ip获取地址
+                    var localprovince = '';
+                    var localcity = '';
+                    localprovince = remote_ip_info["province"];
+                    localcity = remote_ip_info["city"];
+                    var nowTime = new Date().getTime();
+                    var url = encodeURI("/wechat/city/setlocalcity?cityName=" + localcity + "&time=" + nowTime);
+                    $.get(url, function (data, status) {
+                        if (status == "success") {
+                            if (data != "" && data != "no") {
+                                document.getElementById("currentCityName").innerHTML = data;
+                                //自动定位到城市后刷新获取相应数据
+                                window.location = window.location;
+                            }
+                            else
+                            {
+                                document.getElementById("currentCityName").innerHTML = "全国";
+                            }
+                        }
+                    });
+                }
+
+                setLocalCity();
+            </script>
+        }
+    }
     @RenderSection("FooterJS", false)
 </body>
 </html>
-

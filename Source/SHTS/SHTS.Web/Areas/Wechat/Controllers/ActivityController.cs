@@ -27,7 +27,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 ActivityService service = new ActivityService();
                 QueryActivityCriteria queryActivityCriteria = new QueryActivityCriteria
                 {
-                    PageSize = 20,
+                    PageSize = 10,
                     StartRowIndex = page,
                     QueryType = -1
                 };
@@ -38,8 +38,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     model.TotalCount =
                         queryActivityCriteria.ResultTotalCount;
                 }
-                model.PageSize = 20;
-                model.CurrentPage = page;
+                model.PageSize = 10;
+                model.PageStep = 5;
+                model.PageIndex = page;
+
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
             }
             catch (Exception e)

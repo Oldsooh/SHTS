@@ -19,7 +19,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult Index(string page)
         {
-            LogService.LogWexin("DemandIndex", "Enter");
+            //LogService.LogWexin("DemandIndex", "Enter");
             DemandModel model = new DemandModel();
             model.DemandCategories = demandManager.GetDemandCategories();
 
@@ -28,7 +28,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 city = Session["CityId"].ToString();
             }
-            LogService.LogWexin("DemandIndex", "City = " + city);
+            //LogService.LogWexin("DemandIndex", "City = " + city);
             //页码，总数重置
             int pageIndex = 1;
             if (!string.IsNullOrEmpty(page))
@@ -44,7 +44,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 model.Demands = demandService.GetDemandsByCity(10, pageIndex, city, out allCount);//每页显示10条
             }
-            LogService.LogWexin("DemandIndex", "Demands.Count = " + model.Demands.Count);
+            //LogService.LogWexin("DemandIndex", "Demands.Count = " + model.Demands.Count);
             //分页
             if (model.Demands != null && model.Demands.Count > 0)
             {
@@ -61,7 +61,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     model.PageCount = model.AllCount / model.PageSize + 1;
                 }
             }
-            LogService.LogWexin("DemandIndex", "End");
+            //LogService.LogWexin("DemandIndex", "End");
             return View(model);
         }
 

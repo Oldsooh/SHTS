@@ -51,25 +51,27 @@ namespace Witbird.SHTS.Web.Models.ActivityModel
 
         #region 参数
 
-        public int CurrentPage { set; get; }
+        public int PageIndex { set; get; }
 
         public int PrePageIndex
         {
-            get { return CurrentPage == 1 ? 1 : CurrentPage - 1; }
+            get { return PageIndex == 1 ? 1 : PageIndex - 1; }
         }
 
         public int NextPageIndex
         {
-            get { return CurrentPage == TotalPage ? CurrentPage : CurrentPage + 1; }
+            get { return PageIndex == PageCount ? PageIndex : PageIndex + 1; }
         }
 
         public int TotalCount { set; get; }
 
         public int PageSize { set; get; }
 
+        public int PageStep { get; set; }
+
         public int QueryType { set; get; }
 
-        public int TotalPage
+        public int PageCount
         {
             get
             {

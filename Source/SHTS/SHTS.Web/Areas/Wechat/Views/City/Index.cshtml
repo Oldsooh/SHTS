@@ -31,11 +31,11 @@
                                 {
                                     if (city.Sort < 100)
                                     {
-                                        <li class="cityLi"><a class="mainCity" href="/wechat/city/current/@city.Id">@city.Name</a></li>
+                                        <li class="cityLi"><a class="mainCity" href="/wechat/city/current/?id=@(city.Id)&returnUrl=@(Model.ReturnUrl)">@city.Name</a></li>
                                     }
                                     else
                                     {
-                                        <li class="cityLi"><a href="/wechat/city/current/@city.Id">@city.Name</a></li>
+                                        <li class="cityLi"><a href="/wechat/city/current/?id=@(city.Id)&returnUrl=@(Model.ReturnUrl)">@city.Name</a></li>
                                     }
                                 }
                             }

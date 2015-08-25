@@ -923,6 +923,7 @@
     <Content Include="Areas\Wechat\Views\Demand\PagingPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\User\Index.cshtml" />
     <Content Include="Areas\Wechat\Content\styles\user\myfont.TTC" />
+    <Content Include="Areas\Wechat\Views\Activity\PagingPartial.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

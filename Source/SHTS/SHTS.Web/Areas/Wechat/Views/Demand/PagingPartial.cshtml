@@ -28,7 +28,7 @@
                 //首页
                 if (Model.PageStep < Model.PageIndex)
                 {
-                    <span>@Html.ActionLink("1", "Index")</span><span>...</span>
+                    <span>@Html.ActionLink("1", "Index")</span><span>.</span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -53,7 +53,7 @@
                 if (step + Model.PageStep <= Model.PageCount)
                 {
                     dictionary.Add("page", Model.PageCount.ToString());
-                    <span>@Html.ActionLink(Model.PageCount.ToString(), "Index", dictionary) </span><span>...</span>
+                    <span>.</span><span>@Html.ActionLink(Model.PageCount.ToString(), "Index", dictionary) </span>
                     dictionary.Remove("page");
                 }
                 //下一页
