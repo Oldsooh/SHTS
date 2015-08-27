@@ -208,9 +208,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             content = "连接获取失败，请重新尝试。";
                         }
 
-                        LogService.LogWexin("会员认证", "hasUserIdentified = " + hasUserIdentified.ToString());
-                        LogService.LogWexin("会员认证", "Content = " + content);
-                        
                         if (hasUserIdentified)
                         {
                             var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
