@@ -106,9 +106,9 @@
             <div class="ps-lt">
                 <div class="lt-dsb">
                     @{
-                        if (!Model.IsUserIdentified)
+                        if (!Model.IsUserLoggedIn)
                         {
-                            <a href="javascript:showIdentifiyMessage();">
+                            <a href="javascript:showLogInMessage();">
                                 <p>发布需求信息</p>
                                 <i class="arr-right"></i>
                             </a>
@@ -198,7 +198,7 @@
 
     <script>
         function showLogInMessage() {
-            alert("您需要绑定会员账号后发布活动在线。可登录在PC端同步查看我的活动在线。");
+            alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
         }
 
         function showIdentifiyMessage() {

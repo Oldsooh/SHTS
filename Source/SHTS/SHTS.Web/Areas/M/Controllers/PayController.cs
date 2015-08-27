@@ -11,6 +11,7 @@ using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
+using Witbird.SHTS.Web.Public;
 using WitBird.Com.Pay;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
@@ -273,8 +274,8 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                 "2088711708147372", 
                 "2i1dmrmyty1nnebyfmu8mmy41awfezmn", 
                 "utf-8", 
-                "http://test.xgdg.cn/m/pay/alipayresult",
-                "http://test.xgdg.cn/m/pay/alipaynotify");
+                "http://" + StaticUtility.Config.Domain + "/m/pay/alipayresult",
+                "http://" + StaticUtility.Config.Domain + "/m/pay/alipaynotify");
 
             return service;
         }

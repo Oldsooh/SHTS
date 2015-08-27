@@ -53,6 +53,39 @@ namespace Witbird.SHTS.DAL.Daos
             return order;
         }
 
+        public TradeOrder GetOrderByOpenIdAndDemandIdForWeChatClient(SqlConnection conn, string openId, int demandId)
+        {
+            TradeOrder order = null;
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@UserName", openId),
+                new SqlParameter("@ResourceId", demandId)
+            };
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, "sp_SelectOrderByOpenIdAndDemandIdForWeChatClient", sqlParameters))
+            {
+                while (reader.Read())
+                {
+                    order = new TradeOrder()
+                    {
+                        OrderId = reader["OrderId"].DBToString(),
+                        Amount = reader["Amount"].DBToDecimal(),
+                        Body = reader["Body"].DBToString(),
+                        CreatedTime = reader["CreatedTime"].DBToDateTime().Value,
+                        LastUpdatedTime = reader["LastUpdatedTime"].DBToDateTime().Value,
+                        State = reader["State"].DBToInt32(),
+                        Subject = reader["Subject"].DBToString(),
+                        UserName = reader["UserName"].DBToString(),
+                        ResourceUrl = reader["ResourceUrl"].DBToString(),
+                        OrderType = reader["OrderType"].DBToInt32(),
+                        ResourceId = reader["ResourceId"].DBToInt32()
+                    };
+                }
+            }
+
+            return order;
+        }
+
         /// <summary>
         /// Adds new order to database.
         /// </summary>

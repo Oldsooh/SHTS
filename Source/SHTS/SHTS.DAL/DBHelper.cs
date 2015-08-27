@@ -220,8 +220,8 @@ namespace Witbird.SHTS.DAL
                 SqlCommand cmd = new SqlCommand(spName, conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddRange(sqlParams);
-                cmd.ExecuteNonQuery();
-                return true;
+                
+                return cmd.ExecuteNonQuery() > 0;
             }
             catch (Exception ex)
             {

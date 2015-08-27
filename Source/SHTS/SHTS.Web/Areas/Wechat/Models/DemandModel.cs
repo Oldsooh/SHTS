@@ -21,11 +21,16 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
         /// <summary>
         /// 是否为会员, 会员可能查询详情
         /// </summary>
-        public bool IsMember { get; set; }
+        //public bool IsMember { get; set; }
 
         /// <summary>
         /// 是否为VIP，VIP可以查询联系方式
         /// </summary>
-        public bool IsVIP { get; set; }
+        //public bool IsVIP { get; set; }
+
+        /// <summary>
+        /// 当前访问的微信用户是否购买了此需求的联系方式
+        /// </summary>
+        public bool HasCurrentWeChatUserBought { get; set; }
     }
 }

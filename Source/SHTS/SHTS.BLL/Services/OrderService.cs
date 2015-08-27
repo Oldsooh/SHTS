@@ -53,11 +53,33 @@ namespace Witbird.SHTS.BLL.Services
             return order;
         }
 
+        public TradeOrder GetOrderByOpenIdAndDemandIdForWeChatClient(string openId, int demandId)
+        {
+            TradeOrder order = null;
+
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                order = orderDao.GetOrderByOpenIdAndDemandIdForWeChatClient(conn, openId, demandId);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("获取微信订单信息失败--" + e.Message, e.ToString().ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return order;
+
+        }
+
         /// <summary>
         /// Adds new order to database.
         /// </summary>
         /// <returns></returns>
-        public bool AddNewOrder(string orderId, string subject, string body, int userId, decimal amount,
+        public bool AddNewOrder(string orderId, string subject, string body, decimal amount,
             int state, string username, string resourceUrl, int orderType, int resourceId)
         {
             bool result = false;
@@ -70,7 +92,7 @@ namespace Witbird.SHTS.BLL.Services
                 subject.CheckEmptyString("Order Subject");
                 body.CheckEmptyString("Order Body");
 
-                if (userId == -1 || state != (int)OrderState.New)
+                if (state != (int)OrderState.New)
                 {
                     throw new ArgumentException("Parameter Error");
                 }

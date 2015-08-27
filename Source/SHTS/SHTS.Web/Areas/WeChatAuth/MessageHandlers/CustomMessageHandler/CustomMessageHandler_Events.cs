@@ -64,6 +64,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 会员注册
                 case "UserRegister":
                     {
+                        content = string.Empty;
+
                         WeChatUser wechatUser = null;
                         User user = null;
 
@@ -108,11 +110,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         responseMessage = textResponseMessage;
                     }
                     break;
-                #endregion 
+                #endregion
 
                 #region 账号绑定
                 case "UserLogin":
                     {
+                        content = string.Empty;
+
                         var hasUserLoggedIn = false;
                         WeChatUser wechatUser = null;
                         User user = null;
@@ -138,7 +142,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                                 content = "连接获取失败，请重新尝试。";
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             LogService.LogWexin("微信用户绑定发生错误", ex.ToString());
                             content = "连接获取失败，请重新尝试。";
@@ -164,11 +168,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                     }
 
                     break;
-                #endregion 
+                #endregion
 
                 #region 会员认证
                 case "UserIdentity":
                     {
+                        content = string.Empty;
+
                         var hasUserIdentified = false;
                         WeChatUser wechatUser = null;
                         User user = null;
@@ -182,8 +188,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                                 if (wechatUser.UserId.HasValue)
                                 {
                                     user = userService.GetUserById(wechatUser.UserId.Value);
-                                    
-                                    if(user != null 
+
+                                    if (user != null
                                         && user.Vip.HasValue
                                         && (user.Vip.Value == (int)VipState.Identified || user.Vip.Value == (int)VipState.VIP))
                                     {
@@ -202,24 +208,26 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             content = "连接获取失败，请重新尝试。";
                         }
 
-                        if (string.IsNullOrEmpty(content))
+                        LogService.LogWexin("会员认证", "hasUserIdentified = " + hasUserIdentified.ToString());
+                        LogService.LogWexin("会员认证", "Content = " + content);
+                        
+                        if (hasUserIdentified)
                         {
-                            if (hasUserIdentified)
+                            var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+
+                            newsResponseMessage.Articles.Add(new Article
                             {
-                                var newsMessage = CreateResponseMessage<ResponseMessageNews>();
-                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
+                                Description = "点击消息查看认证详情。",
+                                PicUrl = user.IdentiyImg,
+                                Title = "您的账号：" + userName + "已认证。",
+                                Url = UserIdentifyUrl
+                            });
 
-                                newsMessage.Articles.Add(new Article
-                                {
-                                    Description = "点击消息查看认证详情。",
-                                    PicUrl = user.IdentiyImg,
-                                    Title = "您的账号：" + userName + "已认证。",
-                                    Url = UserIdentifyUrl
-                                });
-
-                                responseMessage = newsMessage;
-                            }
-                            else if (user != null)
+                            responseMessage = newsResponseMessage;
+                        }
+                        else if (string.IsNullOrEmpty(content))
+                        {
+                            if (user != null)
                             {
                                 var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
                                 content = "活动在线认证会员可以发布资源信息、需求信息及活动在线，并且能够查看所有资源信息的联系方式。您当前认证的账号为：" + userName + "。\r\n\r\n" + UserIdentifyUrl;
@@ -229,8 +237,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             }
                             else
                             {
-                                var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                                content = "您当前还未绑定账号。" + userName + "。请先绑定活动在线会员账号，如还未注册，请点击会员注册。\r\n\r\n" + UserLoginUrl;
+                                content = "您当前还未绑定活动在线账号, 无法完成会员认证。请先绑定活动在线会员账号。\r\n\r\n" + UserLoginUrl
+                                    + "\r\n\r\n如还未注册，请点击如下链接注册成为活动在线会员。\r\n\r\n" + UserRegisterUrl;
 
                                 textResponseMessage.Content = content;
                                 responseMessage = textResponseMessage;
@@ -249,6 +257,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 活动场地
                 case "SpaceList":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击查看详情。",
@@ -265,6 +275,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 演艺人员
                 case "ActorList":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击查看详情。",
@@ -276,11 +288,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         responseMessage = newsResponseMessage;
                     }
                     break;
-                #endregion 
+                #endregion
 
                 #region 活动设备
                 case "EquipmentList":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击查看详情。",
@@ -297,6 +311,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 其他资源
                 case "OtherResourceList":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击查看详情。",
@@ -308,11 +324,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         responseMessage = newsResponseMessage;
                     }
                     break;
-                #endregion 
-                
+                #endregion
+
                 #region 需求信息
                 case "DemandList":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击查看详情。",
@@ -324,11 +342,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         responseMessage = newsResponseMessage;
                     }
                     break;
-                #endregion 
+                #endregion
 
                 #region 发布需求
                 case "NewDemand":
                     {
+                        content = string.Empty;
+
                         newsResponseMessage.Articles.Add(new Article
                         {
                             Description = "点击进入发布需求页面。",
@@ -345,12 +365,14 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 交易中介
                 case "TradeList":
                     {
+                        content = string.Empty;
+
                         textResponseMessage.Content = "欲查看交易中介信息，请用电脑访问" + TradeListUrl;
 
                         responseMessage = textResponseMessage;
                     }
                     break;
-                #endregion 
+                #endregion
 
                 #region 默认返回
                 default:

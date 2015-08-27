@@ -421,13 +421,13 @@ namespace Witbird.SHTS.Web.Controllers
                                     string orderId = orderService.GenerateNewOrderNumber();
                                     string subject = "活动在线网 | 支付中介交易款项";
                                     string body = "买家" + UserInfo.UserName + "支付中介交易款项, 中介交易摘要：" + trade.TradeSubject;
-                                    int userId = UserInfo.UserId;
+                                    //int userId = UserInfo.UserId;
                                     string username = UserInfo.UserName;
                                     decimal amount = trade.BuyerPay;
                                     int state = (int)OrderState.New;
                                     string resourceUrl = url;
 
-                                    bool success = orderService.AddNewOrder(orderId, subject, body, userId, amount, state, username, resourceUrl, (int)OrderType.Trade, trade.TradeId) &&
+                                    bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.Trade, trade.TradeId) &&
                                         tradeService.UpdateTradeOrderId(trade.TradeId, orderId, trade.IsBuyerPaid); ;
 
                                     if (success)

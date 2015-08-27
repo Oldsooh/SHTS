@@ -295,5 +295,28 @@ namespace Witbird.SHTS.BLL.Services
             }
             return result;
         }
+
+        public bool HasWeChatUserBoughtForDemand(string openId, int demandId)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                if (!string.IsNullOrEmpty(openId))
+                {
+                    result = DemandDao.SelectTradeOrderByOpenIdAndDemandId(conn, openId, demandId) > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.Log("更新需求失败", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
     }
 }

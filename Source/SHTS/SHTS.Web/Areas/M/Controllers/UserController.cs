@@ -333,7 +333,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                                 int state = (int)OrderState.New;
                                 string resourceUrl = url;
 
-                                bool success = orderService.AddNewOrder(orderId, subject, body, userId, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId) &&
+                                bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId) &&
                                     userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
 
                                 if (success)

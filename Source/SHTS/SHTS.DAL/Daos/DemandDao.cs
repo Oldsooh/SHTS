@@ -280,5 +280,18 @@ namespace Witbird.SHTS.DAL.Daos
             return DBHelper.SetDataToDB(conn, sp_DemandUpdate, sqlParameters);
         }
 
+        public static int SelectTradeOrderByOpenIdAndDemandId(SqlConnection conn, string wechatUserOpenId, int demandId)
+        {
+            const string SP_SelectTradeOrderByOpenIdAndDemandId = "sp_SelectTradeOrderByOpenIdAndDemandId";
+
+            SqlParameter[] parameters = new SqlParameter[] 
+            {
+                new SqlParameter("@UserName", wechatUserOpenId),
+                new SqlParameter("@ResourceId", demandId)
+            };
+
+            return DBHelper.GetSingleDataFromDB(conn, SP_SelectTradeOrderByOpenIdAndDemandId, parameters).Rows.Count;
+        }
+
     }
 }

@@ -18,7 +18,8 @@
         @if (Model != null && Model.Order != null && !string.IsNullOrEmpty(Model.Order.OrderId))
         {
             <input id="isPaySucceed" type="hidden" value="@Model.Order.State" />
-    <input id="returnUrl" type="hidden" value="/Wechat/user/tovip" />
+            <input id="returnUrl" type="hidden" value="@Model.ReturnUrl" />
+
             <div class="listdivitem">
                 <div class="listdivitemsummary">
                     <div class="listdivitemtitle">
@@ -31,7 +32,8 @@
                                     <td>订单编号：<span>@Model.Order.OrderId</span></td>
                                 </tr>
                                 <tr>
-                                    <td>订单摘要：<span>@Model.Order.Subject</span>
+                                    <td>
+                                        订单摘要：<span>@Model.Order.Subject</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -41,12 +43,15 @@
                                     <td>订单金额：<span>￥ @Model.Order.Amount 元</span></td>
                                 </tr>
                                 <tr>
-                                    <td>支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDiplayValue(Model.Order.State)</span>
+                                    <td>
+                                        支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDiplayValue(Model.Order.State)</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>订单备注：
-                            <span>@Model.Order.Body</span></td>
+                                    <td>
+                                        订单备注：
+                                        <span>@Model.Order.Body</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -59,46 +64,29 @@
             if (Model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
                 Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
             {
-            <div class="listdivitem">
-                <div class="listdivitemtitle">
-                    请用支付宝支付该订单
-                </div>
-                <form id="payform" action="/Wechat/pay/payonline" method="post">
-                    <input type="hidden" name="orderId" value="@Model.Order.OrderId" />
-                    <div class="listdivitemsummary">
-                        <div class="listdivitemdescription">
-                            <div class="payment selected">
-                                <label>
-                                    <input type="radio" name="payment" value="alipay" checked="checked" onchange="onpaymentchange();" />
-                                    <img src="~/content/images/pay/alipay_logo.gif" alt="支付宝" />
-                                </label>
-                                <span></span>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="listdivitem">
                     <input name="" type="button" class="tjzl_btn" value="取消" onclick=" window.location.href = '/Wechat/user/index'" />&nbsp;&nbsp;&nbsp;
                     <input name="" type="button" class="tjzl_btn userbtn" style="font-size: 16px;"
                            value="确定支付" onclick="doPayForOrderEvent();" />
                     <br />
-                    <br />
-                </form>
-            </div>
+                </div>
             }
             else
             {
-            <div class="listdivitem">
-                <table class="listdivitemtable">
-                    <tbody>
-                        <tr>
-                            <td>
-                                @*<span>该订单已不能支付</span>*@
-                                <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div class="listdivitem">
+                    <table class="listdivitemtable">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <script>
+                    countDown();
+                </script>
             }
         }
         else
@@ -111,7 +99,6 @@
 @section FooterJS
 {
     <script src="~/Content/js/jquery-1.11.1.min.js"></script>
-    <script src="~/Areas/Wechat/Content/scipts/payment.js"></script>
     <script>
         var seconds = 3;
         function countDown() {
@@ -130,6 +117,24 @@
                 setTimeout('countDown()', 1000);
             }
         }
-        countDown();
+
+        function callPayApi(a, t, n, p, ps) {
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                "appId": a,
+                "timeStamp": t,
+                "nonceStr": n,
+                "package": p,
+                "signType": "MD5",
+                "paySign": ps
+            }, function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    window.location = "/member/info?id=@(ViewBag.CompanyId)&name=@(ViewBag.SourceAccountId)";
+                }
+                else {
+                    window.location = "/pay/prerecharge?id=@(ViewBag.CompanyId)&name=@(ViewBag.SourceAccountId)";
+                }
+            });
+        }
+
     </script>
 }
