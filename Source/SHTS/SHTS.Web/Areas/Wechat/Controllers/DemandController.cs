@@ -272,6 +272,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 PaySign = paySign
             };
 
+            LogService.LogWexin("购买需求联系方式", "isSuccessFul: " + isSuccessFul.ToString() + "  message:"
+                + message + "  appId: " + appId + "  timeStamp:" + timeStamp + "  nonceStr:" + nonceStr + "  package:" + package + "  paySign:" + paySign);
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
