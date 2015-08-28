@@ -250,161 +250,161 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// vip会员费
         /// </summary>
         /// <returns></returns>
-        public ActionResult VipOrder()
-        {
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
-            UserService service = new UserService();
+        //public ActionResult VipOrder()
+        //{
+        //    UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
+        //    UserService service = new UserService();
 
-            try
-            {
-                model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+        //    try
+        //    {
+        //        model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
 
-                if (model.VipInfo != null)
-                {
-                    if (!model.VipInfo.State.HasValue || model.VipInfo.State.Value == (int)VipState.Normal || model.VipInfo.State.Value == (int)VipState.Invalid)
-                    {
-                        return Redirect(GetUrl("/Wechat/user/Identify"));
-                    }
-                    else if (model.VipInfo.State.Value == (int)VipState.VIP)
-                    {
-                        return Redirect(GetUrl("/Wechat/user/VipInfo"));
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.Log("VipOrder 出错了！", e.ToString());
-            }
+        //        if (model.VipInfo != null)
+        //        {
+        //            if (!model.VipInfo.State.HasValue || model.VipInfo.State.Value == (int)VipState.Normal || model.VipInfo.State.Value == (int)VipState.Invalid)
+        //            {
+        //                return Redirect(GetUrl("/Wechat/user/Identify"));
+        //            }
+        //            else if (model.VipInfo.State.Value == (int)VipState.VIP)
+        //            {
+        //                return Redirect(GetUrl("/Wechat/user/VipInfo"));
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogService.Log("VipOrder 出错了！", e.ToString());
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult VipOrder(string vipDuration)
-        {
-            string result = "生成VIP会员充值订单失败";
+        //[HttpPost]
+        //public ActionResult VipOrder(string vipDuration)
+        //{
+        //    string result = "生成VIP会员充值订单失败";
 
-            if (UserInfo != null)
-            {
-                UserService userService = new UserService();
+        //    if (UserInfo != null)
+        //    {
+        //        UserService userService = new UserService();
 
-                try
-                {
-                    if (UserInfo != null)
-                    {
-                        int duration = -1;
-                        decimal totalAmount = 0;
+        //        try
+        //        {
+        //            if (UserInfo != null)
+        //            {
+        //                int duration = -1;
+        //                decimal totalAmount = 0;
 
-                        int.TryParse(vipDuration, out duration);
+        //                int.TryParse(vipDuration, out duration);
 
-                        if (duration < 1 || duration > 5)
-                        {
-                            throw new ArgumentException("充值VIP时间不正确，请重新选择");
-                        }
+        //                if (duration < 1 || duration > 5)
+        //                {
+        //                    throw new ArgumentException("充值VIP时间不正确，请重新选择");
+        //                }
 
-                        totalAmount = 100 * duration;
+        //                totalAmount = 100 * duration;
 
-                        UserVip vipInfo = userService.GetUserVipInfoByUserId(UserInfo.UserId);
+        //                UserVip vipInfo = userService.GetUserVipInfoByUserId(UserInfo.UserId);
 
-                        if (vipInfo != null)
-                        {
-                            if (vipInfo.State == (int)VipState.Normal || vipInfo.State == (int)VipState.Invalid)
-                            {
-                                throw new ArgumentException("认证资料还没有通过审核，请先上传认证资料");
-                            }
+        //                if (vipInfo != null)
+        //                {
+        //                    if (vipInfo.State == (int)VipState.Normal || vipInfo.State == (int)VipState.Invalid)
+        //                    {
+        //                        throw new ArgumentException("认证资料还没有通过审核，请先上传认证资料");
+        //                    }
 
-                            TradeOrder order = null;
-                            string url = GetUrl("/Wechat/user/VipInfo");
+        //                    TradeOrder order = null;
+        //                    string url = GetUrl("/Wechat/user/VipInfo");
 
-                            if (!string.IsNullOrEmpty(vipInfo.OrderId))
-                            {
-                                order = orderService.GetOrderByOrderId(vipInfo.OrderId);
-                            }
-                            if (order != null && order.UserName == UserInfo.UserName && order.Amount == totalAmount)
-                            {
-                                result = string.Format(Constant.PostPayInfoFormatForMobile, order.OrderId, url);
-                            }
-                            else
-                            {
-                                // 删掉原来的订单
-                                if (order != null)
-                                {
-                                    orderService.DeleteOrderById(order.OrderId);
-                                }
-                                string orderId = orderService.GenerateNewOrderNumber();
-                                string subject = "活动在线网 | 用户VIP会员充值";
-                                string body = "用户" + UserInfo.UserName + "充值VIP会员" + duration + "年";
-                                int userId = UserInfo.UserId;
-                                string username = UserInfo.UserName;
-                                decimal amount = totalAmount;
-                                int state = (int)OrderState.New;
-                                string resourceUrl = url;
+        //                    if (!string.IsNullOrEmpty(vipInfo.OrderId))
+        //                    {
+        //                        order = orderService.GetOrderByOrderId(vipInfo.OrderId);
+        //                    }
+        //                    if (order != null && order.UserName == UserInfo.UserName && order.Amount == totalAmount)
+        //                    {
+        //                        result = string.Format(Constant.PostPayInfoFormatForMobile, order.OrderId, url);
+        //                    }
+        //                    else
+        //                    {
+        //                        // 删掉原来的订单
+        //                        if (order != null)
+        //                        {
+        //                            orderService.DeleteOrderById(order.OrderId);
+        //                        }
+        //                        string orderId = orderService.GenerateNewOrderNumber();
+        //                        string subject = "活动在线网 | 用户VIP会员充值";
+        //                        string body = "用户" + UserInfo.UserName + "充值VIP会员" + duration + "年";
+        //                        int userId = UserInfo.UserId;
+        //                        string username = UserInfo.UserName;
+        //                        decimal amount = totalAmount;
+        //                        int state = (int)OrderState.New;
+        //                        string resourceUrl = url;
 
-                                bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId) &&
-                                    userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
+        //                        bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId) &&
+        //                            userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
 
-                                if (success)
-                                {
-                                    result = string.Format(Constant.PostPayInfoFormatForMobile, orderId, url);
-                                }
-                                else
-                                {
-                                    result = "生成VIP充值支付订单信息失败，请重新尝试";
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (ArgumentException e)
-                {
-                    result = e.Message;
-                }
-                catch (Exception e)
-                {
-                    LogService.Log("生成VIP充值支付订单信息", e.ToString());
-                    result = "生成VIP充值支付订单信息，请重新尝试";
-                }
-            }
-            else
-            {
-                result = "您还未登录或登录超时，请重新登录";
-            }
+        //                        if (success)
+        //                        {
+        //                            result = string.Format(Constant.PostPayInfoFormatForMobile, orderId, url);
+        //                        }
+        //                        else
+        //                        {
+        //                            result = "生成VIP充值支付订单信息失败，请重新尝试";
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (ArgumentException e)
+        //        {
+        //            result = e.Message;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            LogService.Log("生成VIP充值支付订单信息", e.ToString());
+        //            result = "生成VIP充值支付订单信息，请重新尝试";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        result = "您还未登录或登录超时，请重新登录";
+        //    }
 
-            return Content(result);
-        }
+        //    return Content(result);
+        //}
 
-        public ActionResult VipInfo()
-        {
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
-            UserService service = new UserService();
+        //public ActionResult VipInfo()
+        //{
+        //    UserViewModel model = new UserViewModel { UserEntity = UserInfo ?? new User() };
+        //    UserService service = new UserService();
 
-            try
-            {
-                model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+        //    try
+        //    {
+        //        model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
 
-                if (model.VipInfo != null)
-                {
-                    if (!model.VipInfo.State.HasValue || model.VipInfo.State.Value != (int)VipState.VIP)
-                    {
-                        return Redirect(GetUrl("/Wechat/user/ToVip"));
-                    }
-                    else
-                    {
-                        if (model.VipInfo.EndTime > DateTime.Now)
-                        {
-                            model.ErrorMsg = "您的VIP已过期，请重新申请";
-                            //service.SetUserToVip(
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.Log("VipInfo 出错了！", e.ToString());
-            }
+        //        if (model.VipInfo != null)
+        //        {
+        //            if (!model.VipInfo.State.HasValue || model.VipInfo.State.Value != (int)VipState.VIP)
+        //            {
+        //                return Redirect(GetUrl("/Wechat/user/ToVip"));
+        //            }
+        //            else
+        //            {
+        //                if (model.VipInfo.EndTime > DateTime.Now)
+        //                {
+        //                    model.ErrorMsg = "您的VIP已过期，请重新申请";
+        //                    //service.SetUserToVip(
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogService.Log("VipInfo 出错了！", e.ToString());
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         private string GetErrorMessage(UserVip vipInfo)
         {

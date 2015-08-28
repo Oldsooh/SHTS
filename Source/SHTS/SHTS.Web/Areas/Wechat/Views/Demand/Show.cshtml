@@ -43,7 +43,7 @@
                 <li>
                     <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
                         该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">1元</span>即可购买永久查看权限。
-                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2">立即购买</span></a>
+                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">立即购买</span></a>
                     </div>
                 </li>
             }
@@ -77,7 +77,6 @@
 <script src="~/Content/js/jquery-1.11.1.min.js"></script>
 <script>
     function buyDemand(demandId) {
-        alert(demandId);
         //wechat/demand/Buy
         $.post("/wechat/demand/Buy",
         {
@@ -103,7 +102,7 @@
             "paySign": paySign
         }, function (res) {
             if (res.err_msg == "get_brand_wcpay_request:ok") {
-                alert("恭喜您，成功购买该需求联系方式和详细地址的永久查看权限。");
+                alert("您已成功购买该需求联系方式和详细地址的永久查看权限。");
                 window.location = window.location;
             }
             else {

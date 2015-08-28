@@ -53,25 +53,27 @@ namespace Witbird.SHTS.BLL.Services
             return order;
         }
 
-        public TradeOrder GetOrderByOpenIdAndDemandIdForWeChatClient(string openId, int demandId)
+        public bool DeleteOrderByOpenIdAndDemandIdForWeChatClient(string openId, int demandId)
         {
-            TradeOrder order = null;
-
+            bool isSuccessFul = false;
             var conn = DBHelper.GetSqlConnection();
+
             try
             {
                 conn.Open();
-                order = orderDao.GetOrderByOpenIdAndDemandIdForWeChatClient(conn, openId, demandId);
+                orderDao.DeleteOrderByOpenIdAndDemandIdForWeChatClient(conn, openId, demandId);
+                isSuccessFul = true;
             }
             catch (Exception e)
             {
-                LogService.Log("获取微信订单信息失败--" + e.Message, e.ToString().ToString());
+                LogService.Log("删除微信订单信息失败--" + e.Message, e.ToString().ToString());
             }
             finally
             {
                 conn.Close();
             }
-            return order;
+
+            return isSuccessFul;
 
         }
 
@@ -79,11 +81,11 @@ namespace Witbird.SHTS.BLL.Services
         /// Adds new order to database.
         /// </summary>
         /// <returns></returns>
-        public bool AddNewOrder(string orderId, string subject, string body, decimal amount,
+        public TradeOrder AddNewOrder(string orderId, string subject, string body, decimal amount,
             int state, string username, string resourceUrl, int orderType, int resourceId)
         {
             bool result = false;
-            TradeOrder order = new TradeOrder();
+            TradeOrder order = null;
 
             var conn = DBHelper.GetSqlConnection();
             try
@@ -97,6 +99,7 @@ namespace Witbird.SHTS.BLL.Services
                     throw new ArgumentException("Parameter Error");
                 }
 
+                order = new TradeOrder();
                 order.OrderId = orderId;
                 order.Amount = amount;
                 order.Subject = subject;
@@ -121,7 +124,7 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Close();
             }
 
-            return result;
+            return order;
         }
 
         /// <summary>
@@ -188,9 +191,13 @@ namespace Witbird.SHTS.BLL.Services
                                 result = userDao.UpdateUserVipInfo(conn, vipInfo);
                             }
                         }
+                        //else if (order.OrderType.Value == (int)OrderType.WeChatDemand && newState == (int)OrderState.Succeed)
+                        //{
+                            
+                        //}
                         else
                         {
-                            // nothing
+                            result = true;
                         }
                         #endregion
 
@@ -291,11 +298,11 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
-        /// Converts order state db store format to display on UI.
+        /// Converts order's state from db store format to display string on UI.
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
-        public static string ConvertOrderStateToDiplayValue(int state)
+        public static string ConvertOrderStateToDisplayValue(int state)
         {
             string result = string.Empty;
 
@@ -316,6 +323,40 @@ namespace Witbird.SHTS.BLL.Services
                 default:
                     result = "未知类型";
                     break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取用户的购买记录
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        public List<TradeOrder> GetWeChatUserPaidDemands(string openId, int pageSize, int pageIndex, out int totalCount)
+        {
+            List<TradeOrder> result = new List<TradeOrder>();
+
+            totalCount = 0;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                int tempCount = 0;
+                result = orderDao.SelectUserPaidDemands(conn, openId, pageSize, pageIndex, out tempCount);
+                totalCount = tempCount;
+                
+            }
+            catch (Exception e)
+            {
+                LogService.Log("查询我的购买记录", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
             }
 
             return result;

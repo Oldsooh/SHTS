@@ -193,12 +193,13 @@
     <Build Include="Table\WeChatUser.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserRegister.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserUpdate.sql" />
-    <Build Include="StoredProcedure\User\sp_WeChatUserSelectById.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserSelectByUserId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteById.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByOpentId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByOpenId.sql" />
     <Build Include="StoredProcedure\Demand\sp_SelectTradeOrderByOpenIdAndDemandId.sql" />
-    <Build Include="StoredProcedure\Order\sp_SelectOrderByOpenIdAndDemandIdForWeChatClient.sql" />
+    <Build Include="StoredProcedure\Order\sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient.sql" />
+    <Build Include="StoredProcedure\Order\sp_SelectUserPaidDemands.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

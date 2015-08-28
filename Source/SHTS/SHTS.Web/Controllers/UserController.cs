@@ -355,15 +355,15 @@ namespace Witbird.SHTS.Web.Controllers
                                 }
                                 string orderId = orderService.GenerateNewOrderNumber();
                                 string subject = "活动在线网 | 用户VIP会员充值";
-                                string body = "用户" + UserInfo.UserName + "充值VIP会员" + duration +　"年";
+                                string body = "用户" + UserInfo.UserName + "充值VIP会员" + duration + "年";
                                 int userId = UserInfo.UserId;
                                 string username = UserInfo.UserName;
                                 decimal amount = totalAmount;
                                 int state = (int)OrderState.New;
                                 string resourceUrl = url;
 
-                                bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId) &&
-                                    userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
+                                order = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId);
+                                bool success = userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
 
                                 if (success)
                                 {

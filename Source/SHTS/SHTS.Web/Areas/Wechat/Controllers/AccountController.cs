@@ -70,16 +70,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         user = userService.Login(model.username, model.password);
                         if (user != null)
                         {
-                            CurrentWeChatUser.UserId = user.UserId;
+                            WeChatUser loggedInUser = userService.GetWeChatUser(user.UserId);
 
-                            if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                            if (loggedInUser == null)
                             {
-                                CurrentUser = user;
-                                return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                                CurrentWeChatUser.UserId = user.UserId;
+
+                                if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                                {
+                                    CurrentUser = user;
+                                    return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                                }
+                                else
+                                {
+                                    errorMsg = "绑定用户失败！";
+                                }
                             }
                             else
                             {
-                                errorMsg = "绑定用户失败！";
+                                errorMsg = "该账号已绑定微信号(" + loggedInUser.NickName + ")， 请先解绑该微信号后重试。";
                             }
                         }
                         else
@@ -187,24 +196,81 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         #endregion
 
-        public RedirectResult LogOut()
+        public ActionResult LogOut()
         {
+            WeChatLoginViewModel model = new WeChatLoginViewModel();
+
             try
             {
-                var userAccount = new UserSummary
+                if (!CurrentWeChatUser.UserId.HasValue)
                 {
-                    UserName = UserInfo.UserName,
-                    Password = null,
-                    LastLoginTime = DateTime.Now
-                };
-                Cookie.Save("UserAccount", userAccount.ToJson());
-                Clear();
+                    model.ErrorMsg = "logoutinvalid";
+                }
             }
             catch (Exception ex)
             {
-                LogService.Log("LogOut-失败", ex.ToString());
+                LogService.LogWexin("解除账号绑定GET", ex.ToString());
             }
-            return Redirect("/Wechat/account/login");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LogOut(WeChatLoginViewModel model)
+        {
+            var errorMsg = string.Empty;
+            try
+            {
+                User user = null;
+                if (ModelState.IsValid)
+                {
+                    if (string.Equals(model.code,
+                        Session["validataCode"].ToString(),
+                        StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        user = userService.Login(model.username, model.password);
+                        if (user != null)
+                        {
+                                CurrentWeChatUser.UserId = null;
+
+                                if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                                {
+                                    CurrentUser = null;
+                                    errorMsg = "logoutsuccess";
+                                }
+                                else
+                                {
+                                    errorMsg = "解除绑定失败，请重试。";
+                                }
+                        }
+                        else
+                        {
+                            errorMsg = "用户名或密码错误！";
+                        }
+                    }
+                    else
+                    {
+                        errorMsg = "验证码输入错误！";
+                    }
+
+                    if (CurrentWeChatUser.UserId.HasValue)
+                    {
+                        user = userService.GetUserById(CurrentWeChatUser.UserId.Value);
+                        model.User = user;
+                    }
+                }
+                else
+                {
+                    errorMsg = "信息填写有误！";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("解除账号绑定POST", ex.ToString());
+            }
+
+            model.ErrorMsg = errorMsg;
+            return View(model);
         }
     }
 }

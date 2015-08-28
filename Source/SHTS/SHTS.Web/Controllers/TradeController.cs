@@ -427,10 +427,10 @@ namespace Witbird.SHTS.Web.Controllers
                                     int state = (int)OrderState.New;
                                     string resourceUrl = url;
 
-                                    bool success = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.Trade, trade.TradeId) &&
-                                        tradeService.UpdateTradeOrderId(trade.TradeId, orderId, trade.IsBuyerPaid); ;
+                                    order = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.Trade, trade.TradeId);
+                                    bool success = tradeService.UpdateTradeOrderId(trade.TradeId, orderId, trade.IsBuyerPaid); ;
 
-                                    if (success)
+                                    if (success && order != null)
                                     {
                                         //result = "success&orderid=" + orderId + "&returnurl=" + Request.UrlReferrer.AbsoluteUri;
                                         result = string.Format(Constant.PostPayInfoFormat, orderId, url);

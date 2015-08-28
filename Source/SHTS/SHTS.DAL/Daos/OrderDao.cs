@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Common;
+using System.Data;
 
 namespace Witbird.SHTS.DAL.Daos
 {
@@ -53,37 +54,15 @@ namespace Witbird.SHTS.DAL.Daos
             return order;
         }
 
-        public TradeOrder GetOrderByOpenIdAndDemandIdForWeChatClient(SqlConnection conn, string openId, int demandId)
+        public void DeleteOrderByOpenIdAndDemandIdForWeChatClient(SqlConnection conn, string openId, int demandId)
         {
-            TradeOrder order = null;
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@UserName", openId),
                 new SqlParameter("@ResourceId", demandId)
             };
 
-            using (SqlDataReader reader = DBHelper.RunProcedure(conn, "sp_SelectOrderByOpenIdAndDemandIdForWeChatClient", sqlParameters))
-            {
-                while (reader.Read())
-                {
-                    order = new TradeOrder()
-                    {
-                        OrderId = reader["OrderId"].DBToString(),
-                        Amount = reader["Amount"].DBToDecimal(),
-                        Body = reader["Body"].DBToString(),
-                        CreatedTime = reader["CreatedTime"].DBToDateTime().Value,
-                        LastUpdatedTime = reader["LastUpdatedTime"].DBToDateTime().Value,
-                        State = reader["State"].DBToInt32(),
-                        Subject = reader["Subject"].DBToString(),
-                        UserName = reader["UserName"].DBToString(),
-                        ResourceUrl = reader["ResourceUrl"].DBToString(),
-                        OrderType = reader["OrderType"].DBToInt32(),
-                        ResourceId = reader["ResourceId"].DBToInt32()
-                    };
-                }
-            }
-
-            return order;
+            DBHelper.RunNonQueryProcedure(conn, "sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient", sqlParameters);
         }
 
         /// <summary>
@@ -167,6 +146,26 @@ namespace Witbird.SHTS.DAL.Daos
         {
             SqlCommand cmd = new SqlCommand("delete from TradeOrder where OrderId = " + orderId, conn);
             return cmd.ExecuteNonQuery() > 0;
+        }
+
+        public List<TradeOrder> SelectUserPaidDemands(SqlConnection conn, string openId, int pageSize, int pageIndex, out int totalCount)
+        {
+            List<TradeOrder> paidDemands = null;
+            totalCount = 0;
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@UserName", openId),
+                new SqlParameter("@PageSize", pageSize),
+                new SqlParameter("@PageIndex", pageIndex)
+            };
+
+            Dictionary<string, DataTable> dts;
+            dts = DBHelper.GetMuiltiDataFromDB(conn, "sp_SelectUserPaidDemands", sqlParameters);
+            totalCount = Int32.Parse(dts["0"].Rows[0][0].ToString());
+            paidDemands = DBHelper.DataTableToList<TradeOrder>(dts["1"]);
+
+            return paidDemands;
         }
     }
 }

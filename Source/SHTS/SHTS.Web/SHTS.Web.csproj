@@ -216,6 +216,7 @@
     <Compile Include="Areas\Wechat\Models\BaseModel.cs" />
     <Compile Include="Areas\Wechat\Models\DemandModel.cs" />
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
+    <Compile Include="Areas\Wechat\Models\MyPaidDemand.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
     <Compile Include="Areas\Wechat\WechatAreaRegistration.cs" />
@@ -925,6 +926,9 @@
     <Content Include="Areas\Wechat\Content\styles\user\myfont.TTC" />
     <Content Include="Areas\Wechat\Views\Activity\PagingPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\QAuthCallBack\Test.cshtml" />
+    <Content Include="Areas\Wechat\Views\Demand\MyPaidDemand.cshtml" />
+    <Content Include="Areas\Wechat\Views\Demand\PagingPartialForMyPaidDemand.cshtml" />
+    <Content Include="Areas\Wechat\Views\Account\LogOut.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

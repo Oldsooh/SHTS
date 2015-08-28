@@ -99,7 +99,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             return user;
         }
-
+        
         /// <summary>
         /// 验证用户信息是否已经存在。
         /// </summary>
@@ -446,11 +446,11 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
-        /// Gets wechat user information by id.
+        /// 根据绑定的会员账号Id查询微信用户
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public WeChatUser GetWeChatUser(int id)
+        public WeChatUser GetWeChatUser(int userId)
         {
             WeChatUser user = null;
 
@@ -460,15 +460,11 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Open();
 
-                // First Id has been set as 112816.
-                if (id >= 112816)
-                {
-                    user = userDao.GetWeChatUser(id, conn);
-                }
+                user = userDao.GetWeChatUser(userId, conn);
             }
             catch (Exception ex)
             {
-                LogService.Log("根据ID获取微信用户失败， id=" + id, ex.ToString());
+                LogService.Log("根据userId获取微信用户失败， userId=" + userId, ex.ToString());
             }
             finally
             {

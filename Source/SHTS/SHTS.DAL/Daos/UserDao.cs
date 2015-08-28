@@ -24,7 +24,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_UpdateUser = "sp_UpdateUser";
 
         private const string SP_WeChatUserSelectByOpenId = "sp_WeChatUserSelectByOpenId";
-        private const string SP_WeChatUserSelectById = "sp_WeChatUserSelectById";
+        private const string SP_WeChatUserSelectByUserId = "sp_WeChatUserSelectByUserId";
         private const string SP_WeChatUserRegister = "sp_WeChatUserRegister";
         private const string SP_WeChatUserUpdate = "sp_WeChatUserUpdate";
         private const string SP_WeChatUserDeleteById = "sp_WeChatUserDeleteById";
@@ -395,20 +395,20 @@ namespace Witbird.SHTS.DAL.Daos
         #region WeChat User
 
         /// <summary>
-        /// 根据Id查询微信用户
+        /// 根据绑定的会员账号Id查询微信用户
         /// </summary>
         /// <param name="conn">连接对象</param>
         /// <returns>用户实体</returns>
-        public WeChatUser GetWeChatUser(int id, SqlConnection conn)
+        public WeChatUser GetWeChatUser(int userId, SqlConnection conn)
         {
             WeChatUser user = null;
 
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-                new SqlParameter("@Id", id)
+                new SqlParameter("@UserId", userId)
             };
 
-            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectById, sqlParameters))
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectByUserId, sqlParameters))
             {
                 while (reader.Read())
                 {

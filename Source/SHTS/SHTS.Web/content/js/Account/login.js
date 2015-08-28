@@ -53,10 +53,30 @@ $(function () {
         });
     });
     if ($("#errormsg").val() != "") {
-        ds.dialog({
-            title: '消息提示',
-            content: $("#errormsg").val(),
-            icon: "/Content/dialog/images/info.png"
-        });
+
+        //微信端判断解除绑定使用
+        if ($('#errormsg').val() == 'logoutinvalid') {
+            ds.dialog({
+                title: '消息提示',
+                content: '您还未绑定会员账号！请先绑定会员账号。',
+                icon: "/Content/dialog/images/info.png"
+            });
+            window.location.href = "/wechat/account/login";
+        }
+        else if ($('#errormsg').val() == 'logoutsuccess') {
+            ds.dialog({
+                title: '消息提示',
+                content: '解除绑定成功。',
+                icon: "/Content/dialog/images/info.png"
+            });
+            window.location.href = "/wechat/account/login";
+        }
+        else {
+            ds.dialog({
+                title: '消息提示',
+                content: $("#errormsg").val(),
+                icon: "/Content/dialog/images/info.png"
+            });
+        }
     }
 });

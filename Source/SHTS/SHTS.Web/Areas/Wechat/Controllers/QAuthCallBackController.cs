@@ -1,5 +1,6 @@
 ﻿using Senparc.Weixin;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
+using Senparc.Weixin.MP.TenPayLibV3;
 using System;
 using System.Configuration;
 using System.Web;
@@ -123,6 +124,116 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return result;
         }
 
+        #region 微信支付结果通知
+
+        private static TenPayV3Info _tenPayV3Info;
+
+        /// <summary>
+        /// 微信支付相关配置信息
+        /// </summary>
+        public static TenPayV3Info TenPayV3Info
+        {
+            get
+            {
+                if (_tenPayV3Info == null)
+                {
+                    _tenPayV3Info =
+                        TenPayV3InfoCollection.Data[System.Configuration.ConfigurationManager.AppSettings["TenPayV3_MchId"]];
+                }
+                return _tenPayV3Info;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BuyDemandPayNotifyUrl()
+        {
+            LogService.LogWexin("接收到微信支付通知", "");
+            ResponseHandler resHandler = new ResponseHandler(null);
+
+            string return_code = resHandler.GetParameter("return_code");
+            string return_msg = resHandler.GetParameter("return_msg");
+
+            try
+            {
+                resHandler.SetKey(TenPayV3Info.Key);
+                //验证请求是否从微信发过来（安全）
+                if (resHandler.IsTenpaySign())
+                {
+                    //正确的订单处理
+
+                    string out_trade_no = resHandler.GetParameter("out_trade_no");
+                    string total_fee = resHandler.GetParameter("total_fee");
+                    //微信支付订单号
+                    string transaction_id = resHandler.GetParameter("transaction_id");
+                    //支付完成时间
+                    string time_end = resHandler.GetParameter("time_end");
+
+                    LogService.LogWexin("处理需求购买结果通知", "订单号：" + out_trade_no + "   交易流水号：" + transaction_id + "    支付完成时间：" + time_end);
+
+                    OrderService orderService = new OrderService();
+                    TradeOrder order = orderService.GetOrderByOrderId(out_trade_no);
+
+                    if (order == null)
+                    {
+                        return_code = "FAIL";
+                        return_msg = "根据返回的订单编号(" + out_trade_no + ")未查询到相应交易订单。";
+                    }
+                    else if (order.State == (int)OrderState.Succeed)
+                    {
+                        return_code = "SUCCESS";
+                        return_msg = "OK";
+                    }
+                    else if ((order.Amount * 100) != Convert.ToDecimal(total_fee))
+                    {
+                        //无效支付结果
+                        orderService.UpdateOrderState(order.OrderId, (int)OrderState.Invalid);
+
+                        return_code = "FAIL";
+                        return_msg = "交易金额与订单金额不一致";
+                    }
+                    else
+                    {
+                        //交易成功
+                        if (orderService.UpdateOrderState(order.OrderId, (int)OrderState.Succeed))
+                        {
+                            return_code = "SUCCESS";
+                            return_msg = "OK";
+                        }
+                        else
+                        {
+                            return_code = "FAIL";
+                            return_msg = "更新订单失败";
+                        }
+                    }
+                }
+                else
+                {
+                    return_code = "FAIL";
+                    return_msg = "非法支付结果通知";
+
+                    //错误的订单处理
+                    LogService.LogWexin("接收到非法微信支付结果通知", return_msg);
+                }
+            }
+            catch (Exception ex)
+            {
+                return_code = "FAIL";
+                return_msg = ex.ToString();
+
+                LogService.LogWexin("处理需求购买结果通知", ex.ToString());
+            }
+
+            string xml = string.Format(@"
+<xml>
+   <return_code><![CDATA[{0}]]></return_code>
+   <return_msg><![CDATA[{1}]]></return_msg>
+</xml>", return_code, return_msg);
+
+            LogService.LogWexin("处理需求购买结果通知", xml);
+            return Content(xml, "text/xml");
+        }
+
+        #endregion
 
         public ActionResult Test()
         {

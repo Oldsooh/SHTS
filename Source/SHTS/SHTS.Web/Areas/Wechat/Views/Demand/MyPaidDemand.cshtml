@@ -1,0 +1,37 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.MyPaidDemand
+@{
+    ViewBag.Title = "我的购买记录";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #demand a { color: #ffffff; background-color: #2577e3; }
+    </style>
+}
+
+<div id="main">
+    @if (Model.PaidDemandOrders != null && Model.PaidDemandOrders.Count > 0)
+    {
+        foreach (var item in Model.PaidDemandOrders)
+        {
+            <ul class="commonlist">
+                <li>订单编号：<span class="yellow">@item.OrderId</span></li>
+
+                <li class="atitle">
+                    需求标题：<a href="/Wechat/demand/show/@(item.ResourceId)" style="margin-right: 10px;">@item.Subject</a>
+                </li>
+                <li>支付时间：<span class="yellow">@item.LastUpdatedTime.ToString("yyyy-MM-dd HH:mm:ss")</span></li>
+            </ul>
+        }
+    }
+
+    else
+    {
+        <div>没有购买记录。</div>
+    }
+
+    <div style="clear: both; height: 10px;"></div>
+
+    @Html.Partial("PagingPartialForMyPaidDemand", Model)
+</div>
