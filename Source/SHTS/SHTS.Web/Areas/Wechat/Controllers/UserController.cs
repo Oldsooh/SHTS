@@ -176,7 +176,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return Redirect("/wechat/account/login");
             }
 
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo };
+            WeChatUserViewModel model = new WeChatUserViewModel { UserEntity = UserInfo };
             try
             {
                 UserService service = new UserService();
@@ -191,58 +191,43 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Identify(FormCollection form)
+        public ActionResult Identify(string identifyImgUrl)
         {
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo };
-            UserService service = new UserService();
-            try
-            {
-                UserVip vipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+            WeChatUserViewModel model = new WeChatUserViewModel { UserEntity = UserInfo };
 
-                string errorMsg = string.Empty;
-                string imgUrl = string.Empty;
+            if (!string.IsNullOrWhiteSpace(identifyImgUrl))
+            {
+                UserService service = new UserService();
                 try
                 {
-                    HttpPostedFileBase postFile = this.HttpContext.Request.Files["IdentiyImg"];
-                    using (System.Drawing.Image img = System.Drawing.Image.FromStream(postFile.InputStream))
+                    UserVip vipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+
+                    CurrentUser.IdentiyImg = identifyImgUrl;
+                    CurrentUser.Vip = (int)VipState.Normal;
+                    if (service.UserUpdate(CurrentUser) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, identifyImgUrl,
+                        DateTime.Now, DateTime.Now, vipInfo.Duration, vipInfo.Amount, VipState.Normal))
                     {
+                        model.ErrorMsg = "照片上传成功，等待管理员审核";
                     }
 
-                }
-                catch
-                {
-                    errorMsg = "图片格式错误，请重新选择";
-                }
-
-                if (string.IsNullOrEmpty(errorMsg))
-                {
-                    errorMsg = FileUploadHelper.SaveFile(this.HttpContext, "IdentiyImg", out imgUrl);
-                    if (string.IsNullOrEmpty(errorMsg))
+                    // get it again
+                    model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+                    if (string.IsNullOrEmpty(model.ErrorMsg))
                     {
-                        UserInfo.IdentiyImg = imgUrl;
-                        UserInfo.Vip = (int)VipState.Normal;
-                        if (service.UserUpdate(UserInfo) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, imgUrl,
-                            DateTime.Now, DateTime.Now, vipInfo.Duration, vipInfo.Amount, VipState.Normal))
-                        {
-                            errorMsg = "图片上传成功，等待管理员审核";
-                        }
+                        model.ErrorMsg = GetErrorMessage(model.VipInfo);
                     }
                 }
-
-                // get it again
-                model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
-                if (string.IsNullOrEmpty(errorMsg))
+                catch (Exception e)
                 {
-                    errorMsg = GetErrorMessage(model.VipInfo);
+                    LogService.Log("Identify 出错了！", e.ToString());
+                    model.ErrorMsg = "认证照片上传失败！";
                 }
-                model.ErrorMsg = errorMsg;
             }
-            catch (Exception e)
+            else
             {
-                LogService.Log("Identify 出错了！", e.ToString());
+                model.ErrorMsg = "请选择认证照片！";
             }
 
-            model.VipInfo = model.VipInfo ?? service.GetUserVipInfoByUserId(UserInfo.UserId);
             return View(model);
         }
 
@@ -425,7 +410,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     }
                     else if (vipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Identified)
                     {
-                        errorMsg = "认证资料已通过审核，您现在是认证会员，还可以升级为VIP会员。&nbsp;<a href='/Wechat/user/tovip' title='立即升级'>立即升级</a>";
+                        errorMsg = "认证资料已通过审核，您现在是认证会员。还可访问电脑版(www.activity-line.com)升级为VIP会员，享受更多会员特权！";
                     }
                     else if (vipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.VIP)
                     {

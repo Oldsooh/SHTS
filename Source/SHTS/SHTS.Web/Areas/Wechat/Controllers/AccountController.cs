@@ -200,6 +200,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             WeChatLoginViewModel model = new WeChatLoginViewModel();
 
+            if (CurrentUser != null)
+            {
+                model.username = CurrentUser.UserName;
+            }
+
             try
             {
                 if (!CurrentWeChatUser.UserId.HasValue)
@@ -231,6 +236,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         user = userService.Login(model.username, model.password);
                         if (user != null)
                         {
+                            if (user.UserId != CurrentWeChatUser.UserId.Value)
+                            {
+                                errorMsg = "请使用当前微信绑定的会员账户登录。";
+                            }
+                            else
+                            {
                                 CurrentWeChatUser.UserId = null;
 
                                 if (userService.UpdateWeChatUser(CurrentWeChatUser))
@@ -242,6 +253,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                 {
                                     errorMsg = "解除绑定失败，请重试。";
                                 }
+                            }
                         }
                         else
                         {

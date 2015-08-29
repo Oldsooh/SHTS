@@ -193,17 +193,19 @@
             </div>
         </section>
 
-        <section class="mt-3">
-            <div class="ps-lt">
-                <div class="lt-dsb">
-                    <a onclick="javascript: return confirm('您确定要解除会员账号绑定吗？');" href="~/Wechat/account/logout">
-                        <p style="color:red;">解除账号绑定</p>
-                        <i class="arr-right"></i>
-                    </a>
+        @if (Model.IsUserLoggedIn)
+        {
+            <section class="mt-3">
+                <div class="ps-lt">
+                    <div class="lt-dsb">
+                        <a onclick="return confirm('您确定要解除会员账号绑定吗？');" href="~/Wechat/account/logout">
+                            <p style="color:red;">解除账号绑定</p>
+                            <i class="arr-right"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
-
+            </section>
+        }
         <div class="jg"></div>
     </div>
 

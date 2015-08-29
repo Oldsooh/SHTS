@@ -1,4 +1,5 @@
 ﻿using Senparc.Weixin;
+using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using Senparc.Weixin.MP.TenPayLibV3;
 using System;
@@ -8,13 +9,14 @@ using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Controllers;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     /// <summary>
     /// 单独定义这个Controller得原因是绕过WeChatBaseController的ActionExcuting的权限检查，因为他本身就是检查中的一环。不然会造成死循环，一直在请求授权。
     /// </summary>
-    public class QAuthCallBackController : Controller
+    public class QAuthCallBackController : BaseController
     {
         //与WeChatBaseController中定义的应该一致
         public const string WeChatUserInfo = "WeChatUserInfo";
@@ -26,6 +28,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         public ActionResult CallBack(string code, string state)
         {
             ActionResult result = null;
+            bool isSuccessFul = false;
+            var callBackUrl = state;
 
             try
             {
@@ -35,39 +39,20 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    var callBackUrl = state;
                     var appId = ConfigurationManager.AppSettings["WeixinAppId"];
                     var secret = ConfigurationManager.AppSettings["WeixinAppSecret"];
 
                     OAuthAccessTokenResult accessTokenResult = null;
 
                     //通过，用code换取access_token
-                    try
-                    {
-                        accessTokenResult = OAuthApi.GetAccessToken(appId, secret, code);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogService.LogWexin("获取AccessToken失败", ex.ToString());
-                        result = Content("获取AccessToken失败");
-                    }
+                    accessTokenResult = OAuthApi.GetAccessToken(appId, secret, code);
 
                     //LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
-                    if (accessTokenResult.errcode != ReturnCode.请求成功)
-                    {
-                        result = Content("获取AccessToken失败");
-                    }
-                    else
+                    if (accessTokenResult.errcode == ReturnCode.请求成功)
                     {
                         //更新用户Cookie
                         Response.Cookies.Add(new HttpCookie(WeChatOpenIdCookieName, accessTokenResult.openid));
-
-                        //var openIdCookie = Request.Cookies[WeChatOpenIdCookieName];
-                        //if (openIdCookie == null || string.IsNullOrEmpty(openIdCookie.Value))
-                        //{
-                        //    LogService.LogWexin("OpenID Cookie写入失败", "");
-                        //}
-
+                        
                         //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
                         UserService userService = new UserService();
                         OAuthUserInfo userInfo = OAuthApi.GetUserInfo(accessTokenResult.access_token, accessTokenResult.openid);
@@ -102,15 +87,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                 Session[WeChatUserInfo] = wechatUser;
 
                                 //LogService.LogWexin("保存微信用户资料成功", "");
+                                isSuccessFul = true;
                             }
                             else
                             {
                                 LogService.LogWexin("保存微信用户资料失败", wechatUser.OpenId);
                             }
-
-                            // 跳转到用户一开始要进入的页面
-                            result = Redirect(callBackUrl);
-                            //LogService.LogWexin("跳转到用户一开始要进入的页面", callBackUrl);
                         }
                     }
                 }
@@ -118,7 +100,27 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             catch (Exception ex)
             {
                 LogService.LogWexin("QAuth获取用户信息失败", ex.ToString());
-                result = Content("获取用户信息失败");
+                isSuccessFul = false;
+            }
+
+            if (isSuccessFul)
+            {
+                if (!string.IsNullOrWhiteSpace(callBackUrl))
+                {
+                    callBackUrl = "/wechat/user/index";
+                }
+
+                // 跳转到用户一开始要进入的页面
+                result = Redirect(callBackUrl);
+            }
+            else
+            {
+                // 授权回调页面
+                var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
+                var appId = ConfigurationManager.AppSettings["WeixinAppId"];
+                var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
+
+                result = Redirect(authUrl);
             }
 
             return result;
@@ -147,7 +149,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult BuyDemandPayNotifyUrl()
         {
-            LogService.LogWexin("接收到微信支付通知", "");
             ResponseHandler resHandler = new ResponseHandler(null);
 
             string return_code = resHandler.GetParameter("return_code");

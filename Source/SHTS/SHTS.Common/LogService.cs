@@ -17,6 +17,11 @@ namespace Witbird.SHTS.Common
         {
             if (!string.IsNullOrEmpty(logPath))
             {
+                string[] paths = logPath.Split('.');
+                paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
+
+                logPath = paths[0] + paths[1];
+
                 WitBirdLog loger = new WitBirdLog(logPath);
                 loger.SaveLog(name, message);
             }
@@ -26,6 +31,11 @@ namespace Witbird.SHTS.Common
         {
             if (!string.IsNullOrEmpty(wexinLogPath))
             {
+                string[] paths = wexinLogPath.Split('.');
+                paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
+
+                wexinLogPath = paths[0] + paths[1];
+
                 WitBirdLog loger = new WitBirdLog(wexinLogPath);
                 loger.SaveLog(name, message);
             }
