@@ -13,31 +13,46 @@ namespace Witbird.SHTS.Common
         private static string logPath = ConfigurationManager.ConnectionStrings["logPath"].ConnectionString;
         private static string wexinLogPath = ConfigurationManager.ConnectionStrings["wexinLogPath"].ConnectionString;
 
-        public static void Log(string name,string message)
+        public static void Log(string name, string message)
         {
-            if (!string.IsNullOrEmpty(logPath))
+            try
             {
-                string[] paths = logPath.Split('.');
-                paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
 
-                logPath = paths[0] + paths[1];
+                if (!string.IsNullOrEmpty(logPath))
+                {
+                    string[] paths = logPath.Split('.');
+                    paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
 
-                WitBirdLog loger = new WitBirdLog(logPath);
-                loger.SaveLog(name, message);
+                    string newPath = paths[0] + "." + paths[1];
+
+                    WitBirdLog loger = new WitBirdLog(newPath);
+                    loger.SaveLog(name, message);
+                }
+            }
+            catch
+            {
+
             }
         }
 
         public static void LogWexin(string name, string message)
         {
-            if (!string.IsNullOrEmpty(wexinLogPath))
+            try
             {
-                string[] paths = wexinLogPath.Split('.');
-                paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
+                if (!string.IsNullOrEmpty(wexinLogPath))
+                {
+                    string[] paths = wexinLogPath.Split('.');
+                    paths[0] += "-" + DateTime.Now.Date.ToString("yyyy-MM-dd");
 
-                wexinLogPath = paths[0] + paths[1];
+                    string newPath = paths[0] + "." + paths[1];
 
-                WitBirdLog loger = new WitBirdLog(wexinLogPath);
-                loger.SaveLog(name, message);
+                    WitBirdLog loger = new WitBirdLog(newPath);
+                    loger.SaveLog(name, message);
+                }
+            }
+            catch
+            {
+
             }
         }
     }

@@ -28,11 +28,43 @@
 @section head
 {
     <style type="text/css">
-        #@(xx) a {
-            color: #ffffff;
-            background-color: #2577e3;
-        }
+          #@(xx) a {
+              color: #ffffff;
+              background-color: #2577e3;
+          }
     </style>
+    @{
+        // 每种活动资源对应的筛选条件数量不一样，为了保证所有的筛选条件能够均分宽度而重写css
+        switch (Model.ResourceType)
+        {
+            case 1:
+            // 活动场地共有7个类别
+                <style>
+                    .btn-group-root .btn-group { width: 14.2%; }
+                </style>
+                break;
+            case 2:
+            //演义人员有3个类别，当选择组织为个人的时候，会增加一个演员性别，共4个类别。会在FilterPartial中重写该css
+            <style>
+                .btn-group-root .btn-group { width: 33.3%; }
+            </style>
+                break;
+            case 3:
+            // 活动设备有2个条件
+            <style>
+                .btn-group-root .btn-group { width: 50%; }
+            </style>
+                break;
+            case 4:
+            //其他资源有2个条件
+            <style>
+                .btn-group-root .btn-group { width: 50%; }
+            </style>
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 <div id="nav">
@@ -44,6 +76,7 @@
         <li class="navli" id="demand"><a href="/wechat/demand/index">需求信息</a></li>
     </ul>
 </div>
+@Html.Partial("FilterPartial", Model.Filter)
 
 <div id="main">
     @if (Model.Items != null && Model.Items.Count > 0)
@@ -68,3 +101,6 @@
 
     @Html.Partial("PagingPartial", Model.Paging)
 </div>
+@section FooterJS{
+
+}
