@@ -8,9 +8,22 @@
 {
     <li>
         演员类型:
+        @{
+    var property = HtmlHelperExtension.ActorTypeListProperty.Find(t => t.Id == Model.ActorTypeId);
+    if (property != null)
+    {
         <span class="yellow2">
-            @HtmlHelperExtension.ActorTypeListProperty.Find(t => t.Id == Model.ActorTypeId).Name
+            @property.Name
         </span>
+
+    }
+    else
+    {
+        <span class="yellow2">
+            未知类型
+        </span>
+    }
+        }
     </li>
 }
 <li>
@@ -18,12 +31,12 @@
 </li>
 <li>
     座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-        <a href="tel:@Model.Telephone">@Model.Telephone</a> 
+        <a href="tel:@Model.Telephone">@Model.Telephone</a>
     </span>
 </li>
 <li>
     手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-        <a href="tel:@Model.Mobile">@Model.Mobile</a> 
+        <a href="tel:@Model.Mobile">@Model.Mobile</a>
     </span>
 </li>
 <li>

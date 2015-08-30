@@ -41,40 +41,63 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         OrderService orderService = new OrderService();
         CityService cityService = new CityService();
 
-        public ActionResult Index(string page)
+        public ActionResult Index(string page, string category, string area, string starttime, string endtime, string startbudget, string endbudget)
         {
-            //LogService.LogWexin("DemandIndex", "Enter");
             DemandModel model = new DemandModel();
-            //model.DemandCategories = demandManager.GetDemandCategories();
 
             string city = string.Empty;
             if (Session["CityId"] != null)
             {
                 city = Session["CityId"].ToString();
             }
-            //LogService.LogWexin("DemandIndex", "City = " + city);
-            //页码，总数重置
-            int pageIndex = 1;
+            int tempPage = 1;
             if (!string.IsNullOrEmpty(page))
             {
-                Int32.TryParse(page, out pageIndex);
+                Int32.TryParse(page, out tempPage);
             }
+
+            //-------------------------------初始化页面参数（不含分页）-----------------------
+            model.PageIndex = tempPage;
+            model.Category = category ?? string.Empty;
+            model.City = city;
+            model.Area = area ?? string.Empty;
+            model.StartBudget = startbudget ?? string.Empty;
+            model.EndBudget = endbudget ?? string.Empty;
+            model.StartTime = starttime ?? string.Empty;
+            model.EndTime = endtime ?? string.Empty;
+
+
+            //-------------------------------初始化SQL查询参数-----------------------
+            DemandParameters parameters = new DemandParameters();
+            parameters.PageCount = 10;//每页显示10条 (与下面保持一致)
+            parameters.PageIndex = tempPage;
+            parameters.Category = model.Category;
+            parameters.City = model.City;
+            parameters.Area = model.Area;
+            parameters.StartBudget = model.StartBudget;
+            parameters.EndBudget = model.EndBudget;
+            parameters.StartTime = model.StartTime;
+            parameters.EndTime = model.EndTime;
+
+
+            //需求类型
+            model.DemandCategories = demandManager.GetDemandCategories();
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                model.Areas = cityService.GetAreasByCityId(city, true);
+            }
+
+
             int allCount = 0;
-            if (string.IsNullOrEmpty(city))
-            {
-                model.Demands = demandService.GetDemands(10, pageIndex, out allCount);//每页显示10条
-            }
-            else
-            {
-                model.Demands = demandService.GetDemandsByCity(10, pageIndex, city, out allCount);//每页显示10条
-            }
-            //LogService.LogWexin("DemandIndex", "Demands.Count = " + model.Demands.Count);
+            //需求分页列表,每页10条
+            model.Demands = demandService.GetDemandsByParameters(parameters, out allCount);
             //分页
             if (model.Demands != null && model.Demands.Count > 0)
             {
-                model.PageIndex = pageIndex;//当前页数
+                model.PageIndex = tempPage;//当前页数
                 model.PageSize = 10;//每页显示多少条
-                model.PageStep = 5;//每页显示多少页码
+                model.PageStep = 10;//每页显示多少页码
                 model.AllCount = allCount;//总条数
                 if (model.AllCount % model.PageSize == 0)
                 {
@@ -85,7 +108,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     model.PageCount = model.AllCount / model.PageSize + 1;
                 }
             }
-            //LogService.LogWexin("DemandIndex", "End");
+
             return View(model);
         }
 

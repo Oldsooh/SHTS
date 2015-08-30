@@ -33,33 +33,45 @@
               background-color: #2577e3;
           }
     </style>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+        /*Override bootstrap css*/
+        .btn-group-root { width: 100%; padding: 2px 5px; }
+            .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li { width: 100%; }
+        .btn { padding: 2px 5px; }
+        .navbar-brand { height: 20px; padding: 0px 10px; }
+        /*Override bootstrap css*/
+    </style>
     @{
         // 每种活动资源对应的筛选条件数量不一样，为了保证所有的筛选条件能够均分宽度而重写css
         switch (Model.ResourceType)
         {
             case 1:
-            // 活动场地共有7个类别
+                // 活动场地共有7个类别
                 <style>
-                    .btn-group-root .btn-group { width: 14.2%; }
+                    .btn-group-root .btn-group { width: 14.28%; }
                 </style>
                 break;
             case 2:
-            //演义人员有3个类别，当选择组织为个人的时候，会增加一个演员性别，共4个类别。会在FilterPartial中重写该css
-            <style>
-                .btn-group-root .btn-group { width: 33.3%; }
-            </style>
+                //演义人员有3个类别，当选择组织为个人的时候，会增加一个演员性别，共4个类别。会在FilterPartial中重写该css
+                <style>
+                    .btn-group-root .btn-group { width: 33.3%; }
+                </style>
                 break;
             case 3:
-            // 活动设备有2个条件
-            <style>
-                .btn-group-root .btn-group { width: 50%; }
-            </style>
+                // 活动设备有2个条件
+                <style>
+                    .btn-group-root .btn-group { width: 50%; }
+                </style>
                 break;
             case 4:
-            //其他资源有2个条件
-            <style>
-                .btn-group-root .btn-group { width: 50%; }
-            </style>
+                //其他资源有2个条件
+                <style>
+                    .btn-group-root .btn-group { width: 50%; }
+                </style>
                 break;
             default:
                 break;
@@ -68,14 +80,14 @@
 }
 
 <div id="nav">
-    <ul id="navul">
-        <li class="navli" id="space"><a href="/wechat/resource/spacelist">活动场地</a></li>
-        <li class="navli" id="actor"><a href="/wechat/resource/actorlist">演艺人员</a></li>
-        <li class="navli" id="equipment"><a href="/wechat/resource/equipmentlist">活动设备</a></li>
-        <li class="navli" id="other"><a href="/wechat/resource/otherlist">其它资源</a></li>
-        <li class="navli" id="demand"><a href="/wechat/demand/index">需求信息</a></li>
-    </ul>
-</div>
+        <ul id="navul">
+            <li class="navli" id="space"><a href="/wechat/resource/spacelist">活动场地</a></li>
+            <li class="navli" id="actor"><a href="/wechat/resource/actorlist">演艺人员</a></li>
+            <li class="navli" id="equipment"><a href="/wechat/resource/equipmentlist">活动设备</a></li>
+            <li class="navli" id="other"><a href="/wechat/resource/otherlist">其它资源</a></li>
+            <li class="navli" id="demand"><a href="/wechat/demand/index">需求信息</a></li>
+        </ul>
+    </div>
 @Html.Partial("FilterPartial", Model.Filter)
 
 <div id="main">
@@ -102,5 +114,6 @@
     @Html.Partial("PagingPartial", Model.Paging)
 </div>
 @section FooterJS{
+
 
 }

@@ -11,12 +11,12 @@
     <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
     <style type="text/css">
         .reg-form .cell label { position: absolute; font-size: 10px; color: red !important; top: 30px; padding-left: 12px; }
-        .wrap { height: auto; }
+        .wrap { height: auto;width:100%;}
         .register-box { position: initial; }
     </style>
 }
-<div class="wrap" style="width:100%">
-    <div class="register-box" style="height: 376px; width: 100%;">
+<div class="wrap">
+    <div class="register-box" style="height: 376px; width: 100%; padding-top:15px; ">
         <form class="reg-form" id="js-form-mobile" method="post" action="#">
             <div class="cell">
                 <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />

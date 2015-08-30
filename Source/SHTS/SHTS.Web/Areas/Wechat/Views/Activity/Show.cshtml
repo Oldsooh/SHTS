@@ -31,16 +31,16 @@
 }
 <div class="main">
     <ul class="details">
-        <li class="dtitle">
-            <a href="#" style="margin-right: 10px;">@Model.Activity.Title</a>
+        <li class="dtitle" style="font-size:20px;">
+            @Model.Activity.Title
         </li>
-        <li>地点：@Model.Activity.Adress</li>
+        <li>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点:<span class="yellow2">@Model.Activity.Adress</span></li>
         <li>
-            发布时间：@string.Format("{0:F}", Model.Activity.StartTime)
+            发布时间:<span class="yellow2">@string.Format("{0:F}", Model.Activity.StartTime)</span>
         </li>
-        <li>活动网站：@Model.Activity.Link</li>
-        <li>标签：@Model.Activity.Keywords</li>
-        <li>主办方：@Model.Activity.HoldBy</li>
+        <li>活动网站:<span class="yellow2">@Model.Activity.Link</span></li>
+        <li>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签:<span class="yellow2">@Model.Activity.Keywords</span></li>
+        <li>主&nbsp;&nbsp;办&nbsp;&nbsp;方:<span class="yellow2">@Model.Activity.HoldBy</span></li>
     </ul>
     <div class="active_info">
         @if (Model.Activity.IsFromMobile.Value)

@@ -98,9 +98,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             if (!string.IsNullOrEmpty(cityName) && Session["CityId"] == null)
             {
-                if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
+                var allCities = Witbird.SHTS.Web.Public.StaticUtility.AllCities;
+                if (allCities != null && allCities.Count > 0)
                 {
-                    foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                    foreach (var item in allCities)
                     {
                         if (item.EntityType == 2 && item.Name == cityName)
                         {
@@ -109,6 +110,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             result = item.Name;
                             break;
                         }
+                    }
+
+                    if (result == "no")
+                    {
+                        var firstCity = allCities.FirstOrDefault();
+                        Session["CityId"] = firstCity.Id;
+                        Session["CityName"] = firstCity.Name;
+                        result = firstCity.Name;
                     }
                 }
             }

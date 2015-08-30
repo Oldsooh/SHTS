@@ -49,11 +49,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             base.OnActionExecuting(filterContext);
 
-            WeChatUser wechatUser = new UserService().GetWeChatUser(92);
-            User user = new UserService().GetUserById(92);
+            //用于绕过权限检测，方便电脑版测试
+            //WeChatUser wechatUser = new UserService().GetWeChatUser(92);
+            //User user = new UserService().GetUserById(92);
 
-            CurrentWeChatUser = wechatUser;
-            CurrentUser = user;
+            //CurrentWeChatUser = wechatUser;
+            //CurrentUser = user;
+
+            #region 微信权限检测
             //try
             //{
             //    var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
@@ -107,14 +110,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             //            }
 
             //            CurrentWeChatUser = wechatUser;
-                        
+
             //        }
             //    }
+
             //}
             //catch (Exception ex)
             //{
             //    LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
             //}
+
+            #endregion 微信权限检测
         }
     }
 }

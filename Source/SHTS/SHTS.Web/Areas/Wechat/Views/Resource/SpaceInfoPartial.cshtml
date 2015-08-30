@@ -5,9 +5,23 @@
 }
 
 <li>
-    场地类型: <span class="yellow2">
-        @HtmlHelperExtension.SpaceTypeListProperty.Find(t => t.Id == Model.SpaceTypeId).Name
-    </span>
+    场地类型: 
+    @{
+        var property = HtmlHelperExtension.SpaceTypeListProperty.Find(t => t.Id == Model.SpaceTypeId);
+        if (property != null)
+        {
+            <span class="yellow2">
+                @property.Name
+            </span>
+
+        }
+        else
+        {
+            <span class="yellow2">
+                未知类型
+            </span>
+        }
+    }
 </li>
 <li>
     场地面积: <span class="yellow2">
@@ -42,7 +56,7 @@
     </span>
 </li>
 <li>
-    联&nbsp;&nbsp;系&nbsp;人: <span class="yellow2">
+    联&nbsp;&nbsp;系&nbsp;&nbsp;人: <span class="yellow2">
         @Model.Contract
     </span>
 </li>

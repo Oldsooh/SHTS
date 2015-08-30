@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 
 /*报名页*/
 .xtitle{
@@ -89,10 +89,6 @@
 	color:#000;}
 .details li{
 	line-height:180%;}
-.dtitle{
-	font-size:16px;}
-.dtitle a{
-	color:#000}
 .circle{
 	width:10px;
 	height:10px;

@@ -8,6 +8,19 @@
     <style type="text/css">
         #demand a { color: #ffffff; background-color: #2577e3; }
     </style>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+        /*Override bootstrap css*/
+        .btn-group-root { width: 100%; padding: 2px 5px; }
+            .btn-group-root .btn-group { width: 20%; }
+                .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li { width: 100%; }
+        .btn { padding: 2px 5px; }
+        .navbar-brand { height: 20px; padding: 0px 10px; }
+        /*Override bootstrap css*/
+    </style>
+
 }
 
 <div id="nav">
@@ -19,6 +32,193 @@
         <li class="navli" id="demand"><a href="/wechat/demand/index">需求信息</a></li>
     </ul>
 </div>
+
+<div class="btn-group btn-group-root" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+        @{
+            var name = "需求类型";
+
+            var first = Model.DemandCategories.FirstOrDefault(x => x.Id.ToString().Equals(Model.Category));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+
+            string urlCategory = "/demand/index?page=1";
+            urlCategory = string.IsNullOrEmpty(Model.Area) ? urlCategory : urlCategory + "&area=" + Model.Area;
+            urlCategory = string.IsNullOrEmpty(Model.StartBudget) ? urlCategory : urlCategory + "&startbudget=" + Model.StartBudget;
+            urlCategory = string.IsNullOrEmpty(Model.EndBudget) ? urlCategory : urlCategory + "&endbudget=" + Model.EndBudget;
+            urlCategory = string.IsNullOrEmpty(Model.StartTime) ? urlCategory : urlCategory + "&starttime=" + Model.StartTime;
+            urlCategory = string.IsNullOrEmpty(Model.EndTime) ? urlCategory : urlCategory + "&endtime=" + Model.EndTime;
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+        }
+        <ul class="dropdown-menu">
+            <li>
+                @if (string.IsNullOrEmpty(Model.Category))
+                {
+                    <a class="no" href="@urlCategory">不限</a>
+                }
+                else
+                {
+                    <a href="@urlCategory">不限</a>
+                }
+            </li>
+            @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+            {
+                foreach (var item in Model.DemandCategories)
+                {
+                    if (item.Id.ToString() == Model.Category)
+                    {
+                        <li><a class="no" href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+    @if (Model.Areas != null && Model.Areas.Count > 0)
+    {
+        <div class="btn-group" role="group">
+
+            @{
+
+        string urlArea = "/demand/index?page=1";
+        urlArea = string.IsNullOrEmpty(Model.Category) ? urlArea : urlArea + "&category=" + Model.Category;
+        urlArea = string.IsNullOrEmpty(Model.StartBudget) ? urlArea : urlArea + "&startbudget=" + Model.StartBudget;
+        urlArea = string.IsNullOrEmpty(Model.EndBudget) ? urlArea : urlArea + "&endbudget=" + Model.EndBudget;
+        urlArea = string.IsNullOrEmpty(Model.StartTime) ? urlArea : urlArea + "&starttime=" + Model.StartTime;
+        urlArea = string.IsNullOrEmpty(Model.EndTime) ? urlArea : urlArea + "&endtime=" + Model.EndTime;
+
+        var areaName = "区域位置";
+        var firstArea = Model.Areas.FirstOrDefault(x => x.Id.ToString().Equals(Model.Area));
+        if (firstArea != null)
+        {
+            areaName = firstArea.Name;
+        }
+
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @areaName
+            <span class="caret"></span>
+        </button>
+            }
+            <ul class="dropdown-menu">
+                <li>
+                    @if (string.IsNullOrEmpty(Model.Area))
+                    {
+                        <a href="@urlArea" class="no">不限</a>
+                    }
+                    else
+                    {
+                        <a href="@urlArea">不限</a>
+                    }
+                </li>
+                @foreach (var item in Model.Areas)
+                {
+                    <li>
+                        @if (!string.IsNullOrEmpty(Model.Area) && Model.Area == item.Id)
+                        {
+                            <a class="no" href="@urlArea&area=@item.Id">@item.Name</a>
+                        }
+                        else
+                        {
+                            <a href="@urlArea&area=@item.Id">@item.Name</a>
+                        }
+                    </li>
+                }
+
+            </ul>
+        </div>
+    }
+
+    <div class="btn-group" role="group">
+
+        @{
+            string urlBudget = "/demand/index?page=1";
+            urlBudget = string.IsNullOrEmpty(Model.Category) ? urlBudget : urlBudget + "&category=" + Model.Category;
+            urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
+            urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
+            urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
+
+            var amountName = "预算金额";
+            if (Model.StartBudget.Equals("1"))
+            {
+                amountName = "¥1-¥1000";
+            }
+            else if (Model.StartBudget.Equals("1001"))
+            {
+                amountName = "¥1001-¥5000";
+            }
+            else if (Model.StartBudget.Equals("5001"))
+            {
+                amountName = "¥5001-¥10000";
+            }
+            else if (Model.StartBudget.Equals("10001"))
+            {
+                amountName = "¥1万-¥5万";
+            }
+            else if (Model.StartBudget.Equals("50001"))
+            {
+                amountName = "¥5万以上";
+            }
+            else
+            {
+                //nothing
+            }
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @amountName
+                <span class="caret"></span>
+            </button>
+        }
+        <ul class="dropdown-menu">
+            <li><a id="budgetid" href="@urlBudget">不限</a></li>
+            <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">¥1-¥1000</a></li>
+            <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=5000">¥1001-¥5000</a></li>
+            <li><a id="budgetid5001" href="@urlBudget&startbudget=5001&endbudget=10000">¥5001-¥10000</a></li>
+            <li><a id="budgetid10001" href="@urlBudget&startbudget=10001&endbudget=50000">¥1万-¥5万</a></li>
+            <li><a id="budgetid50001" href="@urlBudget&startbudget=50001&endbudget=1000000">¥5万以上</a></li>
+        </ul>
+        <script type="text/javascript">
+                    @{ string budgetid = "budgetid" + Model.StartBudget;}
+            document.getElementById("@budgetid").setAttribute("class", "no");
+        </script>
+    </div>
+
+
+    <div class="btn-group" role="group">
+        @{
+            string urlTime = "/demand/index?page=1";
+            urlTime = string.IsNullOrEmpty(Model.Category) ? urlTime : urlTime + "&category=" + Model.Category;
+            urlTime = string.IsNullOrEmpty(Model.Area) ? urlTime : urlTime + "&area=" + Model.Area;
+            urlTime = string.IsNullOrEmpty(Model.StartBudget) ? urlTime : urlTime + "&startbudget=" + Model.StartBudget;
+            urlTime = string.IsNullOrEmpty(Model.EndBudget) ? urlTime : urlTime + "&endbudget=" + Model.EndBudget;
+
+        }
+        <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>&nbsp;&nbsp;<input id="starttime" placeholder="开始时间" class="Wdate" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.StartTime"></td>
+                <td>&nbsp; - &nbsp;</td>
+                <td>
+                    <input id="endtime" class="Wdate" placeholder="结束时间" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.EndTime">
+                </td>
+                <td style="width: 10px;"></td>
+                <td>
+                    <input name="" type="button" value="确定"  class="jgqj_btn" onclick="timeRedirect(this)" id="@urlTime" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="clear: both;"></div>
+</div>
+
 <div id="main">
     @if (Model.Demands != null && Model.Demands.Count > 0)
     {

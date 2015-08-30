@@ -100,14 +100,26 @@ namespace Witbird.SHTS.Web.Controllers
             {
                 if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
                 {
-                    foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
+                    var allCities = Witbird.SHTS.Web.Public.StaticUtility.AllCities;
+                    if (allCities != null && allCities.Count > 0)
                     {
-                        if (item.EntityType == 2 && item.Name == cityName)
+                        foreach (var item in allCities)
                         {
-                            Session["CityId"] = item.Id;
-                            Session["CityName"] = item.Name;
-                            result = item.Name;
-                            break;
+                            if (item.EntityType == 2 && item.Name == cityName)
+                            {
+                                Session["CityId"] = item.Id;
+                                Session["CityName"] = item.Name;
+                                result = item.Name;
+                                break;
+                            }
+                        }
+
+                        if (result == "no")
+                        {
+                            var firstCity = allCities.FirstOrDefault();
+                            Session["CityId"] = firstCity.Id;
+                            Session["CityName"] = firstCity.Name;
+                            result = firstCity.Name;
                         }
                     }
                 }

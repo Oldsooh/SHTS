@@ -267,29 +267,12 @@
         var name = "特点";
         var spaceFeatureList = Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList;
 
-        var detail = "";
-
-        foreach (var item in spaceFeatureList)
-        {
-            detail += "Id: " + item.Id + "    Name: " + item.Name + "   |   ";
-        }
-
-        if (Model.SelectedFilter.ContainsKey("spft"))
-        {
-            Witbird.SHTS.Common.LogService.Log("Model.SelectedFilter['spft']", Model.SelectedFilter["spft"]);
-            Witbird.SHTS.Common.LogService.Log("spaceFeatureList", detail);
-        }
         if (Model.SelectedFilter.ContainsKey("spft"))
         {
             var first = spaceFeatureList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["spft"]));
             if (first != null)
             {
                 name = first.Name;
-                Witbird.SHTS.Common.LogService.Log("First Match", " Id: " + first.Id + "   Name: " + first.Name);
-            }
-            else
-            {
-                Witbird.SHTS.Common.LogService.Log("No Match Item", "");
             }
         }
         <div class="btn-group" role="group">
