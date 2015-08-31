@@ -39,9 +39,9 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         private static string BannerImgUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/banner.jpg";
 
         /// <summary>
-        /// 请先关注我们的链接
+        /// 关于我们的链接
         /// </summary>
-        public const string AttentionUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615414&idx=1&sn=b70bdf52770352541897d47f416e11d8#rd";
+        public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615532&idx=1&sn=7188493d42c8633421c78667266e17f2#rd";
 
         UserService userService = new UserService();
 
@@ -52,7 +52,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 Title = "欢迎您关注中国活动在线网",
                 Description = "活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。",
                 PicUrl = BannerImgUrl,
-                Url = AttentionUsUrl
+                Url = AboutUsUrl
             };
         }
 
@@ -380,11 +380,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 #region 默认返回
                 default:
                     {
-                        var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
-                        strongResponseMessage.Articles.Add(GetWelcomeInfo());
-
                         textResponseMessage.Content = "暂不支持直接回复消息访问活动在线网官方微信号，请从菜单选择相应操作。";
-                        responseMessage = strongResponseMessage;
+                        responseMessage = textResponseMessage;
                     }
                     break;
                 #endregion

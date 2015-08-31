@@ -11,7 +11,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
-    public class ResourceController : BaseController
+    public class ResourceController : WechatBaseController
     {
         ResourceManager resourceManager = new ResourceManager();
         ResourceService resourceService = new ResourceService();

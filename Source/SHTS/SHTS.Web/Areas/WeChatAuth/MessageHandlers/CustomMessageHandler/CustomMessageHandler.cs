@@ -58,8 +58,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
         public override IResponseMessageBase DefaultResponseMessage(IRequestMessageBase requestMessage)
         {
-            var responseMessage = CreateResponseMessage<ResponseMessageNews>();
-            responseMessage.Articles.Add(GetWelcomeInfo());
+            var responseMessage = CreateResponseMessage<ResponseMessageText>();
+            responseMessage.Content = "暂不支持直接回复消息访问活动在线网官方微信号，请从菜单选择相应操作。";
 
             return responseMessage;
         }

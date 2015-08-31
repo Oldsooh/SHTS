@@ -105,7 +105,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             if (isSuccessFul)
             {
-                if (!string.IsNullOrWhiteSpace(callBackUrl))
+                if (string.IsNullOrWhiteSpace(callBackUrl))
                 {
                     callBackUrl = "/wechat/user/index";
                 }

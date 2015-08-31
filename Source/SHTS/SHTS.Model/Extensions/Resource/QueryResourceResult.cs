@@ -19,10 +19,44 @@ namespace Witbird.SHTS.Model.Extensions
 
         public int TotalCount { get; set; }
 
-        public List<Resource> Items { get; set; }
+        private List<Resource> items = new List<Resource>();
+        public List<Resource> Items 
+        {
+            get
+            {
+                return items;
+            }
 
-        public Paging Paging { get; set; }
+            set
+            {
+                items = value;
+            }
+        }
 
-        public UserFilter Filter { get; set; }
+        private Paging paging = new Paging();
+        public Paging Paging 
+        {
+            get
+            {
+                return paging;
+            }
+            set
+            {
+                paging = value;
+            }
+        }
+
+        private UserFilter filter = new UserFilter();
+        public UserFilter Filter
+        {
+            get
+            {
+                return filter;
+            }
+            set
+            {
+                filter = value;
+            }
+        }
     }
 }
