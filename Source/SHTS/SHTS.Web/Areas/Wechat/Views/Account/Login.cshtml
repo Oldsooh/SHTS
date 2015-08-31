@@ -51,16 +51,8 @@
                 //检查是否已绑定账号
                 var loggedusername = $('#loggedusername').val();
                 if (loggedusername != "") {
-                    if (confirm("该微信号当前已绑定会员账号：" + loggedusername + ", 需要重新绑定吗？")) {
-                        $("#js-form-mobile").validate({
-                            submitHandler: function (form) {
-                                form.submit();
-                            }
-                        });
-                    }
-                    else {
-                        window.location = "/wechat/index/index";
-                    }
+                    alert("该微信号当前已绑定会员账号：" + loggedusername + ", 请先解除绑定重试。");
+                    window.location = "/wechat/account/logout";
                 }
                 else {
                     $("#js-form-mobile").validate({

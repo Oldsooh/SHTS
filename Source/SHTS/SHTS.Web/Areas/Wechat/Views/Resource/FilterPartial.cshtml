@@ -159,7 +159,7 @@
     curTimeClass.Add("style", (object)"display:none;");
 }
 
-<div class="btn-group btn-group-root" role="group" aria-label="...">
+<div id="fixed-top" class="btn-group btn-group-root" role="group" aria-label="...">
 
     @if (Model.SelectedFilter.ContainsKey("city"))
     {
@@ -311,7 +311,7 @@
     {
         var name = "设施";
         var spaceFacilityList = Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList;
-        
+
         if (Model.SelectedFilter.ContainsKey("spfc"))
         {
             var first = spaceFacilityList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["spfc"]));
@@ -402,13 +402,13 @@
     {
         var name = "人数";
         var spacePeopleList = Witbird.SHTS.Web.Public.MiscData.SpacePeopleList;
-        
+
         if (Model.SelectedFilter.ContainsKey("sppc"))
         {
             var first = spacePeopleList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["sppc"]));
             if (first != null)
             {
-                name = first.Name; 
+                name = first.Name;
             }
         }
         <div class="btn-group" role="group">
@@ -508,7 +508,7 @@
     {
         var name = "组织类型";
         var actorFromList = Witbird.SHTS.Web.Public.MiscData.ActorFromList;
-        
+
         if (Model.SelectedFilter.ContainsKey("acfm"))
         {
             var first = actorFromList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["acfm"]));
@@ -559,7 +559,7 @@
         {
             var name = "演员性别";
             var actorSexList = Witbird.SHTS.Web.Public.MiscData.ActorSexList;
-            
+
             if (Model.SelectedFilter.ContainsKey("acsx"))
             {
                 var first = actorSexList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["acsx"]));
@@ -607,7 +607,7 @@
     {
         var name = "演出类别";
         var actorTypeList = Witbird.SHTS.Web.Public.MiscData.ActorTypeList;
-        
+
         if (Model.SelectedFilter.ContainsKey("actp"))
         {
             var first = actorTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["actp"]));
@@ -653,7 +653,7 @@
     {
         var name = "设备类别";
         var equipTypeList = Witbird.SHTS.Web.Public.MiscData.EquipTypeList;
-        
+
         if (Model.SelectedFilter.ContainsKey("eqtp"))
         {
             var first = equipTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["eqtp"]));
@@ -699,7 +699,7 @@
     {
         var name = "资源类别";
         var otherTypeList = Witbird.SHTS.Web.Public.MiscData.OtherTypeList;
-        
+
         if (Model.SelectedFilter.ContainsKey("ottp"))
         {
             var first = otherTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["ottp"]));
@@ -741,4 +741,5 @@
         </div>
     }
 </div>
+
 <div style="clear: both;"></div>

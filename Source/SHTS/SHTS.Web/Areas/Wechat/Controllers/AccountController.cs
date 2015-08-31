@@ -67,33 +67,40 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         Session["validataCode"].ToString(),
                         StringComparison.InvariantCultureIgnoreCase))
                     {
-                        user = userService.Login(model.username, model.password);
-                        if (user != null)
+                        if (CurrentWeChatUser.UserId.HasValue && CurrentUser != null)
                         {
-                            WeChatUser loggedInUser = userService.GetWeChatUser(user.UserId);
-
-                            if (loggedInUser == null)
+                            errorMsg = "当前已绑定会员账号（" + CurrentUser.UserName + ")，请先解除绑定后重试。";
+                        }
+                        else
+                        {
+                            user = userService.Login(model.username, model.password);
+                            if (user != null)
                             {
-                                CurrentWeChatUser.UserId = user.UserId;
+                                WeChatUser loggedInUser = userService.GetWeChatUser(user.UserId);
 
-                                if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                                if (loggedInUser == null)
                                 {
-                                    CurrentUser = user;
-                                    return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                                    CurrentWeChatUser.UserId = user.UserId;
+
+                                    if (userService.UpdateWeChatUser(CurrentWeChatUser))
+                                    {
+                                        CurrentUser = user;
+                                        return RedirectToAction("Index", "User", new { Area = "Wechat" });
+                                    }
+                                    else
+                                    {
+                                        errorMsg = "绑定用户失败！";
+                                    }
                                 }
                                 else
                                 {
-                                    errorMsg = "绑定用户失败！";
+                                    errorMsg = "该账号已绑定微信号(" + loggedInUser.NickName + ")， 请先解绑该微信号后重试。";
                                 }
                             }
                             else
                             {
-                                errorMsg = "该账号已绑定微信号(" + loggedInUser.NickName + ")， 请先解绑该微信号后重试。";
+                                errorMsg = "用户名或密码错误！";
                             }
-                        }
-                        else
-                        {
-                            errorMsg = "用户名或密码错误！";
                         }
                     }
                     else

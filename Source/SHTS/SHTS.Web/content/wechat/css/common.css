@@ -22,7 +22,7 @@ body { background-color: #f9f8f8; }
 
 #usercenter { display: inline-block; float: right; }
 
-.username { height: 20px; overflow: hidden; display: block; float: right; background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px; text-align: center; padding-right: 10px; padding-top: 5px; margin-top: 10px; }
+.username { height: 20px; overflow: hidden; display: block; float: right; background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px; text-align: center; padding-right: 10px; padding-top: 2px; margin-top: 10px; }
 /*.username { background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px;padding-top: 5px;}*/
 #logo { float: left; display: inline-block;; }
 

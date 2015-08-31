@@ -1,24 +1,26 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
 @{
-    ViewBag.Title = "需求列表";
+    ViewBag.Title = "需求信息列表";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head
 {
-    <style type="text/css">
-        #demand a { color: #ffffff; background-color: #2577e3; }
-    </style>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <style>
         /*Override bootstrap css*/
         .btn-group-root { width: 100%; padding: 2px 5px; }
-            .btn-group-root .btn-group { width: 20%; }
+            .btn-group-root .btn-group { width: 16.6%; }
                 .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li { width: 100%; }
         .btn { padding: 2px 5px; }
         .navbar-brand { height: 20px; padding: 0px 10px; }
+        .input-group .form-control { width: 50%; padding: 2px 2px; height: 26px; border-radius: 0; border-left: none; padding-top: 5px; font-size: 13px; }
         /*Override bootstrap css*/
+    </style>
+
+    <style type="text/css">
+        #demand a { color: #ffffff; background-color: #2577e3; }
     </style>
 
 }
@@ -33,70 +35,21 @@
     </ul>
 </div>
 
-<div class="btn-group btn-group-root" role="group" aria-label="...">
-    <div class="btn-group" role="group">
-        @{
-            var name = "需求类型";
-
-            var first = Model.DemandCategories.FirstOrDefault(x => x.Id.ToString().Equals(Model.Category));
-            if (first != null)
-            {
-                name = first.Name;
-            }
-
-            string urlCategory = "/demand/index?page=1";
-            urlCategory = string.IsNullOrEmpty(Model.Area) ? urlCategory : urlCategory + "&area=" + Model.Area;
-            urlCategory = string.IsNullOrEmpty(Model.StartBudget) ? urlCategory : urlCategory + "&startbudget=" + Model.StartBudget;
-            urlCategory = string.IsNullOrEmpty(Model.EndBudget) ? urlCategory : urlCategory + "&endbudget=" + Model.EndBudget;
-            urlCategory = string.IsNullOrEmpty(Model.StartTime) ? urlCategory : urlCategory + "&starttime=" + Model.StartTime;
-            urlCategory = string.IsNullOrEmpty(Model.EndTime) ? urlCategory : urlCategory + "&endtime=" + Model.EndTime;
-
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @name
-                <span class="caret"></span>
-            </button>
-        }
-        <ul class="dropdown-menu">
-            <li>
-                @if (string.IsNullOrEmpty(Model.Category))
-                {
-                    <a class="no" href="@urlCategory">不限</a>
-                }
-                else
-                {
-                    <a href="@urlCategory">不限</a>
-                }
-            </li>
-            @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
-            {
-                foreach (var item in Model.DemandCategories)
-                {
-                    if (item.Id.ToString() == Model.Category)
-                    {
-                        <li><a class="no" href="@urlCategory&category=@item.Id">@item.Name</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="@urlCategory&category=@item.Id">@item.Name</a></li>
-                    }
-                }
-            }
-        </ul>
-    </div>
+<div id="fixed-top" class="btn-group btn-group-root navbar-static-top" role="group" aria-label="...">
     @if (Model.Areas != null && Model.Areas.Count > 0)
     {
         <div class="btn-group" role="group">
 
             @{
 
-        string urlArea = "/demand/index?page=1";
+        string urlArea = "/wechat/demand/index?page=1";
         urlArea = string.IsNullOrEmpty(Model.Category) ? urlArea : urlArea + "&category=" + Model.Category;
         urlArea = string.IsNullOrEmpty(Model.StartBudget) ? urlArea : urlArea + "&startbudget=" + Model.StartBudget;
         urlArea = string.IsNullOrEmpty(Model.EndBudget) ? urlArea : urlArea + "&endbudget=" + Model.EndBudget;
         urlArea = string.IsNullOrEmpty(Model.StartTime) ? urlArea : urlArea + "&starttime=" + Model.StartTime;
         urlArea = string.IsNullOrEmpty(Model.EndTime) ? urlArea : urlArea + "&endtime=" + Model.EndTime;
 
-        var areaName = "区域位置";
+        var areaName = "区域";
         var firstArea = Model.Areas.FirstOrDefault(x => x.Id.ToString().Equals(Model.Area));
         if (firstArea != null)
         {
@@ -136,17 +89,66 @@
             </ul>
         </div>
     }
+    <div class="btn-group" role="group">
+        @{
+            var name = "类型";
+
+            var first = Model.DemandCategories.FirstOrDefault(x => x.Id.ToString().Equals(Model.Category));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+
+            string urlCategory = "/wechat/demand/index?page=1";
+            urlCategory = string.IsNullOrEmpty(Model.Area) ? urlCategory : urlCategory + "&area=" + Model.Area;
+            urlCategory = string.IsNullOrEmpty(Model.StartBudget) ? urlCategory : urlCategory + "&startbudget=" + Model.StartBudget;
+            urlCategory = string.IsNullOrEmpty(Model.EndBudget) ? urlCategory : urlCategory + "&endbudget=" + Model.EndBudget;
+            urlCategory = string.IsNullOrEmpty(Model.StartTime) ? urlCategory : urlCategory + "&starttime=" + Model.StartTime;
+            urlCategory = string.IsNullOrEmpty(Model.EndTime) ? urlCategory : urlCategory + "&endtime=" + Model.EndTime;
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+        }
+        <ul class="dropdown-menu">
+            <li>
+                @if (string.IsNullOrEmpty(Model.Category))
+                {
+                    <a class="no" href="@urlCategory">不限</a>
+                }
+                else
+                {
+                    <a href="@urlCategory">不限</a>
+                }
+            </li>
+            @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+            {
+                foreach (var item in Model.DemandCategories)
+                {
+                    if (item.Id.ToString() == Model.Category)
+                    {
+                        <li><a class="no" href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@urlCategory&category=@item.Id">@item.Name</a></li>
+                    }
+                }
+            }
+        </ul>
+    </div>
 
     <div class="btn-group" role="group">
 
         @{
-            string urlBudget = "/demand/index?page=1";
+            string urlBudget = "/wechat/demand/index?page=1";
             urlBudget = string.IsNullOrEmpty(Model.Category) ? urlBudget : urlBudget + "&category=" + Model.Category;
             urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
             urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
             urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
 
-            var amountName = "预算金额";
+            var amountName = "预算";
             if (Model.StartBudget.Equals("1"))
             {
                 amountName = "¥1-¥1000";
@@ -194,28 +196,24 @@
 
     <div class="btn-group" role="group">
         @{
-            string urlTime = "/demand/index?page=1";
+            string urlTime = "/wechat/demand/index?page=1";
             urlTime = string.IsNullOrEmpty(Model.Category) ? urlTime : urlTime + "&category=" + Model.Category;
             urlTime = string.IsNullOrEmpty(Model.Area) ? urlTime : urlTime + "&area=" + Model.Area;
             urlTime = string.IsNullOrEmpty(Model.StartBudget) ? urlTime : urlTime + "&startbudget=" + Model.StartBudget;
             urlTime = string.IsNullOrEmpty(Model.EndBudget) ? urlTime : urlTime + "&endbudget=" + Model.EndBudget;
 
         }
-        <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td>&nbsp;&nbsp;<input id="starttime" placeholder="开始时间" class="Wdate" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.StartTime"></td>
-                <td>&nbsp; - &nbsp;</td>
-                <td>
-                    <input id="endtime" class="Wdate" placeholder="结束时间" type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" value="@Model.EndTime">
-                </td>
-                <td style="width: 10px;"></td>
-                <td>
-                    <input name="" type="button" value="确定"  class="jgqj_btn" onclick="timeRedirect(this)" id="@urlTime" />
-                </td>
-            </tr>
-        </table>
     </div>
 
+    <div class="input-group">
+        <input id="starttime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
+               readonly="readonly" value="@Model.StartTime" placeholder="开始时间">
+        <input id="endtime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
+               readonly="readonly" value="@Model.EndTime" placeholder="结束时间">
+        <span class="input-group-btn">
+            <button onclick="timeRedirect(this)" id="@urlTime" class="btn btn-default" type="button">确定</button>
+        </span>
+    </div>
     <div style="clear: both;"></div>
 </div>
 
@@ -257,3 +255,37 @@
 
     @Html.Partial("PagingPartial", Model)
 </div>
+@section FooterJS
+{
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function timeRedirect(obj) {
+            var url = obj.id;
+            var starttime = document.getElementById('starttime').value;
+            var endtime = document.getElementById('endtime').value;
+            if (starttime != "") {
+                url = url + "&starttime=" + starttime
+            }
+            if (endtime != "") {
+                url = url + "&endtime=" + endtime;
+            }
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var ie6 = /msie 6/i.test(navigator.userAgent)
+            , dv = $('#fixed-top'), st;
+            dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
+            $(window).scroll(function () {
+                st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+                if (st >= parseInt(dv.attr('otop'))) {
+                    if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
+                        dv.css({ position: 'absolute', top: st });
+                    }
+                    else if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', top: 0 });
+                } else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+            });
+        });
+    </script>
+}

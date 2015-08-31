@@ -11,6 +11,8 @@ namespace Witbird.SHTS.Web.Public
     {
         static MiscManager manager = new MiscManager();
 
+        static List<SpaceType> spaceTypeList = manager.GetSpaceTypeList();
+
         /// <summary>
         /// 场地类型
         /// </summary>
@@ -18,10 +20,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetSpaceTypeList();
+                return spaceTypeList;
             }
         }
 
+        static List<SpaceFeature> spaceFeatureList = manager.GetSpaceFeatureList();
         /// <summary>
         /// 场地特点
         /// </summary>
@@ -29,10 +32,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetSpaceFeatureList();
+                return spaceFeatureList;
             }
         }
 
+        static List<SpaceFacility> spaceFacilityList = manager.GetSpaceFacilityList();
         /// <summary>
         /// 场地设施
         /// </summary>
@@ -40,10 +44,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetSpaceFacilityList();
+                return spaceFacilityList;
             }
         }
 
+        static List<SpaceSize> spaceSizeList = manager.GetSpaceSizeList();
         /// <summary>
         /// 场地面积
         /// </summary>
@@ -51,10 +56,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetSpaceSizeList();
+                return spaceSizeList;
             }
         }
 
+        static List<SpacePeople> spacePeopleList = manager.GetSpacePeopleList();
         /// <summary>
         /// 场地人数
         /// </summary>
@@ -62,10 +68,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetSpacePeopleList();
+                return spacePeopleList;
             }
         }
 
+        static List<ActorType> actorTypeList = manager.GetActorTypeList();
         /// <summary>
         /// 演员工作
         /// </summary>
@@ -73,10 +80,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetActorTypeList();
+                return actorTypeList;
             }
         }
 
+        static List<ActorFrom> actorFromList = manager.GetActorFromList();
         /// <summary>
         /// 演员组织类别
         /// </summary>
@@ -84,10 +92,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetActorFromList();
+                return actorFromList;
             }
         }
 
+        static List<ActorSex> actorSexList = manager.GetActorSexList();
         /// <summary>
         /// 演员性别
         /// </summary>
@@ -95,10 +104,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetActorSexList();
+                return actorSexList;
             }
         }
 
+        static List<EquipType> equipTypeList = manager.GetEquipTypeList();
         /// <summary>
         /// 设备类别
         /// </summary>
@@ -106,10 +116,11 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetEquipTypeList();
+                return equipTypeList;
             }
         }
 
+        static List<OtherType> otherTypeList = manager.GetOtherTypeList();
         /// <summary>
         /// 其他类别
         /// </summary>
@@ -117,7 +128,7 @@ namespace Witbird.SHTS.Web.Public
         {
             get
             {
-                return manager.GetOtherTypeList();
+                return otherTypeList;
             }
         }
 
@@ -126,7 +137,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetSpaceTypeById(x);
+                return spaceTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -139,7 +150,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetSpaceFeatureById(x);
+                return spaceFeatureList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -152,7 +163,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetSpaceFacilityById(x);
+                return spaceFacilityList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -164,7 +175,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetSpaceSizeById(x);
+                return spaceSizeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -176,7 +187,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetSpacePeopleById(x);
+                return spacePeopleList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -188,7 +199,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetActorTypeById(x);
+                return actorTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -200,7 +211,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetEquipTypeById(x);
+                return equipTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -213,7 +224,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetOtherTypeById(x);
+                return otherTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -226,7 +237,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetActorFromById(x);
+                return actorFromList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -239,7 +250,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return manager.GetActorSexById(x);
+                return actorSexList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
