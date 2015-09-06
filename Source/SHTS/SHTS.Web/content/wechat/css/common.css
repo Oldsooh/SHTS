@@ -2,8 +2,7 @@
 
 body, button, input, select, textarea { font: 12px/1.5 \5fae\8f6f\96c5\9ed1,\5b8b\4f53,Arial,Verdana; }
 
-a {   color: #337ab7;
-  text-decoration: none;}
+a { color: #337ab7; text-decoration: none; }
 
     a:hover { color: #ff9a15; }
 
@@ -15,19 +14,21 @@ body { background-color: #f9f8f8; }
 
 .wrap { width: 100%; margin: 0 auto; }
 
-#top { width: 100%; overflow: hidden; padding-bottom:10px;}
+#top { width: 100%; overflow: hidden; padding-bottom: 10px; padding-top: 10px; }
 
-#city { display: inline-block; padding-top: 13px; padding-left: 10px; max-width: 100px;}
-    #currentCityName  { color: #ff9a15;font-size:15px;font-weight:bold;}
+.back { float: left; display: inline-block; }
+    .back a { background-image: url('/Areas/Wechat/Content/images/arr-left.png'); /* height: 20px; */ overflow: hidden; display: block; background-repeat: no-repeat; padding-left: 15px; text-align: center; padding-right: 10px; /* padding-top: 2px; */ margin-top: 10px; line-height: 20px; background-size: 8px; background-position: 2px; }
+#city { display: inline-block; padding-top: 11px; padding-left: 10px; max-width: 100px; }
+#currentCityName { color: #ff9a15; font-size: 15px; font-weight: bold; }
 
 #usercenter { display: inline-block; float: right; }
 
-.username { height: 20px; overflow: hidden; display: block; float: right; background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px; text-align: center; padding-right: 10px; padding-top: 2px; margin-top: 10px; }
+.username { height: 20px; overflow: hidden; display: block; /* float: right; */ background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px; text-align: center; padding-right: 10px; padding-top: 2px; margin-top: 10px; }
 /*.username { background: url('/Areas/Wechat/Content/images/usercenter.png'); background-repeat: no-repeat; padding-left: 25px;padding-top: 5px;}*/
-#logo { float: left; display: inline-block;; }
+#logo { float: left; display: inline-block; }
 
     #logo img { max-width: 120px; margin-left: 10px; margin-top: 10px; }
-    
+
 #nav { clear: both; width: 100%; height: 61px; background-color: #FDFDFD; border-top: 1px solid #F3F3F3; border-bottom: 1px solid #F3F3F3; overflow: hidden; }
 
 #navul { text-align: center; }
@@ -107,7 +108,7 @@ body { background-color: #f9f8f8; }
 
     .details li { line-height: 180%; }
 
-.dtitle { text-align:center;margin-bottom:10px;padding-top:10px;font-size: 20px; color: #337ab7; overflow:hidden;}
+.dtitle { text-align: center; margin-bottom: 10px; padding-top: 10px; font-size: 20px; color: #337ab7; overflow: hidden; }
 
 .circle { width: 10px; height: 10px; display: inline-block; border-radius: 78.5px 78.5px 78.5px 78.5px; margin-right: 6px; }
 
