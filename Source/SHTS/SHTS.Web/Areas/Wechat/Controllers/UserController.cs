@@ -169,7 +169,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// 上传证件
         /// </summary>
         /// <returns></returns>
-        public ActionResult Identify()
+        public ActionResult Identify(string returnUrl = null)
         {
             if (CurrentWeChatUser.UserId == null || CurrentUser == null)
             {
@@ -187,11 +187,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 LogService.Log("Identify 出错了！", e.ToString());
             }
             model.ErrorMsg = GetErrorMessage(model.VipInfo);
+
+            ViewData["returnUrl"] = returnUrl;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Identify(string identifyImgUrl)
+        public ActionResult Identify(string identifyImgUrl, string returnUrl = null)
         {
             WeChatUserViewModel model = new WeChatUserViewModel { UserEntity = UserInfo };
 
@@ -226,6 +228,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             else
             {
                 model.ErrorMsg = "请选择认证照片！";
+            }
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return Redirect(returnUrl);
             }
 
             return View(model);

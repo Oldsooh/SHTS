@@ -16,6 +16,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         ResourceManager resourceManager = new ResourceManager();
         ResourceService resourceService = new ResourceService();
 
+        public static string UserIdentifyUrl = 
+            "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain 
+            + "/WeChat/User/Identify?returnUrl={0}\">认证会员可见</a>";
+         
         #region 查看资源信息列表
 
         /// <summary>
@@ -234,13 +238,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 if (!IsIdentified)
                 {
-                    space.Telephone = "认证会员可见";
-                    space.Mobile = "认证会员可见";
-                    space.QQ = "认证会员可见";
+                    string url = string.Format(UserIdentifyUrl, Request.Url.AbsoluteUri);
+                    space.Telephone = url;
+                    space.Mobile = url;
+                    space.QQ = url;
                     space.WeChat = string.Empty;
-                    space.Email = "认证会员可见";
-                    space.Contract = "认证会员可见";
-                    space.DetailAddress = "认证会员可见";
+                    space.Email = url;
+                    space.Contract = url;
+                    space.DetailAddress = url;
+                    space.Href = url;
                 }
 
                 try
@@ -252,7 +258,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     LogService.Log("resource Show GetRight", ex.ToString());
                 }
-                //ViewData["UserInfo"] = CurrentUser;
+
+                ViewData["CurrentWeChatUser"] = CurrentWeChatUser;
                 return View(space);
             }
         }

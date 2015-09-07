@@ -22,8 +22,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         public const string WeChatUserInfo = "WeChatUserInfo";
         public const string WeChatOpenIdCookieName = "WeChatOpenId";
 
-        //
-        // GET: /Wechat/QAuthCallBack/
+        /// <summary>
+        /// 微信授权验证返回
+        /// </summary>
+        /// <param name="code">微信验证code</param>
+        /// <param name="state">用户原始访问地址</param>
+        /// <returns></returns>
 
         public ActionResult CallBack(string code, string state)
         {
@@ -115,7 +119,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             else
             {
-                // 授权回调页面
+                // 授权失败，重新发发起用户授权
                 var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
                 var appId = ConfigurationManager.AppSettings["WeixinAppId"];
                 var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);

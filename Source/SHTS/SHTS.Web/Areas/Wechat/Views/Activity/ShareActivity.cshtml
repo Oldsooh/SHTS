@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "发布活动";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+
+    var CurrentWeChatUser = ViewData["CurrentWeChatUser"] as Witbird.SHTS.Model.WeChatUser;
 }
 @section head
 {
@@ -24,6 +26,19 @@
         #fileheer { opacity: 0; width: 100%; height: 100%; cursor: pointer; }
         .webuploader-element-invisible { position: inherit !important; }
     </style>
+
+<script>
+    function toLogin() {
+        alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
+        window.location = "/wechat/account/login";
+    }
+    </script>
+}
+@if(CurrentWeChatUser != null && !CurrentWeChatUser.IsUserLoggedIn)
+{
+    <script>
+        toLogin();
+    </script>
 }
 <div class="wrap" style="width: 100%">
     <div class="register-box" style="width: 100%;">

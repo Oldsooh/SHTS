@@ -55,6 +55,7 @@
         <form action="Identify" class="reg-form" method="POST" id="multipart/form-data">
             <div class="cell" style="height: auto;">
                 <div id="uploader-demo">
+                    <input type="hidden" name="returnUrl" value='@(ViewData["returnUrl"])' />
                     <input type="hidden" id="ImageUrls" name="identifyImgUrl" />
                     <!--用来存放item-->
                     <div id="fileList" class="uploader-list">
