@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "发布需求";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+    var CurrentWeChatUser = ViewData["CurrentWeChatUser"] as Witbird.SHTS.Model.WeChatUser;
 }
 @section head
 {
@@ -76,6 +77,18 @@
         }
     </script>
 
+<script>
+    function toLogin() {
+        alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
+        window.location = "/wechat/account/login";
+    }
+</script>
+}
+@if (CurrentWeChatUser != null && !CurrentWeChatUser.IsUserLoggedIn)
+{
+    <script>
+        toLogin();
+    </script>
 }
 
 <div class="wrap" style="width: 100%">

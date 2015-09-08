@@ -3,6 +3,7 @@ using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.TenPayLibV3;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -158,7 +159,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            if (!IsUserLogin)
+            if (!CurrentWeChatUser.IsUserLoggedIn)
             {
                 return Redirect("/Wechat/account/login");
             }
@@ -172,7 +173,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         public ActionResult Add(Demand demand)
         {
             string result = "发布失败";
-            if (!IsUserLogin)
+            if (!CurrentWeChatUser.IsUserLoggedIn)
             {
                 result = "长时间为操作，请重新登录";
             }
@@ -259,7 +260,18 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             string username = CurrentWeChatUser.OpenId;
                             decimal amount = 1m;//购买需要花费1元钱
 
-                            amount = 0.01m;//调试用，设置为1分
+                            try
+                            {
+                                if (!decimal.TryParse(ConfigurationManager.AppSettings["BuyDemandFee"], out amount))
+                                {
+                                    amount = 1m;
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+                                LogService.LogWexin("微信购买需求联系方式金额配置出错,请检查Web.config中<BuyDemandFee>配置", ex.ToString());
+                                amount = 1m;
+                            }
 
                             int state = (int)OrderState.New;
                             string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;

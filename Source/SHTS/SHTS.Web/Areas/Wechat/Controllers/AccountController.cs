@@ -203,6 +203,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         #endregion
 
+        #region 解除账号绑定
+
         public ActionResult LogOut()
         {
             WeChatLoginViewModel model = new WeChatLoginViewModel();
@@ -291,5 +293,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             model.ErrorMsg = errorMsg;
             return View(model);
         }
+
+        #endregion 解除账号绑定
     }
 }

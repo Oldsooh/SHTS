@@ -209,9 +209,7 @@
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
     <Compile Include="Areas\Wechat\Controllers\WechatBaseController.cs" />
     <Compile Include="Areas\Wechat\Controllers\NewsController.cs" />
-    <Compile Include="Areas\Wechat\Controllers\PayController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ResourceController.cs" />
-    <Compile Include="Areas\Wechat\Controllers\TradeController.cs" />
     <Compile Include="Areas\Wechat\Controllers\UserController.cs" />
     <Compile Include="Areas\Wechat\Models\BaseModel.cs" />
     <Compile Include="Areas\Wechat\Models\DemandModel.cs">

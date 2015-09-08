@@ -40,25 +40,25 @@
                     <td>2.&nbsp;如果您是当前窗口跳转，可以<a href="javascript:history.go(-1);" class="blue">[返回上一页]</a>继续浏览
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td>3.&nbsp;在<span id="tm" style="color: #ff6a00; font-weight: bold;">5</span>秒后自动<a
                         href="http://www.activity-line.com" class="blue">[跳转到首页]</a>
                     </td>
-                </tr>
+                </tr>*@
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
-    var xx = 5;
-    function myrefresh() {
-        if (xx > 0) {
-            xx = xx - 1;
-            document.getElementById("tm").innerText = xx;
-        } else {
-            window.location.href = 'http://www.activity-line.com'
-        }
-    }
-    setInterval('myrefresh()', 1000)
+    //var xx = 5;
+    //function myrefresh() {
+    //    if (xx > 0) {
+    //        xx = xx - 1;
+    //        document.getElementById("tm").innerText = xx;
+    //    } else {
+    //        window.location.href = 'http://www.activity-line.com'
+    //    }
+    //}
+    //setInterval('myrefresh()', 1000);
 </script>

@@ -70,6 +70,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult ShareActivity()
         {
+            if (!CurrentWeChatUser.IsUserLoggedIn)
+            {
+                return Redirect("/wechat/account/login");
+            }
             ShareActivityViewModel model = new ShareActivityViewModel();
             model.Provinces = (new CityService()).GetProvinces(true);
             model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
@@ -85,7 +89,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             ShareActivityViewModel model = new ShareActivityViewModel();
             model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
-            if (!IsUserLogin)
+            if (!CurrentWeChatUser.IsUserLoggedIn)
             {
                 model.ErrorMsg = "未登录或登录超时";
                 model.ErrorCode = "401";

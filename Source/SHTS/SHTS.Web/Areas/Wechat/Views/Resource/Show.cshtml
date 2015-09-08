@@ -43,19 +43,19 @@
             switch (Model.ResourceType)
             {
                 case 1:
-                    @Html.Partial("SpaceInfoPartial", Model);
-                                                            break;
+                    Html.Partial("SpaceInfoPartial", Model);
+                    break;
                 case 2:
-                @Html.Partial("ActorInfoPartial", Model);
-                                                        break;
+                    Html.Partial("ActorInfoPartial", Model);
+                    break;
                 case 3:
-                @Html.Partial("EquipInfoPartial", Model);
-                                                        break;
+                    Html.Partial("EquipInfoPartial", Model);
+                    break;
                 case 4:
-                @Html.Partial("OtherInfoPartial", Model);
-                                                        break;
+                    Html.Partial("OtherInfoPartial", Model);
+                    break;
                 default:
-                                                        break;
+                    break;
             }
         }
     </ul>

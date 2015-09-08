@@ -37,7 +37,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             WeChatUserViewModel model = new WeChatUserViewModel { WeChatUserEntity = CurrentWeChatUser, UserEntity = CurrentUser };
             try
             {
-                if (CurrentUser == null)
+                if (!CurrentWeChatUser.IsUserLoggedIn)
                 {
                     return Redirect("/wechat/account/login");
                 }
@@ -171,7 +171,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult Identify(string returnUrl = null)
         {
-            if (CurrentWeChatUser.UserId == null || CurrentUser == null)
+            if (!CurrentWeChatUser.IsUserLoggedIn)
             {
                 return Redirect("/wechat/account/login");
             }
