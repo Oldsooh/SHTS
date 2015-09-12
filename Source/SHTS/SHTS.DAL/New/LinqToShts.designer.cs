@@ -69,7 +69,7 @@ namespace Witbird.SHTS.DAL.New
     #endregion
 		
 		public LinqToShtsDataContext() : 
-				base(global::Witbird.SHTS.DAL.Properties.Settings.Default.shtsConnectionString, mappingSource)
+				base(global::Witbird.SHTS.DAL.Properties.Settings.Default.shtsConnectionString2, mappingSource)
 		{
 			OnCreated();
 		}
