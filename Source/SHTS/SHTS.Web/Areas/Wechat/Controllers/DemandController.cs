@@ -153,6 +153,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 model.Demand.EndTime = DateTime.Now;
             }
 
+            ViewBag["BuyDemandFee"] = BuyDemandFee;
+
             return View(model);
         }
 
@@ -258,26 +260,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             string subject = string.IsNullOrWhiteSpace(demand.Title) ? "微信用户购买需求联系方式永久权限" : demand.Title;
                             string body = "微信用户" + CurrentWeChatUser.NickName + "购买需求（" + demand.Title + "）联系方式的永久查看权限";
                             string username = CurrentWeChatUser.OpenId;
-                            decimal amount = 1m;//购买需要花费1元钱
-
-                            try
-                            {
-                                if (!decimal.TryParse(ConfigurationManager.AppSettings["BuyDemandFee"], out amount))
-                                {
-                                    amount = 1m;
-                                }
-                            }
-                            catch(Exception ex)
-                            {
-                                LogService.LogWexin("微信购买需求联系方式金额配置出错,请检查Web.config中<BuyDemandFee>配置", ex.ToString());
-                                amount = 1m;
-                            }
 
                             int state = (int)OrderState.New;
                             string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;
 
                             TradeOrder order = orderService.AddNewOrder(
-                                orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.WeChatDemand, id);
+                                orderId, subject, body, BuyDemandFee, state, username, resourceUrl, (int)OrderType.WeChatDemand, id);
 
                             if (order != null)
                             {
