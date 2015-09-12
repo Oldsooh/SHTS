@@ -153,7 +153,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 model.Demand.EndTime = DateTime.Now;
             }
 
-            ViewBag["BuyDemandFee"] = BuyDemandFee;
+            ViewData["BuyDemandFee"] = BuyDemandFee.ToString();
 
             return View(model);
         }

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = Model.Demand.Title;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+    string buyDemandFee = ViewData["BuyDemandFee"] as string;
 }
 @section head
 {
@@ -42,7 +43,7 @@
             {
                 <li>
                     <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(ViewBag["BuyDemandFee"])元</span>即可购买永久查看权限。
+                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(buyDemandFee)元</span>即可购买永久查看权限。
                         <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">立即购买</span></a>
                     </div>
                 </li>
