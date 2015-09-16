@@ -27,7 +27,107 @@
                 width: 100
             });
         });
+
+        var hasAllDemandsSelected = false;
+
+        function selectAllDemands(cbxSelectAll) {
+            if (!hasAllDemandsSelected) {
+                $('.cbxDemand').each(function () {
+                    $(this).attr("checked", "checked");
+                });
+
+                $(cbxSelectAll).attr("checked", "checked");
+
+                hasAllDemandsSelected = true;
+            }
+            else {
+                $('.cbxDemand').each(function () {
+                    $(this).removeAttr("checked");
+                });
+
+                $(cbxSelectAll).removeAttr("checked");
+
+                hasAllDemandsSelected = false;
+            }
+        }
+        
+        function onCbxDemandSelectChanged(obj) {
+            if ($(this).attr('checked') == false) {
+                hasAllDemandsSelected = false;
+                $('#cbxSelectAll').removeAttr("checked");
+            }
+        }
+
+        function getAllSelectedDemandsID() {
+            var ids = new Array();
+            $('.cbxDemand').each(function () {
+                if ($(this).attr("checked") == true) {
+                    ids.push($(this).val());
+                }
+            });
+
+            return ids;
+        }
+
+        function doBtnSetWeChatBuyDemandFeeClickEvent() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            //allSelectedIds.forEach(function (item) {
+            //    alert(item);
+            //});
+
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else {
+                if (checkValidFee()) {
+        
+                }
+            }
+        }
+
+        function checkValidFee(){
+            var fee = $('#txtWeChatBuyDemandFee').val();
+            if (fee == '') {
+                alert("请输入购买金额！");
+                return false;
+            }
+
+            var amount = parseInt(fee);
+            
+            if (amount == NaN || amount <= 0) {
+                alert("购买金额不正确");
+                return false;
+            }
+
+            return true;
+        }
     </script>
+    <style>
+        .weixinpart {
+            float: right;
+            font-size: 16px;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+            .weixinpart input {
+                border: 1px solid;
+                font-size: 13px;
+                line-height: 20px;
+                height: 20px;
+            }
+
+            .weixinpart button {
+                font-size: 16px;
+                font-weight: bold;
+                color: blue;
+            }
+
+                .weixinpart button:hover {
+                    cursor: pointer;
+                }
+    </style>
 </head>
 
 <body>
@@ -48,6 +148,11 @@
             <div class="itab">
                 <ul>
                     <li><a href="#tab1" class="selected">需求列表</a></li>
+                    <content class="weixinpart">
+                        <span>统一为选择的需求设置微信服务号购买联系方式金额</span>
+                        <input type="text" id="txtWeChatBuyDemandFee" placeholder="请输入购买金额（单位：元）" />
+                        <button id="btnSetWeChatBuyDemandFee" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();">设置</button>
+                    </content>
                 </ul>
             </div>
 
@@ -57,8 +162,9 @@
                 <table class="tablelist">
                     <thead>
                         <tr>
-                            @*<th>
-                                <input name="" type="checkbox" value="" checked="checked" /></th>*@
+                            <th>
+                                <input id="cbxSelectAll" onclick="selectAllDemands(this);" type="checkbox" value="" />
+                            </th>
                             <th>序号</th>
                             <th>需求类型</th>
                             <th style="min-width:250px;">标题</th>
@@ -74,47 +180,48 @@
                         @if (Model.Demands != null && Model.Demands.Count > 0)
                         {
                             foreach (var item in Model.Demands)
-                            {  
-                            <tr>
-                                @*<td>
-                                    <input name="" type="checkbox" value="" /></td>*@
-                                <td>
-                                    <span>@item.RowNumber</span>
-                                </td>
-                                <td>
-                                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
-                                    {
-                                        foreach (var category in Model.DemandCategories)
+                            {
+                                <tr>
+                                    <td>
+                                        <input onchange="onCbxDemandSelectChanged(this);" class="cbxDemand" type="checkbox" value="@item.Id" />
+                                    </td>
+                                    <td>
+                                        <span>@item.RowNumber</span>
+                                    </td>
+                                    <td>
+                                        @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
                                         {
-                                            if (item.CategoryId == category.Id)
+                                            foreach (var category in Model.DemandCategories)
                                             {
-                                        <span>@category.Name</span>
-                                                break;
+                                                if (item.CategoryId == category.Id)
+                                                {
+                                                    <span>@category.Name</span>
+                                                    break;
+                                                }
                                             }
                                         }
-                                    }
-                                </td>
-                                <td>
-                                    <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
-                                </td>
-                                <td>@item.UserName</td>
-                                <td>
-                                    @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
-                                </td>
-                                <td>
-                                    <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
-                                </td>
-                                <td>
-                                    <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
-                                </td>
-                                <td>
-                                    <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                                    </td>
+                                    <td>@item.UserName</td>
+                                    <td>
+                                        @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
+                                    </td>
+                                    <td>
+                                        <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
+                                    </td>
+                                    <td>
+                                        <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
+                                    </td>
+                                    <td>
+                                        <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                    </td>
 
-                                <td>
-                                    <a href="/admin/demand/delete?id=@item.Id" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>
-                                </td>
-                            </tr> 
+                                    <td>
+                                        <a href="/admin/demand/delete?id=@item.Id" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>
+                                    </td>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -133,12 +240,12 @@
                                 //上一页
                                 if (Model.PageIndex > 1)
                                 {
-                        <span><a href="/admin/demand/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                                    <span><a href="/admin/demand/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
                                 }
                                 //首页
                                 if (Model.PageStep < Model.PageIndex)
                                 {
-                        <span><a href="/admin/demand/index/1">首页</a></span>
+                                    <span><a href="/admin/demand/index/1">首页</a></span>
                                 }
                                 //分页
                                 for (int i = step; i < step + Model.PageStep; i++)
@@ -147,23 +254,23 @@
                                     {
                                         if (i == Model.PageIndex)
                                         {
-                        <span><a href="/admin/demand/index/@i" class="no">@i</a></span>
+                                            <span><a href="/admin/demand/index/@i" class="no">@i</a></span>
                                         }
                                         else
                                         {
-                        <span><a href="/admin/demand/index/@i">@i</a></span>
+                                            <span><a href="/admin/demand/index/@i">@i</a></span>
                                         }
                                     }
                                 }
                                 //末页
                                 if (step + Model.PageStep <= Model.PageCount)
                                 {
-                        <span><a href="/admin/demand/index/@Model.PageCount">末页</a></span>
+                                    <span><a href="/admin/demand/index/@Model.PageCount">末页</a></span>
                                 }
                                 //下一页
                                 if (Model.PageIndex < Model.PageCount)
                                 {
-                        <span><a href="/admin/demand/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                                    <span><a href="/admin/demand/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
                                 }
                             }
                         }
@@ -185,14 +292,9 @@
             $('.tablelist tbody tr:odd').addClass('odd');
         </script>
 
-
-
-
-
     </div>
 
 
 </body>
 
 </html>
-
