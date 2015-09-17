@@ -174,9 +174,22 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             return Redirect(Request.UrlReferrer.LocalPath);
         }
 
-        public ActionResult UpdateDemandWeixinBuyFee(int[] demandIds, int weixinBuyFee)
+        public ActionResult UpdateDemandWeixinBuyFee(string demandIds, int weixinBuyFee)
         {
-            bool result = demandService.UpdateWexinBuyFee(demandIds, weixinBuyFee);
+            bool result = false;
+            List<int> ids = new List<int>();
+            if (!string.IsNullOrEmpty(demandIds))
+            {
+                var idArray = demandIds.Split(',');
+                foreach (var demandId in idArray)
+                {
+                    if (!string.IsNullOrEmpty(demandId))
+                    {
+                        ids.Add(Convert.ToInt32(demandId));
+                    }
+                }
+            }
+            result = demandService.UpdateWexinBuyFee(ids, weixinBuyFee);
 
             var jsonData = new {
                 IsSuccessFul = result

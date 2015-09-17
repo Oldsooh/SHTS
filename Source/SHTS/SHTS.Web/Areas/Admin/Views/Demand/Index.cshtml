@@ -80,12 +80,18 @@
                 return false;
             }
             else if (checkValidFee()) {
-                if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗')) {
+                if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗?')) {
                     // Invoke service
+                    var demandIds = '';
+
+                    allSelectedIds.forEach(function (e) {
+                        demandIds += e + ',';
+                    });
+
                     $.post(
                         '/admin/demand/UpdateDemandWeixinBuyFee',
                         {
-                            demandIds: allSelectedIds,
+                            demandIds: demandIds,
                             weixinBuyFee: $('#txtWeChatBuyDemandFee').val()
                         },
                         function (data) {
@@ -96,6 +102,7 @@
                                 });
                                 $('#cbxSelectAll').removeAttr("checked");
                                 hasAllDemandsSelected = false;
+                                window.location = window.location;
                             }
                             else {
                                 alert('设置失败！');
@@ -203,7 +210,7 @@
                             <th style="min-width:250px;">标题</th>
                             <th>发布者</th>
                             <th>地区</th>
-                            <th>微信联系方<br /> 式购买金额</th>
+                            <th>微信金额</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
                             <th>发布时间</th>

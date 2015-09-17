@@ -297,11 +297,11 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
-        public bool UpdateWexinBuyFee(int[] demandIds, int weixinBuyFee)
+        public bool UpdateWexinBuyFee(List<int> demandIds, int weixinBuyFee)
         {
             bool result = false;
 
-            if (demandIds.Length == 0)
+            if (demandIds == null || demandIds.Count == 0)
             {
                 return result;
             }
