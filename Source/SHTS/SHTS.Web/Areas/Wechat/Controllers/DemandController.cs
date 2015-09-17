@@ -233,7 +233,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             string nonceStr = string.Empty;
             string package = string.Empty;
             string paySign = string.Empty;
-            
+
             try
             {
                 Demand demand = demandService.GetDemandById(id);
@@ -253,7 +253,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     else
                     {
                         isSuccessFul = orderService.DeleteOrderByOpenIdAndDemandIdForWeChatClient(CurrentWeChatUser.OpenId, id);
-                        
+
                         if (isSuccessFul)
                         {
                             string orderId = orderService.GenerateNewOrderNumber();
@@ -265,7 +265,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;
 
                             TradeOrder order = orderService.AddNewOrder(
-                                orderId, subject, body, BuyDemandFee, state, username, resourceUrl, (int)OrderType.WeChatDemand, id);
+                                orderId, subject, body, demand.WeixinBuyFee ?? BuyDemandFee, state, username, resourceUrl, (int)OrderType.WeChatDemand, id);
 
                             if (order != null)
                             {
@@ -317,7 +317,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             int allCount = 0;
             model.PaidDemandOrders = orderService.GetWeChatUserPaidDemands(CurrentWeChatUser.OpenId, model.PageSize, model.PageIndex, out allCount);
-            
+
             //分页
             if (model.PaidDemandOrders != null && model.PaidDemandOrders.Count > 0)
             {
@@ -331,11 +331,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     model.PageCount = model.AllCount / model.PageSize + 1;
                 }
             }
-            
+
             return View(model);
         }
 
-        private bool PreparePaySign(TradeOrder order, out string appId, out string timeStamp, 
+        private bool PreparePaySign(TradeOrder order, out string appId, out string timeStamp,
             out string nonceStr, out string package, out string paySign, out string message)
         {
             bool isSuccessFul = false;
@@ -376,7 +376,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 packageReqHandler.SetParameter("sign", sign);	                    //签名
 
                 string data = packageReqHandler.ParseXML();
-                
+
                 var result = TenPayV3.Unifiedorder(data);
                 var res = XDocument.Parse(result);
 
