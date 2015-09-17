@@ -173,5 +173,16 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
             return Redirect(Request.UrlReferrer.LocalPath);
         }
+
+        public ActionResult UpdateDemandWeixinBuyFee(int[] demandIds, int weixinBuyFee)
+        {
+            bool result = demandService.UpdateWexinBuyFee(demandIds, weixinBuyFee);
+
+            var jsonData = new {
+                IsSuccessFul = result
+            };
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
     }
 }

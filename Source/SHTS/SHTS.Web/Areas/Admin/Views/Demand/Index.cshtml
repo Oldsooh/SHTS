@@ -50,9 +50,9 @@
                 hasAllDemandsSelected = false;
             }
         }
-        
-        function onCbxDemandSelectChanged(obj) {
-            if ($(this).attr('checked') == false) {
+
+        function onCbxDemandSelectChanged(cbxDemand) {
+            if ($(cbxDemand).attr('checked') == false) {
                 hasAllDemandsSelected = false;
                 $('#cbxSelectAll').removeAttr("checked");
             }
@@ -79,43 +79,76 @@
                 alert('请选择需要设置的需求信息！');
                 return false;
             }
-            else {
-                if (checkValidFee()) {
-        
+            else if (checkValidFee()) {
+                if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗')) {
+                    // Invoke service
+                    $.post(
+                        '/admin/demand/UpdateDemandWeixinBuyFee',
+                        {
+                            demandIds: allSelectedIds,
+                            weixinBuyFee: $('#txtWeChatBuyDemandFee').val()
+                        },
+                        function (data) {
+                            if (data.IsSuccessFul) {
+                                alert('设置成功！');
+                                $('.cbxDemand').each(function () {
+                                    $(this).removeAttr('checked');
+                                });
+                                $('#cbxSelectAll').removeAttr("checked");
+                                hasAllDemandsSelected = false;
+                            }
+                            else {
+                                alert('设置失败！');
+                            }
+                        });
                 }
+            }
+            else {
+                // do nothing
             }
         }
 
-        function checkValidFee(){
+        function checkValidFee() {
             var fee = $('#txtWeChatBuyDemandFee').val();
-            if (fee == '') {
-                alert("请输入购买金额！");
-                return false;
-            }
-
-            var amount = parseInt(fee);
-            
-            if (amount == NaN || amount <= 0) {
-                alert("购买金额不正确");
+            if (fee <= 0) {
+                alert('请输入正确的购买金额');
                 return false;
             }
 
             return true;
         }
+
+        function validateInput(input) {
+            var value = $(input).val();
+            if (value.length == 1) {
+                $(input).val(value.replace(/[^1-9]/g, ''));
+            }
+            else {
+                $(input).val(value.replace(/\D/g, ''));
+            }
+        }
     </script>
     <style>
         .weixinpart {
             float: right;
-            font-size: 16px;
             font-weight: bold;
             padding-right: 10px;
         }
 
+            .weixinpart span {
+                font-size: 16px;
+                color: blue;
+            }
+
             .weixinpart input {
+                margin-left: 10px;
+                margin-right: 10px;
+                padding-left: 10px;
                 border: 1px solid;
                 font-size: 13px;
                 line-height: 20px;
                 height: 20px;
+                width: 180px;
             }
 
             .weixinpart button {
@@ -150,8 +183,8 @@
                     <li><a href="#tab1" class="selected">需求列表</a></li>
                     <content class="weixinpart">
                         <span>统一为选择的需求设置微信服务号购买联系方式金额</span>
-                        <input type="text" id="txtWeChatBuyDemandFee" placeholder="请输入购买金额（单位：元）" />
-                        <button id="btnSetWeChatBuyDemandFee" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();">设置</button>
+                        <input type="text" id="txtWeChatBuyDemandFee" onkeyup="validateInput(this)" onafterpaste="validateInput(this)" placeholder="请输入购买金额（单位：元）" />
+                        <button id="btnSetWeChatBuyDemandFee" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();">确定</button>
                     </content>
                 </ul>
             </div>
@@ -170,6 +203,7 @@
                             <th style="min-width:250px;">标题</th>
                             <th>发布者</th>
                             <th>地区</th>
+                            <th>微信联系方<br /> 式购买金额</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
                             <th>发布时间</th>
@@ -207,6 +241,9 @@
                                     <td>@item.UserName</td>
                                     <td>
                                         @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
+                                    </td>
+                                    <td>
+                                        @item.WeixinBuyFee 元
                                     </td>
                                     <td>
                                         <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>

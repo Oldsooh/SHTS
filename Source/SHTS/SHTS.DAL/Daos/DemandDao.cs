@@ -18,6 +18,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_DemandSelectByCity = "sp_DemandSelectByCity";
         private const string sp_DemandCategory_Select = "sp_DemandCategory_Select";
         private const string sp_DemandUpdate = "sp_DemandUpdate";
+        private const string sp_UpdateDemandWeixinBuyFee = "sp_UpdateDemandWeixinFeeByDemandId";
 
         public List<Demand> SelectDemands(int pageCount, int pageIndex, out int count, SqlConnection conn)
         {
@@ -278,6 +279,17 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@IsActive", demand.IsActive)
             };
             return DBHelper.SetDataToDB(conn, sp_DemandUpdate, sqlParameters);
+        }
+
+        public static bool UpdatersDemandWeixinBuyFee(SqlConnection conn, int demandId, int weixinBuyFee)
+        {
+            SqlParameter[] parameters = new SqlParameter[] 
+            {
+                new SqlParameter("@DemandId", demandId),
+                new SqlParameter("@WeixinBuyFee", weixinBuyFee)
+            };
+
+            return DBHelper.SetDataToDB(conn, sp_UpdateDemandWeixinBuyFee, parameters);
         }
 
         public static int SelectTradeOrderByOpenIdAndDemandId(SqlConnection conn, string wechatUserOpenId, int demandId)

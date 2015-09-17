@@ -200,6 +200,7 @@
     <Build Include="StoredProcedure\Demand\sp_SelectTradeOrderByOpenIdAndDemandId.sql" />
     <Build Include="StoredProcedure\Order\sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient.sql" />
     <Build Include="StoredProcedure\Order\sp_SelectUserPaidDemands.sql" />
+    <Build Include="StoredProcedure\Demand\sp_UpdateDemandWeixinFeeByDemandId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

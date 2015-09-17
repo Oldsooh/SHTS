@@ -15,7 +15,8 @@
 	@TimeLength		nvarchar(50),
 	@PeopleNumber	nvarchar(50),
 	@Budget			int,
-	@InsertTime		datetime
+	@InsertTime		datetime,
+	@WeixinBuyFee	int
 AS
 	Insert into Demand
 	([UserId]
@@ -37,6 +38,7 @@ AS
       ,[ViewCount]
       ,[IsActive]
       ,[InsertTime]
+	  ,[WeixinBuyFee]
 	  )
 	  values
 	  (
@@ -58,5 +60,6 @@ AS
 	  @Budget,
 	  0,
 	  1,
-	  @InsertTime
+	  @InsertTime,
+	  @WeixinBuyFee
 	  )

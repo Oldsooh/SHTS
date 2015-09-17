@@ -21,5 +21,6 @@
 	[Email] NVARCHAR(50) NULL,
     [ViewCount] INT NOT NULL,
 	[IsActive] BIT NOT NULL,  
-    [InsertTime] DATETIME NOT NULL
+    [InsertTime] DATETIME NOT NULL, 
+    [WeixinBuyFee] INT NULL DEFAULT 1
 )

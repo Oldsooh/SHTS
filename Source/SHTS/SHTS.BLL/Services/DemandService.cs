@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.Daos;
@@ -293,6 +294,50 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Close();
             }
+            return result;
+        }
+
+        public bool UpdateWexinBuyFee(int[] demandIds, int weixinBuyFee)
+        {
+            bool result = false;
+
+            if (demandIds.Length == 0)
+            {
+                return result;
+            }
+
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    foreach (var demandId in demandIds)
+                    {
+                        result = DemandDao.UpdatersDemandWeixinBuyFee(conn, demandId, weixinBuyFee);
+
+                        if (!result)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (result)
+                    {
+                        scope.Complete();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.Log("更新需求联系方式购买金额失败", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return result;
         }
 
