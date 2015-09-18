@@ -64,19 +64,19 @@
       <HintPath>..\packages\Lucene.Net.3.0.3\PanGu.Lucene.Analyzer.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin">
-      <HintPath>..\..\..\..\XiaoChangeHe\bin\Senparc.Weixin.dll</HintPath>
+      <HintPath>Dlls\Senparc.Weixin.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin.MP">
-      <HintPath>..\..\..\..\XiaoChangeHe\bin\Senparc.Weixin.MP.dll</HintPath>
+      <HintPath>Dlls\Senparc.Weixin.MP.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin.MP.MvcExtension">
-      <HintPath>..\..\..\..\XiaoChangeHe\bin\Senparc.Weixin.MP.MvcExtension.dll</HintPath>
+      <HintPath>Dlls\Senparc.Weixin.MP.MvcExtension.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin.Open">
-      <HintPath>..\..\..\..\XiaoChangeHe\bin\Senparc.Weixin.Open.dll</HintPath>
+      <HintPath>Dlls\Senparc.Weixin.Open.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin.QY">
-      <HintPath>..\..\..\..\XiaoChangeHe\bin\Senparc.Weixin.QY.dll</HintPath>
+      <HintPath>Dlls\Senparc.Weixin.QY.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
