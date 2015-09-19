@@ -1221,6 +1221,16 @@
     <Content Include="Dictionaries\Stopword.txt" />
     <Content Include="Dictionaries\Synonym.txt" />
     <Content Include="Dictionaries\Wildcard.txt" />
+    <Content Include="Dlls\Senparc.Weixin.dll" />
+    <Content Include="Dlls\Senparc.Weixin.MP.dll" />
+    <Content Include="Dlls\Senparc.Weixin.MP.MvcExtension.dll" />
+    <Content Include="Dlls\Senparc.Weixin.MP.MvcExtension.xml" />
+    <Content Include="Dlls\Senparc.Weixin.MP.xml" />
+    <Content Include="Dlls\Senparc.Weixin.Open.dll" />
+    <Content Include="Dlls\Senparc.Weixin.Open.xml" />
+    <Content Include="Dlls\Senparc.Weixin.QY.dll" />
+    <Content Include="Dlls\Senparc.Weixin.QY.xml" />
+    <Content Include="Dlls\Senparc.Weixin.xml" />
     <Content Include="Global.asax" />
     <Content Include="Content\upload\uploadimage300200.ashx" />
     <Content Include="Content\kindeditor\asp.net\file_manager_json.ashx" />
