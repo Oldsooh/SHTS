@@ -42,7 +42,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         /// 0: 关键字， 1: 关键字
         /// </summary>
         public static string SearchResultUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
-            "/wechat/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>\r\n\r\n直接回复消息即可搜素:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[1]其他资源\r\n\r\n以及需求信息。";
+            "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>\r\n\r\n直接回复消息即可搜素:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。";
 
         /// <summary>
         /// 关于我们的链接
