@@ -11,6 +11,8 @@ using Senparc.Weixin.MP.Entities.Request;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP.Helpers;
 using WitBird.SHTS.Areas.WeChatAuth.Utilities;
+using WitBird.Com.SearchEngine;
+using Witbird.SHTS.Common;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 {
@@ -22,6 +24,13 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
     {
         private string appId = WebConfigurationManager.AppSettings["WeixinAppId"];
         private string appSecret = WebConfigurationManager.AppSettings["WeixinAppSecret"];
+
+        #region 搜索
+
+        public string IndexPath = "~/IndexData";
+        public string DictPath = @"~/Config/PanGu.xml";
+
+        #endregion
 
         public CustomMessageHandler(Stream inputStream, PostModel postModel, int maxRecordCount = 0)
             : base(inputStream, postModel, maxRecordCount)
@@ -55,7 +64,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             //TODO: 对Event信息进行统一操作
             return eventResponseMessage;
         }
-
+        
         public override IResponseMessageBase DefaultResponseMessage(IRequestMessageBase requestMessage)
         {
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
@@ -64,32 +73,14 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             return responseMessage;
         }
 
-        protected void LogException(Exception ex)
+        public override IResponseMessageBase OnTextRequest(RequestMessageText requestMessage)
         {
-            try
-            {
-                #region LogException
-                var logPath = HttpContext.Current.Server.MapPath("~/Error.txt");
-                using (StreamWriter tw = new StreamWriter(logPath))
-                {
-                    tw.WriteLine("Time:" + DateTime.Now);
-                    tw.WriteLine("ExecptionMessage:" + ex.Message);
-                    tw.WriteLine(ex.Source);
-                    tw.WriteLine(ex.ToString());
-                    if (ex.InnerException != null)
-                    {
-                        tw.WriteLine("========= InnerException =========");
-                        tw.WriteLine(ex.InnerException.Message);
-                        tw.WriteLine(ex.InnerException.Source);
-                        tw.WriteLine(ex.InnerException.ToString());
-                    }
-                }
-                #endregion
-            }
-            catch (Exception)
-            {
-                //TODO
-            }
+            string keyWords = requestMessage.Content;
+            var responseMessage = CreateResponseMessage<ResponseMessageText>();
+
+            responseMessage.Content = string.Format(SearchResultUrl, keyWords, keyWords);
+
+            return responseMessage;
         }
     }
 }
