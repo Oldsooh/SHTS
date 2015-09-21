@@ -65,6 +65,12 @@ namespace WitBird.Com.SearchEngine
             {
                 this.Url = defaulltUrl;
             }
+            if (this.ProvinceId == null)
+            {
+                this.ProvinceId = string.Empty;
+            }
+            CityId = CityId ?? string.Empty;
+            AreaId = AreaId ?? string.Empty;
         }
 
         private String[] _ImgList;

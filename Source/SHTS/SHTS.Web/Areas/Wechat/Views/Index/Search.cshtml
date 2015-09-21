@@ -50,6 +50,7 @@
                     <span class="state blue">@item.CreatedTime.ToString("MM-dd")</span>
                     <a href="@relatedUrl" style="margin-right: 10px;">@(new HtmlString(item.Title))</a>
                 </li>
+                <li>@relatedUrl</li>
                 <li>结果来自：<span class="yellow">@resultTypeName</span></li>
                 <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
                 <li>@(new HtmlString(item.Content))</li>

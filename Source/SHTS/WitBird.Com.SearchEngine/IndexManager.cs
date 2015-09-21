@@ -108,6 +108,10 @@ namespace WitBird.Com.SearchEngine
                     document.Add(new Field(Constants.CREATETIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.IMGS, source.Imgs, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.CONTENT, source.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+                    document.Add(new Field(Constants.PROVINCEID, source.ProvinceId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.CITYID, source.CityId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.AREAID, source.AreaId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.RESOURCEID, source.ResourceId.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
                     //文档写入索引库
                     writer.AddDocument(document);
                 }

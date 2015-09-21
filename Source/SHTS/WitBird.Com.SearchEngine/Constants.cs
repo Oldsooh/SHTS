@@ -14,5 +14,9 @@ namespace WitBird.Com.SearchEngine
         public const string IMGS = "Imgs";
         public const string CONTENT = "content";
         public const string split = ",";
+        public const string PROVINCEID = "provinceId";
+        public const string CITYID = "cityid";
+        public const string AREAID = "areaid";
+        public const string RESOURCEID = "resouceid";
     }
 }
