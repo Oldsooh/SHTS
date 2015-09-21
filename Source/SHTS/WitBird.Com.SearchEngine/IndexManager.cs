@@ -105,6 +105,7 @@ namespace WitBird.Com.SearchEngine
                     document.Add(new Field(Constants.TITILE, source.Title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
                     document.Add(new Field(Constants.URL, source.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.TIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.CREATETIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.IMGS, source.Imgs, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.CONTENT, source.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
                     //文档写入索引库

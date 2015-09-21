@@ -19,6 +19,12 @@ namespace WitBird.Com.SearchEngine
             get;
         }
 
+        public DateTime CreatedTime
+        {
+            get;
+            set;
+        }
+
         public string Url
         {
             set;
@@ -77,5 +83,15 @@ namespace WitBird.Com.SearchEngine
                 return _ImgList;
             }
         }
+
+        public string ProvinceId { get; set; }
+
+        public string CityId { get; set; }
+
+        public string AreaId { get; set; }
+
+        public SearchResultType ResultType { get; set; }
+
+        public int ResourceId { get; set; }
     }
 }

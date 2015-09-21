@@ -3,18 +3,56 @@
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @model Witbird.SHTS.Web.Models.SearchViewModel
-
+<div id="nav">
+    共搜索到@(Model.TotalHit)条记录
+</div>
 <div id="main">
     @if (Model.resultList != null && Model.resultList.Count > 0)
     {
         foreach (var item in Model.resultList)
         {
+            var resultTypeName = "";
+            var relatedUrl = "";
+            
+            switch(item.ResultType)
+            {
+                case WitBird.Com.SearchEngine.SearchResultType.Activity:
+                    resultTypeName = "活动在线";
+                    relatedUrl = "/wechat/activity/show/" + item.ResourceId;
+                    break;
+                case  WitBird.Com.SearchEngine.SearchResultType.ActorResource:
+                    resultTypeName = "演艺人员资源";
+                    relatedUrl = "/wechat/resource/show/" + item.ResourceId;
+                    break;
+                case WitBird.Com.SearchEngine.SearchResultType.Demand:
+                    resultTypeName = "需求信息";
+                    relatedUrl = "/wechat/demand/show/" + item.ResourceId;
+                    break;
+                case WitBird.Com.SearchEngine.SearchResultType.EquipmentResource:
+                    resultTypeName = "活动设备资源";
+                    relatedUrl = "/wechat/resource/show/" + item.ResourceId;
+                    break;
+                case WitBird.Com.SearchEngine.SearchResultType.OtherResource:
+                    resultTypeName = "其他资源";
+                    relatedUrl = "/wechat/resource/show/" + item.ResourceId;
+                    break;
+                case WitBird.Com.SearchEngine.SearchResultType.SpaceResource:
+                    resultTypeName = "活动场地资源";
+                    relatedUrl = "/wechat/resource/show/" + item.ResourceId;
+                    break;
+                default:
+                    resultTypeName = "未知类型";
+                    relatedUrl = "javascript:void(0);";
+                    break;
+            }
             <ul class="commonlist">
                 <li class="atitle">
-                    <span class="state blue">@item.Time</span>
-                    <a href="@item.Url" style="margin-right: 10px;">@(new HtmlString(item.Title))</a>
+                    <span class="state blue">@item.CreatedTime.ToString("MM-dd")</span>
+                    <a href="@relatedUrl" style="margin-right: 10px;">@(new HtmlString(item.Title))</a>
                 </li>
-                <li><span class="yellow">摘要</span>@(new HtmlString(item.Content))</li>
+                <li>结果来自：<span class="yellow">@resultTypeName</span></li>
+                <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
+                <li>@(new HtmlString(item.Content))</li>
             </ul>
         }
     }

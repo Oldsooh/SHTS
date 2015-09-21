@@ -56,6 +56,8 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 string result = string.Empty;
                 const string http = "http://{0}/";
                 string baseroot = string.Format(http, Request.Url.Authority);
+                // Use related url instead of full url, becuase always link to PC site when view search result in wechat client.
+                //string baseroot = "/";
 
                 serachConfig = GetConfig();
 
@@ -86,8 +88,14 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                     {
                         source = new MetaSource()
                         {
+                            ResourceId = n.Id,
                             Title = n.Title,
-                            Time = n.CreatedTime.Value.ToShortDateString()
+                            Time = n.CreatedTime.Value.ToShortDateString(),
+                            CreatedTime = n.CreatedTime.Value,
+                            ResultType = SearchResultType.Activity,
+                            ProvinceId = n.Province,
+                            CityId = n.City,
+                            AreaId = n.Area
                         };
                         source.Url = GenFullUrl(baseroot, n.Id, "activity");
                         source.Imgs = string.Empty;
@@ -119,8 +127,15 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                     {
                         source = new MetaSource()
                         {
+                            ResourceId = n.Id,
                             Title = n.Title,
-                            Time = n.LastUpdatedTime.ToShortDateString()
+                            Time = n.LastUpdatedTime.ToShortDateString(),
+                            CreatedTime = n.LastUpdatedTime,
+                            // 资源存储类型为场地1， 演员2，设备3，其他4
+                            ResultType = (SearchResultType)(n.ResourceType - 1),
+                            ProvinceId = n.ProvinceId,
+                            CityId = n.CityId,
+                            AreaId = n.AreaId
                         };
                         source.Url = GenFullUrl(baseroot, n.Id, "Resource");
                         source.Imgs = string.Empty;
@@ -151,8 +166,14 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                     {
                         source = new MetaSource()
                         {
+                            ResourceId = n.Id,
                             Title = n.Title,
-                            Time = n.InsertTime.ToShortDateString()
+                            Time = n.InsertTime.ToShortDateString(),
+                            CreatedTime = n.InsertTime,
+                            ResultType = SearchResultType.Demand,
+                            ProvinceId = n.Province,
+                            CityId = n.City,
+                            AreaId = n.Area
                         };
                         source.Url = GenFullUrl(baseroot, n.Id, "Demand");
                         source.Imgs = string.Empty;

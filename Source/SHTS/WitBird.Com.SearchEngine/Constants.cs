@@ -10,6 +10,7 @@ namespace WitBird.Com.SearchEngine
         public const string TITILE = "title";
         public const string URL = "url";
         public const string TIME = "time";
+        public const string CREATETIME = "createtime";
         public const string IMGS = "Imgs";
         public const string CONTENT = "content";
         public const string split = ",";
