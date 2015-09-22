@@ -163,7 +163,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             if (!CurrentWeChatUser.IsUserLoggedIn)
             {
-                return Redirect("/Wechat/account/login");
+                return Redirect("/wechat/account/login");
             }
             DemandModel model = new DemandModel();
             model.DemandCategories = demandManager.GetDemandCategories();

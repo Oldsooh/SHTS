@@ -1,10 +1,39 @@
 ﻿@{
-    ViewBag.Title = "搜索：" + @Model.Keywords;
+    ViewBag.Title = "搜索：" + @Model.Keywords + "，共搜索到" + @Model.TotalHit + "条记录";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @model Witbird.SHTS.Web.Models.SearchViewModel
-<div id="nav">
-    共搜索到@(Model.TotalHit)条记录
+<style>
+    .nav-right {
+        display: inline-block;
+        float: right;
+        padding-right: 10px;
+    }
+
+    .keyWords {
+        width: 160px;
+        padding: 3px;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function searchByKeyWords() {
+        var keywords = $('#keyWords').val();
+        if (keywords == '') {
+            return false;
+        }
+        else {
+            var href = "/wechat/index/search?keyWords=" + keywords;
+            window.location.href = href;
+        }
+    }
+</script>
+<div style="padding-left:10px;font-size:16px; margin:0 auto;padding-bottom:10px;background:#FFF;">
+    <span class="yellow2" style="font-weight: bold;">共搜索到@(Model.TotalHit)条记录</span>
+    <div class="nav-right">
+        <input type="text" id="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
+        <a href="javascript:void(0)" onclick="searchByKeyWords();">搜索</a>
+    </div>
 </div>
 <div id="main">
     @if (Model.resultList != null && Model.resultList.Count > 0)
@@ -13,14 +42,14 @@
         {
             var resultTypeName = "";
             var relatedUrl = "";
-            
-            switch(item.ResultType)
+
+            switch (item.ResultType)
             {
                 case WitBird.Com.SearchEngine.SearchResultType.Activity:
                     resultTypeName = "活动在线";
                     relatedUrl = "/wechat/activity/show/" + item.ResourceId;
                     break;
-                case  WitBird.Com.SearchEngine.SearchResultType.ActorResource:
+                case WitBird.Com.SearchEngine.SearchResultType.ActorResource:
                     resultTypeName = "演艺人员资源";
                     relatedUrl = "/wechat/resource/show/" + item.ResourceId;
                     break;
@@ -50,16 +79,12 @@
                     <span class="state blue">@item.CreatedTime.ToString("MM-dd")</span>
                     <a href="@relatedUrl" style="margin-right: 10px;">@(new HtmlString(item.Title))</a>
                 </li>
-                <li>@relatedUrl</li>
+                @*<li>@relatedUrl</li>*@
                 <li>结果来自：<span class="yellow">@resultTypeName</span></li>
                 <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
-                <li>@(new HtmlString(item.Content))</li>
+                <li>内容摘要：@(new HtmlString(item.Content))</li>
             </ul>
         }
-    }
-    else
-    {
-        <div>没有找到相关结果</div>
     }
 
     <div style="clear: both; height: 10px;"></div>
@@ -74,12 +99,12 @@
                     //上一页
                     if (Model.PageIndex > 1)
                     {
-                        <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
                     }
                     //首页
                     if (Model.PageStep < Model.PageIndex)
                     {
-                        <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=1">1</a></span>
+                        <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=1">1</a></span>
                     }
                     //分页
                     for (int i = step; i < step + Model.PageStep; i++)
@@ -88,23 +113,23 @@
                         {
                             if (i == Model.PageIndex)
                             {
-                                <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=@i" class="no">@i</a></span>
+                                <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=@i" class="no">@i</a></span>
                             }
                             else
                             {
-                                <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=@i">@i</a></span>
+                                <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=@i">@i</a></span>
                             }
                         }
                     }
                     //末页
                     if (step + Model.PageStep <= Model.PageCount)
                     {
-                        <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=@Model.PageCount">@Model.PageCount</a></span>
+                        <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=@Model.PageCount">@Model.PageCount</a></span>
                     }
                     //下一页
                     if (Model.PageIndex < Model.PageCount)
                     {
-                        <span><a href="/wechat/index/search?keyWords=(@Model.Keywords)&page=@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        <span><a href="/wechat/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex + 1)" class="next">下一页</a></span>
                     }
                 }
             }

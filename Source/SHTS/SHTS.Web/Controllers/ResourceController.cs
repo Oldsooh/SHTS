@@ -41,7 +41,7 @@ namespace Witbird.SHTS.Web.Controllers
         {
             if (!IsIdentified)
             {
-                return Redirect("/accout/login");
+                return Redirect("/account/login");
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Witbird.SHTS.Web.Controllers
         {
             if (!IsIdentified)
             {
-                return Redirect("/accout/login");
+                return Redirect("/account/login");
             }
             else
             {

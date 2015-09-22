@@ -42,7 +42,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         /// 0: 关键字， 1: 关键字
         /// </summary>
         public static string SearchResultUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
-            "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>\r\n\r\n直接回复消息即可搜素:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。";
+            "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>\r\n\r\n直接回复想要搜索的关键字即可获取:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。";
 
         /// <summary>
         /// 关于我们的链接
@@ -56,7 +56,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             return new Article()
             {
                 Title = "欢迎您关注中国活动在线网",
-                Description = "活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。",
+                Description = "活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。\r\n\r\n直接回复想要搜索的关键字即可获取:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。",
                 PicUrl = BannerImgUrl,
                 Url = AboutUsUrl
             };

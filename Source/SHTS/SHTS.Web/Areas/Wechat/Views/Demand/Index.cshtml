@@ -225,7 +225,7 @@
             <ul class="commonlist">
                 <li class="atitle">
                     <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
-                    <a href="/Wechat/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">@item.Title</a>
+                    <a href="/wechat/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">@item.Title</a>
                 </li>
                 <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
                 <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>

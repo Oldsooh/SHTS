@@ -18,5 +18,6 @@ namespace WitBird.Com.SearchEngine
         public const string CITYID = "cityid";
         public const string AREAID = "areaid";
         public const string RESOURCEID = "resouceid";
+        public const string RESULTTYPE = "resulttype";
     }
 }

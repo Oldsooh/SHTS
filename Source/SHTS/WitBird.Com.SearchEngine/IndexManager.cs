@@ -56,18 +56,23 @@ namespace WitBird.Com.SearchEngine
                 Document document = new Document(); 
                 //向文档中添加字段  Add(字段,值,是否保存字段原始值,是否针对该列创建索引)
                 //--所有字段的值都将以字符串类型保存 因为索引库只存储字符串类型数据
-                document.Add(new Field(Constants.TITILE, source.Title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-
                 //Field.Store:表示是否保存字段原值。指定Field.Store.YES的字段在检索时才能用document.Get取出原值  
                 //Field.Index.NOT_ANALYZED:指定不按照分词后的结果保存--是否按分词后结果保存取决于是否对该列内容进行模糊查询
-                document.Add(new Field(Constants.URL, source.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
                 //Field.Index.ANALYZED:指定文章内容按照分词后结果保存 否则无法实现后续的模糊查询 
                 //WITH_POSITIONS_OFFSETS:指示不仅保存分割后的词 还保存词之间的距离
 
+                document.Add(new Field(Constants.TITILE, source.Title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+                document.Add(new Field(Constants.URL, source.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
                 document.Add(new Field(Constants.TIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field(Constants.CREATETIME, source.CreatedTime.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
                 document.Add(new Field(Constants.IMGS, source.Imgs, Field.Store.YES, Field.Index.NOT_ANALYZED));
                 document.Add(new Field(Constants.CONTENT, source.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+                document.Add(new Field(Constants.PROVINCEID, source.ProvinceId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field(Constants.CITYID, source.CityId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field(Constants.AREAID, source.AreaId, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field(Constants.RESOURCEID, source.ResourceId.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                document.Add(new Field(Constants.RESULTTYPE, ((int)source.ResultType).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
                 //文档写入索引库
                 writer.AddDocument(document); 
@@ -105,13 +110,15 @@ namespace WitBird.Com.SearchEngine
                     document.Add(new Field(Constants.TITILE, source.Title, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
                     document.Add(new Field(Constants.URL, source.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.TIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
-                    document.Add(new Field(Constants.CREATETIME, source.Time, Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.CREATETIME, source.CreatedTime.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.IMGS, source.Imgs, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.CONTENT, source.Content, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
                     document.Add(new Field(Constants.PROVINCEID, source.ProvinceId, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.CITYID, source.CityId, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.AREAID, source.AreaId, Field.Store.YES, Field.Index.NOT_ANALYZED));
                     document.Add(new Field(Constants.RESOURCEID, source.ResourceId.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                    document.Add(new Field(Constants.RESULTTYPE, ((int)source.ResultType).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+
                     //文档写入索引库
                     writer.AddDocument(document);
                 }
@@ -223,12 +230,20 @@ namespace WitBird.Com.SearchEngine
                 //根据文档id来获得文档对象Document
                 Document doc = searcher.Doc(docId);
                 MetaSource result = new MetaSource();
+                
                 //搜索关键字高亮显示 使用盘古提供高亮插件
                 result.Title = SplitContent.HightLight(kewWords, doc.Get(Constants.TITILE));
                 result.Content = SplitContent.HightLight(kewWords, doc.Get(Constants.CONTENT));
                 result.Time = doc.Get(Constants.TIME);
                 result.Imgs = doc.Get(Constants.IMGS);
                 result.Url = doc.Get(Constants.URL);
+                result.CreatedTime = Convert.ToDateTime(doc.Get(Constants.CREATETIME));
+                result.ProvinceId = doc.Get(Constants.PROVINCEID);
+                result.CityId = doc.Get(Constants.CITYID);
+                result.AreaId = doc.Get(Constants.AREAID);
+                result.ResourceId = Convert.ToInt32(doc.Get(Constants.RESOURCEID));
+                result.ResultType = (SearchResultType)(Convert.ToInt32(doc.Get(Constants.RESULTTYPE)));
+
                 searchResult.Add(result);
             }
             totalHits = collector.TotalHits;

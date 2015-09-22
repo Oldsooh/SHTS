@@ -24,7 +24,7 @@
     <!--需求列表开始-->
     <div class="commonTitle">
         <h3>需求信息</h3>
-        <a href="/Wechat/demand/">更多</a>
+        <a href="/wechat/demand/">更多</a>
     </div>
     <div class="commonList">
         <ul class="commonUl">
@@ -34,13 +34,13 @@
                 {
                     if (item.InsertTime.Day == DateTime.Now.Day)
                     {
-                <li class="commonLi"><a href="/Wechat/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
+                <li class="commonLi"><a href="/wechat/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
                     }
 
                     else
                     {
-                <li class="commonLi"><a href="/Wechat/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
+                <li class="commonLi"><a href="/wechat/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico">
                     <i class="p_newslist_ico_num">@item.InsertTime.ToString("MM-dd")</i></em> </li>
                     }
                 }
