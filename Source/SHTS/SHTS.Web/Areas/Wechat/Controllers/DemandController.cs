@@ -360,11 +360,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 timeStamp = TenPayV3Util.GetTimestamp();
                 nonceStr = TenPayV3Util.GetNoncestr();
 
+                string body = "活动在线网-购买需求联系方式";
+
                 //设置package订单参数
                 packageReqHandler.SetParameter("appid", TenPayV3Info.AppId);		  //公众账号ID
                 packageReqHandler.SetParameter("mch_id", TenPayV3Info.MchId);		  //商户号
                 packageReqHandler.SetParameter("nonce_str", nonceStr);                    //随机字符串
-                packageReqHandler.SetParameter("body", order.Body);    //商品信息
+                packageReqHandler.SetParameter("body", body);    //商品信息
                 packageReqHandler.SetParameter("out_trade_no", order.OrderId);		//商家订单号
                 packageReqHandler.SetParameter("total_fee", (Convert.ToInt32(order.Amount * 100).ToString()));			        //商品金额,以分为单位(money * 100).ToString()
                 packageReqHandler.SetParameter("spbill_create_ip", Request.UserHostAddress);   //用户的公网ip，不是商户服务器IP
@@ -396,7 +398,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             catch (Exception ex)
             {
-                message = "支付失败";
+                message = "支付过程发生错误";
                 LogService.LogWexin("构建支付参数出错", ex.ToString());
             }
 
