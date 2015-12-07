@@ -47,7 +47,7 @@
             <tr>
                 <td>参与人数：<span>@Model.Demand.PeopleNumber</span></td>
                 <td>开始时间：<span>@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd")</span></td>
-                <td>结束时间：<span>@Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></td>
+                <td>结束时间：<span>@(Model.Demand.EndTime == null ? System.DateTime.Today ? Model.Demand.EndTime.Value).ToString("yyyy/MM/dd")</span></td>
             </tr>
             <tr>
 

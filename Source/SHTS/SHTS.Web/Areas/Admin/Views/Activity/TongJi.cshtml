@@ -29,31 +29,38 @@
         });
     </script>
     <style type="text/css">
-                .toolbar li {
+        .toolbar li {
             padding-left: 2px;
         }
-        .toolbar li span {
-            float: right;
-            margin-top: 0px;
-        }
-        .toolbar li span select {
-            height: 100%;
-            opacity: 1;
-        }
+
+            .toolbar li span {
+                float: right;
+                margin-top: 0px;
+            }
+
+                .toolbar li span select {
+                    height: 100%;
+                    opacity: 1;
+                }
+
         #queryresult img {
             top: 20%;
             left: 44%;
             position: absolute;
         }
+
         td a {
             color: blue;
         }
+
         .Wdate {
             width: 120px;
         }
-         .fancybox-custom .fancybox-skin {
-             box-shadow: 0 0 50px #222;
-         }
+
+        .fancybox-custom .fancybox-skin {
+            box-shadow: 0 0 50px #222;
+        }
+
         .btn {
             width: 60px;
             height: 26px;
@@ -63,10 +70,12 @@
             text-align: center;
             padding: 0px;
         }
+
         .deletebtn {
             width: 40px;
             background-color: lightblue;
         }
+
         .notappvo {
             width: 45px;
         }
@@ -83,164 +92,194 @@
         </ul>
     </div>
 
-<div class="formbody">
-    <div id="usual1" class="usual" style="margin-bottom: 10px;">
-        <div class="tools">
-            <form method="GET" action="#">
-                <ul class="toolbar">
-                    <li style="width: 220px;">起始时间：
-                        <span>
-                      <input name="StartTime" class="Wdate" type="text" onClick=" WdatePicker(); " 
-                          value="@Model.StartTime" id="fromtime" />
-                   </span></li>
-                    <li style="width: 220px;">结束时间：
-                        <span>
-                        <input name="EndTime" class="Wdate" type="text" onClick=" WdatePicker(); "
-                             value="@Model.EndTime" id="totime" />
-                   </span></li>
-                    <li style="width: 200px;">关键字：
-                        <input type="text" name="Keyword" style="border: solid 1px burlywood; height: 70%;"/>
-                    </li>
-                    <li style="background-color: rgb(212, 231, 240); background-image: none;">
-                        <button>查询统计</button>
-                    </li>
-                </ul>
-            </form>
-        </div>
-        <table class="tablelist">
-            <thead>
-            <tr>
-                <th style="width: 60px;">编号</th>
-                <th style="overflow: hidden; text-align: left;"><strong>活动标题</strong></th>
-                <th style="width: 80px;"><strong>发布会员</strong></th>
-                <th style="width: 80px;"><strong>活动类型</strong></th>
-                <th style="width: 250px;"><strong>简图</strong></th>
-                <th style="width: 70px;"><strong>审核状态</strong></th>
-                <th style="width: 130px;"><strong>创建/更新时间</strong></th>
-            </tr>
-            </thead>
-            <tbody>
-            @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
-            {
-                var rownumber = (Model.CurrentPage-1)*Model.PageSize+1;
-                foreach (var item in Model.ActivityList)
-                {
-                    if (item != null)
+    <div class="formbody">
+        <div id="usual1" class="usual" style="margin-bottom: 10px;">
+            <div class="tools">
+                <form method="GET" action="#">
+                    <ul class="toolbar">
+                        <li style="width: 220px;">
+                            起始时间：
+                            <span>
+                                <input name="StartTime" class="Wdate" type="text" onclick=" WdatePicker(); "
+                                       value="@Model.StartTime" id="fromtime" />
+                            </span>
+                        </li>
+                        <li style="width: 220px;">
+                            结束时间：
+                            <span>
+                                <input name="EndTime" class="Wdate" type="text" onclick=" WdatePicker(); "
+                                       value="@Model.EndTime" id="totime" />
+                            </span>
+                        </li>
+                        <li style="width: 200px;">
+                            关键字：
+                            <input type="text" name="Keyword" style="border: solid 1px burlywood; height: 70%;" />
+                        </li>
+                        <li style="background-color: rgb(212, 231, 240); background-image: none;">
+                            <button>查询统计</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">编号</th>
+                        <th style="overflow: hidden; text-align: left;"><strong>活动标题</strong></th>
+                        <th style="width: 80px;"><strong>发布会员</strong></th>
+                        <th style="width: 80px;"><strong>活动类型</strong></th>
+                        <th style="width: 250px;"><strong>简图</strong></th>
+                        <th style="width: 70px;"><strong>审核状态</strong></th>
+                        <th style="width: 130px;"><strong>创建/更新时间</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
                     {
-                        <tr>
-                            <td style="text-align: center;">@(rownumber++)</td>
-                            <td style="text-align: left;">
-                                <a href="/activity/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
-                            </td>
-                            <td>
-                                @item.UserName
-                            </td>
-                            <td>
-                                @Model.GetTypeName(item.ActivityType)
-                            </td>
-                            <td>
-                                @for (int i = 0; i < item.ImgUrls.Length&&i<4; i++)
-                                {
-                                    <a class="fancybox" href="@item.ImgUrls[i]" data-fancybox-group="gallery_@item.Id" title="@item.Title">
-                                        <img src="@item.SmallImgUrls[i]" width="50px" height="50px;"/>
-                                    </a>
-                                }
-                            </td>
-                            <td>
-                                @switch (item.State)
-                                {
-                                    case 0:
-                                        <span style="color: #0a4407">正常</span>
-                                        break;
-                                    case 2:
-                                        <span style="color: #cf9c9c">未审核</span>
-                                        break;
-                                    case 3:
-                                        <span style="color: #1959bb">审核通过</span>
-                                        break;
-                                    case 4:
-                                        <span style="color: #23972b"><span style="color: red;">审核不通过</span></span>
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            </td>
-                            <td>
-                                <span style="display: inline-block; width: 130px; text-align: center;">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span><br/>
+                        var rownumber = (Model.PageIndex - 1) * Model.PageSize + 1;
+                        foreach (var item in Model.ActivityList)
+                        {
+                            if (item != null)
+                            {
+                                <tr>
+                                    <td style="text-align: center;">@(rownumber++)</td>
+                                    <td style="text-align: left;">
+                                        <a href="/activity/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                                    </td>
+                                    <td>
+                                        @item.UserName
+                                    </td>
+                                    <td>
+                                        @Model.GetTypeName(item.ActivityType)
+                                    </td>
+                                    <td>
+                                        @for (int i = 0; i < item.ImgUrls.Length && i < 4; i++)
+                                        {
+                                            <a class="fancybox" href="@item.ImgUrls[i]" data-fancybox-group="gallery_@item.Id" title="@item.Title">
+                                                <img src="@item.SmallImgUrls[i]" width="50px" height="50px;" />
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @switch (item.State)
+                                        {
+                                            case 0:
+                                                <span style="color: #0a4407">正常</span>
+                                                break;
+                                            case 2:
+                                            <span style="color: #cf9c9c">未审核</span>
+                                                break;
+                                            case 3:
+                                            <span style="color: #1959bb">审核通过</span>
+                                                break;
+                                            case 4:
+                                            <span style="color: #23972b"><span style="color: red;">审核不通过</span></span>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <span style="display: inline-block; width: 130px; text-align: center;">@item.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span><br />
 
-                                <span style="display: inline-block; width: 130px; text-align: center;">@item.LastUpdatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
-                            </td>
-                        </tr>
+                                        <span style="display: inline-block; width: 130px; text-align: center;">@item.LastUpdatedTime.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <span>暂无数据，或获取失败</span>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!--分页开始-->
+        <div class="fenye">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                            <span><a href="/admin/activity/index?page=1&StartTime=@Model.StartTime&EndTime=@Model.EndTime">首页</a></span>
+                        }
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                            <span><a href="/admin/activity/index?page=@Model.PrePageIndex&StartTime=@Model.StartTime&EndTime=@Model.EndTime" class="prv">上一页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                                    <span><a href="/admin/trade/list?page=@i&StartTime=@Model.StartTime&EndTime=@Model.EndTime" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                                    <span><a href="/admin/activity/index?page=@i&StartTime=@Model.StartTime&EndTime=@Model.EndTime">@i</a></span>
+                                }
+                            }
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                            <span><a href="/admin/activity/index?page=@Model.NextPageIndex&StartTime=@Model.StartTime&EndTime=@Model.EndTime" class="next">下一页</a></span>
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                            <span><a href="/admin/activity/index?page=@Model.PageCount&StartTime=@Model.StartTime&EndTime=@Model.EndTime">末页</a></span>
+                        }
                     }
                 }
             }
-            else
-            {
-                <span>暂无数据，或获取失败</span>
-            }
-            </tbody>
-        </table>
-    </div>
-    <!--分页开始-->
-    <div class="fenye" style="margin: 0 auto;">
-        @{
-            var startPage = 10 * (Model.CurrentPage / 10) + 1;
-        }
-        <span><a href="/admin/activity/index?page=@Model.PrePageIndex&StartTime=@Model.StartTime&EndTime=@Model.EndTime" class="prv">上一页</a></span>
-        @for (int i = startPage; i <= Model.TotalPage && i < startPage + 10; i++)
-        {
-            if (i == Model.CurrentPage)
-            {
-                <span><a href="#" class="no">@i.ToString()</a></span>
-            }
-            else
-            {
-                <span><a href="/admin/activity/index?page=@i.ToString()&StartTime=@Model.StartTime&EndTime=@Model.EndTime">@i.ToString()</a></span>
-            }
-        }
-        @if (Model.TotalPage >= (startPage + 10))
-        {
-            <span><a href="/admin/activity/index?page=@(startPage + 10)&StartTime=@Model.StartTime&EndTime=@Model.EndTime">...</a></span>
-        }
-        <span><a href="/admin/activity/index?page=@Model.NextPageIndex&StartTime=@Model.StartTime&EndTime=@Model.EndTime" class="next">下一页</a></span>
-    </div>
-    <!--分页结束-->
-    <script type="text/javascript">
-        $("#usual1 ul").idTabs();
-    </script>
+        </div>
 
-    <script type="text/javascript">
-        $('.tablelist tbody tr:odd').addClass('odd');
-    </script>
-</div>
+        <!--分页结束-->
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+    </div>
     <script src="~/Content/js/jquery-1.11.1.min.js"></script>
     <script src="~/Content/fancyBox/jquery.fancybox.js"></script>
-    <link href="~/Content/fancyBox/jquery.fancybox.css" rel="stylesheet"/>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.fancybox').fancybox();
+    <link href="~/Content/fancyBox/jquery.fancybox.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.fancybox').fancybox();
 
-        $("#fancybox-manual-c").click(function () {
-            $.fancybox.open([
-                {
-                    href: '1_b.jpg',
-                    title: 'My title'
-                }, {
-                    href: '2_b.jpg',
-                    title: '2nd title'
-                }, {
-                    href: '3_b.jpg'
-                }
-            ], {
-                helpers: {
-                    thumbs: {
-                        width: 75,
-                        height: 50
+            $("#fancybox-manual-c").click(function () {
+                $.fancybox.open([
+                    {
+                        href: '1_b.jpg',
+                        title: 'My title'
+                    }, {
+                        href: '2_b.jpg',
+                        title: '2nd title'
+                    }, {
+                        href: '3_b.jpg'
                     }
-                }
+                ], {
+                    helpers: {
+                        thumbs: {
+                            width: 75,
+                            height: 50
+                        }
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

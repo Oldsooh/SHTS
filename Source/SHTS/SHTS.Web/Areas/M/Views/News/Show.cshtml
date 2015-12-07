@@ -19,7 +19,7 @@
         <li class="dtitle">
             <h2 style="font-size: 16px; color: #1CB03A;">@Model.News.Title</h2>
         </li>
-        <li>发布时间：<span class="yellow2"> @Model.News.InsertTime.Value.ToString("yyyy-MM-dd HH:mm")</span></li>
+        <li>发布时间：<span class="yellow2"> @(Model.News.InsertTime == null ? System.DateTime.Today : Model.News.InsertTime.Value).ToString("yyyy-MM-dd HH:mm")</span></li>
         <li>新闻类型：
             @if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Notice.ToString())
                 {
