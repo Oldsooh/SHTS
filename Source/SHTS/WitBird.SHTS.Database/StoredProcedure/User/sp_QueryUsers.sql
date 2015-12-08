@@ -32,7 +32,8 @@ BEGIN
 			and t.rownum<=@startRowIndex*@PageSize and UT.UserId=t.UserId;
 
 			SELECT Count(userId) as 'totalCount' from [User]
-				 where [State]!=1 AND UserType=@QueryType;
+				 where [State]!=1 AND UserType=@QueryType
+				  AND (Cellphone like'%'+@Keyword+'%' OR UserName like'%'+@Keyword+'%');
 		END
 		ELSE IF(@cityid !='-1')
 		BEGIN
@@ -45,7 +46,8 @@ BEGIN
 			and t.rownum<=@startRowIndex*@PageSize and UT.UserId=t.UserId;
 
 			SELECT Count(userId) as 'totalCount' from [User]
-				 where [State]!=1 AND UserType=@QueryType;
+				 where [State]!=1 AND UserType=@QueryType
+				  AND (Cellphone like'%'+@Keyword+'%' OR UserName like'%'+@Keyword+'%');
 		END
 		ELSE IF(@resourceid !='-1')
 		BEGIN
@@ -65,6 +67,7 @@ BEGIN
 			and t.rownum<=@startRowIndex*@PageSize and UT.UserId=t.UserId;
 
 			SELECT Count(userId) as 'totalCount' from [User]
-				 where [State]!=1 AND UserType=@QueryType;
+				 where [State]!=1 AND UserType=@QueryType
+				  AND (Cellphone like'%'+@Keyword+'%' OR UserName like'%'+@Keyword+'%');
 		END
 END

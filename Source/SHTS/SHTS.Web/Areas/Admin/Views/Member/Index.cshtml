@@ -114,22 +114,52 @@
         }
         </tbody>
     </table>
-    <div class="pagin">
-        <div class="message">
-            共<i class="blue">@Model.TotalCount</i>条记录，当前显示第&nbsp;<i class="blue">@Model.CurrentPage</i>页
-        </div>
-        <ul class="paginList">
-            <li class="paginItem"><a href="/admin/member/index?page=@(Model.PrePageIndex)&size=@Model.PageSize&querytype=@Model.QueryType"><span class="pagepre"></span></a></li>
-            @for (int i = 1; i <= Model.TotalPage; i++)
+    <!--分页开始-->
+    <div class="fenye">
+        @if (Model.TotalPage > 1)
+        {
+            for (int step = 1; step <= Model.TotalPage; step = step + Model.PageStep)
             {
-                <li class="paginItem current">
-                    <a href="/admin/member/index?page=@i.ToString()&size=@Model.PageSize&querytype=@Model.QueryType">
-                        @i.ToString()
-                    </a>
-                </li>
+                if (Model.CurrentPage >= step && Model.CurrentPage < step + Model.PageStep)
+                {
+                    //首页
+                    if (Model.PageStep < Model.CurrentPage)
+                    {
+                        <span><a href="/admin/member/index?page=1&querytype=@Model.QueryType&keyword=@Model.Keyword">首页</a></span>
+                    }
+                    //上一页
+                    if (Model.CurrentPage > 1)
+                    {
+                        <span><a href="//admin/member/index?page=@(Model.PrePageIndex)&querytype=@Model.QueryType&keyword=@Model.Keyword" class="prv">上一页</a></span>
+                    }
+                    //分页
+                    for (int i = step; i < step + Model.PageStep; i++)
+                    {
+                        if (i <= Model.TotalPage)
+                        {
+                            if (i == Model.CurrentPage)
+                            {
+                                <span><a href="/admin/member/index?page=@(i)&querytype=@Model.QueryType&keyword=@Model.Keyword" class="no">@i</a></span>
+                            }
+                            else
+                            {
+                                <span><a href="/admin/member/index?page=@(i)&querytype=@Model.QueryType&keyword=@Model.Keyword">@i</a></span>
+                            }
+                        }
+                    }
+                    //下一页
+                    if (Model.CurrentPage < Model.TotalPage)
+                    {
+                        <span><a href="/admin/member/index?page=@(Model.NextPageIndex)&querytype=@Model.QueryType&keyword=@Model.Keyword" class="next">下一页</a></span>
+                    }
+                    //末页
+                    if (step + Model.PageStep <= Model.TotalPage)
+                    {
+                        <span><a href="/admin/member/index?page=@(Model.TotalPage)&querytype=@Model.QueryType&keyword=@Model.Keyword">末页</a></span>
+                    }
+                }
             }
-            <li class="paginItem"><a href="/admin/member/index?page=@(Model.NextPageIndex)&size=@Model.PageSize&querytype=@Model.QueryType"><span class="pagenxt"></span></a></li>
-        </ul>
+        }
     </div>
 </div>
 <script type="text/javascript">

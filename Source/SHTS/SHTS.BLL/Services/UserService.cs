@@ -843,14 +843,14 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteVipInfo(int id)
+        public bool DeleteVipInfo(int id, int userId)
         {
             bool result = false;
             var conn = DBHelper.GetSqlConnection();
             try
             {
                 conn.Open();
-                User user = userDao.GetUserById(id, conn);
+                User user = userDao.GetUserById(userId, conn);
 
                 if (user != null)
                 {

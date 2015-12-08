@@ -29,6 +29,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 viewModel.UserList = service.QuersyUsers("-1", -1, page, 20,
                     querytype, Keyword, out totalCount);
                 viewModel.PageSize = 10;
+                viewModel.PageStep = 5;
                 viewModel.CurrentPage = page;
                 viewModel.Keyword = Keyword;
                 viewModel.QueryType = querytype;
@@ -126,6 +127,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 viewModel.UserList = service.QuersyUsersByCityAndResource(city, resurce, page, 20,
                     querytype, Keyword, out totalCount);
                 viewModel.PageSize = 20;
+                viewModel.PageStep = 5;
                 viewModel.CurrentPage = page;
                 viewModel.TotalCount = totalCount;
                 viewModel.Resurce = resurce;
@@ -166,13 +168,13 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         /// <returns></returns>
         [Permission(EnumRole.SystemAdmin)]
         [HttpPost]
-        public JsonResult DeleteVipInfo(int id)
+        public JsonResult DeleteVipInfo(int id, int userId)
         {
             AjaxResult result = new AjaxResult();
             try
             {
                 UserService service = new UserService();
-                if (!service.DeleteVipInfo(id))
+                if (!service.DeleteVipInfo(id, userId))
                 {
                     result.ExceptionInfo = "删除失败";
                 }

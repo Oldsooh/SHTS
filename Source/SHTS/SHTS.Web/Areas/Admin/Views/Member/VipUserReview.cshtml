@@ -49,7 +49,7 @@
                             <a href="@n.IdentifyImg" target="_blank" class="tablelink" title="点击查看原图">查看原图</a>&nbsp;&nbsp;
                             <a href="/admin/member/EditUser/@n.UserId" class="tablelink">查看用户</a>&nbsp;&nbsp;
                             <a onclick="ReviewedVipInfo(@n.Id, @n.UserId);" href="javascript:void(0);" class="tablelink">通过审核</a>&nbsp;&nbsp;
-                            <a onclick="DeleteVipInfo(@n.Id);" href="javascript:void(0);" class="tablelink">删除</a>
+                            <a onclick="DeleteVipInfo(@n.Id, @n.UserId);" href="javascript:void(0);" class="tablelink">删除</a>
                         </td>
                     </tr>
                 }
@@ -77,11 +77,11 @@
     <script type="text/javascript">
         $('.tablelist tbody tr:odd').addClass('odd');
 
-        function DeleteVipInfo(uid) {
+        function DeleteVipInfo(uid, userid) {
             if (!confirm("确定要删除吗？")) {
                 return;
             }
-            $.post("/admin/member/DeleteVipInfo", { "id": uid }, function (json) {
+            $.post("/admin/member/DeleteVipInfo", { "id": uid, "userId" : userid }, function (json) {
                 if (json.IsSuccess) {
                     alert('删除成功');
                     window.location.reload();

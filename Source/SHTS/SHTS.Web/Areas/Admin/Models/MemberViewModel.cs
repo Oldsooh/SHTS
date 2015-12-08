@@ -32,6 +32,8 @@ namespace Witbird.SHTS.Web.Areas.Admin.Models
 
         public int PageSize { set; get; }
 
+        public int PageStep { get; set; }
+
         public int QueryType { set; get; }
 
         public int TotalPage
