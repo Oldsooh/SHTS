@@ -72,7 +72,7 @@
         <thead>
         <tr>
             <th></th>
-            <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif"/></i></th>
+            <th>会员ID<i class="sort"><img src="/areas/admin/content/images/px.gif"/></i></th>
             <th>账户名</th>
             <th>电话</th>
             <th>地址</th>
@@ -130,7 +130,7 @@
                     //上一页
                     if (Model.CurrentPage > 1)
                     {
-                        <span><a href="//admin/member/index?page=@(Model.PrePageIndex)&querytype=@Model.QueryType&keyword=@Model.Keyword" class="prv">上一页</a></span>
+                        <span><a href="/admin/member/index?page=@(Model.PrePageIndex)&querytype=@Model.QueryType&keyword=@Model.Keyword" class="prv">上一页</a></span>
                     }
                     //分页
                     for (int i = step; i < step + Model.PageStep; i++)
@@ -159,6 +159,7 @@
                     }
                 }
             }
+            <span>共@(Model.TotalCount)条数据， 共@(Model.TotalPage)页</span>
         }
     </div>
 </div>

@@ -26,9 +26,10 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             {
                 UserService service = new UserService();
                 int totalCount;
-                viewModel.UserList = service.QuersyUsers("-1", -1, page, 20,
+                int pageSize = 20;
+                viewModel.UserList = service.QuersyUsers("-1", -1, page, pageSize,
                     querytype, Keyword, out totalCount);
-                viewModel.PageSize = 10;
+                viewModel.PageSize = pageSize;
                 viewModel.PageStep = 5;
                 viewModel.CurrentPage = page;
                 viewModel.Keyword = Keyword;
