@@ -55,7 +55,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                LogService.Log("VerifyCellphone", ex.ToString());
+                LogService.Log("VerifyUserName", ex.ToString());
                 result.ExceptionInfo = "出错了！";
                 result.ErrorCode = 102;
             }

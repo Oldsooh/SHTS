@@ -80,9 +80,9 @@
     <Folder Include="StoredProcedure\Common" />
     <Folder Include="Table\Resource\Meta" />
     <Folder Include="StoredProcedure\Order" />
-    <Folder Include="StoredProcedure\Resource" />
     <Folder Include="Index" />
     <Folder Include="StoredProcedure\UserVip" />
+    <Folder Include="StoredProcedure\PublicConfig\Resource" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Table\User.sql" />
@@ -174,10 +174,8 @@
     <Build Include="StoredProcedure\SinglePage\sp_SinglePageSelectById.sql" />
     <Build Include="StoredProcedure\Demand\sp_DemandSelectById.sql" />
     <Build Include="StoredProcedure\PublicConfig\sp_AddPublicConfigValueIgnoreExists.sql" />
-    <Build Include="StoredProcedure\Resource\sp_GetResourceByFilter.sql" />
     <Build Include="Index\IX_Resource_CityId.sql" />
     <Build Include="Table\City.sql" />
-    <Build Include="StoredProcedure\Resource\sp_GetUserResource.sql" />
     <Build Include="Table\UserVip.sql" />
     <Build Include="StoredProcedure\UserVip\sp_SetUserToVip.sql" />
     <Build Include="StoredProcedure\UserVip\sp_SelectUserVipInfoByUserId.sql" />
@@ -201,6 +199,9 @@
     <Build Include="StoredProcedure\Order\sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient.sql" />
     <Build Include="StoredProcedure\Order\sp_SelectUserPaidDemands.sql" />
     <Build Include="StoredProcedure\Demand\sp_UpdateDemandWeixinFeeByDemandId.sql" />
+    <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetResourceByFilter.sql" />
+    <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetUserResource.sql" />
+    <Build Include="Table\ShortMessageCounter.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

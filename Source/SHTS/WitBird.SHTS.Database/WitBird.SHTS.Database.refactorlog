@@ -378,4 +378,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="WeixinBuyFee" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0a5039c9-1976-4d99-805c-2d82bd1fa99a" ChangeDateTime="02/24/2016 12:48:42">
+    <Property Name="ElementName" Value="[dbo].[ShortMessageCounter].[CellPhone]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ShortMessageCounter]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IPAddress" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2ea0da21-1668-4b9d-8852-f8e24955ab4e" ChangeDateTime="02/24/2016 12:49:36">
+    <Property Name="ElementName" Value="[dbo].[ShortMessageCounter].[LastUpdateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ShortMessageCounter]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastSendTime" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a12b2002-2167-48f0-937d-d50d5a383ed0" ChangeDateTime="02/24/2016 12:58:20">
+    <Property Name="ElementName" Value="[dbo].[ShortMessageCounter].[CellPhone]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ShortMessageCounter]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IPCounter" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8cce96f3-657d-41f1-a287-8356e5d78ec1" ChangeDateTime="02/24/2016 12:58:31">
+    <Property Name="ElementName" Value="[dbo].[ShortMessageCounter].[Count]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ShortMessageCounter]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CellPhone" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="99f8d521-bafa-4991-bddb-192921b0fb1e" ChangeDateTime="02/24/2016 12:58:43">
+    <Property Name="ElementName" Value="[dbo].[ShortMessageCounter].[CellPhoneCount]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ShortMessageCounter]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CellPhoneCounter" />
+  </Operation>
 </Operations>
