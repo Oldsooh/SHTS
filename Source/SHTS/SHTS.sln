@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHTS.Web", "SHTS.Web\SHTS.Web.csproj", "{D40AB0DD-9450-4512-A685-2755273DE191}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHTS.DAL", "SHTS.DAL\SHTS.DAL.csproj", "{BEDA0D03-AD98-4598-8F7D-5A501C58EE11}"
@@ -11,48 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHTS.BLL", "SHTS.BLL\SHTS.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHTS.Model", "SHTS.Model\SHTS.Model.csproj", "{9DB3C7CC-FBCF-44BC-A839-F1AB320156E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.Pay", "WitBird.Com.Pay\WitBird.Com.Pay.csproj", "{FF08652B-42DE-413F-A919-9FE7DD81DBA1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.SMS", "WitBird.Com.SMS\WitBird.Com.SMS.csproj", "{48550DC4-4039-4074-8236-1E7A1DA1CA74}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WitBird.SHTS.Database", "WitBird.SHTS.Database\WitBird.SHTS.Database.sqlproj", "{0C149F98-184F-42E1-A67C-5E040490FAF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.SearchEngine", "WitBird.Com.SearchEngine\WitBird.Com.SearchEngine.csproj", "{285B0CDB-6030-4BB8-9D1D-5901BA19C004}"
-EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://yixinyq.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = SHTS.BLL\\SHTS.BLL.csproj
-		SccProjectName1 = SHTS.BLL
-		SccLocalPath1 = SHTS.BLL
-		SccProjectUniqueName2 = SHTS.Common\\SHTS.Common.csproj
-		SccProjectName2 = SHTS.Common
-		SccLocalPath2 = SHTS.Common
-		SccProjectUniqueName3 = SHTS.DAL\\SHTS.DAL.csproj
-		SccProjectName3 = SHTS.DAL
-		SccLocalPath3 = SHTS.DAL
-		SccProjectUniqueName4 = SHTS.Model\\SHTS.Model.csproj
-		SccProjectName4 = SHTS.Model
-		SccLocalPath4 = SHTS.Model
-		SccProjectUniqueName5 = SHTS.Web\\SHTS.Web.csproj
-		SccProjectName5 = SHTS.Web
-		SccLocalPath5 = SHTS.Web
-		SccProjectUniqueName6 = WitBird.Com.Pay\\WitBird.Com.Pay.csproj
-		SccProjectName6 = WitBird.Com.Pay
-		SccLocalPath6 = WitBird.Com.Pay
-		SccProjectUniqueName7 = WitBird.Com.SMS\\WitBird.Com.SMS.csproj
-		SccProjectName7 = WitBird.Com.SMS
-		SccLocalPath7 = WitBird.Com.SMS
-		SccProjectUniqueName8 = WitBird.SHTS.Database\\WitBird.SHTS.Database.sqlproj
-		SccProjectName8 = WitBird.SHTS.Database
-		SccLocalPath8 = WitBird.SHTS.Database
-		SccProjectUniqueName9 = WitBird.Com.SearchEngine\\WitBird.Com.SearchEngine.csproj
-		SccProjectName9 = WitBird.Com.SearchEngine
-		SccLocalPath9 = WitBird.Com.SearchEngine
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -78,24 +41,12 @@ Global
 		{9DB3C7CC-FBCF-44BC-A839-F1AB320156E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DB3C7CC-FBCF-44BC-A839-F1AB320156E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DB3C7CC-FBCF-44BC-A839-F1AB320156E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF08652B-42DE-413F-A919-9FE7DD81DBA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF08652B-42DE-413F-A919-9FE7DD81DBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF08652B-42DE-413F-A919-9FE7DD81DBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF08652B-42DE-413F-A919-9FE7DD81DBA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48550DC4-4039-4074-8236-1E7A1DA1CA74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48550DC4-4039-4074-8236-1E7A1DA1CA74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48550DC4-4039-4074-8236-1E7A1DA1CA74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48550DC4-4039-4074-8236-1E7A1DA1CA74}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C149F98-184F-42E1-A67C-5E040490FAF3}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{285B0CDB-6030-4BB8-9D1D-5901BA19C004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{285B0CDB-6030-4BB8-9D1D-5901BA19C004}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{285B0CDB-6030-4BB8-9D1D-5901BA19C004}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{285B0CDB-6030-4BB8-9D1D-5901BA19C004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
