@@ -201,7 +201,6 @@
     <Build Include="StoredProcedure\Demand\sp_UpdateDemandWeixinFeeByDemandId.sql" />
     <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetResourceByFilter.sql" />
     <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetUserResource.sql" />
-    <Build Include="Table\ShortMessageCounter.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
