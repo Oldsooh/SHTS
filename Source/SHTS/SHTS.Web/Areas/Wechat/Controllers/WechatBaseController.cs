@@ -19,7 +19,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <summary>
         /// 请先关注我们的链接
         /// </summary>
-        public const string AttentionUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615414&idx=1&sn=b70bdf52770352541897d47f416e11d8#rd";
+        public const string FollowUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
+        // User service
+        UserService userService = new UserService();
 
         public WeChatUser CurrentWeChatUser
         {
@@ -79,7 +81,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             base.OnActionExecuting(filterContext);
 
-            //用于绕过权限检测，方便电脑版测试
+            //用于绕过权限检测，方便电脑测试
             //WeChatUser wechatUser = new UserService().GetWeChatUser(92);
             //User user = new UserService().GetUserById(92);
 
@@ -106,17 +108,18 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    var userService = new UserService();
-
                     var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
 
+                    // 取消强制关注逻辑
                     //用户还未关注，提示用户关注我们先。
-                    if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
-                    {
-                        filterContext.Result = new RedirectResult(AttentionUsUrl);
-                    }
+                    //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
+                    //{
+                    //    filterContext.Result = new RedirectResult(FollowUsUrl);
+                    //}
+                    //else 
+
                     // 用户还未授权，先授权
-                    else if (!wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                    if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
                     {
                         // 授权回调页面
                         var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
@@ -133,10 +136,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         {
                             var user = userService.GetUserById(wechatUser.UserId.Value);
 
-                            CurrentUser = user;
-                            wechatUser.IsUserLoggedIn = wechatUser.UserId.HasValue && IsUserLogin;
-                            wechatUser.IsUserIdentified = wechatUser.UserId.HasValue && IsIdentified;
-                            wechatUser.IsUserVip = wechatUser.UserId.HasValue && IsVip;
+                            if (user != null)
+                            {
+                                CurrentUser = user;
+                                wechatUser.IsUserLoggedIn = IsUserLogin;
+                                wechatUser.IsUserIdentified = IsIdentified;
+                                wechatUser.IsUserVip = IsVip;
+                            }
                         }
 
                         CurrentWeChatUser = wechatUser;

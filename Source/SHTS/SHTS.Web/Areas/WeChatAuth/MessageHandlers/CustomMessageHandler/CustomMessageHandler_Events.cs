@@ -47,7 +47,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         /// <summary>
         /// 关于我们的链接
         /// </summary>
-        public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=210615532&idx=1&sn=7188493d42c8633421c78667266e17f2#rd";
+        public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
 
         UserService userService = new UserService();
 

@@ -54,7 +54,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     //LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
                     if (accessTokenResult.errcode == ReturnCode.请求成功)
                     {
-                        //更新用户Cookie
+                        //更新用户Open id Cookie
                         Response.Cookies.Add(new HttpCookie(WeChatOpenIdCookieName, accessTokenResult.openid));
                         
                         //因为第一步选择的是OAuthScope.snsapi_userinfo，这里可以进一步获取用户详细信息
