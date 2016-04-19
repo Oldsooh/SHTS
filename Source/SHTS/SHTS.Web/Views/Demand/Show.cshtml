@@ -1,10 +1,14 @@
-﻿@model Witbird.SHTS.Web.Models.DemandModel
+﻿
+@model Witbird.SHTS.Web.Models.DemandModel
+
+
 @{
     ViewBag.Title = Model.Demand.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Model.Demand.Title;
     ViewBag.Description = Model.Demand.Description;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
+
 @section head
 {
     <link href="/Content/css/demand.css" rel="stylesheet" />
@@ -47,7 +51,10 @@
             <tr>
                 <td>参与人数：<span>@Model.Demand.PeopleNumber</span></td>
                 <td>开始时间：<span>@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd")</span></td>
-                <td>结束时间：<span>@(Model.Demand.EndTime == null ? System.DateTime.Today ? Model.Demand.EndTime.Value).ToString("yyyy/MM/dd")</span></td>
+                @{
+                    var endTime = Model.Demand.EndTime == null ? System.DateTime.Today : Model.Demand.EndTime.Value;
+                    <td>结束时间：<span>@endTime.ToString("yyyy/MM/dd")</span></td>
+                }
             </tr>
             <tr>
 

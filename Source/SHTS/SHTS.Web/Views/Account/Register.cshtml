@@ -52,10 +52,10 @@
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this,'js-get_mobile_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
                         <img src="./VerifyCode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = './VerifyCode?date=' + (new Date()).getTime(); " />
                     </div>
-                    <div class="cell vcode">
+                    @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
-                    </div>
+                    </div>*@
                     <div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " value="@Model.User.UCard"  id="js_mobile_card" placeholder="认证身份证号" class="text usercard"/>
                         <div class="verifyblock">
@@ -111,10 +111,10 @@
                         <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this,'js_get_email_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
                         <img src="./VerifyCode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = './VerifyCode?date=' + (new Date()).getTime(); " />
                     </div>
-                    <div class="cell vcode">
+                    @*<div class="cell vcode">
                         <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt','js-email_beforevcode_ipt'); " class="button">免费获取验证码</a>
-                    </div>
+                    </div>*@
                     <div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " id="js_email_card" placeholder="企业名称" class="text usercard"/>
                         <div class="verifyblock">
@@ -172,10 +172,10 @@
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this,'js-get_mobile_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
                         <img src="./VerifyCode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = './VerifyCode?date=' + (new Date()).getTime(); " />
                     </div>
-                    <div class="cell vcode">
+                    @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt');" id="js-get_mobile_vcode" class="button btn-disabled">免费获取验证码</a>
-                    </div>
+                    </div>*@
                     <div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " id="js_mobile_card" placeholder="认证身份证号" class="text usercard"/>
                         <div class="verifyblock">
@@ -231,10 +231,10 @@
                         <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this,'js_get_email_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
                         <img src="./VerifyCode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = './VerifyCode?date=' + (new Date()).getTime(); " />
                     </div>
-                    <div class="cell vcode">
+                    @*<div class="cell vcode">
                         <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt','js-email_beforevcode_ipt'); " class="button btn-disabled">免费获取验证码</a>
-                    </div>
+                    </div>*@
                     <div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " value="@Model.User.UCard" id="js_email_card" placeholder="企业名称" class="text usercard"/>
                         <div class="verifyblock">

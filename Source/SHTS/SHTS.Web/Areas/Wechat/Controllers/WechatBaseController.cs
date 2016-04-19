@@ -35,6 +35,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
         }
 
+
         public override User CurrentUser
         {
             get

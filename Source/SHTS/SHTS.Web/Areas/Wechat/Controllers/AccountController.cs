@@ -156,16 +156,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 var errorMsg = string.Empty;
                 bool result = false;
                 bool vcodeVail = false;
-                if (Session["vcode"] == null)
-                {
-                    errorMsg = "请先输入手机验证码！";
-                }
-                else if (!string.Equals(Session["vcode"].ToString(),
-                    Request.Form["code"], StringComparison.InvariantCultureIgnoreCase))
-                {
-                    errorMsg = "手机验证码输入错误！";
-                }
-                else
+                //取消手机验证逻辑
+                //if (Session["vcode"] == null)
+                //{
+                //    errorMsg = "请先输入手机验证码！";
+                //}
+                //else if (!string.Equals(Session["vcode"].ToString(),
+                //    Request.Form["code"], StringComparison.InvariantCultureIgnoreCase))
+                //{
+                //    errorMsg = "手机验证码输入错误！";
+                //}
+                //else
                 {
                     vcodeVail = true;
                 }
