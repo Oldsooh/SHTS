@@ -83,81 +83,81 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             base.OnActionExecuting(filterContext);
 
             //用于绕过权限检测，方便电脑测试
-            WeChatUser wechatUser = new UserService().GetWeChatUser(92);
-            User user = new UserService().GetUserById(92);
+            //WeChatUser wechatUser = new UserService().GetWeChatUser(92);
+            //User user = new UserService().GetUserById(92);
 
-            CurrentWeChatUser = wechatUser;
-            CurrentUser = user;
+            //CurrentWeChatUser = wechatUser;
+            //CurrentUser = user;
 
-            //#region 微信权限检测
-            //try
-            //{
-            //    var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
+            #region 微信权限检测
+            try
+            {
+                var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
 
-            //    //用户还未授权或Cookie被清空, 重新授权。
-            //    if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
-            //    {
-            //        //LogService.Log("用户OpenId Cookie为空，需要授权", "");
-            //        // 授权回调页面
-            //        var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
-            //        // 授权回调成功后跳转到用户一开始想访问的页面
-            //        var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
-            //        var appId = ConfigurationManager.AppSettings["WeixinAppId"];
-            //        var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
+                //用户还未授权或Cookie被清空, 重新授权。
+                if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
+                {
+                    //LogService.Log("用户OpenId Cookie为空，需要授权", "");
+                    // 授权回调页面
+                    var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
+                    // 授权回调成功后跳转到用户一开始想访问的页面
+                    var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
+                    var appId = ConfigurationManager.AppSettings["WeixinAppId"];
+                    var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
-            //        filterContext.Result = new RedirectResult(authUrl);
-            //    }
-            //    else
-            //    {
-            //        var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
+                    filterContext.Result = new RedirectResult(authUrl);
+                }
+                else
+                {
+                    var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
 
-            //        // 取消强制关注逻辑
-            //        //用户还未关注，提示用户关注我们先。
-            //        //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
-            //        //{
-            //        //    filterContext.Result = new RedirectResult(FollowUsUrl);
-            //        //}
-            //        //else 
+                    // 取消强制关注逻辑
+                    //用户还未关注，提示用户关注我们先。
+                    //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
+                    //{
+                    //    filterContext.Result = new RedirectResult(FollowUsUrl);
+                    //}
+                    //else 
 
-            //        // 用户还未授权，先授权
-            //        if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
-            //        {
-            //            // 授权回调页面
-            //            var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
-            //            // 授权回调成功后跳转到用户一开始想访问的页面
-            //            var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
-            //            var appId = ConfigurationManager.AppSettings["WeixinAppId"];
-            //            var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
+                    // 用户还未授权，先授权
+                    if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                    {
+                        // 授权回调页面
+                        var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
+                        // 授权回调成功后跳转到用户一开始想访问的页面
+                        var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
+                        var appId = ConfigurationManager.AppSettings["WeixinAppId"];
+                        var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
-            //            filterContext.Result = new RedirectResult(authUrl);
-            //        }
-            //        else
-            //        {
-            //            if (wechatUser.UserId.HasValue)
-            //            {
-            //                var user = userService.GetUserById(wechatUser.UserId.Value);
+                        filterContext.Result = new RedirectResult(authUrl);
+                    }
+                    else
+                    {
+                        if (wechatUser.UserId.HasValue)
+                        {
+                            var user = userService.GetUserById(wechatUser.UserId.Value);
 
-            //                if (user != null)
-            //                {
-            //                    CurrentUser = user;
-            //                    wechatUser.IsUserLoggedIn = IsUserLogin;
-            //                    wechatUser.IsUserIdentified = IsIdentified;
-            //                    wechatUser.IsUserVip = IsVip;
-            //                }
-            //            }
+                            if (user != null)
+                            {
+                                CurrentUser = user;
+                                wechatUser.IsUserLoggedIn = IsUserLogin;
+                                wechatUser.IsUserIdentified = IsIdentified;
+                                wechatUser.IsUserVip = IsVip;
+                            }
+                        }
 
-            //            CurrentWeChatUser = wechatUser;
+                        CurrentWeChatUser = wechatUser;
 
-            //        }
-            //    }
+                    }
+                }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
-            //}
+            }
+            catch (Exception ex)
+            {
+                LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
+            }
 
-            //#endregion 微信权限检测
+            #endregion 微信权限检测
         }
     }
 }
