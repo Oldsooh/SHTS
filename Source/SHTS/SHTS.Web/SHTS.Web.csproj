@@ -137,15 +137,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WitBird.Com.Pay">
-      <HintPath>..\packages\WitBird.Core\WitBird.Com.Pay.dll</HintPath>
-    </Reference>
-    <Reference Include="WitBird.Com.SearchEngine">
-      <HintPath>..\packages\WitBird.Core\WitBird.Com.SearchEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="WitBird.Com.SMS">
-      <HintPath>..\packages\WitBird.Core\WitBird.Com.SMS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis.ashx.cs">
@@ -1390,6 +1381,18 @@
     <ProjectReference Include="..\SHTS.Model\SHTS.Model.csproj">
       <Project>{9db3c7cc-fbcf-44bc-a839-f1ab320156e9}</Project>
       <Name>SHTS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WitBird.Com.Pay\WitBird.Com.Pay.csproj">
+      <Project>{ff08652b-42de-413f-a919-9fe7dd81dba1}</Project>
+      <Name>WitBird.Com.Pay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WitBird.Com.SearchEngine\WitBird.Com.SearchEngine.csproj">
+      <Project>{285b0cdb-6030-4bb8-9d1d-5901ba19c004}</Project>
+      <Name>WitBird.Com.SearchEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WitBird.Com.SMS\WitBird.Com.SMS.csproj">
+      <Project>{48550dc4-4039-4074-8236-1e7a1da1ca74}</Project>
+      <Name>WitBird.Com.SMS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
