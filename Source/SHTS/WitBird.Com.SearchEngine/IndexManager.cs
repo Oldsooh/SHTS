@@ -202,14 +202,15 @@ namespace WitBird.Com.SearchEngine
                 titleQuery.Add(new Term(Constants.TITILE, word));
                 contentQuery.Add(new Term(Constants.CONTENT, word));
             }
+
             //query.Add(new Term("content", "C#"));//多个查询条件时 为且的关系
             //指定关键词相隔最大距离
             titleQuery.Slop = 20;
             contentQuery.Slop = 100;
 
             // 建立标题与内容或的关系
-            query.Add(new BooleanClause(titleQuery, Occur.MUST));
-            query.Add(new BooleanClause(contentQuery, Occur.MUST));
+            query.Add(new BooleanClause(titleQuery, Occur.SHOULD));
+            query.Add(new BooleanClause(contentQuery, Occur.SHOULD));
 
             //TopScoreDocCollector盛放查询结果的容器
             TopScoreDocCollector collector = TopScoreDocCollector.Create(500, true);
