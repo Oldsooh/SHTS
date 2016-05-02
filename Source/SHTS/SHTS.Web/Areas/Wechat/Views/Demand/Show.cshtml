@@ -7,7 +7,10 @@
 @section head
 {
     <style type="text/css">
-        #demand a { color: #ffffff; background-color: #2577e3; }
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
     </style>
 }
 
@@ -43,8 +46,8 @@
             {
                 <li>
                     <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。
-                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">立即购买</span></a>
+                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。点击下面红色字体
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">购买查看联系电话</span></a>
                     </div>
                 </li>
             }
@@ -89,7 +92,7 @@
             else {
                 alert(data.Message);
             }
-        }).error(function (data) {alert(data);});
+        }).error(function (data) { alert(data); });
     }
 
     function callPayApi(appId, timeStamp, nonceStr, package1, paySign) {
@@ -107,9 +110,9 @@
             }
             else {
                 if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                    alert("您取消了购买。");
+                    //alert("您取消了购买。");
                 }
-                else{
+                else {
                     alert(res.err_msg);
                     alert("购买发生错误！请刷新重试，如频繁发生该错误，请联系管理员.");
                 }
