@@ -1,0 +1,107 @@
+﻿@model Witbird.SHTS.Model.MailConfig
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>邮箱配置页面</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+    </script>
+    <style type="text/css">
+        .scinput {
+            width: 350px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="#">邮箱设置</a></li>
+        </ul>
+    </div>
+
+    <div class="formbody">
+
+
+        <div id="usual1" class="usual">
+
+            <div class="itab">
+                <ul>
+                    <li><a href="#tab2">邮箱设置</a></li>
+                </ul>
+            </div>
+
+
+
+
+            <div id="tab2" class="tabson">
+                <form id="aboutform" method="post" action="/admin/config/EditMailConfig">
+                    <ul class="forminfo">
+
+                        <li>
+                            <label>邮件服务器<b>*</b></label><input id="EmailServer" name="EmailServer" type="text" class="scinput" value="@Model.EmailServer" placeholder="邮件发送服务器，如smtp.163.com, smtp.qq.com" />
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;QQ邮箱需在后台设置开启POP3/SMTP服务，否则发送失败.
+                        </li>
+                        <li>
+                            <label>服务器端口<b>*</b></label><input id="EmailServerPort" name="EmailServerPort" type="text" class="scinput" value="@Model.EmailServerPort" placeholder="邮件发送端口" />
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;邮件服务器邮件发送端口，默认为25.
+                        </li>
+                        <li>
+                            <label>邮箱账号<b>*</b></label><input id="MailAccount" name="MailAccount" type="text" class="scinput" value="@Model.MailAccount" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;如shts@126.com
+                        </li>
+                        <li>
+                            <label>邮箱用户名<b>*</b></label><input id="MailAccountName" name="MailAccountName" type="text" class="scinput" value="@Model.MailAccountName" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;用户名为邮箱名字不包含@126.com, 如shts
+                        </li>
+                        <li>
+                            <label>邮箱密码<b>*</b></label><input id="MailAccountPassword" name="MailAccountPassword" type="password" class="scinput" value="@Model.MailAccountPassword" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;邮箱登录密码
+                        </li>
+                        <li>
+                            <label>&nbsp;</label><input type="submit" class="btn" value="更 新" />
+                        </li>
+                    </ul>
+                </form>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+    </div>
+</body>
+
+</html>

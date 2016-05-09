@@ -32,5 +32,45 @@ namespace Witbird.SHTS.Common
         public const string TradeBankInfoConfig = "ActivityOnlineBankInfoConfig";
 
         public const char TradeBankInfoConfigSeperator = '^';
-	}
+
+        #region 邮箱设置
+
+        /// <summary>
+        /// 邮件发送服务器
+        /// </summary>
+        public const string EmailServerHostName = "EmailServerHostName";
+
+        /// <summary>
+        /// 发件人邮箱帐号, 如xxx@163.com
+        /// </summary>
+        public const string MailAccount = "MailAccount";
+
+        /// <summary>
+        /// 发件人账号, 如发件人邮箱是xxx@163.com，则发件人账号为xxx
+        /// </summary>
+        public const string MailAccountName = "MailAccountName";
+
+        /// <summary>
+        /// 发件人邮箱密码
+        /// </summary>
+        public const string MailAccountPassword = "MailAccountPassword";
+
+        /// <summary>
+        /// 邮件服务器发送端口，默认为25
+        /// </summary>
+        public const string EmailServerPort = "EmailServerPort";
+
+        /// <summary>
+        /// 是否启用SSL协议对邮件内容进行加密
+        /// </summary>
+        public const string EnableSSL = "EnableSSL";
+
+        /// <summary>
+        /// 是否在发送邮件对发件人邮箱进行密码校验
+        /// </summary>
+        public const string EnableAuthentication = "EnableAuthentication";
+
+
+        #endregion
+    }
 }

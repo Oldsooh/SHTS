@@ -23,6 +23,8 @@ namespace WitBird.Com.SMS
         /// </summary>
         public string ResponseData { set; get; }
 
+        public Exception InnerException { get; set; }
+
         public bool IsSuccess
         {
             get

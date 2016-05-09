@@ -19,7 +19,7 @@
  AS 
 	
 	IF exists(Select UserId from [User] 
-    Where UserName=@UserName OR Email=@UserName OR Cellphone=@UserName)
+    Where UserName=@UserName OR Email=@Email OR Cellphone=@Cellphone)
 	BEGIN
 
 	   RAISERROR(50103, 16, 1, 'User identity is conflicted.');

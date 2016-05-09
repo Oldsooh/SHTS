@@ -105,6 +105,7 @@
     <Compile Include="Extensions\Activity.cs" />
     <Compile Include="Extensions\Demand.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\MailConfig.cs" />
     <Compile Include="Extensions\Resource\Paging.cs" />
     <Compile Include="Extensions\Resource\QueryResource.cs" />
     <Compile Include="Extensions\Resource\QueryResourceResult.cs" />

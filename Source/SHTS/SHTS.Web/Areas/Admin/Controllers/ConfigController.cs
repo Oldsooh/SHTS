@@ -63,5 +63,26 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             return Redirect("/admin/config/index");
         }
 
+        /// <summary>
+        /// 发送邮箱信息配置
+        /// </summary>
+        /// <returns></returns>
+        [Permission(EnumRole.Editer)]
+        public ActionResult MailConfig()
+        {
+            MailConfig model = ConfigManager.GetMailConfig();
+
+            return View(model);
+        }
+
+
+        [Permission(EnumRole.Editer)]
+        public ActionResult EditMailConfig(MailConfig model)
+        {
+            ConfigManager.UpdateMailConfig(model);
+            Witbird.SHTS.Web.Public.StaticUtility.UpdateEmailConfig();
+
+            return Redirect("/admin/config/MailConfig");
+        }
     }
 }

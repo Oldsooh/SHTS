@@ -52,7 +52,7 @@ namespace Witbird.SHTS.BLL.Services
         /// <summary>
         /// 根据UserName查询用户
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="username">用户名、用户注册邮箱、注册手机号</param>
         /// <returns></returns>
         public User GetUserByUserName(string username)
         {

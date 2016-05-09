@@ -928,6 +928,7 @@
     <Content Include="Areas\Wechat\Views\Account\LogOut.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\FilterPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Index\Search.cshtml" />
+    <Content Include="Areas\Admin\Views\Config\MailConfig.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
@@ -1304,7 +1305,7 @@
     <Content Include="Views\News\Show.cshtml" />
     <Content Include="Views\GuestBook\Index.cshtml" />
     <Content Include="Views\GuestBook\Success.cshtml" />
-    <Content Include="Views\Account\ForGetPassowrd.cshtml" />
+    <Content Include="Views\Account\ForGetPassowrd-not use now.cshtml" />
     <Content Include="Views\Resource\ResourceListView.cshtml" />
     <Content Include="Views\Resource\PagingPartial.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
@@ -1351,6 +1352,7 @@
     <Content Include="Views\Common\ErrorPageNotFound.cshtml" />
     <Content Include="Views\Common\Error.cshtml" />
     <Content Include="Views\Resource\Edit.cshtml" />
+    <Content Include="Views\Account\ResetAccountPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\WeChatAuth\Models\" />
@@ -1390,9 +1392,9 @@
       <Project>{285b0cdb-6030-4bb8-9d1d-5901ba19c004}</Project>
       <Name>WitBird.Com.SearchEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WitBird.Com.SMS\WitBird.Com.SMS.csproj">
+    <ProjectReference Include="..\WitBird.Com.SMS\WitBird.Com.Messaging.csproj">
       <Project>{48550dc4-4039-4074-8236-1e7a1da1ca74}</Project>
-      <Name>WitBird.Com.SMS</Name>
+      <Name>WitBird.Com.Messaging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

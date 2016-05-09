@@ -80,6 +80,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// 根据UserName查询用户
         /// </summary>
         /// <param name="conn">连接对象</param>
+        /// <param name="username">用户名、用户注册邮箱、注册手机号</param>
         /// <returns>用户实体</returns>
         public User GetUserByUserName(string username, SqlConnection conn)
         {

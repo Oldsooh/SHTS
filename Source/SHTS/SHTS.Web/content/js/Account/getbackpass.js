@@ -2,6 +2,10 @@
 $(function () {
     $("#js-form-mobile").validate({
         rules: {
+            Email: {
+                required: true,
+                email: true
+            },
             CellPhoneVCode: {
                 required: true
             },
@@ -22,11 +26,15 @@ $(function () {
             }
         },
         messages: {
+            Email: {
+                required: "请输入注册邮箱",
+                email: "邮箱格式不正确"
+            },
             CellPhoneVCode: {
                 required: "请输入手机验证码"
             },
             VCode: {
-                required: "请输入验证码"
+                required: "请输入验证码",
             },
             Cellphone: {
                 required: "请输入电话号码"
@@ -45,10 +53,19 @@ $(function () {
     // 手机号码验证       
     jQuery.validator.addMethod("isMobile", function (value, element) {
         var length = value.length;
-        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
         return this.optional(element) || (length == 11 && mobile.test(value));
     }, "电话号码格式不正确");
 });
+
+
+function validbeforevcode(vcode) {
+    $.post("/account/VerifyBeforeVcode",
+        { "vcode": vcode },
+        function (result) {
+            return result.IsSuccess;
+        });
+}
 
 //发送短信验证码
 var seccond = 60;
@@ -62,7 +79,7 @@ function CreatePhoneCode(ele, item) {
         alert("请先输入手机号码！");
         return;
     }
-    if (VerifyInfo($("#js-mobile_ipt")[0], "Cellphone",tel)) {
+    if (VerifyInfo($("#js-mobile_ipt")[0], "Cellphone", tel)) {
         return false;
     }
 }
@@ -81,7 +98,7 @@ function RequestSendVCode(ele, tel) {
             $("#mobile_btn").removeClass("nextshow");
             regInterval = setInterval(function () {
                 if (seccond == 60) {
-                    $(ele).css({ "cursor": ""});
+                    $(ele).css({ "cursor": "" });
                     $(ele).addClass("btn-disabled");
                     seccond = 59;
                 }

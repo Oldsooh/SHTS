@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.Pay", "WitBird.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.SearchEngine", "WitBird.Com.SearchEngine\WitBird.Com.SearchEngine.csproj", "{285B0CDB-6030-4BB8-9D1D-5901BA19C004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.SMS", "WitBird.Com.SMS\WitBird.Com.SMS.csproj", "{48550DC4-4039-4074-8236-1E7A1DA1CA74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.Messaging", "WitBird.Com.SMS\WitBird.Com.Messaging.csproj", "{48550DC4-4039-4074-8236-1E7A1DA1CA74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

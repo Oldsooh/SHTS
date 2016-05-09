@@ -6,12 +6,15 @@ using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using WitBird.Com.SMS;
 
 namespace Witbird.SHTS.Web.Public
 {
     public class StaticUtility
     {
         private static Config config;
+        private static EmailMessageUtil emailManager;
+
         /// <summary>
         /// 全局通用网站信息
         /// </summary>
@@ -37,7 +40,27 @@ namespace Witbird.SHTS.Web.Public
             config = ConfigManager.GetConfig();
         }
 
+        public static EmailMessageUtil EmailManager
+        {
+            get
+            {
+                if (emailManager == null)
+                {
+                    MailConfig mailConfig = ConfigManager.GetMailConfig();
+                    emailManager = new EmailMessageUtil(mailConfig.EmailServer, mailConfig.MailAccount, mailConfig.MailAccountName, 
+                        mailConfig.MailAccountPassword, mailConfig.EmailServerPort, mailConfig.EnableSSL, mailConfig.EnableAuthentication);
+                }
 
+                return emailManager;
+            }
+        }
+
+        public static void UpdateEmailConfig()
+        {
+            MailConfig mailConfig = ConfigManager.GetMailConfig();
+            emailManager = new EmailMessageUtil(mailConfig.EmailServer, mailConfig.MailAccount, mailConfig.MailAccountName,
+                mailConfig.MailAccountPassword, mailConfig.EmailServerPort, mailConfig.EnableSSL, mailConfig.EnableAuthentication);
+        }
 
         private static List<City> _allCities;
         /// <summary>

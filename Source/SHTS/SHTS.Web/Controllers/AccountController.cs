@@ -15,6 +15,7 @@ using Witbird.SHTS.Web.Models.User;
 using Witbird.SHTS.Web.MvcExtension;
 using WitBird.Com.SMS;
 using ShortMessage = WitBird.Com.SMS.ShortMessage;
+using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Controllers
 {
@@ -289,6 +290,8 @@ namespace Witbird.SHTS.Web.Controllers
             return Redirect("~/account/login");
         }
 
+        #region Not use now Reset password via phone number verification.
+
         public ActionResult ForGetPassowrd()
         {
             return View(new GetBackPasswordViewModel());
@@ -352,6 +355,81 @@ namespace Witbird.SHTS.Web.Controllers
             }
             return View(getBackPasswordViewModel);
         }
+
+        #endregion
+
+        #region Reset password via mail verification.
+
+        public ActionResult ResetAccountPassword()
+        {
+            ViewData["Email"] = string.Empty;
+            ViewData["ErrorMessage"] = string.Empty;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetAccountPassword(string email, string vCode)
+        {
+            string errorMessage = string.Empty;
+
+            try
+            {
+                userService = new UserService();
+
+                if (!string.Equals(Session["validataCode"].ToString(),
+                        vCode, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    errorMessage = "验证码输入错误！";
+                }
+                else if (userService.VerifyUserInfo("Email", email))
+                {
+                    errorMessage = "该邮箱尚未注册";
+                }
+                else
+                {
+                    User user = userService.GetUserByUserName(email);
+
+                    if (user != null)
+                    {
+                        var newPassword = GetRandom();
+                        user.EncryptedPassword = newPassword.ToMD5();
+
+                        if (userService.GetBackPasswordByCellphone(user))
+                        {
+                            SinglePageService singlePageService = new SinglePageService();
+                            var mailContentFormat = singlePageService.GetSingPageById("10").ContentStyle;
+                            var mailContent = string.Format(mailContentFormat, newPassword);
+                            var resetPasswordMail = StaticUtility.EmailManager.CreateMailMessage(email, "活动在线网", "活动在线网密码重置邮件", mailContent);
+                            var response = StaticUtility.EmailManager.Send(resetPasswordMail);
+                            if (response.IsSuccess)
+                            {
+                                errorMessage = "密码重置邮件已发送至您的邮箱，请注意查收";
+                            }
+                            else
+                            {
+                                LogService.Log("密码重置邮件发送失败", response.InnerException.ToString());
+                                errorMessage = "密码重置邮件发送失败，请重新尝试";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        errorMessage = "用户信息不存在，请确认后重试";
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("密码重置发生异常", ex.ToString());
+            }
+
+            ViewData["Email"] = email;
+            ViewData["ErrorMessage"] = errorMessage;
+
+            return View();
+        }
+
+        #endregion
 
         [HttpGet]
         public ActionResult VerifyCode()

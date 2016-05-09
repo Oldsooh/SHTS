@@ -60,6 +60,15 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Open();
                 config = configDao.GetConfigValue(conn, configName);
+
+                if (config == null)
+                {
+                    config = new PublicConfig() { ConfigName = configName, ConfigValue = string.Empty, CreatedTime = DateTime.Now, LastUpdatedTime = DateTime.Now };
+                    configDao.AddOrUpdateConfigValue(conn, config);
+
+                    // Retrieves config with id.
+                    config = configDao.GetConfigValue(conn, configName);
+                }
             }
             catch (Exception e)
             {
