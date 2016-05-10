@@ -35,7 +35,7 @@
                                 </tr>
                                 <tr>
                                     <td>订单金额：<span>￥ @Model.Order.Amount 元</span></td>
-                                    <td>支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDiplayValue(Model.Order.State)</span>
+                                    <td>支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</span>
                                     </td>
                                     <td>更新时间：<span>@DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")</span>
                                     </td>
