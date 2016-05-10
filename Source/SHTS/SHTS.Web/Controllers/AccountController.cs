@@ -333,7 +333,7 @@ namespace Witbird.SHTS.Web.Controllers
                         Cellphone = getBackPasswordViewModel.CellPhone,
                         EncryptedPassword = getBackPasswordViewModel.EncryptedPassword.ToMD5()
                     };
-                    result = userService.GetBackPasswordByCellphone(user);
+                    result = userService.ResetUserPassword(user);
                     if (result)
                     {
                         return RedirectToAction("Login");
@@ -394,16 +394,17 @@ namespace Witbird.SHTS.Web.Controllers
                         var newPassword = GetRandom();
                         user.EncryptedPassword = newPassword.ToMD5();
 
-                        if (userService.GetBackPasswordByCellphone(user))
+                        if (userService.ResetUserPassword(user))
                         {
                             SinglePageService singlePageService = new SinglePageService();
                             var mailContentFormat = singlePageService.GetSingPageById("10").ContentStyle;
                             var mailContent = string.Format(mailContentFormat, newPassword);
-                            var resetPasswordMail = StaticUtility.EmailManager.CreateMailMessage(email, "活动在线网", "活动在线网密码重置邮件", mailContent);
+                            var resetPasswordMail = StaticUtility.EmailManager.CreateMailMessage(email, "活动在线网", "密码重置-活动在线网", mailContent);
                             var response = StaticUtility.EmailManager.Send(resetPasswordMail);
                             if (response.IsSuccess)
                             {
-                                errorMessage = "密码重置邮件已发送至您的邮箱，请注意查收";
+                                //密码重置邮件已发送至您的邮箱，请注意查收
+                                errorMessage = "success";
                             }
                             else
                             {

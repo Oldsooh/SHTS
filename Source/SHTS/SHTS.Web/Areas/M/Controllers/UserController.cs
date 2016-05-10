@@ -100,7 +100,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                 {
                     UserService service = new UserService();
                     model.UserEntity.EncryptedPassword = newpassword.ToMD5();
-                    service.GetBackPasswordByCellphone(model.UserEntity);
+                    service.ResetUserPassword(model.UserEntity);
                 }
                 else
                 {

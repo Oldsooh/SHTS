@@ -280,12 +280,16 @@ namespace Witbird.SHTS.DAL.Daos
         /// <param name="column"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool GetBackPasswordByCellphone(SqlConnection conn, User user)
+        public bool ResetUserPasswordById(SqlConnection conn, User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("密码重置：用户信息不能为空");
+            }
             const string sp_GetBackPassword = "sp_GetBackPassword";
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
-               new SqlParameter(Constants.column_cellphone, user.Cellphone),
+               new SqlParameter(Constants.column_UserId, user.UserId),
                new SqlParameter("@EncryptedPassword", user.EncryptedPassword)
             };
             return DBHelper.RunNonQueryProcedure(conn,

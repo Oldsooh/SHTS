@@ -249,14 +249,14 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool GetBackPasswordByCellphone(User user)
+        public bool ResetUserPassword(User user)
         {
             bool result = false;
             var conn = DBHelper.GetSqlConnection();
             try
             {
                 conn.Open();
-                result = userDao.GetBackPasswordByCellphone(conn, user);
+                result = userDao.ResetUserPasswordById(conn, user);
             }
             catch (Exception e)
             {
