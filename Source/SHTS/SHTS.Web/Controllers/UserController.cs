@@ -453,6 +453,7 @@ namespace Witbird.SHTS.Web.Controllers
                     UserService service = new UserService();
                     model.UserEntity.EncryptedPassword = newpassword.ToMD5();
                     service.ResetUserPassword(model.UserEntity);
+                    message = "密码更新成功！";
                 }
                 else
                 {

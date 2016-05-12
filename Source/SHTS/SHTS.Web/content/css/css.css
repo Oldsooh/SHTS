@@ -1653,7 +1653,7 @@ select
     width: 26px;
     height: 100px;
     float: left;
-    background: url(/content/images/keifu.png) 0 0;
+    background: url(/content/images/newkefu.png) 0 0;
     position: relative;
     display: none;
     cursor: pointer;
@@ -1674,7 +1674,7 @@ select
 {
     width: 131px;
     height: 41px;
-    background: url(/content/images/keifu.png);
+    background: url(/content/images/newkefu.png);
     background-position: 0 -103px;
     font-size: 0;
     line-height: 0;
@@ -1686,7 +1686,7 @@ select
     display: block;
     width: 11px;
     height: 11px;
-    background: url(/content/images/keifu.png) -42px 0;
+    background: url(/content/images/newkefu.png) -42px 0;
     position: absolute;
     top: 5px;
     right: 5px;
@@ -1725,7 +1725,7 @@ select
 {
     width: 131px;
     height: 119px;
-    background: url(/content/images/keifu.png);
+    background: url(/content/images/newkefu.png);
     background-position: 0 -149px;
 }
 /*QQ客服结束*/

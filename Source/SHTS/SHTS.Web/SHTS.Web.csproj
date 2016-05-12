@@ -733,6 +733,7 @@
     <Content Include="Content\images\keifu.png" />
     <Content Include="Content\images\mid_banner\banner_02.png" />
     <Content Include="Content\images\mid_banner\denglu-1.png" />
+    <Content Include="Content\images\newkefu.png" />
     <Content Include="Content\images\no.png" />
     <Content Include="Content\images\nophoto.png" />
     <Content Include="Content\images\pay\chinabank_logo.jpg" />
