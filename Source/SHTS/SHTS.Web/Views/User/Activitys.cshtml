@@ -14,9 +14,9 @@
 <div class="main w1000">
     <div class="location">
         您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/demand/" class="blue">我的活动列表</a>
-        @if (Model.CurrentPage > 1)
+        @if (Model.PageIndex > 1)
         {
-            <span class="ch">&nbsp;&gt;&nbsp;第 @Model.CurrentPage 页</span>
+            <span class="ch">&nbsp;&gt;&nbsp;第 @Model.PageIndex 页</span>
         }
     </div>
 
@@ -70,12 +70,12 @@
         <!--分页开始-->
         <div class="fenye" style="margin: 0 auto;">
             @{
-                var startPage = 10 * (Model.CurrentPage / 10) + 1;
+                var startPage = 10 * (Model.PageIndex / 10) + 1;
             }
             <span><a href="/user/Activitys?page=@Model.PrePageIndex" class="prv">上一页</a></span>
-            @for (int i = startPage; i <= Model.TotalPage && i < startPage + 10; i++)
+            @for (int i = startPage; i <= Model.PageCount && i < startPage + 10; i++)
             {
-                if (i == Model.CurrentPage)
+                if (i == Model.PageIndex)
                 {
                 <span><a href="/news/index/@i.ToString()" class="no">@i.ToString()</a></span>
                 }
@@ -84,7 +84,7 @@
                 <span><a href="/user/Activitys?page=@i.ToString()">@i.ToString()</a></span>
                 }
             }
-            @if (Model.TotalPage >= (startPage + 10))
+            @if (Model.PageCount >= (startPage + 10))
             {
                 <span><a href="/user/Activitys?page=@(startPage + 10)">...</a></span>
             }
