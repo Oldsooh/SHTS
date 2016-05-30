@@ -83,11 +83,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             base.OnActionExecuting(filterContext);
 
             //用于绕过权限检测，方便电脑测试
-            //WeChatUser wechatUser = new UserService().GetWeChatUser(92);
-            //User user = new UserService().GetUserById(92);
+            //WeChatUser wechatUser = new UserService().GetWeChatUser(3);
+            //User user = new UserService().GetUserById(3);
 
             //CurrentWeChatUser = wechatUser;
             //CurrentUser = user;
+            //wechatUser.IsUserLoggedIn = IsUserLogin;
+            //wechatUser.IsUserIdentified = IsIdentified;
+            //wechatUser.IsUserVip = IsVip;
 
             #region 微信权限检测
             try

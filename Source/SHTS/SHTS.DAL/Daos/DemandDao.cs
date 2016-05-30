@@ -19,6 +19,8 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_DemandCategory_Select = "sp_DemandCategory_Select";
         private const string sp_DemandUpdate = "sp_DemandUpdate";
         private const string sp_UpdateDemandWeixinBuyFee = "sp_UpdateDemandWeixinFeeByDemandId";
+        private const string sp_UpdateDemandStatus = "sp_UpdateDemandStatus";
+        private const string sp_SelectTradeOrderByOpenIdAndDemandId = "sp_SelectTradeOrderByOpenIdAndDemandId";
 
         public List<Demand> SelectDemands(int pageCount, int pageIndex, out int count, SqlConnection conn)
         {
@@ -281,7 +283,14 @@ namespace Witbird.SHTS.DAL.Daos
             return DBHelper.SetDataToDB(conn, sp_DemandUpdate, sqlParameters);
         }
 
-        public static bool UpdatersDemandWeixinBuyFee(SqlConnection conn, int demandId, int weixinBuyFee)
+        /// <summary>
+        /// Updates total fee which get the contact info of one demand on wechat client.
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="demandId"></param>
+        /// <param name="weixinBuyFee"></param>
+        /// <returns></returns>
+        public static bool UpdatesDemandWeixinBuyFee(SqlConnection conn, int demandId, int weixinBuyFee)
         {
             SqlParameter[] parameters = new SqlParameter[] 
             {
@@ -292,17 +301,45 @@ namespace Witbird.SHTS.DAL.Daos
             return DBHelper.SetDataToDB(conn, sp_UpdateDemandWeixinBuyFee, parameters);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="wechatUserOpenId"></param>
+        /// <param name="demandId"></param>
+        /// <returns></returns>
         public static int SelectTradeOrderByOpenIdAndDemandId(SqlConnection conn, string wechatUserOpenId, int demandId)
         {
-            const string SP_SelectTradeOrderByOpenIdAndDemandId = "sp_SelectTradeOrderByOpenIdAndDemandId";
-
             SqlParameter[] parameters = new SqlParameter[] 
             {
                 new SqlParameter("@UserName", wechatUserOpenId),
                 new SqlParameter("@ResourceId", demandId)
             };
 
-            return DBHelper.GetSingleDataFromDB(conn, SP_SelectTradeOrderByOpenIdAndDemandId, parameters).Rows.Count;
+            return DBHelper.GetSingleDataFromDB(conn, sp_SelectTradeOrderByOpenIdAndDemandId, parameters).Rows.Count;
+        }
+
+        /// <summary>
+        /// Updates demand status with specified status value.
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="demandId"></param>
+        /// <param name="statusValue"></param>
+        /// <returns></returns>
+        public static bool UpdateDemandStatus(SqlConnection conn, int demandId, DemandStatus statusValue)
+        {
+            if (conn == null || demandId < -1)
+            {
+                return false;
+            }
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@DemandId", demandId),
+                new SqlParameter("@StatusValue", (int)statusValue)
+            };
+
+            return DBHelper.SetDataToDB(conn, sp_UpdateDemandStatus, parameters);
         }
 
     }

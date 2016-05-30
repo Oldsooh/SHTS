@@ -38,5 +38,7 @@ namespace Witbird.SHTS.Model
         public string Email { get; set; }
 
         public Nullable<int> WeixinBuyFee { get; set; }
+
+        public Nullable<int> Status { get; set; }
     }
 }

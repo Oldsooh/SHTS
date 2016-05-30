@@ -212,7 +212,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
-    <Compile Include="Areas\Wechat\Models\MyPaidDemand.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
     <Compile Include="Areas\Wechat\WechatAreaRegistration.cs" />
@@ -930,6 +929,8 @@
     <Content Include="Areas\Wechat\Views\Resource\FilterPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Index\Search.cshtml" />
     <Content Include="Areas\Admin\Views\Config\MailConfig.cshtml" />
+    <Content Include="Areas\Wechat\Views\Demand\MyDemands.cshtml" />
+    <Content Include="Areas\Wechat\Views\Demand\Edit.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

@@ -126,24 +126,7 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByParameters(parameters, out tempCount, conn);
-                if (result != null && result.Count > 0)
-                {
-                    List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
-                    if (categories != null && categories.Count > 0)
-                    {
-                        foreach (var demand in result)
-                        {
-                            foreach (var category in categories)
-                            {
-                                if (demand.CategoryId == category.Id)
-                                {
-                                    demand.CategoryName = category.Name;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
+                FillDemandCategoryName(result, conn);
                 count = tempCount;
             }
             catch (Exception e)
@@ -156,6 +139,28 @@ namespace Witbird.SHTS.BLL.Services
             }
 
             return result;
+        }
+
+        private void FillDemandCategoryName(List<Demand> result, System.Data.SqlClient.SqlConnection conn)
+        {
+            if (result != null && result.Count > 0)
+            {
+                List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
+                if (categories != null && categories.Count > 0)
+                {
+                    foreach (var demand in result)
+                    {
+                        foreach (var category in categories)
+                        {
+                            if (demand.CategoryId == category.Id)
+                            {
+                                demand.CategoryName = category.Name;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -177,6 +182,7 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByUserId(userId, pageCount, pageIndex, out tempCount, conn);
+                FillDemandCategoryName(result, conn);
                 count = tempCount;
             }
             catch (Exception e)
@@ -297,6 +303,12 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
+        /// <summary>
+        /// 更新需求联系方式购买金额
+        /// </summary>
+        /// <param name="demandIds"></param>
+        /// <param name="weixinBuyFee"></param>
+        /// <returns></returns>
         public bool UpdateWexinBuyFee(List<int> demandIds, int weixinBuyFee)
         {
             bool result = false;
@@ -315,7 +327,7 @@ namespace Witbird.SHTS.BLL.Services
                 {
                     foreach (var demandId in demandIds)
                     {
-                        result = DemandDao.UpdatersDemandWeixinBuyFee(conn, demandId, weixinBuyFee);
+                        result = DemandDao.UpdatesDemandWeixinBuyFee(conn, demandId, weixinBuyFee);
 
                         if (!result)
                         {
@@ -341,6 +353,12 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
+        /// <summary>
+        /// 检查用户是否已购买需求的联系方式查看权限
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="demandId"></param>
+        /// <returns></returns>
         public bool HasWeChatUserBoughtForDemand(string openId, int demandId)
         {
             bool result = false;
@@ -355,7 +373,36 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
-                LogService.Log("更新需求失败", e.ToString());
+                LogService.Log("查询已购买需求失败", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Updates demand status with specified status value.
+        /// </summary>
+        /// <param name="demandId"></param>
+        /// <param name="statusValue"></param>
+        /// <returns></returns>
+        public bool UpdateDemandStatus(int demandId, DemandStatus statusValue)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                if (demandId > 0)
+                {
+                    result = DemandDao.UpdateDemandStatus(conn, demandId, statusValue);
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.Log("更新需求状态失败", e.ToString());
             }
             finally
             {

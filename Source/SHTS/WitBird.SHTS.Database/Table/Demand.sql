@@ -22,5 +22,6 @@
     [ViewCount] INT NOT NULL,
 	[IsActive] BIT NOT NULL,  
     [InsertTime] DATETIME NOT NULL, 
-    [WeixinBuyFee] INT NULL DEFAULT 1
+    [WeixinBuyFee] INT NULL DEFAULT 1, 
+    [Status] INT NULL 
 )

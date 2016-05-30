@@ -101,7 +101,7 @@
                     }
                     else
                     {
-                        <option value="">暂无类别</option>
+                        <option value="">---</option>
                     }
                 </select>
             </div>
@@ -140,7 +140,7 @@
                     }
                 </select>
                 <select id="ddlCity" name="cityId" onchange="loadAreas()">
-                    <option value="">全省/市</option>
+                    <option value="">省/市</option>
                     @if (Model.Cities != null && Model.Cities.Count > 0)
                     {
                         foreach (var item in Model.Cities)
@@ -157,7 +157,7 @@
                     }
                 </select>
                 <select id="ddlArea" name="areaId">
-                    <option value="">----</option>
+                    <option value="">县/区</option>
                     @if (Model.Areas != null && Model.Areas.Count > 0)
                     {
                         foreach (var item in Model.Areas)

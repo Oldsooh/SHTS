@@ -12,5 +12,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
         /// 当前访问的微信用户是否购买了此需求的联系方式
         /// </summary>
         public bool HasCurrentWeChatUserBought { get; set; }
+
+        public List<TradeOrder> PaidDemandOrders { get; set; }
+
+        public string ActionName { get; set; }
     }
 }

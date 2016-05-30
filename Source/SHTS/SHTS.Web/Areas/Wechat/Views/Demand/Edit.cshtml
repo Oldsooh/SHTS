@@ -1,6 +1,6 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
 @{
-    ViewBag.Title = "发布需求";
+    ViewBag.Title = "更新需求";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
     var CurrentWeChatUser = ViewData["CurrentWeChatUser"] as Witbird.SHTS.Model.WeChatUser;
 }
@@ -84,7 +84,7 @@
     </style>
 
     <script type="text/javascript">
-        function addDemand() {
+        function editDemand() {
             var Title = document.getElementById("Title").value;
             var Phone = document.getElementById("Phone").value;
             var ContentText = document.getElementById("ContentText").value;
@@ -93,20 +93,20 @@
                 if (Phone != "") {
                     if (ContentText != "") {
                         $.ajax({
-                            url: '/wechat/demand/add',
-                            data: $("#addForm").serialize(),
+                            url: '/wechat/demand/edit',
+                            data: $("#editForm").serialize(),
                             type: 'POST',
                             success: function (msg) {
                                 if (msg == "success") {
-                                    alert("发布成功");
-                                    window.location.href = "/wechat/demand/mydemands";
+                                    alert("更新成功");
+                                    window.location = window.location;
                                 }
                                 else {
                                     alert(msg);
                                 }
                             },
                             error: function (msg) {
-                                alert("网络异常，发布失败");
+                                alert("无法连接到服务器，请检查网络连接是否良好");
                             }
                         });
                     }
@@ -135,10 +135,10 @@
     </script>
 
     <script>
-        function toLogin() {
-            alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
-            window.location = "/wechat/account/login";
-        }
+    function toLogin() {
+        alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
+        window.location = "/wechat/account/login";
+    }
     </script>
     <link href="/content/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
     <script src="/content/My97DatePicker/WdatePicker.js"></script>
@@ -152,7 +152,8 @@
 
 <div class="wrap" style="width: 100%; ">
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
-        <form action="/wechat/demand/add" id="addForm" class="reg-form" method="post">
+        <form action="/wechat/demand/edit" id="editForm" class="reg-form" method="post">
+            <input type="hidden" id="id" name="id" value="@Model.Demand.Id" />
             <div class="cell" style="padding-top:10px;">
                 <select name="CategoryId" class="text" id="categoryId" onchange="demandCategoryChange()" style="width:328px">
                     @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
@@ -161,7 +162,14 @@
                         {
                             if (item.IsActive)
                             {
-                                <option value="@item.Id">@item.Name</option>
+                                if (item.Id == Model.Demand.CategoryId)
+                                {
+                                    <option value="@item.Id" selected="selected">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
                             }
                         }
                     }
@@ -172,30 +180,32 @@
                 </select>
             </div>
             <div class="cell">
-                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text">
+                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text" value="@Model.Demand.Title">
             </div>
             <div class="cell">
                 @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
                 <input id="starttime" name="StartTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
-                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;">
+                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;" 
+                       value='@(Model.Demand.StartTime.HasValue ? Model.Demand.StartTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
 
                 <input id="endtime" name="EndTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
-                       readonly="readonly" placeholder="结束时间" style="background:#fff;width:130px;left:174px;">
+                       readonly="readonly" placeholder="结束时间" style="background:#fff;width:130px;left:174px;"
+                       value='@(Model.Demand.EndTime.HasValue ? Model.Demand.EndTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
             </div>
             <div class="cell" id="peopleNumberBox" style="display: none;">
-                <input type="number" min="1" name="PeopleNumber" placeholder="人员数量" class="text">
+                <input type="number" min="1" name="PeopleNumber" placeholder="人员数量" class="text" value="@Model.Demand.PeopleNumber">
             </div>
             <div class="cell">
-                <input type="number" min="0" name="Budget" placeholder="预算金额(如果为面议，请填写0)" class="text">
+                <input type="number" min="0" name="Budget" placeholder="预算金额(如果为面议，请填写0)" class="text" value="@Model.Demand.Budget">
             </div>
             <div class="cell">
-                <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text">
+                <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text" value="@Model.Demand.Phone">
             </div>
             <div class="cell">
-                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="QQ/微信" class="text">
+                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="QQ/微信" class="text" value="@Model.Demand.QQWeixin">
             </div>
             <div class="cell">
-                <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text">
+                <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text" value="@Model.Demand.Email">
             </div>
             <div class="cell">
                 <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
@@ -204,25 +214,60 @@
                     {
                         foreach (var item in Model.Provinces)
                         {
-                            <option value="@item.Id">@item.Name</option>
+                            if (!string.IsNullOrEmpty(Model.Demand.Province) && Model.Demand.Province == item.Id)
+                            {
+                                <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         }
                     }
                 </select>
                 <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
-                    <option value="">全省/市</option>
+                    <option value="">省/市</option>
+                    @if (Model.Cities != null && Model.Cities.Count > 0)
+                    {
+                        foreach (var item in Model.Cities)
+                        {
+                            if (!string.IsNullOrEmpty(Model.Demand.City) && Model.Demand.City == item.Id)
+                            {
+                                <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
                 </select>
                 <select id="ddlArea" class="text" name="Area">
-                    <option value="">全县/区</option>
+                    <option value="">县/区</option>
+                    @if (Model.Areas != null && Model.Areas.Count > 0)
+                    {
+                        foreach (var item in Model.Areas)
+                        {
+                            if (!string.IsNullOrEmpty(Model.Demand.Area) && Model.Demand.Area == item.Id)
+                            {
+                                <option value="@item.Id" selected="selected">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
                 </select>
             </div>
             <div class="cell">
-                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
+                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11" value="@Model.Demand.Address">
             </div>
             <div class="cell" style="height: 200px;">
-                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 180px; width: 94%;"></textarea>
+                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 180px; width: 94%;">@Model.Demand.ContentText</textarea>
             </div>
             <div class="bottom">
-                <button type="button" id="js-mobile_btn" class="button btn-green" onclick="addDemand()">发布需求</button>
+                <button type="button" id="js-mobile_btn" class="button btn-green" onclick="editDemand()">更新需求</button>
             </div>
             <div class="cell">
             </div>

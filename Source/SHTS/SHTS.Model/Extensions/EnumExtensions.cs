@@ -177,4 +177,19 @@ namespace Witbird.SHTS.Model
         /// </summary>
         VIP
     }
+
+    /// <summary>
+    /// Demand status
+    /// </summary>
+    public enum DemandStatus : int
+    {
+        /// <summary>
+        /// In progress
+        /// </summary>
+        InProgress = 1,
+        /// <summary>
+        /// Complete
+        /// </summary>
+        Complete = 2
+    }
 }

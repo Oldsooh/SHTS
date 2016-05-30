@@ -3,7 +3,7 @@
 
 
 @{
-    ViewBag.Title = Model.Demand.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Title = "[" + Model.Demand.StatusValueString + "]" + Model.Demand.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Model.Demand.Title;
     ViewBag.Description = Model.Demand.Description;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
@@ -23,7 +23,7 @@
     </div>
     <div id="mainLeft">
         <div class="showTitle">
-            <h2>@Model.Demand.Title</h2>
+            <h2><lable style="color: #FD9102;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title</h2>
             <p>
                 发布时间：@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 阅读：@Model.Demand.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -79,7 +79,7 @@
             </tr>
         </table>
         <div class="showContent">
-            @if (Model.IsMember)
+            @*@if (Model.IsMember)
             {
                 @(new HtmlString(Model.Demand.ContentStyle))
             }
@@ -91,7 +91,9 @@
                     <br />
                 </div>
                 @(new HtmlString(Model.Demand.Description))
-            }
+            }*@
+
+            @(new HtmlString(Model.Demand.ContentStyle))
         </div>
     </div>
     @Html.Action("Right", "Common")

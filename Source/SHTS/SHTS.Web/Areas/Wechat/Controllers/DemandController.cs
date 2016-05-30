@@ -130,7 +130,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 if (demand != null)
                 {
-                    hasWeChatUserBoughtForDemand = demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
+                    // 如果是自己发布的需求，无需购买即可查看
+                    hasWeChatUserBoughtForDemand = (demand.UserId == CurrentWeChatUser.UserId);
+                    hasWeChatUserBoughtForDemand = hasWeChatUserBoughtForDemand || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
+
 
                     if (!hasWeChatUserBoughtForDemand)
                     {
@@ -172,26 +175,33 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Demand demand)
+        public ActionResult Add(string categoryId, string title, string contentText,
+            string province, string city, string area, string address, string phone, string qqweixin, string email,
+            string startTime, string endTime, string peopleNumber, string budget)
         {
             string result = "发布失败";
             if (!CurrentWeChatUser.IsUserLoggedIn)
             {
                 result = "长时间为操作，请重新登录";
             }
-            else if (demand != null)
+            else
             {
-                if (!string.IsNullOrEmpty(demand.Title) &&
-                    !string.IsNullOrEmpty(demand.ContentText) &&
-                    demand.CategoryId != 0)
+                if (!string.IsNullOrEmpty(categoryId) &&
+                    !string.IsNullOrEmpty(title) &&
+                    !string.IsNullOrEmpty(contentText) &&
+                    !string.IsNullOrEmpty(startTime) &&
+                    !string.IsNullOrEmpty(endTime) &&
+                    !string.IsNullOrEmpty(budget) &&
+                    !string.IsNullOrEmpty(phone))
                 {
-                    User user = Session[USERINFO] as User;
+                    User user = CurrentUser;
+                    Demand demand = new Demand();
                     demand.UserId = user.UserId;
-                    demand.IsActive = true;
-                    demand.InsertTime = DateTime.Now;
-                    demand.StartTime = demand.InsertTime;
-                    demand.EndTime = demand.StartTime;
+                    demand.CategoryId = Int32.Parse(categoryId);
+                    demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title);
+                    demand.ContentText = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentText);
                     demand.ContentStyle = demand.ContentText;
+
                     if (demand.ContentText.Length > 291)
                     {
                         demand.Description = demand.ContentText.Substring(0, 290);
@@ -200,10 +210,29 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     {
                         demand.Description = demand.ContentText;
                     }
-                    if (demand.Budget == null)
+
+                    demand.Province = string.IsNullOrEmpty(province) ? string.Empty : province;
+                    demand.City = string.IsNullOrEmpty(city) ? string.Empty : city;
+                    demand.Area = string.IsNullOrEmpty(area) ? string.Empty : area;
+                    demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
+                    demand.Phone = phone;
+                    demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
+                    demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
+                    demand.StartTime = DateTime.Parse(startTime);
+                    demand.EndTime = DateTime.Parse(endTime);
+                    demand.TimeLength = string.Empty;
+                    demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
+                    int tempBudget = 0;
+                    if (!string.IsNullOrEmpty(budget))
                     {
-                        demand.Budget = 0;
+                        Int32.TryParse(budget, out tempBudget);
                     }
+                    demand.Budget = tempBudget;
+                    demand.IsActive = true;
+                    demand.ViewCount = 0;
+                    demand.InsertTime = DateTime.Now;
+                    demand.Status = (int)DemandStatus.InProgress;
+
                     if (demandManager.AddDemand(demand))
                     {
                         result = "success";
@@ -211,7 +240,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    result = "必须项不能为空";
+                    result = "请将需求信息补充完整并检查其正确性";
                 }
             }
             return Content(result);
@@ -309,11 +338,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         public ActionResult MyPaidDemand(int page = 1)
         {
-            MyPaidDemand model = new MyPaidDemand();
+            DemandModel model = new DemandModel();
 
             model.PageIndex = page;//当前页数
             model.PageSize = 10;//每页显示多少条
             model.PageStep = 5;//每页显示多少页码
+            model.ActionName = "MyPaidDemand";
 
             int allCount = 0;
             model.PaidDemandOrders = orderService.GetWeChatUserPaidDemands(CurrentWeChatUser.OpenId, model.PageSize, model.PageIndex, out allCount);
@@ -333,6 +363,191 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             return View(model);
+        }
+
+        /// <summary>
+        /// 我发布的需求记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MyDemands(string page)
+        {
+            if (!CurrentWeChatUser.IsUserLoggedIn)
+            {
+                return Redirect("/wechat/account/login");
+            }
+
+            DemandModel model = new DemandModel();
+            model.ActionName = "MyDemands";
+            model.DemandCategories = demandManager.GetDemandCategories();
+
+            //页码，总数重置
+            int pageIndex = 1;
+            if (!string.IsNullOrEmpty(page))
+            {
+                Int32.TryParse(page, out pageIndex);
+            }
+            int allCount = 0;
+            model.Demands = demandService.GetDemandsByUserId(CurrentWeChatUser.UserId.Value, 20, pageIndex, out allCount);//每页显示20条
+            //分页
+            if (model.Demands != null && model.Demands.Count > 0)
+            {
+                model.PageIndex = pageIndex;//当前页数
+                model.PageSize = 20;//每页显示多少条
+                model.PageStep = 10;//每页显示多少页码
+                model.AllCount = allCount;//总条数
+                if (model.AllCount % model.PageSize == 0)
+                {
+                    model.PageCount = model.AllCount / model.PageSize;
+                }
+                else
+                {
+                    model.PageCount = model.AllCount / model.PageSize + 1;
+                }
+            }
+
+            return View(model);
+        }
+
+        public ActionResult UpdateDemandStatusAsComplete(int id)
+        {
+            if (id > -1)
+            {
+                demandService.UpdateDemandStatus(id, DemandStatus.Complete);
+            }
+
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (!CurrentWeChatUser.IsUserLoggedIn)
+            {
+                return Redirect("/wechat/account/login");
+            }
+            DemandModel model = new DemandModel();
+
+            model.DemandCategories = demandManager.GetDemandCategories();
+            model.Provinces = cityService.GetProvinces(true);//省
+
+            if (id > 0)
+            {
+                model.Demand = demandService.GetDemandById(id);
+                if (model.Demand != null)
+                {
+                    if (CurrentUser.UserId == model.Demand.UserId)
+                    {
+                        if (!string.IsNullOrEmpty(model.Demand.Province))
+                        {
+                            model.Cities = cityService.GetCitiesByProvinceId(model.Demand.Province, true);//市
+                        }
+                        if (!string.IsNullOrEmpty(model.Demand.City))
+                        {
+                            model.Areas = cityService.GetAreasByCityId(model.Demand.City, true);//区
+                        }
+                    }
+                }
+            }
+            if (model.Demand == null)
+            {
+                model.Demand = new Demand();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, string categoryId, string title, string contentText,
+            string province, string city, string area, string address, string phone, string qqweixin, string email,
+            string startTime, string endTime, string peopleNumber, string budget)
+        {
+            string result = "更新需求失败";
+            if (!CurrentWeChatUser.IsUserLoggedIn)
+            {
+                result = "长时间为操作，请重新登录";
+            }
+            else
+            {
+                if (id > 0 &&
+                    !string.IsNullOrEmpty(categoryId) &&
+                    !string.IsNullOrEmpty(title) &&
+                    !string.IsNullOrEmpty(contentText) &&
+                    !string.IsNullOrEmpty(startTime) &&
+                    !string.IsNullOrEmpty(endTime) &&
+                    !string.IsNullOrEmpty(budget) &&
+                    !string.IsNullOrEmpty(phone))
+                {
+                    Demand demand = demandManager.GetDemandById(id);
+
+                    if (demand != null)
+                    {
+                        if (demand.UserId != CurrentUser.UserId)
+                        {
+                            result = "只能对自己发布的需求进行编辑";
+                        }
+                        else
+                        {
+                            demand.CategoryId = Int32.Parse(categoryId);
+                            demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title);
+                            demand.ContentText = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentText);
+                            demand.ContentStyle = demand.ContentText;
+
+                            if (demand.ContentText.Length > 291)
+                            {
+                                demand.Description = demand.ContentText.Substring(0, 290);
+                            }
+                            else
+                            {
+                                demand.Description = demand.ContentText;
+                            }
+
+                            demand.Province = string.IsNullOrEmpty(province) ? string.Empty : province;
+                            demand.City = string.IsNullOrEmpty(city) ? string.Empty : city;
+                            demand.Area = string.IsNullOrEmpty(area) ? string.Empty : area;
+                            demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
+                            demand.Phone = phone;
+                            demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
+                            demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
+                            demand.StartTime = DateTime.Parse(startTime);
+                            demand.EndTime = DateTime.Parse(endTime);
+                            demand.TimeLength = string.Empty;
+                            demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
+                            int tempBudget = 0;
+                            if (!string.IsNullOrEmpty(budget))
+                            {
+                                Int32.TryParse(budget, out tempBudget);
+                            }
+                            demand.Budget = tempBudget;
+                            demand.IsActive = true;
+                            demand.ViewCount = 0;
+                            demand.InsertTime = DateTime.Now;
+                            demand.Status = (int)DemandStatus.InProgress;
+
+                            if (demand.EndTime < demand.StartTime)
+                            {
+                                result = "需求结束日期应不小于开始日期";
+                            }
+                            else if (demandService.EditDemand(demand))
+                            {
+                                result = "success";
+                            }
+                            else
+                            {
+                                result = "需求更新失败";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        result = "需求不存在或已被删除";
+                    }
+                }
+                else
+                {
+                    result = "请将需求信息补充完整并检查其正确性";
+                }
+            }
+            return Content(result);
         }
 
         private bool PreparePaySign(TradeOrder order, out string appId, out string timeStamp,
@@ -413,5 +628,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             return isSuccessFul;
         }
+
     }
 }

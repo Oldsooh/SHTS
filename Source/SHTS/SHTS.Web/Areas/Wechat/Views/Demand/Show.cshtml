@@ -17,7 +17,7 @@
 <div class="main">
     <ul class="details">
         <li class="dtitle">
-            @Model.Demand.Title
+            <lable style="color: #FD9102;font-size:20px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
         </li>
         <li>发布时间：<span class="yellow2">@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm")</span></li>
         <li>发布来源：<span class="yellow2">@Model.Demand.UserName</span></li>
@@ -45,10 +45,20 @@
             if (!Model.HasCurrentWeChatUserBought)
             {
                 <li>
+                    @if (Model.Demand.IsCompleted)
+                    {
                     <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。点击下面红色字体
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">购买查看联系电话</span></a>
+                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。该需求已经寻找到资源提供商，点击下面链接
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">继续购买查看联系电话</span></a>
                     </div>
+                    }
+                    else
+                    {
+                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                            【正在寻找资源提供商】立即获得联系方式，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。点击下面链接
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">购买查看联系电话</span></a>
+                        </div>
+                    }
                 </li>
             }
             else

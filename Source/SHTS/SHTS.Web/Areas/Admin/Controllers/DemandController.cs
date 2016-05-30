@@ -174,6 +174,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             return Redirect(Request.UrlReferrer.LocalPath);
         }
 
+        [Permission(EnumRole.Editer)]
         public ActionResult UpdateDemandWeixinBuyFee(string demandIds, int weixinBuyFee)
         {
             bool result = false;
@@ -196,6 +197,16 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateDemandStatusAsComplete(int id)
+        {
+            if (id > -1)
+            {
+                demandService.UpdateDemandStatus(id, DemandStatus.Complete);
+            }
+
+            return Redirect(Request.UrlReferrer.LocalPath);
         }
     }
 }

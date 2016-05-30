@@ -105,7 +105,7 @@
                                 window.location = window.location;
                             }
                             else {
-                                alert('设置失败！');
+                                alert('设置微信购买金额失败！');
                             }
                         });
                 }
@@ -213,7 +213,8 @@
                             <th>微信金额</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
-                            <th>发布时间</th>
+                            @*<th>发布时间</th>*@
+                            <th>需求状态</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -258,9 +259,29 @@
                                     <td>
                                         <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
                                     </td>
-                                    <td>
-                                        <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
-                                    </td>
+                                    @*<td>
+                                            <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                        </td>*@
+                                    @if (item.InProgress)
+                                    {
+                                        <td>
+                                            <span>
+                                                @item.StatusValueString &nbsp;
+                                                <a href="/admin/demand/UpdateDemandStatusAsComplete/@item.Id" title="将需求标记为已完成状态" style="color: #3858FA;" onclick="if(confirm('请确认该需要已找到资源提供商？')==false)return false;">已完成</a>
+                                            </span>
+                                        </td>
+                                    }
+                                    else if (item.IsCompleted)
+                                    {
+                                        <td>
+                                            <span>
+                                                @item.StatusValueString
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td><span>---</span></td>
+                                    }
 
                                     <td>
                                         <a href="/admin/demand/delete?id=@item.Id" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>

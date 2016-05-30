@@ -152,6 +152,7 @@ namespace Witbird.SHTS.Web.Controllers
                     demand.IsActive = true;
                     demand.ViewCount = 0;
                     demand.InsertTime = DateTime.Now;
+                    demand.Status = (int)DemandStatus.InProgress;
 
                     if (demandManager.AddDemand(demand))
                     {
@@ -328,11 +329,23 @@ namespace Witbird.SHTS.Web.Controllers
                             Int32.TryParse(budget, out tempBudget);
                         }
                         demand.Budget = tempBudget;
-
-                        if (demandService.EditDemand(demand))
+                        if (demand.EndTime < demand.StartTime)
+                        {
+                            result = "需求结束日期应不小于开始日期";
+                        }
+                        else if (demandService.EditDemand(demand))
                         {
                             result = "success";
                         }
+                        else
+                        {
+                            result = "需求更新失败";
+                        }
+
+                    }
+                    else
+                    {
+                        result = "只能对自己发布的需求进行更改";
                     }
                 }
                 else
@@ -385,6 +398,21 @@ namespace Witbird.SHTS.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult UpdateDemandStatusAsComplete(int id)
+        {
+            if (!IsUserLogin)
+            {
+                return Redirect("/account/login");
+            }
+
+            if (id > -1)
+            {
+                demandService.UpdateDemandStatus(id, DemandStatus.Complete);
+            }
+
+            return Redirect(Request.UrlReferrer.LocalPath);
         }
     }
 }

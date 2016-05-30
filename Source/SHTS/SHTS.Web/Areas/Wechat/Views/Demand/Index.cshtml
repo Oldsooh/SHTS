@@ -10,17 +10,45 @@
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <style>
         /*Override bootstrap css*/
-        .btn-group-root { width: 100%; padding: 2px 5px; }
-            .btn-group-root .btn-group { width: 16.6%; }
-                .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li { width: 100%; }
-        .btn { padding: 2px 5px; }
-        .navbar-brand { height: 20px; padding: 0px 10px; }
-        .input-group .form-control { width: 50%; padding: 2px 2px; height: 26px; border-radius: 0; border-left: none; padding-top: 5px; font-size: 13px; }
+        .btn-group-root {
+            width: 100%;
+            padding: 2px 5px;
+        }
+
+            .btn-group-root .btn-group {
+                width: 16.6%;
+            }
+
+                .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li {
+                    width: 100%;
+                }
+
+        .btn {
+            padding: 2px 5px;
+        }
+
+        .navbar-brand {
+            height: 20px;
+            padding: 0px 10px;
+        }
+
+        .input-group .form-control {
+            width: 50%;
+            padding: 2px 2px;
+            height: 26px;
+            border-radius: 0;
+            border-left: none;
+            padding-top: 5px;
+            font-size: 13px;
+        }
         /*Override bootstrap css*/
     </style>
 
     <style type="text/css">
-        #demand a { color: #ffffff; background-color: #2577e3; }
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
     </style>
 
 }
@@ -207,9 +235,9 @@
 
     <div class="input-group">
         <input id="starttime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
-               readonly="readonly" value="@Model.StartTime" placeholder="开始时间">
+               readonly="readonly" value="@Model.StartTime" placeholder="开始时间" style="background:#fff;">
         <input id="endtime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
-               readonly="readonly" value="@Model.EndTime" placeholder="结束时间">
+               readonly="readonly" value="@Model.EndTime" placeholder="结束时间" style="background:#fff;">
         <span class="input-group-btn">
             <button onclick="timeRedirect(this)" id="@urlTime" class="btn btn-default" type="button">确定</button>
         </span>
@@ -225,12 +253,14 @@
             <ul class="commonlist">
                 <li class="atitle">
                     <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
-                    <a href="/wechat/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">@item.Title</a>
+                    <a href="/wechat/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;">[@item.StatusValueString]</lable>@item.Title
+                    </a>
                 </li>
                 <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
                 <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
                 <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
-                <li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>
+                @*<li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>*@
                 <li>
                     预算金额：
                     @if (item.Budget == 0)
