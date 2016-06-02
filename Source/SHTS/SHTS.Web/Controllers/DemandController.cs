@@ -8,6 +8,7 @@ using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Models;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Controllers
 {
@@ -128,9 +129,9 @@ namespace Witbird.SHTS.Web.Controllers
                     Demand demand = new Demand();
                     demand.UserId = user.UserId;
                     demand.CategoryId = Int32.Parse(categoryId);
-                    demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title); ;
-                    demand.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(description);
-                    demand.ContentStyle = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentStyle);
+                    demand.Title = title;
+                    demand.Description = description;
+                    demand.ContentStyle = contentStyle;
                     demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
                     demand.Province = string.IsNullOrEmpty(provinceId) ? string.Empty : provinceId;
                     demand.City = string.IsNullOrEmpty(cityId) ? string.Empty : cityId;
@@ -308,9 +309,9 @@ namespace Witbird.SHTS.Web.Controllers
                     if (demand.UserId == user.UserId)
                     {
                         demand.CategoryId = Int32.Parse(categoryId);
-                        demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title);
-                        demand.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(description); ;
-                        demand.ContentStyle = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentStyle);
+                        demand.Title = title;
+                        demand.Description = description;
+                        demand.ContentStyle = contentStyle;
                         demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
                         demand.Province = string.IsNullOrEmpty(provinceId) ? string.Empty : provinceId;
                         demand.City = string.IsNullOrEmpty(cityId) ? string.Empty : cityId;
@@ -371,6 +372,11 @@ namespace Witbird.SHTS.Web.Controllers
                 Demand demand = demandService.GetDemandById(demandId);
                 if (demand != null)
                 {
+                    demand.ContentText = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentText, CommonService.ReplacementForContactInfo);
+                    demand.ContentStyle = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentStyle, CommonService.ReplacementForContactInfo);
+                    demand.Description = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Description, CommonService.ReplacementForContactInfo);
+                    demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
+
                     if (!IsVip)
                     {
                         demand.Phone = "VIP会员可见";

@@ -23,11 +23,11 @@ namespace Witbird.SHTS.Model
             {
                 if (!Status.HasValue || Status.Value == (int)DemandStatus.InProgress)
                 {
-                    return "进行中";
+                    return "寻找中";
                 }
                 else if (Status.Value == (int)DemandStatus.Complete)
                 {
-                    return "已完成";
+                    return "寻找完成";
                 }
 
                 return "正在进行";

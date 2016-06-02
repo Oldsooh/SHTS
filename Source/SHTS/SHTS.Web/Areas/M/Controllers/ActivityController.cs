@@ -11,6 +11,8 @@ using Witbird.SHTS.Model.Criteria;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Models.ActivityModel;
+using Witbird.SHTS.Web.Public;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
@@ -56,7 +58,6 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             {
                 ActivityService service = new ActivityService();
                 model.Activity = service.GetActivityById(id);
-                
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
             }
             catch (Exception e)
@@ -104,7 +105,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                         activity.LocationId = Request.Form["LocationId[]"];
                         activity.State = 3;
                         activity.IsFromMobile = true;
-                        activity.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(activity.Description);
+                        //activity.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(activity.Description);
                         activity.ContentStyle = activity.Description;
                         activity.ContentText = activity.Description;
                         service.CreateOrUpdateActivity(activity);

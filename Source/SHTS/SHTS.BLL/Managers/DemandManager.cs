@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.Model;
+using WitBird.Common;
 
 namespace Witbird.SHTS.BLL.Managers
 {
@@ -27,6 +29,13 @@ namespace Witbird.SHTS.BLL.Managers
             try
             {
                 result = demandRepository.FindOne(o=>o.Id == id);
+                if (result != null)
+                {
+                    result.Title = FilterHelper.Filter(result.Title, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    result.ContentStyle = FilterHelper.Filter(result.ContentStyle, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    result.ContentText = FilterHelper.Filter(result.ContentText, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    result.Description = FilterHelper.Filter(result.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                }
             }
             catch (Exception e)
             {

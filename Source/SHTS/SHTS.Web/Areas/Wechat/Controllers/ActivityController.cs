@@ -11,6 +11,7 @@ using Witbird.SHTS.Model.Criteria;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Models.ActivityModel;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -112,7 +113,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         activity.LocationId = Request.Form["LocationId[]"];
                         activity.State = 3;
                         activity.IsFromMobile = true;
-                        activity.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(activity.Description);
+                        //activity.Description = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(activity.Description);
                         activity.ContentStyle = activity.Description;
                         activity.ContentText = activity.Description;
                         service.CreateOrUpdateActivity(activity);

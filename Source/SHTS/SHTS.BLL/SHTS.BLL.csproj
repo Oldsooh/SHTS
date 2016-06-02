@@ -73,6 +73,10 @@
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SensitiveWordsHelper\WitBird.Common.csproj">
+      <Project>{f61bcf00-6ee5-4520-ad1e-d65dbe91452d}</Project>
+      <Name>WitBird.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SHTS.Common\SHTS.Common.csproj">
       <Project>{accea7fd-72e4-4bc9-a72a-6adb56fac272}</Project>
       <Name>SHTS.Common</Name>

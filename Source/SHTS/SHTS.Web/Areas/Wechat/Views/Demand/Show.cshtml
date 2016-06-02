@@ -47,16 +47,20 @@
                 <li>
                     @if (Model.Demand.IsCompleted)
                     {
-                    <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                        该需求联系方式及详细地址已被隐藏，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。该需求已经寻找到资源提供商，点击下面链接
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">继续购买查看联系电话</span></a>
-                    </div>
+                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                            <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
+                            <span class="yellow2" style="font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>
+                            ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
+                            <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
+                        </div>
                     }
                     else
                     {
-                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:90%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                            【正在寻找资源提供商】立即获得联系方式，仅需<span class="yellow2" style="font-size:20px; font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>即可购买永久查看权限。点击下面链接
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">购买查看联系电话</span></a>
+                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                            <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商，还在等待什么！立即获取用户联系方式吧！第一手联系客户，更多的合作可能！仅需
+                            <span class="yellow2" style="font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>
+                            ，戳下面链接立即获取！<br />
+                            <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
                         </div>
                     }
                 </li>

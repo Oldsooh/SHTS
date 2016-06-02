@@ -1370,6 +1370,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SensitiveWordsHelper\WitBird.Common.csproj">
+      <Project>{f61bcf00-6ee5-4520-ad1e-d65dbe91452d}</Project>
+      <Name>WitBird.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SHTS.BLL\SHTS.BLL.csproj">
       <Project>{992e7895-e47b-437f-afb1-48323cb28969}</Project>
       <Name>SHTS.BLL</Name>

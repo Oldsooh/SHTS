@@ -14,6 +14,7 @@ using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Models;
 using Witbird.SHTS.Web.Public;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -130,6 +131,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 if (demand != null)
                 {
+                    demand.ContentText = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentText, CommonService.ReplacementForContactInfo);
+                    demand.ContentStyle = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentStyle, CommonService.ReplacementForContactInfo);
+                    demand.Description = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Description, CommonService.ReplacementForContactInfo);
+                    demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
+
                     // 如果是自己发布的需求，无需购买即可查看
                     hasWeChatUserBoughtForDemand = (demand.UserId == CurrentWeChatUser.UserId);
                     hasWeChatUserBoughtForDemand = hasWeChatUserBoughtForDemand || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
@@ -198,8 +204,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     Demand demand = new Demand();
                     demand.UserId = user.UserId;
                     demand.CategoryId = Int32.Parse(categoryId);
-                    demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title);
-                    demand.ContentText = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentText);
+                    demand.Title = title;
+                    demand.ContentText = contentText;
                     demand.ContentStyle = demand.ContentText;
 
                     if (demand.ContentText.Length > 291)
@@ -485,11 +491,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         {
                             result = "只能对自己发布的需求进行编辑";
                         }
+                        else if (demand.IsCompleted)
+                        {
+                            result = "该需求已完成，不能进行编辑";
+                        }
                         else
                         {
                             demand.CategoryId = Int32.Parse(categoryId);
-                            demand.Title = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(title);
-                            demand.ContentText = Witbird.SHTS.Web.Public.StaticUtility.FilterSensitivewords(contentText);
+                            demand.Title = title;
+                            demand.ContentText = contentText;
                             demand.ContentStyle = demand.ContentText;
 
                             if (demand.ContentText.Length > 291)

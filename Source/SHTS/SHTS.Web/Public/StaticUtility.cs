@@ -271,36 +271,5 @@ namespace Witbird.SHTS.Web.Public
         }
         #endregion
 
-        /// <summary>
-        /// 过虑敏感词汇
-        /// </summary>
-        /// <param name="sensitivewords">过虑敏感</param>
-        /// <returns>过虑后的文本</returns>
-        public static string FilterSensitivewords(string sensitivewords)
-        {
-            if (!string.IsNullOrEmpty(sensitivewords))
-            {
-                SinglePageService singlePageService = new SinglePageService();
-                SinglePage singlePage = singlePageService.GetSingPageById("51");
-                if (singlePage != null && !string.IsNullOrEmpty(singlePage.ContentStyle))
-                {
-                    string[] sws = singlePage.ContentStyle.Split('+');
-                    if (sws != null && sws.Count() > 0)
-                    {
-                        foreach (string sw in sws)
-                        {
-                            if (!string.IsNullOrEmpty(sw))
-                            {
-                                if (sensitivewords.Contains(sw))
-                                {
-                                    sensitivewords = sensitivewords.Replace(sw, "**");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return sensitivewords;
-        }
     }
 }

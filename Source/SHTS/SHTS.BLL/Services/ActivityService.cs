@@ -8,6 +8,7 @@ using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.Daos;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Model.Criteria;
+using WitBird.Common;
 
 namespace Witbird.SHTS.BLL.Services
 {
@@ -36,6 +37,12 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Open();
                 activity = activityDao.GetActivityById(conn, id);
+                if (activity != null)
+                {
+                    activity.ContentStyle = FilterHelper.Filter(activity.ContentStyle, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    activity.ContentText = FilterHelper.Filter(activity.ContentText, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    activity.Description = FilterHelper.Filter(activity.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                }
             }
             catch (Exception e)
             {
@@ -45,7 +52,7 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Close();
             }
-            return activity;
+            return activity ?? new Activity();
         }
 
 

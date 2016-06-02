@@ -43,5 +43,36 @@ namespace Witbird.SHTS.BLL.Services
 
             return result;
         }
+
+        public const string ReplacementForContactInfo = "[屏蔽]";
+        public const string ReplacementForSensitiveWords = "[屏蔽]";
+
+        private static List<string> sensitivewords = new List<string>();
+        /// <summary>
+        /// Gets all sensitive words.
+        /// </summary>
+        public static List<string> Sensitivewords
+        {
+            get
+            {
+                if (sensitivewords.Count == 0)
+                {
+                    SinglePageService singlePageService = new SinglePageService();
+                    SinglePage singlePage = singlePageService.GetSingPageById("51");
+                    if (singlePage != null && !string.IsNullOrEmpty(singlePage.ContentStyle))
+                    {
+                        foreach (var value in singlePage.ContentStyle.Split('+'))
+                        {
+                            if (!string.IsNullOrWhiteSpace(value))
+                            {
+                                sensitivewords.Add(value);
+                            }
+                        }
+                    }
+                }
+
+                return sensitivewords;
+            }
+        }
     }
 }

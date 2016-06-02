@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.DAL.New;
 using Witbird.SHTS.Model.Extensions;
+using WitBird.Common;
 
 namespace Witbird.SHTS.BLL.Managers
 {
@@ -166,6 +168,17 @@ namespace Witbird.SHTS.BLL.Managers
                 context.SubmitChanges();
                 resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
                     .OrderByDescending(v => v.CreateTime).Take(20).ToList();
+
+                resource.ShortDesc = FilterHelper.Filter(resource.ShortDesc, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                resource.Description = FilterHelper.Filter(resource.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+
+                if (resource.CommentList != null)
+                {
+                    foreach (var item in resource.CommentList)
+                    {
+                        item.Content = FilterHelper.Filter(item.Content, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    }
+                }
             }
             return resource;
         }
