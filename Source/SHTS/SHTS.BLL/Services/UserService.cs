@@ -370,11 +370,11 @@ namespace Witbird.SHTS.BLL.Services
             var conn = DBHelper.GetSqlConnection();
             try
             {
-                conn.Open();
                 user.Vip = (int)VipState.Normal;
                 user.EncryptedPassword = user.EncryptedPassword.ToMD5();
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
+                    conn.Open();
                     int userId;
                     result = userDao.UserRegister(conn, user, out userId);
 
@@ -969,7 +969,6 @@ namespace Witbird.SHTS.BLL.Services
 
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
-
                     result = userDao.UpdateUser(conn, user);
                     if (result)
                     {

@@ -242,9 +242,9 @@ namespace WitBird.Common
             }
 
             result = source;
-            foreach (var oldValue in sensitiveWords)
+            foreach (var item in sensitiveWords)
             {
-                result = result.Replace(oldValue, replacement);
+                result = result.Replace(item, replacement);
             }
 
             return result;

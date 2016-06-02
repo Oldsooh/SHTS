@@ -24,17 +24,11 @@ namespace Witbird.SHTS.BLL.Services
                 if (!string.IsNullOrEmpty(id))
                 {
                     result = SinglePageDao.SelectSinglePageById(Int32.Parse(id), conn);
-                    if (result != null)
-                    {
-                        result.ContentStyle = FilterHelper.Filter(result.ContentStyle, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
-                        result.ContentText = FilterHelper.Filter(result.ContentText, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
-                        result.Description = FilterHelper.Filter(result.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
-                    }
                 }
             }
             catch (Exception e)
             {
-                LogService.Log("查询单个单页失败", e.ToString());
+                LogService.Log("查询单个单页失败", "SingePageId: " + id + "\r\n" +  e.ToString());
             }
             finally
             {

@@ -31,7 +31,7 @@ namespace Witbird.SHTS.Web.Controllers
             {
                 foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
                 {
-                    if (item.Id == id)
+                    if (item != null && item.Id == id)
                     {
                         Session["CityId"] = item.Id;
                         Session["CityName"] = item.Name;

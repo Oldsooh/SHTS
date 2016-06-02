@@ -67,38 +67,38 @@ namespace Witbird.SHTS.Web.Controllers
         public JsonResult VerifyCellphone(string cellphone)
         {
             AjaxResult result = new AjaxResult();
-            try
-            {
-                var vcode = GetRandom();
-                ISendShortMessageService smsSerive = SMSServiceFactory.Create();
-                var message=new ShortMessage { 
-                    ToPhoneNumber=cellphone,
-                    Content = vcode,
-                    Parameters = new []{vcode,"300"}
-                };
-                var response = smsSerive.SendShortMessage(message);
-                if (response.IsSuccess)
-                {
-                    Session["vcode"] = vcode;
-                }
-                else
-                {
-                    result.ExceptionInfo = "发送验证码失败";
-                    result.ErrorCode = 403; 
-                }
-                InnerSMSService smService = new InnerSMSService();
-                smService.AddSMSRecordAsync(new Witbird.SHTS.Model.ShortMessage
-                {
-                    Cellphone = message.ToPhoneNumber,
-                    State = response.IsSuccess? 0:1
-                });
-            }
-            catch (Exception ex)
-            {
-                LogService.Log("发送验证码", ex.ToString());
-                result.ExceptionInfo = "发送验证码失败";
-                result.ErrorCode = 102;
-            }
+            //try
+            //{
+            //    var vcode = GetRandom();
+            //    ISendShortMessageService smsSerive = SMSServiceFactory.Create();
+            //    var message=new ShortMessage { 
+            //        ToPhoneNumber=cellphone,
+            //        Content = vcode,
+            //        Parameters = new []{vcode,"300"}
+            //    };
+            //    var response = smsSerive.SendShortMessage(message);
+            //    if (response.IsSuccess)
+            //    {
+            //        Session["vcode"] = vcode;
+            //    }
+            //    else
+            //    {
+            //        result.ExceptionInfo = "发送验证码失败";
+            //        result.ErrorCode = 403; 
+            //    }
+            //    InnerSMSService smService = new InnerSMSService();
+            //    smService.AddSMSRecordAsync(new Witbird.SHTS.Model.ShortMessage
+            //    {
+            //        Cellphone = message.ToPhoneNumber,
+            //        State = response.IsSuccess? 0:1
+            //    });
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogService.Log("发送验证码", ex.ToString());
+            //    result.ExceptionInfo = "发送验证码失败";
+            //    result.ErrorCode = 102;
+            //}
             return Json(result);
         }
 

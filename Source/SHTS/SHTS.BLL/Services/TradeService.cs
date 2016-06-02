@@ -220,6 +220,7 @@ namespace Witbird.SHTS.BLL.Services
 
             try
             {
+                conn.Open();
                 result = tradeDao.UpdateTradeState(tradeId, newState, conn);
             }
             catch (Exception e)
