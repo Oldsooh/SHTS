@@ -22,8 +22,8 @@
                 <td style="width: 55px;"><strong>需求类型</strong></td>
                 <td style="width: 120px;"><strong>地区</strong></td>
                 <td style="width: 60px;"><strong>预算</strong></td>
-                <td style="width: 90px;"><strong>开始/结束</strong></td>
-                @*<td style="width: 80px;"><strong>发布时间</strong></td>*@
+                @*<td style="width: 90px;"><strong>开始/结束</strong></td>*@
+                <td style="width: 80px;"><strong>发布时间</strong></td>
                 <td style="width: 80px;"><strong>需求状态</strong></td>
                 <td style="width: 30px;"><strong>删除</strong></td>
                 <td style="width: 30px;"><strong>编辑</strong></td>
@@ -51,8 +51,8 @@
                     </td>
                     <td>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</td>
                     <td>￥@item.Budget</td>
-                    <td>@item.StartTime.Value.ToString("MM/dd") &nbsp; @item.EndTime.Value.ToString("MM/dd")</td>
-                    @*<td>@item.InsertTime.ToString("yyyy-MM-dd")</td>*@
+                    @*<td>@item.StartTime.Value.ToString("MM/dd") &nbsp; @item.EndTime.Value.ToString("MM/dd")</td>*@
+                    <td>@item.InsertTime.ToString("yyyy-MM-dd")</td>
                     @if (item.InProgress)
                     {
                         <td>@item.StatusValueString &nbsp;<a href="/demand/UpdateDemandStatusAsComplete/@item.Id" title="将需求标记为已完成状态" style="color: #3858FA;" onclick="if(confirm('请确认该需要已找到资源提供商？')==false)return false;">已完成</a></td>
