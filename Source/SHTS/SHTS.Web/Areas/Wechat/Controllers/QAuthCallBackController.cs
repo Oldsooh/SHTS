@@ -1,5 +1,6 @@
 ﻿using Senparc.Weixin;
 using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using Senparc.Weixin.MP.TenPayLibV3;
 using System;

@@ -13,6 +13,7 @@ using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Menu;
+using Senparc.Weixin.Entities;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
 {
@@ -97,7 +98,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
 
         public ActionResult CreateMenu()
         {
-            GetMenuResult result = new GetMenuResult();
+            GetMenuResult result = new GetMenuResult(new ButtonGroup());
 
             //初始化
             for (int i = 0; i < 3; i++)
@@ -119,8 +120,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
             WxJsonResult result = null;
             try
             {
-                var accessToken = AccessTokenContainer.TryGetToken(AppId, AppSecret);
-                var bg = CommonApi.GetMenuFromJsonResult(resultFull).menu;
+                var accessToken = AccessTokenContainer.TryGetAccessToken(AppId, AppSecret);
+                var bg = CommonApi.GetMenuFromJsonResult(resultFull, new ButtonGroup()).menu;
                 result = CommonApi.CreateMenu(accessToken, bg);
             }
             catch (Exception)
@@ -138,7 +139,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
                 {
                     AccessTokenContainer.Register(appId, appSecret);
                 }
-                var result = AccessTokenContainer.GetTokenResult(appId);
+                var result = AccessTokenContainer.GetAccessTokenResult(appId);
 
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -150,7 +151,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.Controllers
 
         public ActionResult GetMenu()
         {
-            var accessToken = AccessTokenContainer.TryGetToken(AppId, AppSecret);
+            var accessToken = AccessTokenContainer.TryGetAccessToken(AppId, AppSecret);
             var result = CommonApi.GetMenu(accessToken);
             if (result == null)
             {

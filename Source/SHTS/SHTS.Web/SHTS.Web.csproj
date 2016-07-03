@@ -59,14 +59,19 @@
     <Reference Include="PanGu.Lucene.Analyzer">
       <HintPath>..\packages\Lucene.Net.3.0.3\PanGu.Lucene.Analyzer.dll</HintPath>
     </Reference>
-    <Reference Include="Senparc.Weixin">
-      <HintPath>Dlls\Senparc.Weixin.dll</HintPath>
+    <Reference Include="Senparc.Weixin, Version=4.5.20.25374, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Senparc.Weixin.4.5.20\lib\net45\Senparc.Weixin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Senparc.Weixin.MP">
-      <HintPath>Dlls\Senparc.Weixin.MP.dll</HintPath>
+    <Reference Include="Senparc.Weixin.MP, Version=13.8.4.26917, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Senparc.Weixin.MP.13.8.4\lib\net45\Senparc.Weixin.MP.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Senparc.Weixin.MP.MvcExtension">
-      <HintPath>Dlls\Senparc.Weixin.MP.MvcExtension.dll</HintPath>
+    <Reference Include="Senparc.Weixin.MP.MvcExtension, Version=4.0.1.32125, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.MP.MVC.4.0.2\lib\net45\Senparc.Weixin.MP.MvcExtension.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Senparc.Weixin.Open">
       <HintPath>Dlls\Senparc.Weixin.Open.dll</HintPath>
@@ -1221,16 +1226,6 @@
     <Content Include="Dictionaries\Stopword.txt" />
     <Content Include="Dictionaries\Synonym.txt" />
     <Content Include="Dictionaries\Wildcard.txt" />
-    <Content Include="Dlls\Senparc.Weixin.dll" />
-    <Content Include="Dlls\Senparc.Weixin.MP.dll" />
-    <Content Include="Dlls\Senparc.Weixin.MP.MvcExtension.dll" />
-    <Content Include="Dlls\Senparc.Weixin.MP.MvcExtension.xml" />
-    <Content Include="Dlls\Senparc.Weixin.MP.xml" />
-    <Content Include="Dlls\Senparc.Weixin.Open.dll" />
-    <Content Include="Dlls\Senparc.Weixin.Open.xml" />
-    <Content Include="Dlls\Senparc.Weixin.QY.dll" />
-    <Content Include="Dlls\Senparc.Weixin.QY.xml" />
-    <Content Include="Dlls\Senparc.Weixin.xml" />
     <Content Include="Global.asax" />
     <Content Include="Content\upload\uploadimage300200.ashx" />
     <Content Include="Content\kindeditor\asp.net\file_manager_json.ashx" />

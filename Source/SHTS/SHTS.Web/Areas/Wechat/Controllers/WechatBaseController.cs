@@ -1,4 +1,5 @@
 ﻿using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using System;
 using System.Configuration;
