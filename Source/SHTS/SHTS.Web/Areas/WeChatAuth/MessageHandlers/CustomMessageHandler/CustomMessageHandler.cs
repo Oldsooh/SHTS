@@ -1,18 +1,8 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.Configuration;
-using Senparc.Weixin.MP.Agent;
-using Senparc.Weixin.Context;
-using Senparc.Weixin.MP.Entities;
+﻿using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Request;
 using Senparc.Weixin.MP.MessageHandlers;
-using Senparc.Weixin.MP.Helpers;
-using WitBird.SHTS.Areas.WeChatAuth.Utilities;
-using WitBird.Com.SearchEngine;
-using Witbird.SHTS.Common;
+using System.IO;
+using System.Web.Configuration;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 {
@@ -64,7 +54,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             //TODO: 对Event信息进行统一操作
             return eventResponseMessage;
         }
-        
+
         public override IResponseMessageBase DefaultResponseMessage(IRequestMessageBase requestMessage)
         {
             var responseMessage = CreateResponseMessage<ResponseMessageText>();

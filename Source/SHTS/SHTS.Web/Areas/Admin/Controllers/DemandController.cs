@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Senparc.Weixin.MP.AdvancedAPIs;
+using Senparc.Weixin.MP.CommonAPIs;
+using Senparc.Weixin.MP.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Admin.Authorize;
 using Witbird.SHTS.Web.Areas.Admin.Models;
@@ -207,6 +211,41 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
 
             return Redirect(Request.UrlReferrer.LocalPath);
+        }
+
+        public ActionResult TestSendMessage()
+        {
+            var appId = "wx75defde278a65715";
+            var secret = "429a0bbaacdd3c84bd4936f3efed6524";
+            AccessTokenContainer.Register(appId, secret);
+            //AccessTokenContainer.GetAccessToken();
+            var log = "";
+            try
+            {
+                var myOpenId = "o1HUAweo1dutYjcrfcNn1dxkC5zs";
+                var timeout = 100000;
+                var articles = new List<Article>()
+                {
+                    new Article()
+                    {
+                        Description = "Description",
+                        PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/banner.jpg",
+                        Title = "Test send message",
+                        Url = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect"
+                    }
+                };
+
+                var wxResult = CustomApi.SendNews(appId, myOpenId, articles, timeout);
+
+                log += "ErrorCode: " + wxResult.errcode;
+                log += "ErrorMsg: " + wxResult.errmsg;
+            }
+            catch (Exception ex)
+            {
+                log += "测试消息定向推送发生异常: " + ex.ToString();
+            }
+
+            return Content(log);
         }
     }
 }
