@@ -84,6 +84,12 @@
         <div class="showTitle">
             <h1>@Model.Activity.Title</h1>
             <p>
+                @{
+                    // Fix null reference exception.
+                    var createdTime = Model.Activity.CreatedTime ?? DateTime.Now;
+                    Model.Activity.CreatedTime = createdTime;
+                    
+                }
                 发布时间：@Model.Activity.CreatedTime.Value.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 阅读：@Model.Activity.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 来源：活动在线 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

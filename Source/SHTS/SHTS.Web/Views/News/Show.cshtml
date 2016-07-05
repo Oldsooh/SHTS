@@ -18,6 +18,11 @@
         <div class="showTitle">
             <h2>@Model.News.Title</h2>
             <p>
+                @{
+                    // Fix null reference exception.
+                    var insertTime = Model.News.InsertTime ?? DateTime.Now;
+                    Model.News.InsertTime = insertTime;
+                }
                 发布时间：@Model.News.InsertTime.Value.ToString("yyyy-MM-dd HH:mm") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 阅读：@Model.News.ViewCount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 来源：活动在线 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

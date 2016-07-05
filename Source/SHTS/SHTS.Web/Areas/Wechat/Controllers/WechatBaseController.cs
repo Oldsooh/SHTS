@@ -88,71 +88,107 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             base.OnActionExecuting(filterContext);
 
-            //用于绕过权限检测，方便电脑测试
-            //WeChatUser wechatUser = new UserService().GetWeChatUser(3);
-            //User user = new UserService().GetUserById(3);
-
-            //CurrentWeChatUser = wechatUser;
-            //CurrentUser = user;
-            //wechatUser.IsUserLoggedIn = IsUserLogin;
-            //wechatUser.IsUserIdentified = IsIdentified;
-            //wechatUser.IsUserVip = IsVip;
-
-            #region 微信权限检测
             try
             {
-                var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
+                //用于绕过权限检测，方便电脑测试
+                //WeChatUser wechatUser = new UserService().GetWeChatUser(3);
+                //User user = new UserService().GetUserById(3);
 
-                //用户还未授权或Cookie被清空, 重新授权。
-                if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
+                //CurrentWeChatUser = wechatUser;
+                //CurrentUser = user;
+                //wechatUser.IsUserLoggedIn = IsUserLogin;
+                //wechatUser.IsUserIdentified = IsIdentified;
+                //wechatUser.IsUserVip = IsVip;
+
+                var isContineExcute = true;
+
+                #region 如果code不为空，表示之前发起授权操作，优先处理授权结果
+
+                // 用户同意授权返回的code, 用于换取access_token
+                var code = filterContext.HttpContext.Request.QueryString["code"];
+                // state用于保存一些临时信息，暂时未使用
+                var state = filterContext.HttpContext.Request.QueryString["state"];
+
+                if (!string.IsNullOrEmpty(code))
                 {
-                    filterContext.Result = GetWechatAuthResult(filterContext);
+                    //LogService.LogWexin("1. 处理微信授权结果 RedirectUrl:", filterContext.HttpContext.Request.Url.AbsoluteUri);
+
+                    //LogService.LogWexin("2. Code：", code);
+                    isContineExcute = HandleWechatAuthResult(code);
+                    if (!isContineExcute)
+                    {
+                        filterContext.Result = GetWechatAuthFailedResult();
+                    }
+                    else
+                    {
+                        var redirectUrl = GetOriginalUrlString(filterContext);
+                        filterContext.Result = new RedirectResult(redirectUrl);
+                        //LogService.LogWexin("3. isContineExcute: ", isContineExcute.ToString());
+                    }
                 }
+
+                #endregion
+
+                #region 检查用户是否授权
+                //if (isContineExcute)
                 else
                 {
-                    var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
+                    //LogService.LogWexin("4. RedirectUrl:", filterContext.HttpContext.Request.Url.AbsoluteUri);
+                    var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
 
-                    // 取消强制关注逻辑
-                    //用户还未关注，提示用户关注我们先。
-                    //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
-                    //{
-                    //    filterContext.Result = new RedirectResult(FollowUsUrl);
-                    //}
-                    //else 
-
-                    // 未获得用户数据，重新授权
-                    if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                    //用户还未授权或Cookie被清空, 重新授权。
+                    if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
                     {
+                        //LogService.LogWexin("5", "重新授权");
                         filterContext.Result = GetWechatAuthResult(filterContext);
                     }
                     else
                     {
-                        //更新Session信息
-                        if (wechatUser.UserId.HasValue)
+                        var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
+
+                        // 取消强制关注逻辑
+                        //用户还未关注，提示用户关注我们先。
+                        //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
+                        //{
+                        //    filterContext.Result = new RedirectResult(FollowUsUrl);
+                        //}
+                        //else 
+
+                        // 未获得用户数据，重新授权
+                        if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
                         {
-                            var user = userService.GetUserById(wechatUser.UserId.Value);
-
-                            if (user != null)
-                            {
-                                CurrentUser = user;
-                                wechatUser.IsUserLoggedIn = IsUserLogin;
-                                wechatUser.IsUserIdentified = IsIdentified;
-                                wechatUser.IsUserVip = IsVip;
-                            }
+                            //LogService.LogWexin("6", "重新授权");
+                            filterContext.Result = GetWechatAuthResult(filterContext);
                         }
+                        else
+                        {
+                            //LogService.LogWexin("7", "访问成功");
+                            //更新Session信息
+                            if (wechatUser.UserId.HasValue)
+                            {
+                                var user = userService.GetUserById(wechatUser.UserId.Value);
 
-                        CurrentWeChatUser = wechatUser;
+                                if (user != null)
+                                {
+                                    CurrentUser = user;
+                                    wechatUser.IsUserLoggedIn = IsUserLogin;
+                                    wechatUser.IsUserIdentified = IsIdentified;
+                                    wechatUser.IsUserVip = IsVip;
+                                }
+                            }
+
+                            CurrentWeChatUser = wechatUser;
+                        }
                     }
                 }
 
+                #endregion
             }
             catch (Exception ex)
             {
                 LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
+                filterContext.Result = GetWechatAuthFailedResult();
             }
-
-            #endregion 微信权限检测
-
         }
 
         /// <summary>
@@ -163,10 +199,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             //LogService.Log("用户OpenId Cookie为空，需要授权", "");
             // 授权回调页面
-            var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
+            //var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
             // 授权回调成功后跳转到用户一开始想访问的页面
-            var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
+            //var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
 
+            var redirectUrl = GetOriginalUrlString(filterContext);
             var state = string.Empty; //保存一些临时值，暂未使用
             var authUrl = OAuthApi.GetAuthorizeUrl(AppId, redirectUrl, state, OAuthScope.snsapi_userinfo);
 
@@ -179,7 +216,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// <returns></returns>
         private ActionResult GetWechatAuthFailedResult()
         {
-            var msg = "您拒绝了授权或授权失败，请返回原链接重新发起授权。";
+            var msg = "您请求的页面发生错误，请返回原链接重新发起请求。如频繁遇到此错误，请联系活动在线客服。感谢您使用活动在线网！祝您生活愉快！";
             return Content(msg);
         }
 
@@ -274,9 +311,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 foreach (var key in parameters.AllKeys)
                 {
-                    if (!paraDic.ContainsKey(key))
+                    if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(parameters[key]) && !paraDic.ContainsKey(key))
                     {
-                        paraDic.Add(key, parameters[key] ?? string.Empty);
+                        paraDic.Add(key, parameters[key]);
                     }
                 }
             }

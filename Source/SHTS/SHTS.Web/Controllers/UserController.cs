@@ -196,18 +196,21 @@ namespace Witbird.SHTS.Web.Controllers
         /// <returns></returns>
         public ActionResult Identify()
         {
-            RequireLogin();
-            UserViewModel model = new UserViewModel { UserEntity = UserInfo };
-            try
+            UserViewModel model = new UserViewModel();
+            if (!RequireLogin())
             {
-                UserService service = new UserService();
-                model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+                try
+                {
+                    model.UserEntity = UserInfo;
+                    UserService service = new UserService();
+                    model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+                }
+                catch (Exception e)
+                {
+                    LogService.Log("Identify 出错了！", e.ToString());
+                }
+                model.ErrorMsg = GetErrorMessage(model.VipInfo);
             }
-            catch (Exception e)
-            {
-                LogService.Log("Identify 出错了！", e.ToString());
-            }
-            model.ErrorMsg = GetErrorMessage(model.VipInfo);
             return View(model);
         }
 

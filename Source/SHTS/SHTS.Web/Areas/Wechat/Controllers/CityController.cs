@@ -3,11 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
-    public class CityController : WechatBaseController
+    public class CityController : BaseController
     {
         CityService cityService = new CityService();
 

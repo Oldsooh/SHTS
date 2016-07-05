@@ -76,14 +76,17 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             if (tempId != 0)
             {
                 var demand = demandService.GetDemandById(tempId);
-                if (!IsVip)
-                {
-                    demand.Phone = "VIP会员可见";
-                    demand.QQWeixin = "VIP会员可见";
-                    demand.Email = "VIP会员可见";
-                    demand.Address = "VIP会员可见";
-                }
 
+                if (demand != null)
+                {
+                    if (!IsVip)
+                    {
+                        demand.Phone = "VIP会员可见";
+                        demand.QQWeixin = "VIP会员可见";
+                        demand.Email = "VIP会员可见";
+                        demand.Address = "VIP会员可见";
+                    }
+                }
                 model.Demand = demand;
             }
 
