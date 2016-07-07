@@ -90,7 +90,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
-                //用于绕过权限检测，方便电脑测试
+                #region 用于绕过权限检测，方便电脑测试
                 //WeChatUser wechatUser = new UserService().GetWeChatUser(3);
                 //User user = new UserService().GetUserById(3);
 
@@ -99,48 +99,40 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 //wechatUser.IsUserLoggedIn = IsUserLogin;
                 //wechatUser.IsUserIdentified = IsIdentified;
                 //wechatUser.IsUserVip = IsVip;
+                #endregion
 
-                var isContineExcute = true;
+                #region 处理微信授权结果
 
-                #region 如果code不为空，表示之前发起授权操作，优先处理授权结果
-
-                // 用户同意授权返回的code, 用于换取access_token
+                // 用户同意授权返回的code, 用于换取access_token,如果code不为空，表示之前发起授权操作，优先处理授权结果
                 var code = filterContext.HttpContext.Request.QueryString["code"];
                 // state用于保存一些临时信息，暂时未使用
                 var state = filterContext.HttpContext.Request.QueryString["state"];
 
                 if (!string.IsNullOrEmpty(code))
                 {
-                    //LogService.LogWexin("1. 处理微信授权结果 RedirectUrl:", filterContext.HttpContext.Request.Url.AbsoluteUri);
-
-                    //LogService.LogWexin("2. Code：", code);
-                    isContineExcute = HandleWechatAuthResult(code);
-                    if (!isContineExcute)
+                    if (!HandleWechatAuthResult(code))
                     {
                         filterContext.Result = GetWechatAuthFailedResult();
                     }
                     else
                     {
+                        // 授权成功重定向到目标页面
                         var redirectUrl = GetOriginalUrlString(filterContext);
                         filterContext.Result = new RedirectResult(redirectUrl);
-                        //LogService.LogWexin("3. isContineExcute: ", isContineExcute.ToString());
                     }
                 }
 
                 #endregion
 
-                #region 检查用户是否授权
-                //if (isContineExcute)
+                #region 检查授权和信息处理
                 else
                 {
-                    //LogService.LogWexin("4. RedirectUrl:", filterContext.HttpContext.Request.Url.AbsoluteUri);
                     var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
 
                     //用户还未授权或Cookie被清空, 重新授权。
                     if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
                     {
-                        //LogService.LogWexin("5", "重新授权");
-                        filterContext.Result = GetWechatAuthResult(filterContext);
+                        filterContext.Result = GetWechatAuthUrlString(filterContext);
                     }
                     else
                     {
@@ -157,12 +149,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         // 未获得用户数据，重新授权
                         if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
                         {
-                            //LogService.LogWexin("6", "重新授权");
-                            filterContext.Result = GetWechatAuthResult(filterContext);
+                            filterContext.Result = GetWechatAuthUrlString(filterContext);
                         }
                         else
                         {
-                            //LogService.LogWexin("7", "访问成功");
                             //更新Session信息
                             if (wechatUser.UserId.HasValue)
                             {
@@ -195,13 +185,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// 返回微信授权页面
         /// </summary>
         /// <param name="filterContext"></param>
-        private ActionResult GetWechatAuthResult(ActionExecutingContext filterContext)
+        private ActionResult GetWechatAuthUrlString(ActionExecutingContext filterContext)
         {
-            //LogService.Log("用户OpenId Cookie为空，需要授权", "");
+            #region Old code
             // 授权回调页面
             //var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
             // 授权回调成功后跳转到用户一开始想访问的页面
             //var callBackUrl = filterContext.HttpContext.Request.Url.AbsoluteUri;
+            #endregion
 
             var redirectUrl = GetOriginalUrlString(filterContext);
             var state = string.Empty; //保存一些临时值，暂未使用
