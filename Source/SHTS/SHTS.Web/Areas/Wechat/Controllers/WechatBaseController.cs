@@ -29,6 +29,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         // User service
         UserService userService = new UserService();
 
+        /// <summary>
+        /// 当前访问的WeChat用户信息
+        /// </summary>
         public WeChatUser CurrentWeChatUser
         {
             get
@@ -41,7 +44,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
         }
 
-
+        /// <summary>
+        /// 当前WeChat用户绑定的PC端账号信息
+        /// </summary>
         public override User CurrentUser
         {
             get
@@ -81,7 +86,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         /// <summary>
-        /// 微信权限检测
+        /// 在执行具体Action之前进行微信权限检测，保存wechat用户信息
         /// </summary>
         /// <param name="filterContext"></param>
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -90,95 +95,105 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
-                #region 用于绕过权限检测，方便电脑测试
-                //WeChatUser wechatUser = new UserService().GetWeChatUser(3);
-                //User user = new UserService().GetUserById(3);
+                // 当前是否是用电脑测试，绕过微信授权检测方便电脑测试
+                bool isTestOnPCEnvironment = false;
+                // 当前请求是否来自微信授权结果
+                bool isRequestFromWeChatAuth = false;
 
-                //CurrentWeChatUser = wechatUser;
-                //CurrentUser = user;
-                //wechatUser.IsUserLoggedIn = IsUserLogin;
-                //wechatUser.IsUserIdentified = IsIdentified;
-                //wechatUser.IsUserVip = IsVip;
-                #endregion
-
-                #region 处理微信授权结果
-
-                // 用户同意授权返回的code, 用于换取access_token,如果code不为空，表示之前发起授权操作，优先处理授权结果
-                var code = filterContext.HttpContext.Request.QueryString["code"];
-                // state用于保存一些临时信息，暂时未使用
-                var state = filterContext.HttpContext.Request.QueryString["state"];
-
-                if (!string.IsNullOrEmpty(code))
+                if (isTestOnPCEnvironment)
                 {
-                    if (!HandleWechatAuthResult(code))
-                    {
-                        filterContext.Result = GetWechatAuthFailedResult();
-                    }
-                    else
-                    {
-                        // 授权成功重定向到目标页面
-                        var redirectUrl = GetOriginalUrlString(filterContext);
-                        filterContext.Result = new RedirectResult(redirectUrl);
-                    }
+                    SetWeChatUserSessionForTestingUseOnly();
                 }
-
-                #endregion
-
-                #region 检查授权和信息处理
                 else
                 {
-                    var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
+                    // 用户同意授权返回的code, 用于换取access_token,如果code不为空，表示之前发起授权操作，优先处理授权结果
+                    var code = filterContext.HttpContext.Request.QueryString["code"];
+                    // state用于保存一些临时信息，暂时未使用
+                    //var state = filterContext.HttpContext.Request.QueryString["state"];
 
-                    //用户还未授权或Cookie被清空, 重新授权。
-                    if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
+                    isRequestFromWeChatAuth = !string.IsNullOrEmpty(code);
+                    if (isRequestFromWeChatAuth)
                     {
-                        filterContext.Result = GetWechatAuthUrlString(filterContext);
-                    }
-                    else
-                    {
-                        var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
-
-                        // 取消强制关注逻辑
-                        //用户还未关注，提示用户关注我们先。
-                        //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
-                        //{
-                        //    filterContext.Result = new RedirectResult(FollowUsUrl);
-                        //}
-                        //else 
-
-                        // 未获得用户数据，重新授权
-                        if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                        if (!HandleWechatAuthResult(code))
                         {
-                            filterContext.Result = GetWechatAuthUrlString(filterContext);
+                            filterContext.Result = GetWechatAuthFailedResult();
                         }
                         else
                         {
-                            //更新Session信息
-                            if (wechatUser.UserId.HasValue)
-                            {
-                                var user = userService.GetUserById(wechatUser.UserId.Value);
-
-                                if (user != null)
-                                {
-                                    CurrentUser = user;
-                                    wechatUser.IsUserLoggedIn = IsUserLogin;
-                                    wechatUser.IsUserIdentified = IsIdentified;
-                                    wechatUser.IsUserVip = IsVip;
-                                }
-                            }
-
-                            CurrentWeChatUser = wechatUser;
+                            // 授权成功重定向到目标页面
+                            var redirectUrl = GetOriginalUrlString(filterContext);
+                            filterContext.Result = new RedirectResult(redirectUrl);
+                        }
+                    }
+                    else
+                    {
+                        bool isWeChatAuthRequired = SetWeChatUserInfoWithValidation(filterContext);
+                        if (isWeChatAuthRequired)
+                        {
+                            filterContext.Result = GetWechatAuthUrlString(filterContext);
                         }
                     }
                 }
-
-                #endregion
             }
             catch (Exception ex)
             {
                 LogService.LogWexin("获取用户授权页面出现错误", ex.ToString());
                 filterContext.Result = GetWechatAuthFailedResult();
             }
+        }
+
+        /// <summary>
+        /// 检测微信用户授权信息，如果不符合则需要重新进行微信授权验证。
+        /// </summary>
+        /// <param name="filterContext"></param>
+        private bool SetWeChatUserInfoWithValidation(ActionExecutingContext filterContext)
+        {
+            bool isWeChatAuthRequired = false;
+            var wechatOpenIdCookie = filterContext.RequestContext.HttpContext.Request.Cookies[WeChatOpenIdCookieName];
+
+            //用户还未授权或Cookie被清空, 重新授权。
+            if (wechatOpenIdCookie == null || string.IsNullOrEmpty(wechatOpenIdCookie.Value))
+            {
+                isWeChatAuthRequired = true;
+            }
+            else
+            {
+                var wechatUser = userService.GetWeChatUser(wechatOpenIdCookie.Value);
+
+                // 取消强制关注逻辑
+                //用户还未关注，提示用户关注我们先。
+                //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
+                //{
+                //    filterContext.Result = new RedirectResult(FollowUsUrl);
+                //}
+                //else 
+
+                // 未获得用户数据，重新授权
+                if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                {
+                    isWeChatAuthRequired = true;
+                }
+                else
+                {
+                    //更新Session信息
+                    if (wechatUser.UserId.HasValue)
+                    {
+                        var user = userService.GetUserById(wechatUser.UserId.Value);
+
+                        if (user != null)
+                        {
+                            CurrentUser = user;
+                            wechatUser.IsUserLoggedIn = IsUserLogin;
+                            wechatUser.IsUserIdentified = IsIdentified;
+                            wechatUser.IsUserVip = IsVip;
+                        }
+                    }
+
+                    CurrentWeChatUser = wechatUser;
+                }
+            }
+
+            return isWeChatAuthRequired;
         }
 
         /// <summary>
@@ -288,7 +303,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         /// <summary>
-        /// Removes code and state parameters from query string.
+        /// 删除微信跳转过来的链接中的code和state参数
         /// </summary>
         /// <param name="filterContext"></param>
         /// <returns></returns>
@@ -345,6 +360,21 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             return urlWithoutQueryString + "?" + queryString;
+        }
+
+        /// <summary>
+        /// 设置默认微信用户session信息来绕过微信授权检测，仅用于电脑测试。
+        /// </summary>
+        private void SetWeChatUserSessionForTestingUseOnly()
+        {
+            WeChatUser wechatUser = new UserService().GetWeChatUser(3);
+            User user = new UserService().GetUserById(3);
+
+            CurrentWeChatUser = wechatUser;
+            CurrentUser = user;
+            wechatUser.IsUserLoggedIn = IsUserLogin;
+            wechatUser.IsUserIdentified = IsIdentified;
+            wechatUser.IsUserVip = IsVip;
         }
     }
 }
