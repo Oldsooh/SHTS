@@ -413,4 +413,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CellPhoneCounter" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="39aff3bd-b035-4c8e-b76e-3780dab6bcf7" ChangeDateTime="07/09/2016 12:59:16">
+    <Property Name="ElementName" Value="[dbo].[DemandSubscriptionDetail].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandSubscriptionDetail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SubscriptionDetailId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bb7a745c-c300-4c4f-bdd3-966807225703" ChangeDateTime="07/09/2016 13:04:44">
+    <Property Name="ElementName" Value="[dbo].[DemandQuotes].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandQuotes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="QuoteId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fdfb377b-9864-4999-b502-b57abd85b02a" ChangeDateTime="07/09/2016 13:10:30">
+    <Property Name="ElementName" Value="[dbo].[DemandQuoteHistory].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandQuoteHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HistoryId" />
+  </Operation>
 </Operations>

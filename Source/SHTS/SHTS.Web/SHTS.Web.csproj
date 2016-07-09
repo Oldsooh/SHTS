@@ -73,12 +73,6 @@
       <HintPath>..\packages\Senparc.Weixin.MP.MVC.4.0.2\lib\net45\Senparc.Weixin.MP.MvcExtension.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Senparc.Weixin.Open">
-      <HintPath>Dlls\Senparc.Weixin.Open.dll</HintPath>
-    </Reference>
-    <Reference Include="Senparc.Weixin.QY">
-      <HintPath>Dlls\Senparc.Weixin.QY.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />

@@ -88,6 +88,8 @@
     <Folder Include="Table\User" />
     <Folder Include="Table\Activity" />
     <Folder Include="Table\Configuration" />
+    <Folder Include="StoredProcedure\DemandSubscription" />
+    <Folder Include="StoredProcedure\DemandQuotes" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedure\Calc.sql" />
@@ -207,6 +209,11 @@
     <Build Include="Table\Configuration\ShortMessage.sql" />
     <Build Include="Table\Configuration\SinglePage.sql" />
     <Build Include="Table\Configuration\City.sql" />
+    <Build Include="Table\Demand\DemandSubscription.sql" />
+    <Build Include="Table\Demand\DemandSubscriptionDetail.sql" />
+    <Build Include="Table\Demand\DemandQuotes.sql" />
+    <Build Include="Table\Demand\DemandQuoteHistory.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_SelectDemandSubscriptionByWeChatUserId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
