@@ -219,6 +219,7 @@
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
+    <Compile Include="Areas\Wechat\Subscription\WorkingThread.cs" />
     <Compile Include="Areas\Wechat\WechatAreaRegistration.cs" />
     <Compile Include="Content\upload\uploadimage300200.ashx.cs">
       <DependentUpon>uploadimage300200.ashx</DependentUpon>
