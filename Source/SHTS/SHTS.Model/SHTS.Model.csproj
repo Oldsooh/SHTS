@@ -95,6 +95,18 @@
     <Compile Include="DemandCategory.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DemandQuoteHistory.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DemandQuotes.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DemandSubscription.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DemandSubscriptionDetail.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DTO\AccessAnalyticsWithUser.cs" />
     <Compile Include="Equipment.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
@@ -157,6 +169,9 @@
       <DependentUpon>SHTSModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="SinglePage.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SmsRecord.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Space.cs">

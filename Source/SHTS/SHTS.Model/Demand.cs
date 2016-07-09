@@ -36,9 +36,7 @@ namespace Witbird.SHTS.Model
         public System.DateTime InsertTime { get; set; }
         public string QQWeixin { get; set; }
         public string Email { get; set; }
-
         public Nullable<int> WeixinBuyFee { get; set; }
-
         public Nullable<int> Status { get; set; }
     }
 }

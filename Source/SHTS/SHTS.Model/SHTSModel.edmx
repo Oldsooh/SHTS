@@ -187,6 +187,8 @@
           <Property Name="ViewCount" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="InsertTime" Type="datetime" Nullable="false" />
+          <Property Name="WeixinBuyFee" Type="int" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="DemandCategory">
           <Key>
@@ -196,6 +198,53 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DisplayOrder" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandQuoteHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuoteId" Type="int" Nullable="false" />
+          <Property Name="WeChatUserId" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="HasRead" Type="bit" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandQuotes">
+          <Key>
+            <PropertyRef Name="QuoteId" />
+          </Key>
+          <Property Name="QuoteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WeChatUserId" Type="int" Nullable="false" />
+          <Property Name="DemandId" Type="int" Nullable="false" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactPhoneNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="QuotePrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AcceptStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DemandSubscription">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WeChatUserId" Type="int" Nullable="false" />
+          <Property Name="IsSubscribed" Type="bit" Nullable="false" />
+          <Property Name="LastRequestTimestamp" Type="datetime" />
+          <Property Name="LastPushTimestamp" Type="datetime" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandSubscriptionDetail">
+          <Key>
+            <PropertyRef Name="SubscriptionDetailId" />
+          </Key>
+          <Property Name="SubscriptionDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubscriptionId" Type="int" Nullable="false" />
+          <Property Name="SubscriptionType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubscriptionValue" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Equipment">
           <Key>
@@ -345,6 +394,22 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="ViewCount" Type="int" />
           <Property Name="InsertTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SmsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Userid" Type="int" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ip" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hascheck" Type="tinyint" />
+          <Property Name="CheckTime" Type="datetime" />
+          <Property Name="TplId" Type="nvarchar" MaxLength="10" />
+          <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nchar" MaxLength="100" />
+          <Property Name="AddTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Space">
           <Key>
@@ -575,7 +640,7 @@
           <Property Name="Province" Type="nvarchar" MaxLength="50" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="County" Type="nvarchar" MaxLength="50" />
-          <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
           <Property Name="AccessToken" Type="nvarchar" MaxLength="50" />
           <Property Name="AccessTokenExpired" Type="bit" />
           <Property Name="AccessTokenExpireTime" Type="datetime" />
@@ -583,6 +648,66 @@
           <Property Name="HasAuthorized" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
         </EntityType>
+        <Association Name="FK_DemandQuoteHistory_DemandQuotes">
+          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="1" />
+          <End Role="DemandQuoteHistory" Type="Self.DemandQuoteHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DemandQuotes">
+              <PropertyRef Name="QuoteId" />
+            </Principal>
+            <Dependent Role="DemandQuoteHistory">
+              <PropertyRef Name="QuoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DemandQuotes_Demand">
+          <End Role="Demand" Type="Self.Demand" Multiplicity="1" />
+          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Demand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DemandQuotes">
+              <PropertyRef Name="DemandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DemandQuotes_WeChatUser">
+          <End Role="WeChatUser" Type="Self.WeChatUser" Multiplicity="1" />
+          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeChatUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DemandQuotes">
+              <PropertyRef Name="WeChatUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DemandSubscription_WeChatUser">
+          <End Role="WeChatUser" Type="Self.WeChatUser" Multiplicity="1" />
+          <End Role="DemandSubscription" Type="Self.DemandSubscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeChatUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DemandSubscription">
+              <PropertyRef Name="WeChatUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DemandSubscriptionDetail_DemandSubscription">
+          <End Role="DemandSubscription" Type="Self.DemandSubscription" Multiplicity="1" />
+          <End Role="DemandSubscriptionDetail" Type="Self.DemandSubscriptionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DemandSubscription">
+              <PropertyRef Name="SubscriptionId" />
+            </Principal>
+            <Dependent Role="DemandSubscriptionDetail">
+              <PropertyRef Name="SubscriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="shtsModelStoreContainer">
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
@@ -598,6 +723,10 @@
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demand" EntityType="Self.Demand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandCategory" EntityType="Self.DemandCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandQuoteHistory" EntityType="Self.DemandQuoteHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandQuotes" EntityType="Self.DemandQuotes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandSubscription" EntityType="Self.DemandSubscription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandSubscriptionDetail" EntityType="Self.DemandSubscriptionDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
@@ -609,6 +738,7 @@
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShortMessage" EntityType="Self.ShortMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SinglePage" EntityType="Self.SinglePage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SmsRecord" EntityType="Self.SmsRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Space" EntityType="Self.Space" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFacility" EntityType="Self.SpaceFacility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFeature" EntityType="Self.SpaceFeature" Schema="dbo" store:Type="Tables" />
@@ -625,6 +755,26 @@
           <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeChatUser" EntityType="Self.WeChatUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DemandQuoteHistory_DemandQuotes" Association="Self.FK_DemandQuoteHistory_DemandQuotes">
+            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
+            <End Role="DemandQuoteHistory" EntitySet="DemandQuoteHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DemandQuotes_Demand" Association="Self.FK_DemandQuotes_Demand">
+            <End Role="Demand" EntitySet="Demand" />
+            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DemandQuotes_WeChatUser" Association="Self.FK_DemandQuotes_WeChatUser">
+            <End Role="WeChatUser" EntitySet="WeChatUser" />
+            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DemandSubscription_WeChatUser" Association="Self.FK_DemandSubscription_WeChatUser">
+            <End Role="WeChatUser" EntitySet="WeChatUser" />
+            <End Role="DemandSubscription" EntitySet="DemandSubscription" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DemandSubscriptionDetail_DemandSubscription" Association="Self.FK_DemandSubscriptionDetail_DemandSubscription">
+            <End Role="DemandSubscription" EntitySet="DemandSubscription" />
+            <End Role="DemandSubscriptionDetail" EntitySet="DemandSubscriptionDetail" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -672,6 +822,11 @@
           <EntitySet Name="ActorFrom" EntityType="shtsModel.ActorFrom" />
           <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
           <EntitySet Name="WeChatUser" EntityType="shtsModel.WeChatUser" />
+          <EntitySet Name="DemandQuoteHistory" EntityType="shtsModel.DemandQuoteHistory" />
+          <EntitySet Name="DemandQuotes" EntityType="shtsModel.DemandQuotes" />
+          <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
+          <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
+          <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -837,6 +992,8 @@
           <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Type="String" Name="QQWeixin" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WeixinBuyFee" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
         <EntityType Name="DemandCategory">
           <Key>
@@ -1243,13 +1400,76 @@
           <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AccessTokenExpired" Type="Boolean" />
           <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
           <Property Name="HasSubscribed" Type="Boolean" />
           <Property Name="HasAuthorized" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DemandQuoteHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteId" Type="Int32" Nullable="false" />
+          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="HasRead" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DemandQuotes">
+          <Key>
+            <PropertyRef Name="QuoteId" />
+          </Key>
+          <Property Name="QuoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
+          <Property Name="DemandId" Type="Int32" Nullable="false" />
+          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QuotePrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="AcceptStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DemandSubscription">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
+          <Property Name="IsSubscribed" Type="Boolean" Nullable="false" />
+          <Property Name="LastRequestTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="LastPushTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DemandSubscriptionDetail">
+          <Key>
+            <PropertyRef Name="SubscriptionDetailId" />
+          </Key>
+          <Property Name="SubscriptionDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SubscriptionValue" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SmsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Userid" Type="Int32" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Hascheck" Type="Byte" />
+          <Property Name="CheckTime" Type="DateTime" Precision="3" />
+          <Property Name="TplId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1408,6 +1628,8 @@
           <EntitySetMapping Name="Demand">
             <EntityTypeMapping TypeName="shtsModel.Demand">
               <MappingFragment StoreEntitySet="Demand">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="WeixinBuyFee" ColumnName="WeixinBuyFee" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="QQWeixin" ColumnName="QQWeixin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1872,6 +2094,74 @@
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandQuoteHistory">
+            <EntityTypeMapping TypeName="shtsModel.DemandQuoteHistory">
+              <MappingFragment StoreEntitySet="DemandQuoteHistory">
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="HasRead" ColumnName="HasRead" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandQuotes">
+            <EntityTypeMapping TypeName="shtsModel.DemandQuotes">
+              <MappingFragment StoreEntitySet="DemandQuotes">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="AcceptStatus" ColumnName="AcceptStatus" />
+                <ScalarProperty Name="QuotePrice" ColumnName="QuotePrice" />
+                <ScalarProperty Name="ContactPhoneNumber" ColumnName="ContactPhoneNumber" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="DemandId" ColumnName="DemandId" />
+                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandSubscription">
+            <EntityTypeMapping TypeName="shtsModel.DemandSubscription">
+              <MappingFragment StoreEntitySet="DemandSubscription">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="LastPushTimestamp" ColumnName="LastPushTimestamp" />
+                <ScalarProperty Name="LastRequestTimestamp" ColumnName="LastRequestTimestamp" />
+                <ScalarProperty Name="IsSubscribed" ColumnName="IsSubscribed" />
+                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandSubscriptionDetail">
+            <EntityTypeMapping TypeName="shtsModel.DemandSubscriptionDetail">
+              <MappingFragment StoreEntitySet="DemandSubscriptionDetail">
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="SubscriptionValue" ColumnName="SubscriptionValue" />
+                <ScalarProperty Name="SubscriptionType" ColumnName="SubscriptionType" />
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+                <ScalarProperty Name="SubscriptionDetailId" ColumnName="SubscriptionDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SmsRecord">
+            <EntityTypeMapping TypeName="shtsModel.SmsRecord">
+              <MappingFragment StoreEntitySet="SmsRecord">
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TplId" ColumnName="TplId" />
+                <ScalarProperty Name="CheckTime" ColumnName="CheckTime" />
+                <ScalarProperty Name="Hascheck" ColumnName="Hascheck" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

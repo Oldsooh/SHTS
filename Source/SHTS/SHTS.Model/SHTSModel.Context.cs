@@ -66,5 +66,10 @@ namespace Witbird.SHTS.Model
         public DbSet<ActorFrom> ActorFrom { get; set; }
         public DbSet<ActorSex> ActorSex { get; set; }
         public DbSet<WeChatUser> WeChatUser { get; set; }
+        public DbSet<DemandQuoteHistory> DemandQuoteHistory { get; set; }
+        public DbSet<DemandQuotes> DemandQuotes { get; set; }
+        public DbSet<DemandSubscription> DemandSubscription { get; set; }
+        public DbSet<DemandSubscriptionDetail> DemandSubscriptionDetail { get; set; }
+        public DbSet<SmsRecord> SmsRecord { get; set; }
     }
 }
