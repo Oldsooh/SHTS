@@ -6,7 +6,6 @@
     [LastRequestTimestamp] DATETIME NULL, 
     [LastPushTimestamp] DATETIME NULL, 
     [InsertedTimestamp] DATETIME NOT NULL, 
-    [LastUpdatedTimestamp] DATETIME NOT NULL, 
-    CONSTRAINT [PK_DemandSubscription] PRIMARY KEY ([SubscriptionId]), 
-    CONSTRAINT [FK_DemandSubscription_WeChatUser] FOREIGN KEY ([WeChatUserId]) REFERENCES [WeChatUser]([Id]) 
+    [LastUpdatedTimestamp] DATETIME NOT NULL,
+    CONSTRAINT [PK_DemandSubscription] PRIMARY KEY ([SubscriptionId])
 )
