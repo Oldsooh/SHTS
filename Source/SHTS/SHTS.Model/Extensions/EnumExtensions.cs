@@ -192,4 +192,42 @@ namespace Witbird.SHTS.Model
         /// </summary>
         Complete = 2
     }
+
+    /// <summary>
+    /// Demand subscription types
+    /// </summary>
+    public enum DemandSubscriptionType
+    {
+        /// <summary>
+        /// By demand category
+        /// </summary>
+        Category,
+        /// <summary>
+        /// By specified location area
+        /// </summary>
+        Area,
+        /// <summary>
+        /// By specified keywords
+        /// </summary>
+        Keywords
+    }
+
+    /// <summary>
+    /// Demand quotes status
+    /// </summary>
+    public enum DemandQuoteStatus
+    {
+        /// <summary>
+        /// Waiting for response
+        /// </summary>
+        Wait,
+        /// <summary>
+        /// Accept quoting.
+        /// </summary>
+        Accept,
+        /// <summary>
+        /// Don't agree quote.
+        /// </summary>
+        Denied
+    }
 }

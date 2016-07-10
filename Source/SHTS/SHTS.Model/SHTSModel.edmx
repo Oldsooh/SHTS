@@ -648,66 +648,6 @@
           <Property Name="HasAuthorized" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
         </EntityType>
-        <Association Name="FK_DemandQuoteHistory_DemandQuotes">
-          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="1" />
-          <End Role="DemandQuoteHistory" Type="Self.DemandQuoteHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DemandQuotes">
-              <PropertyRef Name="QuoteId" />
-            </Principal>
-            <Dependent Role="DemandQuoteHistory">
-              <PropertyRef Name="QuoteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DemandQuotes_Demand">
-          <End Role="Demand" Type="Self.Demand" Multiplicity="1" />
-          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Demand">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DemandQuotes">
-              <PropertyRef Name="DemandId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DemandQuotes_WeChatUser">
-          <End Role="WeChatUser" Type="Self.WeChatUser" Multiplicity="1" />
-          <End Role="DemandQuotes" Type="Self.DemandQuotes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeChatUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DemandQuotes">
-              <PropertyRef Name="WeChatUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DemandSubscription_WeChatUser">
-          <End Role="WeChatUser" Type="Self.WeChatUser" Multiplicity="1" />
-          <End Role="DemandSubscription" Type="Self.DemandSubscription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeChatUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DemandSubscription">
-              <PropertyRef Name="WeChatUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DemandSubscriptionDetail_DemandSubscription">
-          <End Role="DemandSubscription" Type="Self.DemandSubscription" Multiplicity="1" />
-          <End Role="DemandSubscriptionDetail" Type="Self.DemandSubscriptionDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DemandSubscription">
-              <PropertyRef Name="SubscriptionId" />
-            </Principal>
-            <Dependent Role="DemandSubscriptionDetail">
-              <PropertyRef Name="SubscriptionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="shtsModelStoreContainer">
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
@@ -755,26 +695,6 @@
           <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeChatUser" EntityType="Self.WeChatUser" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_DemandQuoteHistory_DemandQuotes" Association="Self.FK_DemandQuoteHistory_DemandQuotes">
-            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
-            <End Role="DemandQuoteHistory" EntitySet="DemandQuoteHistory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DemandQuotes_Demand" Association="Self.FK_DemandQuotes_Demand">
-            <End Role="Demand" EntitySet="Demand" />
-            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DemandQuotes_WeChatUser" Association="Self.FK_DemandQuotes_WeChatUser">
-            <End Role="WeChatUser" EntitySet="WeChatUser" />
-            <End Role="DemandQuotes" EntitySet="DemandQuotes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DemandSubscription_WeChatUser" Association="Self.FK_DemandSubscription_WeChatUser">
-            <End Role="WeChatUser" EntitySet="WeChatUser" />
-            <End Role="DemandSubscription" EntitySet="DemandSubscription" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DemandSubscriptionDetail_DemandSubscription" Association="Self.FK_DemandSubscriptionDetail_DemandSubscription">
-            <End Role="DemandSubscription" EntitySet="DemandSubscription" />
-            <End Role="DemandSubscriptionDetail" EntitySet="DemandSubscriptionDetail" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2181,7 +2101,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
         <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>

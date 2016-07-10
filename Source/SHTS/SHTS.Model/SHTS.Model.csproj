@@ -116,6 +116,8 @@
     </Compile>
     <Compile Include="Extensions\Activity.cs" />
     <Compile Include="Extensions\Demand.cs" />
+    <Compile Include="Extensions\DemandQuotes.cs" />
+    <Compile Include="Extensions\DemandSubscription.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\MailConfig.cs" />
     <Compile Include="Extensions\Resource\Paging.cs" />
