@@ -5,6 +5,5 @@
     [WeChatUserId] INT NOT NULL, 
     [Comments] NVARCHAR(1000) NOT NULL, 
     [HasRead] BIT NOT NULL, 
-    [InsertedTimestamp] DATETIME NOT NULL--, 
-    --CONSTRAINT [FK_DemandQuoteHistory_DemandQuotes] FOREIGN KEY ([QuoteId]) REFERENCES [DemandQuotes]([QuoteId])
-)
+    [InsertedTimestamp] DATETIME NOT NULL,
+    [IsActive] BIT NOT NULL)

@@ -10,4 +10,5 @@
     [AcceptStatus] NVARCHAR(50) NOT NULL, 
     [InsertedTimestamp] DATETIME NOT NULL, 
     [LastUpdatedTimestamp] DATETIME NULL,
+    [IsActive] BIT NOT NULL, 
     CONSTRAINT [PK_DemandQuotes] PRIMARY KEY ([QuoteId]))
