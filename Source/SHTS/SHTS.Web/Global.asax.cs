@@ -68,7 +68,11 @@ namespace Witbird.SHTS.Web
             {
                 if (error.GetHttpCode() != 404)
                 {
-                    //Response.Redirect("/common/Error");
+                    Response.Redirect("/common/Error");
+                }
+                else
+                {
+                    Response.Redirect("/common/ErrorPageNotFound");
                 }
             }
 
