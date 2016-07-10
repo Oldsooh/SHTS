@@ -63,7 +63,9 @@
     <Compile Include="Services\ActivityService.cs" />
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\CommonService.cs" />
+    <Compile Include="Services\DemandQuoteService.cs" />
     <Compile Include="Services\DemandService.cs" />
+    <Compile Include="Services\DemandSubscriptionService.cs" />
     <Compile Include="Services\InnerSMSService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\PublicConfigService.cs" />

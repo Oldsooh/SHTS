@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Witbird.SHTS.Model
 {
@@ -23,6 +20,22 @@ namespace Witbird.SHTS.Model
             get
             {
                 return this.quoteHistories;
+            }
+        }
+
+        /// <summary>
+        /// 需求标题
+        /// </summary>
+        public string DemandTitle { get; set; }
+
+        /// <summary>
+        /// 获取该报价所有未读消息数目
+        /// </summary>
+        public int NotReadCommentsCount
+        {
+            get
+            {
+                return this.quoteHistories.Count(x => x != null && !x.HasRead);
             }
         }
     }

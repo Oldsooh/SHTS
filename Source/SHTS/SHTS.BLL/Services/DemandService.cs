@@ -199,6 +199,19 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
+        /// 根据用户ID查询需求列表并包含报价记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="pageCount"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public List<Demand> GetDemandsWithQuotesByUserId(int userId, int pageCount, int pageIndex, out int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 根据城市查询需求列表
         /// </summary>
         /// <param name="pageCount"></param>

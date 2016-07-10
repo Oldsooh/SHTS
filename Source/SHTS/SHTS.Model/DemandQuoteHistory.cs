@@ -20,5 +20,6 @@ namespace Witbird.SHTS.Model
         public string Comments { get; set; }
         public bool HasRead { get; set; }
         public System.DateTime InsertedTimestamp { get; set; }
+        public bool IsActive { get; set; }
     }
 }

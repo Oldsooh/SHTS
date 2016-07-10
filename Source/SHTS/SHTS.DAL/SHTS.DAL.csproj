@@ -84,7 +84,9 @@
     <Compile Include="Repositories\CityResponsitory.cs" />
     <Compile Include="Repositories\ConfigRepository.cs" />
     <Compile Include="Repositories\DemandCategoryRepository.cs" />
+    <Compile Include="Repositories\DemandQuoteRepository.cs" />
     <Compile Include="Repositories\DemandRepository.cs" />
+    <Compile Include="Repositories\DemandSubscriptionRepository.cs" />
     <Compile Include="Repositories\PublicConfigRepository.cs" />
     <Compile Include="Repositories\SinglePageRepository.cs" />
     <Compile Include="Repositories\TradeRepository.cs" />

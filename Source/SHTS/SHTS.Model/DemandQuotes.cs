@@ -20,8 +20,10 @@ namespace Witbird.SHTS.Model
         public string ContactName { get; set; }
         public string ContactPhoneNumber { get; set; }
         public decimal QuotePrice { get; set; }
+        public bool HandleStatus { get; set; }
         public string AcceptStatus { get; set; }
         public System.DateTime InsertedTimestamp { get; set; }
         public Nullable<System.DateTime> LastUpdatedTimestamp { get; set; }
+        public bool IsActive { get; set; }
     }
 }
