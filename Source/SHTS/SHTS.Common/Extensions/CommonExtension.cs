@@ -746,6 +746,16 @@ namespace Witbird.SHTS.Common
         }
 
         /// <summary>
+        /// Determines whether the specified object is null or not.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>True if the obj is null. Otherwise false.</returns>
+        public static bool IsNotNull(this object obj)
+        {
+            return obj != null;
+        }
+
+        /// <summary>
         /// Joins the items.
         /// </summary>
         /// <typeparam name="T"></typeparam>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Witbird.SHTS.Model;
 
-namespace Witbird.SHTS.BLL.Services
+namespace Witbird.SHTS.BLL.Service
 {
     /// <summary>
     /// 微信报价业务逻辑处理类

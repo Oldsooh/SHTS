@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Common;
+using System.Transactions;
+using Witbird.SHTS.DAL;
 
-namespace Witbird.SHTS.BLL.Services
+namespace Witbird.SHTS.BLL.Service
 {
     /// <summary>
     /// 微信订阅业务逻辑处理类
@@ -14,8 +17,11 @@ namespace Witbird.SHTS.BLL.Services
     {
         #region Constants
 
+        DemandSubscriptionRepository subscriptionRepository = new DemandSubscriptionRepository();
+        DemandSubscriptionDetailRepository subscriptionDetailRepository = new DemandSubscriptionDetailRepository();
+
         #endregion Constants
-        
+
         #region Public methods
 
         /// <summary>
@@ -24,9 +30,41 @@ namespace Witbird.SHTS.BLL.Services
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex)
+        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int totalSubscriptionCount)
         {
-            throw new NotImplementedException();
+            var subscriptions = new List<DemandSubscription>();
+            totalSubscriptionCount = 0;
+
+            try
+            {
+                var tempResult = subscriptionRepository.FindPage(pageSize, pageIndex, out totalSubscriptionCount,
+                    (x => true), (x => x.SubscriptionId), true);
+
+                if (tempResult.HasItem())
+                {
+                    subscriptions = tempResult.ToList();
+
+                    // 获取订阅详细信息
+                    foreach (var item in subscriptions)
+                    {
+                        if (item.IsNotNull())
+                        {
+                            var details = subscriptionDetailRepository.FindAll(
+                                (x => x.SubscriptionId == item.SubscriptionId), (x => x.InsertedTimestamp), true);
+                            if (details.HasItem())
+                            {
+                                item.SubscriptionDetails.AddRange(details);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("获取用户微信订阅详细信息", ex.ToString());
+            }
+
+            return subscriptions;
         }
 
         /// <summary>
@@ -35,7 +73,38 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public List<DemandSubscription> GetSubscriptionsOnlySubscribed()
         {
-            throw new NotImplementedException();
+            var subscriptions = new List<DemandSubscription>();
+
+            try
+            {
+                var tempResult = subscriptionRepository.FindAll(
+                    (x => x.IsSubscribed), (x => x.SubscriptionId), true);
+
+                if (tempResult.HasItem())
+                {
+                    subscriptions = tempResult.ToList();
+
+                    // 获取订阅详细信息
+                    foreach (var item in subscriptions)
+                    {
+                        if (item.IsNotNull() && item.IsSubscribed)
+                        {
+                            var details = subscriptionDetailRepository.FindAll(
+                                (x => x.SubscriptionId == item.SubscriptionId), (x => x.InsertedTimestamp), true);
+                            if (details.HasItem())
+                            {
+                                item.SubscriptionDetails.AddRange(details);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("获取已订阅需求推送的用户详细订阅信息", ex.ToString());
+            }
+
+            return subscriptions;
         }
 
         /// <summary>
@@ -45,17 +114,82 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public DemandSubscription GetSubscription(int userId)
         {
-            throw new NotImplementedException();
+            var subcription = new DemandSubscription();
+
+            try
+            {
+                var tempResult = subscriptionRepository.FindOne(x => x.WeChatUserId == userId);
+
+                if (tempResult.IsNotNull())
+                {
+                    var details = subscriptionDetailRepository.FindAll(
+                        (x => x.IsNotNull() && x.SubscriptionId == tempResult.SubscriptionId), (x => x.InsertedTimestamp), true);
+
+                    if (details.HasItem())
+                    {
+                        tempResult.SubscriptionDetails.AddRange(details);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("根据用户ID获取用户需求订阅信息", ex.ToString());
+            }
+
+            return subcription;
         }
 
         /// <summary>
-        /// 更新用户需求订阅信息并返回更新后的结果
+        /// 更新用户需求订阅信息
         /// </summary>
         /// <param name="subcription"></param>
-        /// <returns></returns>
-        public DemandSubscription UpdateSubscription(DemandSubscription subcription)
+        /// <returns>True: 更新成功，否则失败</returns>
+        public bool UpdateSubscription(DemandSubscription subscription)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+            subscription.CheckNullObject("DemandSubscription");
+
+            try
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    var temp = subscriptionRepository.FindOne(x => x.SubscriptionId == subscription.SubscriptionId);
+                    if (temp.IsNotNull())
+                    {
+                        temp.IsSubscribed = subscription.IsSubscribed;
+                        temp.LastUpdatedTimestamp = DateTime.Now;
+
+                        // Deletes old subscription details first
+                        DeleteSubscritpionDetails(subscription.SubscriptionId);
+
+                        if (subscription.SubscriptionDetails.HasItem())
+                        {
+                            foreach (var item in subscription.SubscriptionDetails)
+                            {
+                                if (item.IsNotNull())
+                                {
+                                    item.SubscriptionId = subscription.SubscriptionId;
+                                    item.InsertedTimestamp = DateTime.Now;
+                                    subscriptionDetailRepository.AddEntity(item);
+                                }
+                            }
+                        }
+                    }
+
+                    isSuccessful = subscriptionRepository.SaveChanges() > 0;
+                    isSuccessful = isSuccessful && subscriptionDetailRepository.SaveChanges() > 0;
+                    if (isSuccessful)
+                    {
+                        scope.Complete();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("更新用户需求订阅信息并返回更新后的结果", ex.ToString());
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
@@ -65,7 +199,24 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public bool UpdateLastPushTimestamp(int userId)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+
+            try
+            {
+                var subscription = subscriptionRepository.FindOne(x => x.WeChatUserId == userId);
+                if (subscription.IsNotNull())
+                {
+                    subscription.LastPushTimestamp = DateTime.Now;
+                    subscription.LastUpdatedTimestamp = subscription.LastPushTimestamp.Value;
+                    isSuccessful = subscriptionRepository.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("更新最后推送时间", ex.ToString());
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
@@ -75,7 +226,39 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public bool UpdateLastPushTimestamp(List<int> userIds)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+            userIds.CheckNullObject("UserIds");
+
+            try
+            {
+                if (userIds.HasItem())
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+                        var pushTimestamp = DateTime.Now;
+                        foreach (var userId in userIds)
+                        {
+                            var subscription = subscriptionRepository.FindOne(x => x.WeChatUserId == userId);
+                            if (subscription.IsNotNull())
+                            {
+                                subscription.LastPushTimestamp = pushTimestamp;
+                                subscription.LastUpdatedTimestamp = pushTimestamp;
+                            }
+                        }
+
+                        if (subscriptionRepository.SaveChanges() == userIds.Count)
+                        {
+                            scope.Complete();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("更新最后推送时间", ex.ToString());
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
@@ -85,7 +268,24 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public bool UpdateLastRequestTimestamp(int userId)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+
+            try
+            {
+                var subscription = subscriptionRepository.FindOne(x => x.WeChatUserId == userId);
+                if (subscription.IsNotNull())
+                {
+                    subscription.LastRequestTimestamp = DateTime.Now;
+                    subscription.LastUpdatedTimestamp = subscription.LastPushTimestamp.Value;
+                    isSuccessful = subscriptionRepository.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("更新最后主动请求交互时间", ex.ToString());
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
@@ -95,7 +295,60 @@ namespace Witbird.SHTS.BLL.Services
         /// <returns></returns>
         public bool AddDefautlSubcription(int userId)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+
+            try
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    var demandCatogoryRepository = new DemandCategoryRepository();
+                    var catogroies = demandCatogoryRepository.FindAll();
+                    catogroies.CheckNullObject("catogroies");
+
+                    var currentTime = DateTime.Now;
+                    var subscription = new DemandSubscription()
+                    {
+                        InsertedTimestamp = currentTime,
+                        IsSubscribed = true,
+                        LastPushTimestamp = currentTime,
+                        LastRequestTimestamp = currentTime,
+                        LastUpdatedTimestamp = currentTime,
+                        WeChatUserId = userId
+                    };
+
+                    if (subscriptionRepository.AddEntitySave(subscription))
+                    {
+                        subscription = subscriptionRepository.FindOne(x => x.WeChatUserId == userId);
+                        if (subscription.IsNotNull() && catogroies.HasItem())
+                        {
+                            foreach (var item in catogroies)
+                            {
+                                var subscriptionDetail = new DemandSubscriptionDetail()
+                                {
+                                    InsertedTimestamp = currentTime,
+                                    SubscriptionId = subscription.SubscriptionId,
+                                    SubscriptionType = DemandSubscriptionType.Category.ToString(),
+                                    SubscriptionValue = item.Id.ToString()
+                                };
+
+                                subscriptionDetailRepository.AddEntity(subscriptionDetail);
+                            }
+
+                            isSuccessful = subscriptionDetailRepository.SaveChanges() > 0;
+                        }
+                    }
+
+                    if (isSuccessful)
+                    {
+                        scope.Complete();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("添加默认的需求订阅信息当新用户关注时", ex.ToString());
+            }
+            return isSuccessful;
         }
 
         #endregion Public methods
@@ -108,31 +361,23 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private bool DeleteSubscritpionDetails(int userId)
+        private bool DeleteSubscritpionDetails(int subscriptionId)
         {
-            throw new NotImplementedException();
-        }
+            var isSucessful = false;
 
-        /// <summary>
-        /// 添加需求订阅规则信息
-        /// </summary>
-        /// <param name="subscriptionDetail"></param>
-        /// <returns></returns>
-        private bool AddSubscrptionDetails(DemandSubscriptionDetail subscriptionDetail)
-        {
-            throw new NotImplementedException();
-        }
+            var details = subscriptionDetailRepository.FindAll(x => x.SubscriptionId == subscriptionId, x => x.InsertedTimestamp, true);
+            if (details.HasItem())
+            {
+                foreach (var item in details)
+                {
+                    subscriptionDetailRepository.DeleteEntity(item);
+                }
 
-        /// <summary>
-        /// 更新用户订阅信息概要
-        /// </summary>
-        /// <param name="subscription"></param>
-        /// <returns></returns>
-        private DemandSubscription UpdateSubscriptionInternal(DemandSubscription subscription)
-        {
-            throw new NotImplementedException();
-        }
+                isSucessful = subscriptionDetailRepository.SaveChanges() > 0;
+            }
 
+            return isSucessful;
+        }
 
         #endregion Private methods
 

@@ -1,6 +1,6 @@
 ﻿using Witbird.SHTS.Model;
 
-namespace Witbird.SHTS.DAL.Repositories
+namespace Witbird.SHTS.DAL
 {
     public class DemandQuoteRepository : BaseRepository<DemandQuotes>
     {
