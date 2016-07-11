@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 
 namespace Witbird.SHTS.Web.Content.upload
 {

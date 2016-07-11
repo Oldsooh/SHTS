@@ -1,19 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Web;
-using System.Web.Management;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Model.Criteria;
 using WitBird.Com.SearchEngine;
-using Constants = WitBird.Com.SMS.Constants;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 {

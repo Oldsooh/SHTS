@@ -106,6 +106,18 @@ namespace Witbird.SHTS.DAL
         }
 
         /// <summary>
+        /// 添加实体并返回
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public T AddEntiyAndReturn(T entity)
+        {
+            T t = db.Set<T>().Add(entity);
+            db.SaveChanges();
+            return t;
+        }
+
+        /// <summary>
         /// 更新实体
         /// </summary>
         /// <param name="entity">实体</param>

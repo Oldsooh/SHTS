@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.Model;
 

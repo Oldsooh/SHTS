@@ -4,9 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 
 namespace Witbird.SHTS.DAL
 {

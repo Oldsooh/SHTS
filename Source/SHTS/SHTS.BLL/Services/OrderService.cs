@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.Daos;
 using Witbird.SHTS.Model;

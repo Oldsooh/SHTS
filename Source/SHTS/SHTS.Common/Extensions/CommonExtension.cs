@@ -16,7 +16,7 @@ using System.Runtime.Serialization;
 using System.Data;
 using Newtonsoft.Json;
 
-namespace Witbird.SHTS.Common
+namespace Witbird.SHTS.Common.Extensions
 {
     /// <summary>
     /// Class CommonExtensions.
@@ -732,27 +732,6 @@ namespace Witbird.SHTS.Common
             }
 
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Determines whether the specified instance has item.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance">The instance.</param>
-        /// <returns><c>true</c> if the specified instance has item; otherwise, <c>false</c>.</returns>
-        public static bool HasItem<T>(this IEnumerable<T> instance)
-        {
-            return instance != null && instance.Count() > 0;
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is null or not.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>True if the obj is null. Otherwise false.</returns>
-        public static bool IsNotNull(this object obj)
-        {
-            return obj != null;
         }
 
         /// <summary>

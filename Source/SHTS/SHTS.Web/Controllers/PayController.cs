@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
-using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using WitBird.Com.Pay;
 

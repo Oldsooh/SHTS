@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Models.Account;
 using Witbird.SHTS.Web.Models.User;
-using Witbird.SHTS.Web.MvcExtension;
-using WitBird.Com.SMS;
-using ShortMessage = WitBird.Com.SMS.ShortMessage;
 using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Controllers

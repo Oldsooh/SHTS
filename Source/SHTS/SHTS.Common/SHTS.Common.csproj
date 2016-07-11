@@ -63,6 +63,7 @@
     <Compile Include="Framework\Singleton.cs" />
     <Compile Include="Html\HtmlUtil.cs" />
     <Compile Include="LogService.cs" />
+    <Compile Include="ParameterChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidateCode\ValidateCodeType.cs" />
     <Compile Include="ValidateCode\ValidateCode_Style1.cs" />
