@@ -214,6 +214,12 @@
     <Build Include="Table\Demand\DemandQuotes.sql" />
     <Build Include="Table\Demand\DemandQuoteHistory.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_SelectDemandSubscriptionByWeChatUserId.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_DeleteDemandSubscriptionDetailsBySubscriptionId.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscription.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_InsertOrUpdateDemandSubscription.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_SelectAllSubscriedSubscriptions.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_InsertDemandSubscriptionDetail.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionDateTimeField.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

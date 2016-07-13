@@ -71,5 +71,6 @@ namespace Witbird.SHTS.Model
         public DbSet<DemandSubscription> DemandSubscription { get; set; }
         public DbSet<DemandSubscriptionDetail> DemandSubscriptionDetail { get; set; }
         public DbSet<SmsRecord> SmsRecord { get; set; }
+        public DbSet<C__RefactorLog> C__RefactorLog { get; set; }
     }
 }

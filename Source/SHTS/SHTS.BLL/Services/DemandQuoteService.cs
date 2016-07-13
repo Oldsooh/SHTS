@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.DAL;
+using Witbird.SHTS.Common;
+using System.Transactions;
 
 namespace Witbird.SHTS.BLL.Service
 {
@@ -14,18 +17,60 @@ namespace Witbird.SHTS.BLL.Service
     {
         #region Constants
 
+        private DemandQuoteRepository quoteRepository = new DemandQuoteRepository();
+        private DemandQuoteHistoryRepository historyRepository = new DemandQuoteHistoryRepository();
+
         #endregion Constants
 
         #region Public methods
 
         /// <summary>
-        /// 新建报价
+        /// 新建需求报价
         /// </summary>
         /// <param name="quote"></param>
         /// <returns></returns>
         public DemandQuotes NewQuoteRecord(DemandQuotes quote)
         {
-            throw new NotImplementedException();
+            ParameterChecker.Check(quote, "Quote");
+            ParameterChecker.Check(quote.ContactName, "Contact Name");
+            ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
+            DemandQuotes result = null;
+
+            try
+            {
+                var currentTime = DateTime.Now;
+
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    quote.InsertedTimestamp = currentTime;
+                    quote.LastUpdatedTimestamp = currentTime;
+                    quote.HandleStatus = false;
+
+                    result = quoteRepository.AddEntiyAndReturn(quote);
+                    if (quote.QuoteHistories.HasItem())
+                    {
+                        foreach (var item in quote.QuoteHistories)
+                        {
+                            item.QuoteId = result.QuoteId;
+                            item.InsertedTimestamp = currentTime;
+                            item.HasRead = false;
+                            
+                            historyRepository.AddEntity(item);
+                        }
+
+                        historyRepository.SaveChanges();
+                    }
+
+                    scope.Complete();
+                }
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("新建需求报价", ex.ToString());
+            }
+
+
+            return quote;
         }
 
         /// <summary>

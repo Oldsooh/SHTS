@@ -6,4 +6,3 @@ AS
 
 	SELECT * FROM DemandSubscription WHERE SubscriptionId = @SubscriptionId
 	SELECT * FROM DemandSubscriptionDetail WHERe SubscriptionId = @SubscriptionId
-RETURN 0

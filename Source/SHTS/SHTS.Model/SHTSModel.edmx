@@ -5,6 +5,12 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="shtsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="AccessAnalytics">
           <Key>
             <PropertyRef Name="Id" />
@@ -209,6 +215,7 @@
           <Property Name="Comments" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="HasRead" Type="bit" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandQuotes">
           <Key>
@@ -220,9 +227,11 @@
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactPhoneNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="QuotePrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="HandleStatus" Type="bit" Nullable="false" />
           <Property Name="AcceptStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTimestamp" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandSubscription">
           <Key>
@@ -649,6 +658,7 @@
           <Property Name="CreatedTime" Type="datetime" />
         </EntityType>
         <EntityContainer Name="shtsModelStoreContainer">
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
@@ -747,6 +757,7 @@
           <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
           <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
+          <EntitySet Name="C__RefactorLog" EntityType="shtsModel.C__RefactorLog" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -1338,6 +1349,7 @@
           <Property Name="Comments" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="HasRead" Type="Boolean" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandQuotes">
           <Key>
@@ -1352,6 +1364,8 @@
           <Property Name="AcceptStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="HandleStatus" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandSubscription">
           <Key>
@@ -1390,6 +1404,12 @@
           <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2021,6 +2041,7 @@
           <EntitySetMapping Name="DemandQuoteHistory">
             <EntityTypeMapping TypeName="shtsModel.DemandQuoteHistory">
               <MappingFragment StoreEntitySet="DemandQuoteHistory">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
                 <ScalarProperty Name="HasRead" ColumnName="HasRead" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
@@ -2033,6 +2054,8 @@
           <EntitySetMapping Name="DemandQuotes">
             <EntityTypeMapping TypeName="shtsModel.DemandQuotes">
               <MappingFragment StoreEntitySet="DemandQuotes">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="HandleStatus" ColumnName="HandleStatus" />
                 <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
                 <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
                 <ScalarProperty Name="AcceptStatus" ColumnName="AcceptStatus" />
@@ -2083,6 +2106,13 @@
                 <ScalarProperty Name="Userid" ColumnName="Userid" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="shtsModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -89,6 +89,9 @@
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Criteria\QueryActivityCriteria.cs" />
+    <Compile Include="C__RefactorLog.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Demand.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
