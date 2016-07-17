@@ -11,7 +11,7 @@ AS
 	BEGIN
 		INSERT INTO dbo.DemandSubscription 
 		(WeChatUserId, IsSubscribed,LastRequestTimestamp,LastPushTimestamp, InsertedTimestamp, LastUpdatedTimestamp) 
-		VALUES(@WeChatUserId, @IsSubscribed,@LastRequestTimestamp,@LastPushTimestamp, @InsertedTimestamp, LastUpdatedTimestamp) 
+		VALUES(@WeChatUserId, @IsSubscribed,@LastRequestTimestamp,@LastPushTimestamp, @InsertedTimestamp, @LastUpdatedTimestamp) 
 
 		SET @SubscriptionId = (SELECT @@IDENTITY)
 	END

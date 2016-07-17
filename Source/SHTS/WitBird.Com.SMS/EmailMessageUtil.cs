@@ -19,21 +19,6 @@ namespace WitBird.Com.SMS
         private bool mEnableSsl;    //是否对邮件内容进行socket层加密传输
         private bool mEnablePwdAuthentication;  //是否对发件人邮箱进行密码验证
         
-        private static EmailMessageUtil instance;
-
-        public static EmailMessageUtil Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    //instance = new EmailMessageUtil();
-                }
-
-                return instance;
-            }
-        }
-
         ///<summary>
         /// 构造函数
         ///</summary>

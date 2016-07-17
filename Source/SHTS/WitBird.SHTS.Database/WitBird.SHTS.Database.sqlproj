@@ -82,7 +82,6 @@
     <Folder Include="StoredProcedure\Order" />
     <Folder Include="Index" />
     <Folder Include="StoredProcedure\UserVip" />
-    <Folder Include="StoredProcedure\PublicConfig\Resource" />
     <Folder Include="Table\Demand" />
     <Folder Include="Table\Trade" />
     <Folder Include="Table\User" />
@@ -185,8 +184,6 @@
     <Build Include="StoredProcedure\Order\sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient.sql" />
     <Build Include="StoredProcedure\Order\sp_SelectUserPaidDemands.sql" />
     <Build Include="StoredProcedure\Demand\sp_UpdateDemandWeixinFeeByDemandId.sql" />
-    <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetResourceByFilter.sql" />
-    <Build Include="StoredProcedure\PublicConfig\Resource\sp_GetUserResource.sql" />
     <Build Include="StoredProcedure\Demand\sp_UpdateDemandStatus.sql" />
     <Build Include="Table\Demand\Demand.sql" />
     <Build Include="Table\Demand\DemandCategory.sql" />
@@ -231,9 +228,13 @@
     <Build Include="StoredProcedure\DemandQuote\sp_DeleteDemandQuote.sql" />
     <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuotesByDemandId.sql" />
     <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuotesByWeChatUserId.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_DeleteVipInfoById.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_ReviewedVipInfoById.sql" />
+    <Build Include="StoredProcedure\UserVip\sp_SelectVipUserReviewList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
+    <None Include="WitBird.SHTS.Database.sqlproj.user" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />
