@@ -112,7 +112,7 @@ namespace Witbird.SHTS.DAL.Daos
         public List<Demand> SelectDemandsByUserId(int userId, int pageCount, int pageIndex, out int count, SqlConnection conn)
         {
             List<Demand> result = null;
-
+            List<DemandQuote> quotes = null;
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@UserId", userId),
@@ -123,6 +123,20 @@ namespace Witbird.SHTS.DAL.Daos
             dts = DBHelper.GetMuiltiDataFromDB(conn, sp_DemandSelectByUserId, sqlParameters);
             count = Int32.Parse(dts["0"].Rows[0][0].ToString());
             result = DBHelper.DataTableToList<Demand>(dts["1"]);
+            quotes = DBHelper.DataTableToList<DemandQuote>(dts["2"]);
+
+            // Sparates quotes to each demand entity.
+            if (result != null && result.Count > 0 && quotes != null && quotes.Count > 0)
+            {
+                foreach (var demand in result)
+                {
+                    var demandQuotes = quotes.Where(x => x.DemandId == demand.Id);
+                    if (demandQuotes != null && demandQuotes.Count() > 0)
+                    {
+                        demand.QuoteEntities.AddRange(demandQuotes);
+                    }
+                }
+            }
             return result;
         }
 

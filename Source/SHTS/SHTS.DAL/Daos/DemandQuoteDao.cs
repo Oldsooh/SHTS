@@ -121,6 +121,7 @@ namespace Witbird.SHTS.DAL.Daos
             }
             else
             {
+                // Selects quote history will update its HasRead status to true.
                 spName = SP_SelectDemandQuoteWithoutHistories;
             }
 

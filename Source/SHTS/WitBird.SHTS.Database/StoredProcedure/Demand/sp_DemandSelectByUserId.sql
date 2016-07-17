@@ -4,12 +4,21 @@
 	@PageIndex		int
 AS
 BEGIN
-	select COUNT(1) FROM [Demand] where UserId = @UserId and IsActive = 1 
 	
-	select * from 
+	CREATE TABLE #DemandIds (DemandId int)
+	INSERt INTO #DemandIds
+	SELECT Id FROM 
 	(
-		select *, ROW_NUMBER() over(order by Id desc) as RowNumber 
+		SELECT Id, ROW_NUMBER() OVER(ORDER BY Id DESC) AS RowNumber 
 		FROM [Demand] where UserId = @UserId and IsActive = 1 
-	 ) as temp 
-	where temp.RowNumber>(@PageIndex-1)*@PageCount and temp.RowNumber<=@PageIndex*@PageCount
+	 ) AS temp 
+	WHERE temp.RowNumber > (@PageIndex-1) * @PageCount AND temp.RowNumber <= @PageIndex * @PageCount
+
+	-- Select total count
+	SELECT COUNT(1) FROM [Demand] WHERE UserId = @UserId AND IsActive = 1 
+	-- Select demand list
+	SELECT * FROM dbo.Demand demand INNER JOIN #DemandIds ids ON ids.DemandId = demand.Id
+	-- Select demand quotes without histories
+	SELECT * FROM dbo.DemandQuote quote INNER JOIN #DemandIds ids ON quote.DemandId = ids.DemandId AND IsActive = 1
+
 END
