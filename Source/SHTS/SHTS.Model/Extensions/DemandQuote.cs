@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Witbird.SHTS.Model
 {
-    public partial class DemandQuotes
+    public partial class DemandQuote
     {
         List<DemandQuoteHistory> quoteHistories = new List<DemandQuoteHistory>();
 

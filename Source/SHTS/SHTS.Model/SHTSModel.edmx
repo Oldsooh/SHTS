@@ -205,19 +205,7 @@
           <Property Name="DisplayOrder" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="DemandQuoteHistory">
-          <Key>
-            <PropertyRef Name="HistoryId" />
-          </Key>
-          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="QuoteId" Type="int" Nullable="false" />
-          <Property Name="WeChatUserId" Type="int" Nullable="false" />
-          <Property Name="Comments" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="HasRead" Type="bit" Nullable="false" />
-          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DemandQuotes">
+        <EntityType Name="DemandQuote">
           <Key>
             <PropertyRef Name="QuoteId" />
           </Key>
@@ -231,6 +219,18 @@
           <Property Name="AcceptStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTimestamp" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandQuoteHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuoteId" Type="int" Nullable="false" />
+          <Property Name="WeChatUserId" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="HasRead" Type="bit" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandSubscription">
@@ -673,8 +673,8 @@
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Demand" EntityType="Self.Demand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandCategory" EntityType="Self.DemandCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandQuote" EntityType="Self.DemandQuote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandQuoteHistory" EntityType="Self.DemandQuoteHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DemandQuotes" EntityType="Self.DemandQuotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscription" EntityType="Self.DemandSubscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="Self.DemandSubscriptionDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
@@ -753,11 +753,11 @@
           <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
           <EntitySet Name="WeChatUser" EntityType="shtsModel.WeChatUser" />
           <EntitySet Name="DemandQuoteHistory" EntityType="shtsModel.DemandQuoteHistory" />
-          <EntitySet Name="DemandQuotes" EntityType="shtsModel.DemandQuotes" />
           <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
           <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
           <EntitySet Name="C__RefactorLog" EntityType="shtsModel.C__RefactorLog" />
+          <EntitySet Name="DemandQuote" EntityType="shtsModel.DemandQuote" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -1351,22 +1351,6 @@
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="DemandQuotes">
-          <Key>
-            <PropertyRef Name="QuoteId" />
-          </Key>
-          <Property Name="QuoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
-          <Property Name="DemandId" Type="Int32" Nullable="false" />
-          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ContactPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="QuotePrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="AcceptStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
-          <Property Name="HandleStatus" Type="Boolean" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="DemandSubscription">
           <Key>
             <PropertyRef Name="SubscriptionId" />
@@ -1410,6 +1394,22 @@
             <PropertyRef Name="OperationKey" />
           </Key>
           <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandQuote">
+          <Key>
+            <PropertyRef Name="QuoteId" />
+          </Key>
+          <Property Name="QuoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
+          <Property Name="DemandId" Type="Int32" Nullable="false" />
+          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QuotePrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="HandleStatus" Type="Boolean" Nullable="false" />
+          <Property Name="AcceptStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2051,23 +2051,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DemandQuotes">
-            <EntityTypeMapping TypeName="shtsModel.DemandQuotes">
-              <MappingFragment StoreEntitySet="DemandQuotes">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="HandleStatus" ColumnName="HandleStatus" />
-                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
-                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
-                <ScalarProperty Name="AcceptStatus" ColumnName="AcceptStatus" />
-                <ScalarProperty Name="QuotePrice" ColumnName="QuotePrice" />
-                <ScalarProperty Name="ContactPhoneNumber" ColumnName="ContactPhoneNumber" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="DemandId" ColumnName="DemandId" />
-                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
-                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DemandSubscription">
             <EntityTypeMapping TypeName="shtsModel.DemandSubscription">
               <MappingFragment StoreEntitySet="DemandSubscription">
@@ -2113,6 +2096,23 @@
             <EntityTypeMapping TypeName="shtsModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
                 <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandQuote">
+            <EntityTypeMapping TypeName="shtsModel.DemandQuote">
+              <MappingFragment StoreEntitySet="DemandQuote">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="AcceptStatus" ColumnName="AcceptStatus" />
+                <ScalarProperty Name="HandleStatus" ColumnName="HandleStatus" />
+                <ScalarProperty Name="QuotePrice" ColumnName="QuotePrice" />
+                <ScalarProperty Name="ContactPhoneNumber" ColumnName="ContactPhoneNumber" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="DemandId" ColumnName="DemandId" />
+                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

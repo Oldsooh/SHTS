@@ -225,4 +225,11 @@ namespace Witbird.SHTS.Model
         /// </summary>
         Denied
     }
+
+    public enum Operation
+    {
+        None,
+        Update,
+        Add
+    }
 }

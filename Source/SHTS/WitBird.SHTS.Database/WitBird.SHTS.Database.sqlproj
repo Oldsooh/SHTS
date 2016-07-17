@@ -89,7 +89,8 @@
     <Folder Include="Table\Activity" />
     <Folder Include="Table\Configuration" />
     <Folder Include="StoredProcedure\DemandSubscription" />
-    <Folder Include="StoredProcedure\DemandQuotes" />
+    <Folder Include="StoredProcedure\DemandQuote" />
+    <Folder Include="StoredProcedure\Resource" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedure\Calc.sql" />
@@ -211,7 +212,6 @@
     <Build Include="Table\Configuration\City.sql" />
     <Build Include="Table\Demand\DemandSubscription.sql" />
     <Build Include="Table\Demand\DemandSubscriptionDetail.sql" />
-    <Build Include="Table\Demand\DemandQuotes.sql" />
     <Build Include="Table\Demand\DemandQuoteHistory.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_SelectDemandSubscriptionByWeChatUserId.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_DeleteDemandSubscriptionDetailsBySubscriptionId.sql" />
@@ -220,6 +220,17 @@
     <Build Include="StoredProcedure\DemandSubscription\sp_SelectAllSubscriedSubscriptions.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_InsertDemandSubscriptionDetail.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionDateTimeField.sql" />
+    <Build Include="StoredProcedure\Resource\sp_GetResourceByFilter.sql" />
+    <Build Include="StoredProcedure\Resource\sp_GetUserResource.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_InsertDemandQuoteHistory.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_InsertOrUpdateDemandQuote.sql" />
+    <Build Include="Table\Demand\DemandQuote.sql" />
+    <Build Include="Table\Video.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuoteWithoutHistories.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuoteWithHistories.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_DeleteDemandQuote.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuotesByDemandId.sql" />
+    <Build Include="StoredProcedure\DemandQuote\sp_SelectDemandQuotesByWeChatUserId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

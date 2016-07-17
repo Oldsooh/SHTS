@@ -56,6 +56,7 @@
     <Compile Include="Daos\CityDao.cs" />
     <Compile Include="Daos\CommonDao.cs" />
     <Compile Include="Daos\DemandDao.cs" />
+    <Compile Include="Daos\DemandQuoteDao.cs" />
     <Compile Include="Daos\DemandSubscriptionDao.cs" />
     <Compile Include="Daos\OrderDao.cs" />
     <Compile Include="Daos\PublicConfigDao.cs" />

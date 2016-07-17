@@ -85,9 +85,9 @@ namespace SHTS.TestProject
             };
         }
 
-        static DemandQuotes NewDemandQuotesEntity()
+        static DemandQuote NewDemandQuotesEntity()
         {
-            var quotes = new DemandQuotes() 
+            var quotes = new DemandQuote() 
             {
                 AcceptStatus = DemandQuoteStatus.Wait.ToString(),
                 ContactName = "Richard",

@@ -98,10 +98,10 @@
     <Compile Include="DemandCategory.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DemandQuoteHistory.cs">
+    <Compile Include="DemandQuote.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DemandQuotes.cs">
+    <Compile Include="DemandQuoteHistory.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DemandSubscription.cs">
@@ -119,7 +119,8 @@
     </Compile>
     <Compile Include="Extensions\Activity.cs" />
     <Compile Include="Extensions\Demand.cs" />
-    <Compile Include="Extensions\DemandQuotes.cs" />
+    <Compile Include="Extensions\DemandQuote.cs" />
+    <Compile Include="Extensions\DemandQuoteHistory.cs" />
     <Compile Include="Extensions\DemandSubscription.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\MailConfig.cs" />

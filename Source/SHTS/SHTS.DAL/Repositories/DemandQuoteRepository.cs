@@ -2,7 +2,7 @@
 
 namespace Witbird.SHTS.DAL
 {
-    public class DemandQuoteRepository : BaseRepository<DemandQuotes>
+    public class DemandQuoteRepository : BaseRepository<DemandQuote>
     {
     }
 }

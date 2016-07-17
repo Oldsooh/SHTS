@@ -46,12 +46,12 @@
         <EntityTypeShape EntityType="shtsModel.ActorFrom" Width="1.5" PointX="16.75" PointY="13.75" />
         <EntityTypeShape EntityType="shtsModel.ActorSex" Width="1.5" PointX="16.75" PointY="16.75" />
         <EntityTypeShape EntityType="shtsModel.WeChatUser" Width="1.5" PointX="18.75" PointY="0.75" />
-        <EntityTypeShape EntityType="shtsModel.DemandQuoteHistory" Width="1.5" PointX="0.75" PointY="18.75" />
-        <EntityTypeShape EntityType="shtsModel.DemandQuotes" Width="1.5" PointX="2.75" PointY="18.75" />
-        <EntityTypeShape EntityType="shtsModel.DemandSubscription" Width="1.5" PointX="18.75" PointY="5.75" />
-        <EntityTypeShape EntityType="shtsModel.DemandSubscriptionDetail" Width="1.5" PointX="18.75" PointY="9.75" />
-        <EntityTypeShape EntityType="shtsModel.SmsRecord" Width="1.5" PointX="18.75" PointY="12.75" />
-        <EntityTypeShape EntityType="shtsModel.C__RefactorLog" Width="1.5" PointX="13.375" PointY="19.75" />
+        <EntityTypeShape EntityType="shtsModel.DemandQuoteHistory" Width="1.875" PointX="0.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="shtsModel.DemandSubscription" Width="1.5" PointX="3.75" PointY="18.75" />
+        <EntityTypeShape EntityType="shtsModel.DemandSubscriptionDetail" Width="1.5" PointX="18.75" PointY="5.75" />
+        <EntityTypeShape EntityType="shtsModel.SmsRecord" Width="1.5" PointX="18.75" PointY="8.75" />
+        <EntityTypeShape EntityType="shtsModel.C__RefactorLog" Width="1.5" PointX="18.75" PointY="12.75" />
+        <EntityTypeShape EntityType="shtsModel.DemandQuote" Width="1.5" PointX="18.75" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

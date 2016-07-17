@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[DemandQuotes]
+﻿CREATE TABLE [dbo].[DemandQuote]
 (
 	[QuoteId] INT NOT NULL  IDENTITY, 
     [WeChatUserId] INT NOT NULL, 
@@ -11,4 +11,4 @@
     [InsertedTimestamp] DATETIME NOT NULL, 
     [LastUpdatedTimestamp] DATETIME NULL,
     [IsActive] BIT NOT NULL, 
-    CONSTRAINT [PK_DemandQuotes] PRIMARY KEY ([QuoteId]))
+    CONSTRAINT [PK_DemandQuote] PRIMARY KEY ([QuoteId]))

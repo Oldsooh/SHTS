@@ -8,7 +8,7 @@ namespace Witbird.SHTS.Model
 {
     public partial class Demand
     {
-        private List<DemandQuotes> quoteEntities = new List<DemandQuotes>();
+        private List<DemandQuote> quoteEntities = new List<DemandQuote>();
 
         public string CategoryName { get; set; }
 
@@ -55,7 +55,7 @@ namespace Witbird.SHTS.Model
         /// <summary>
         /// 当前需求所有报价记录
         /// </summary>
-        public List<DemandQuotes> QuoteEntities
+        public List<DemandQuote> QuoteEntities
         {
             get { return this.quoteEntities; }
         }

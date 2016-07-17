@@ -7,6 +7,7 @@ using Witbird.SHTS.Model;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.Common;
 using System.Transactions;
+using Witbird.SHTS.DAL.Daos;
 
 namespace Witbird.SHTS.BLL.Service
 {
@@ -20,24 +21,27 @@ namespace Witbird.SHTS.BLL.Service
         private DemandQuoteRepository quoteRepository = new DemandQuoteRepository();
         private DemandQuoteHistoryRepository historyRepository = new DemandQuoteHistoryRepository();
 
+        private DemandQuoteDao quoteDao = new DemandQuoteDao();
+
         #endregion Constants
 
         #region Public methods
 
         /// <summary>
-        /// 新建需求报价
+        /// Adds new demand quote with comments.
         /// </summary>
         /// <param name="quote"></param>
         /// <returns></returns>
-        public DemandQuotes NewQuoteRecord(DemandQuotes quote)
+        public DemandQuote NewQuoteRecord(DemandQuote quote)
         {
             ParameterChecker.Check(quote, "Quote");
             ParameterChecker.Check(quote.ContactName, "Contact Name");
             ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
-            DemandQuotes result = null;
+            var conn = DBHelper.GetSqlConnection();
 
             try
             {
+                conn.Open();
                 var currentTime = DateTime.Now;
 
                 using (TransactionScope scope = new TransactionScope())
@@ -45,20 +49,23 @@ namespace Witbird.SHTS.BLL.Service
                     quote.InsertedTimestamp = currentTime;
                     quote.LastUpdatedTimestamp = currentTime;
                     quote.HandleStatus = false;
+                    quote.AcceptStatus = DemandQuoteStatus.Wait.ToString();
+                    quote.IsActive = true;
 
-                    result = quoteRepository.AddEntiyAndReturn(quote);
+                    quote = quoteDao.InsertOrUpdateDemandQuote(conn, quote);
                     if (quote.QuoteHistories.HasItem())
                     {
                         foreach (var item in quote.QuoteHistories)
                         {
-                            item.QuoteId = result.QuoteId;
+                            item.QuoteId = quote.QuoteId;
                             item.InsertedTimestamp = currentTime;
                             item.HasRead = false;
-                            
-                            historyRepository.AddEntity(item);
-                        }
 
-                        historyRepository.SaveChanges();
+                            if (item.Operation == Operation.Add)
+                            {
+                                quoteDao.InsertDemandQuoteHistory(conn, item);
+                            }
+                        }
                     }
 
                     scope.Complete();
@@ -66,67 +73,235 @@ namespace Witbird.SHTS.BLL.Service
             }
             catch(Exception ex)
             {
-                LogService.Log("新建需求报价", ex.ToString());
+                LogService.Log("Adds new demand quote with comments.", ex.ToString());
             }
-
+            finally
+            {
+                conn.Close();
+            }
 
             return quote;
         }
 
         /// <summary>
-        /// 修改报价状态及回复留言
+        /// Updates demand quote with comments.
         /// </summary>
         /// <param name="quote"></param>
         /// <returns></returns>
-        public DemandQuotes UpdateQuoteRecordWithComments(DemandQuotes quote)
+        public DemandQuote UpdateQuoteRecord(DemandQuote quote)
         {
-            throw new NotImplementedException();
+            ParameterChecker.Check(quote, "Quote");
+            ParameterChecker.Check(quote.ContactName, "Contact Name");
+            ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                var currentTime = DateTime.Now;
+
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    quote.LastUpdatedTimestamp = currentTime;
+                    quote = quoteDao.InsertOrUpdateDemandQuote(conn, quote);
+
+                    if (quote.QuoteHistories.HasItem())
+                    {
+                        foreach (var item in quote.QuoteHistories)
+                        {
+                            if (item.Operation == Operation.Add)
+                            {
+                                item.QuoteId = quote.QuoteId;
+                                item.InsertedTimestamp = currentTime;
+                                item.HasRead = false;
+                                item.IsActive = true;
+
+                                quoteDao.InsertDemandQuoteHistory(conn, item);
+                            }
+                        }
+                    }
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("Updates demand quote with comments.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return quote;
         }
 
         /// <summary>
-        /// 回复报价记录
+        /// Adds new demand comments.
         /// </summary>
         /// <param name="quoteHistory"></param>
         /// <returns></returns>
-        public bool NewQuoteComments(DemandQuoteHistory quoteHistory)
+        public bool NewQuoteHistory(DemandQuoteHistory quoteHistory)
         {
-            throw new NotImplementedException();
+            ParameterChecker.Check(quoteHistory, "Quote History");
+            ParameterChecker.Check(quoteHistory.Comments, "Quote History comments");
+            var isSuccessful = false;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                var currentTime = DateTime.Now;
+
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    var parentQuote = quoteDao.SelectDemandQuoteByQuoteId(conn, quoteHistory.QuoteId, false);
+
+                    if (parentQuote.IsNotNull())
+                    {
+                        // Updates parent quote.
+                        parentQuote.LastUpdatedTimestamp = currentTime;
+                        quoteDao.InsertOrUpdateDemandQuote(conn, parentQuote);
+
+                        quoteHistory.InsertedTimestamp = currentTime;
+                        quoteHistory.HasRead = false;
+                        quoteHistory.IsActive = true;
+
+                        // Inserts quote history entity.
+                        isSuccessful = quoteDao.InsertDemandQuoteHistory(conn, quoteHistory);
+                    }
+
+                    scope.Complete();
+                }
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("Failed to add new demand comments.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
-        /// 删除报价记录及回复记录
+        /// Deletes quote and corresponding histories.
         /// </summary>
         /// <param name="quoteId"></param>
         /// <returns></returns>
         public bool DeleteQuoteAndCommentsHistories(int quoteId)
         {
-            throw new NotImplementedException();
+            var isSuccessful = false;
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                isSuccessful = quoteDao.DeleteDemandQuote(conn, quoteId);
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("Deletes quote and corresponding histories.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isSuccessful;
         }
 
         /// <summary>
-        /// 获取报价详细信息及历史回复
+        /// Selects quotes without histories for one specified demand.
         /// </summary>
         /// <param name="demandId"></param>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public DemandQuotes GetQuoteDetails(int demandId, int pageSize, int pageIndex)
+        public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId, int pageSize, int pageIndex, out int totalCount)
         {
-            throw new NotImplementedException();
+            var quotes = new List<DemandQuote>();
+            var conn = DBHelper.GetSqlConnection();
+            totalCount = 0;
+
+            try
+            {
+                conn.Open();
+                quotes = quoteDao.SelectDemandQuotesByDemandId(conn, demandId, pageSize, pageIndex, out totalCount);
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("Failed to select quotes without histories for one demand.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return quotes;
         }
 
         /// <summary>
-        /// 根据用户ID获取发出的报价记录
+        /// Selects all demand quotes which posted by speficied user.
+        /// </summary>
+        /// <param name="demandId"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        public List<DemandQuote> GetAllDemandQuotesForOneUser(int wechatUserId, int pageSize, int pageIndex, out int totalCount)
+        {
+            var quotes = new List<DemandQuote>();
+            var conn = DBHelper.GetSqlConnection();
+            totalCount = 0;
+
+            try
+            {
+                conn.Open();
+                quotes = quoteDao.SelectDemandQuotesByWechatUserId(conn, wechatUserId, pageSize, pageIndex, out totalCount);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("Selects all demand quotes which posted by speficied user.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return quotes;
+        }
+
+        /// <summary>
+        /// Selects demand quote with details.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public List<DemandQuotes> GetAllQuotes(int userId, int pageSize, int pageIndex)
+        public DemandQuote GetDemandQuoteWithAllHistories(int quoteId)
         {
-            throw new NotImplementedException();
-        }
+            DemandQuote quote = null;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                quote = quoteDao.SelectDemandQuoteByQuoteId(conn, quoteId, true);
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("Selects demand quote with details.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
 
+            return quote;
+        }
         #endregion Public methods
 
         #region Private methods
