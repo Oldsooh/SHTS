@@ -31,40 +31,39 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult Index()
         {
-            //HomeModel model = new HomeModel();
+            var model = new Witbird.SHTS.Web.Areas.Wechat.Models.HomeModel();
 
-            //try
-            //{
-            //    int tempCount = 0;
-            //    model.Demands = demandService.GetDemands(10, 1, out tempCount);
-            //    //model.Trades = tradeService.GetTradeList(5, 1, -1, out tempCount);
+            try
+            {
+                int tempCount = 0;
+                model.Demands = demandService.GetDemands(10, 1, out tempCount);
+                //model.Trades = tradeService.GetTradeList(5, 1, -1, out tempCount);
 
-            //    //活动
-            //    activityService = new ActivityService();
-            //    model.ActivityList = activityService.QueryActivities(new QueryActivityCriteria
-            //    {
-            //        PageSize = 10,
-            //        StartRowIndex = 1,
-            //        QueryType = -1
-            //    });
+                //活动
+                activityService = new ActivityService();
+                model.ActivityList = activityService.QueryActivities(new QueryActivityCriteria
+                {
+                    PageSize = 10,
+                    StartRowIndex = 1,
+                    QueryType = -1
+                });
 
-            //    model.Right = new Right();
-            //    CommonService commonService = new CommonService();
-            //    model.Right = commonService.GetRight();
+                model.Right = new Right();
+                CommonService commonService = new CommonService();
+                model.Right = commonService.GetRight();
 
-            //}
-            //catch (Exception e)
-            //{
-            //    LogService.Log("微信版首页", e.ToString());
-            //}
+            }
+            catch (Exception e)
+            {
+                LogService.Log("微信版首页", e.ToString());
+            }
 
-            //if (model.Right == null)
-            //{
-            //    model.Right = new Right();
-            //}
+            if (model.Right == null)
+            {
+                model.Right = new Right();
+            }
 
-            //return View(model);
-            return View();
+            return View(model);
         }
 
         public ActionResult Search(string keyWords, int page = 1)

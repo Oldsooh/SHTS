@@ -24,6 +24,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -202,6 +203,8 @@
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\QouteController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\SubscribeController.cs" />
     <Compile Include="Areas\Wechat\Controllers\WechatBaseController.cs" />
     <Compile Include="Areas\Wechat\Controllers\NewsController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ResourceController.cs" />
@@ -656,6 +659,8 @@
     <Content Include="Areas\Wechat\Content\styles\58\all_v20150415181405.css" />
     <Content Include="Areas\Wechat\Content\styles\58\m-weidian_v0.css" />
     <Content Include="Areas\Wechat\Content\styles\58\ucenter_v20150331202541.css" />
+    <Content Include="Areas\Wechat\Content\styles\nav\nav.css" />
+    <Content Include="Areas\Wechat\Content\styles\nav\nav.js" />
     <Content Include="Areas\Wechat\Content\styles\news.css" />
     <Content Include="Areas\Wechat\Content\styles\payment.css" />
     <Content Include="Areas\Wechat\Content\styles\shouwei\active %282%29.css" />
@@ -931,6 +936,7 @@
     <Content Include="Areas\Admin\Views\Config\MailConfig.cshtml" />
     <Content Include="Areas\Wechat\Views\Demand\MyDemands.cshtml" />
     <Content Include="Areas\Wechat\Views\Demand\Edit.cshtml" />
+    <Content Include="Areas\Wechat\Views\Subscribe\Index.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
