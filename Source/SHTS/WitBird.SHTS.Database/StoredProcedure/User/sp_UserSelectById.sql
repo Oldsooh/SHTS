@@ -3,4 +3,5 @@
 AS
 BEGIN
 	SELECT * from [User] where [UserId]=@UserId;
+END
 GO
