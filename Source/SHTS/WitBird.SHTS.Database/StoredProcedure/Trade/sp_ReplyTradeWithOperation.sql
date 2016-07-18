@@ -8,6 +8,7 @@
 	@TradeState int,
 	@CreatedTime datetime
 AS
+BEGIN
 	INSERT INTO dbo.TradeHistory 
 	(
 		HistorySubject,
@@ -32,3 +33,5 @@ AS
 	)
 	
 	SELECT @@IDENTITY
+END
+GO

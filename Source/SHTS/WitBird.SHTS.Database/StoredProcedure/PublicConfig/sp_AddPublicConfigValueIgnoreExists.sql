@@ -5,7 +5,7 @@
 	@CreatedTime datetime,
 	@LastUpdatedTime datetime
 AS
-
+BEGIN
 INSERT INTO dbo.PublicConfig
 (
 	ConfigName, 
@@ -21,3 +21,5 @@ INSERT INTO dbo.PublicConfig
 )
 
 SELECT @@IDENTITY
+END
+GO

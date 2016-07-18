@@ -3,7 +3,8 @@
 	@PageCount int,
 	@PageIndex int
 AS
-	SET NOCOUNT ON
+BEGIN
+	--SET NOCOUNT ON
 	
 	select COUNT(1) FROM dbo.Trade where SellerId = @UserId OR BuyerId = @UserId
 	
@@ -16,4 +17,5 @@ AS
 	 left join dbo.[User] as UserT2 on temp.SellerId = UserT2.UserId
 	 left join dbo.[User] as UserT3 on temp.BuyerId = UserT3.UserId
 	where temp.RowNumber>(@PageIndex-1)*@PageCount and temp.RowNumber<=@PageIndex*@PageCount
-
+END
+GO

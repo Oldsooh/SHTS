@@ -11,7 +11,7 @@
 	@OrderType int,
 	@ResourceId int
 AS
-
+BEGIN
 INSERT INTO dbo.TradeOrder
 (
 	OrderId,
@@ -40,3 +40,5 @@ VALUES
 	@OrderType,
 	@ResourceId
 )
+END
+GO

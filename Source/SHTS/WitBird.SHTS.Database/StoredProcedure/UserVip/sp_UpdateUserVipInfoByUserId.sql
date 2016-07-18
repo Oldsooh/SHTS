@@ -10,7 +10,7 @@
 	@LastUpdatedTime datetime
 
 AS
-
+BEGIN
 UPDATE dbo.UserVip SET
 OrderId = @OrderId,
 IdentifyImg = @IdentifyImg,
@@ -21,3 +21,5 @@ Amount = @Amount,
 [State] = @State,
 LastUpdatedTime = @LastUpdatedTime
 WHERE Id = @Id
+END
+GO

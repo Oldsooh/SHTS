@@ -5,7 +5,7 @@ CREATE PROC sp_SelectTradeRecordForSpecifiedResourceByUserId
 	@RecordCount int output
 )
 AS
-
+BEGIN
 SET @RecordCount = 
 (
 	SELECT COUNT(1) FROM dbo.Trade 
@@ -23,3 +23,5 @@ SET @RecordCount =
 )
 
 SELECT @RecordCount
+END
+GO

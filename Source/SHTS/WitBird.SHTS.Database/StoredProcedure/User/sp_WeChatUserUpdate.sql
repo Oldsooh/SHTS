@@ -14,7 +14,7 @@
     @HasSubscribed BIT,
 	@HasAuthorized BIT
 AS
-
+BEGIN
 UPDATE dbo.WeChatUser SET
 	AccessToken = @AccessToken,
 	AccessTokenExpired = @AccessTokenExpired,
@@ -30,3 +30,5 @@ UPDATE dbo.WeChatUser SET
 	HasAuthorized = @HasAuthorized,
 	UserId = @UserId
 WHERE Id = @Id
+END
+GO

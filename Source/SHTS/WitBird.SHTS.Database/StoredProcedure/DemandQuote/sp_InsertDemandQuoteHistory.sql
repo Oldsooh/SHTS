@@ -6,6 +6,9 @@
 	@InsertedTimestamp datetime,
 	@IsActive bit
 AS
+BEGIN
 	INSERT INTO dbo.DemandQuoteHistory
 	(Comments, HasRead,InsertedTimestamp, IsActive, QuoteId, WeChatUserId)
 	VALUES (@Comments, @HasRead,@InsertedTimestamp, @IsActive, @QuoteId, @WeChatUserId)
+END
+GO

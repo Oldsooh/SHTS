@@ -7,6 +7,7 @@
 	@LastUpdatedTimestamp datetime,
 	@InsertedTimestamp datetime
 AS
+BEGIN
 	IF NOT EXISTS (SELECT 1 FROM dbo.DemandSubscription WHERE WeChatUserId = @WeChatUserId)
 	BEGIN
 		INSERT INTO dbo.DemandSubscription 
@@ -26,6 +27,7 @@ AS
 	END
 
 	SELECT @SubscriptionId
-
+END
+GO
 
 

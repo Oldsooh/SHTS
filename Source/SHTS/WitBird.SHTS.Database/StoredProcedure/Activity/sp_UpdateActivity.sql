@@ -21,6 +21,9 @@
 @CreatedTime datetime,
 @LastUpdatedTime datetime
  AS 
+ BEGIN
 	UPDATE [Activity] SET 
 	[UserId] = @UserId,[ActivityType] = @ActivityType,[Adress] = @Adress,[LocationId] = @LocationId,[StartTime] = @StartTime,[EndTime] = @EndTime,[HoldBy] = @HoldBy,[Title] = @Title,[Keywords] = @Keywords,[Jingdu] = @Jingdu,[Weidu] = @Weidu,[Description] = @Description,[ContentStyle] = @ContentStyle,[ContentText] = @ContentText,[ImageUrl] = @ImageUrl,[Link] = @Link,[State] = @State,[ViewCount] = @ViewCount,[CreatedTime] = @CreatedTime,[LastUpdatedTime] = @LastUpdatedTime
 	WHERE Id=@Id
+END 
+GO

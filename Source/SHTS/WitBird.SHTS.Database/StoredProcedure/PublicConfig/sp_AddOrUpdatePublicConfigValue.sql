@@ -5,7 +5,7 @@
 	@CreatedTime datetime,
 	@LastUpdatedTime datetime
 AS
-
+BEGIN
 IF EXISTS (SELECT 1 FROM dbo.PublicConfig WHERE ConfigName = @ConfigName)
 BEGIN
 	UPDATE dbo.PublicConfig SET 
@@ -33,3 +33,5 @@ INSERT INTO dbo.PublicConfig
 END
 
 SELECT @@IDENTITY
+END
+GO

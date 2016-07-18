@@ -8,7 +8,7 @@
 	@IsDefault bit,
 	@LastUpdatedTime datetime
 AS
-
+BEGIN
 IF @IsDefault = 1
 BEGIN
 	UPDATE dbo.UserBankInfo SET IsDefault = 0 WHERE UserId = @UserId
@@ -23,5 +23,6 @@ UPDATE dbo.UserBankInfo SET
 	LastUpdatedTime = @LastUpdatedTime
 WHERE BankId = @BankId
 
-
 SELECT @@IDENTITY
+END
+GO

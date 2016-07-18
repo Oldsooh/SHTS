@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[sp_SelectUserVipInfoByUserId]
 	@UserId int
 AS
+BEGIN
 	IF NOT EXISTS (SELECT 1 FROM dbo.UserVip  WHERE UserId = @UserId)
 
 	BEGIN
@@ -40,3 +41,5 @@ AS
 	END
 
 	SELECT * FROM dbo.UserVip WHERE UserId = @UserId
+END
+GO

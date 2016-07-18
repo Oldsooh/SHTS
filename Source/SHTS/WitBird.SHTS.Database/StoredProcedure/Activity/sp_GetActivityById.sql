@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE sp_GetActivityById
 @Id int
 AS 
+BEGIN
 	SELECT 
 	Id,AT.UserId,ActivityType,AT.Adress,StartTime,EndTime,HoldBy,Title,Keywords,
 	Jingdu,Weidu,[Description],ContentStyle,ContentText,ImageUrl,
@@ -12,3 +13,5 @@ AS
 	 and AT.[State] !=1
 
 	 Update [Activity] set ViewCount=ViewCount+1 WHERE Id=@Id 
+END
+GO

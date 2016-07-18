@@ -39,3 +39,4 @@ BEGIN
 		) as tempDemand left join [User] on tempDemand.UserId = [User].UserId
 		
 END
+GO

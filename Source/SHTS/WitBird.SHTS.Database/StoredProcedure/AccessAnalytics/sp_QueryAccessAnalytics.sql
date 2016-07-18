@@ -5,6 +5,7 @@
 	@ToTime DateTime,
 	@QueryType int
 AS
+BEGIN
 		IF(@QueryType=-1)
 		BEGIN
 			select UT.*,U.UserName from (
@@ -93,3 +94,5 @@ AS
 				   group by A.PageTitle
 		    ) NA
 		END
+END
+GO

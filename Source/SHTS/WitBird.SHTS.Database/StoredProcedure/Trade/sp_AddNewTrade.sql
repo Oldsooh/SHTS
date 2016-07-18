@@ -24,7 +24,7 @@
 	@IsBuyerPaid bit,
 	@TradeOrderId int
 AS
-
+BEGIN
 INSERT INTO dbo.Trade
 (
 	UserId,
@@ -79,3 +79,5 @@ VALUES
 )
 
 SET @TradeId = @@IDENTITY
+END
+GO

@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[sp_SelectDemandQuoteWithHistories]
 	@QuoteId int
 AS
+BEGIN
 	-- Update history read status
 	UPDATE dbo.DemandQuoteHistory SET HasRead = 1 WHERE QuoteId = @QuoteId;
 
@@ -12,3 +13,5 @@ AS
 
 	-- Select quote histories
 	SELECT * FROM dbo.DemandQuoteHistory WHERE QuoteId = @QuoteId AND IsActive = 1;
+END
+GO

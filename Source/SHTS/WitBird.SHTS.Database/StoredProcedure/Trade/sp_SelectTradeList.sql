@@ -3,7 +3,8 @@
 	@PageIndex int,
 	@State int
 AS
-	SET NOCOUNT ON
+BEGIN
+	--SET NOCOUNT ON
 	
 	
 	IF @State <> -1
@@ -35,4 +36,5 @@ AS
 	 left join dbo.[User] as UserT3 on temp.BuyerId = UserT3.UserId
 	where temp.RowNumber>(@PageIndex-1)*@PageCount and temp.RowNumber<=@PageIndex*@PageCount
 	END
-
+END
+GO

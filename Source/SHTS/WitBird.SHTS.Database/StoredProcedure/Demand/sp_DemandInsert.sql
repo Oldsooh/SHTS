@@ -18,6 +18,7 @@
 	@InsertTime		datetime,
 	@WeixinBuyFee	int
 AS
+BEGIN
 	Insert into Demand
 	([UserId]
       ,[CategoryId]
@@ -63,3 +64,5 @@ AS
 	  @InsertTime,
 	  @WeixinBuyFee
 	  )
+END
+GO

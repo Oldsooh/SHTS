@@ -22,6 +22,7 @@
 @LastUpdatedTime datetime,
 @IsFromMobile bit
  AS 
+ BEGIN
     IF (@StartTime IS NULL)
 		SET @StartTime=GETDATE();
 	IF (@EndTime IS NULL)
@@ -51,3 +52,5 @@
 			@ContentStyle,@ContentText,@ImageUrl,@Link,
 			@State,@ViewCount,@CreatedTime,@LastUpdatedTime;
 	END
+END
+GO

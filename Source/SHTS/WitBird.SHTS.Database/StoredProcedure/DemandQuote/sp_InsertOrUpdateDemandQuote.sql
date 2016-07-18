@@ -11,6 +11,7 @@
 	@LastUpdatedTimestamp datetime,
 	@IsActive bit
 AS
+BEGIN
 	-- Update exist record
 	IF EXISTS (SELECT 1 FROM dbo.DemandQuote WHERE QuoteId = @QuoteId)
 	BEGIN
@@ -35,3 +36,5 @@ AS
 	END
 
 	SELECT @QuoteId
+END
+Go

@@ -17,7 +17,7 @@
 @LastUpdatedTime datetime
 
  AS 
-	
+BEGIN
 	IF exists(Select UserId from [User] 
     Where UserName=@UserName OR Email=@Email OR Cellphone=@Cellphone)
 	BEGIN
@@ -32,3 +32,5 @@
 	@UserName,@EncryptedPassword,@UserType,@Adress,@LocationId,@Cellphone,@Email,@QQ,@UCard,@SiteUrl,@LoginIdentiy,@IdentiyImg,@Vip,@CreateTime,@LastUpdatedTime,0
 	)
 	SET @UserId = @@IDENTITY
+END
+GO

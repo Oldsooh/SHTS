@@ -12,7 +12,7 @@
 @IdentiyImg NVARCHAR(250)
 
  AS 
-	
+BEGIN
 	Update [User] set Adress=@Adress,
 	LocationId=@LocationId,
 	Cellphone=@Cellphone,
@@ -24,3 +24,5 @@
 	Photo=@Photo,
 	IdentiyImg=@IdentiyImg
 	Where UserId=@UserId;
+END
+GO

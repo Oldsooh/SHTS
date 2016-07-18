@@ -18,7 +18,7 @@ BEGIN
 			where t.rownum>=(@startRowIndex-1)*@PageSize+1 
 			and t.rownum<=@startRowIndex*@PageSize and UT.UserId=t.UserId;
 
-			SELECT Count(userId) as 'totalCount' from [User]
+			SELECT Count(UserId) as 'totalCount' from [User]
 				 where [State]!=1 AND UserName like'%'+@Keyword+'%';
 		END
 		ELSE IF(@QueryType =-1 AND @cityid !='-1' AND @resourceid =-1)
@@ -164,3 +164,4 @@ BEGIN
 			) TR;
 		END
 END
+GO

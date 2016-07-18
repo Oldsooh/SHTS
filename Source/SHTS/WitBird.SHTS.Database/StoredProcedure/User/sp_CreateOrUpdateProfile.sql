@@ -5,6 +5,7 @@
 @value NVARCHAR(MAX),
 @state int
 AS
+BEGIN
 	DEClare @UpId int
 	SET @UpId=0;
 
@@ -36,3 +37,5 @@ AS
 		   Update [User] set IdentiyImg=@value where UserId=@userid;
 		END
 	END
+END
+GO

@@ -8,7 +8,7 @@
 	@CreatedTime datetime,
 	@LastUpdatedTime datetime
 AS
-
+BEGIN
 INSERT INTO dbo.UserBankInfo 
 (
 	UserId,
@@ -33,3 +33,5 @@ VALUES
 )
 
 SELECT @@IDENTITY
+END
+GO

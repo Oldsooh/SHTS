@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[sp_SelectTradeByTradeId]
 	@TradeId int
 AS
+BEGIN
 	SET NOCOUNT ON
 	
 	declare @SellerId int
@@ -22,5 +23,6 @@ AS
 	else
 
 	select * from dbo.UserBankInfo where UserId = @SellerId
+END
 GO
 

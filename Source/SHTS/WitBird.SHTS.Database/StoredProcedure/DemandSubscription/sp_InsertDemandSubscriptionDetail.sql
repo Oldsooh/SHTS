@@ -4,6 +4,9 @@
 	@SubscriptionValue nvarchar(500),
 	@InsertedTimestamp datetime
 AS
+BEGIN
 	INSERT INTO dbo.DemandSubscriptionDetail
 	(SubscriptionId, SubscriptionType, SubscriptionValue, InsertedTimestamp)
 	VALUES (@SubscriptionId, @SubscriptionType, @SubscriptionValue, @InsertedTimestamp)
+END
+GO

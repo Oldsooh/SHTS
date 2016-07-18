@@ -3,7 +3,7 @@
 	@PageSize int,
 	@PageIndex int
 AS
-
+BEGIN
 -- total count
 SELECT COUNT(1) AS TotalCount FROM dbo.DemandQuote WHERE DemandId = @DemandId AND IsActive = 1
 
@@ -18,3 +18,5 @@ SELECT result.*, demand.Title FROM (
 ) AS result
 INNER JOIN dbo.Demand demand ON demand.Id = result.DemandId
 ORDER BY result.LastUpdatedTimestamp DESC
+END
+GO

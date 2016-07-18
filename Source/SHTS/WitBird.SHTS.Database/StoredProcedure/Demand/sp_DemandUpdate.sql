@@ -19,6 +19,7 @@
 	@Budget			int,
 	@IsActive		bit
 AS
+BEGIn
 	Update Demand
 	set
 	   [CategoryId]=@CategoryId
@@ -40,4 +41,6 @@ AS
       ,[Budget]=@Budget
 	  ,[IsActive]=@IsActive
 	where Id = @Id
+END
+GO
 	  

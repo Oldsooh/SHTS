@@ -8,3 +8,4 @@ BEGIN
 	join [User] as U on D.UserId = U.UserId
 	where D.Id=@Id and D.IsActive = 1 
 END
+GO

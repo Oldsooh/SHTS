@@ -8,9 +8,12 @@
 @State int
 
  AS 
+ BEGIN
 	INSERT INTO [AdminUser](
 	[UserName],[EncryptedPassword],[Role],[CreateTime],[LastUpdatedTime],[State]
 	)VALUES(
 	@UserName,@EncryptedPassword,@Role,@CreateTime,@LastUpdatedTime,@State
 	)
 	SET @AdminId = @@IDENTITY
+END
+GO

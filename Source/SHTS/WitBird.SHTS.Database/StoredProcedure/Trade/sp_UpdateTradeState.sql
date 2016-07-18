@@ -3,4 +3,7 @@
 	@TradeState int,
 	@LastUpdatedTime datetime
 AS
+BEGIN
 	UPDATE dbo.Trade SET [State] = @TradeState, LastUpdatedTime=@LastUpdatedTime WHERE TradeId = @TradeId
+END
+GO

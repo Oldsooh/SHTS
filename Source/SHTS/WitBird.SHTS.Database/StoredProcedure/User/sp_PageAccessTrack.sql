@@ -6,5 +6,8 @@
     @PageTitle NVARCHAR(50), 
     @IP NVARCHAR(50)
 AS
+BEGIN
 	insert into [AccessAnalytics] values(@UserId,@AccessUrl,
 	@ReferrerUrl,@Operation,@PageTitle,@IP,GETDATE(),NULL,NULL);
+END
+GO

@@ -6,7 +6,7 @@ AS
 BEGIN
 	
 	CREATE TABLE #DemandIds (DemandId int)
-	INSERt INTO #DemandIds
+	INSERT INTO #DemandIds
 	SELECT Id FROM 
 	(
 		SELECT Id, ROW_NUMBER() OVER(ORDER BY Id DESC) AS RowNumber 
@@ -22,3 +22,4 @@ BEGIN
 	SELECT * FROM dbo.DemandQuote quote INNER JOIN #DemandIds ids ON quote.DemandId = ids.DemandId AND IsActive = 1
 
 END
+GO

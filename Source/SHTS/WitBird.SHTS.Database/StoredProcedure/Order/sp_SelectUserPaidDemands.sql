@@ -15,3 +15,4 @@ select COUNT(1) FROM [TradeOrder] where OrderType = 2 and [State] = 1 and UserNa
 		 ) as temp where temp.RowNumber>(@PageIndex-1)*@PageSize and temp.RowNumber<=@PageIndex*@PageSize
 		) as tempDemand
 END
+GO

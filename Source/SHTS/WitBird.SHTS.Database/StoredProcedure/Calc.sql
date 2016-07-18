@@ -5,3 +5,4 @@ AS
 BEGIN
     SELECT @a + @b
 END
+GO
