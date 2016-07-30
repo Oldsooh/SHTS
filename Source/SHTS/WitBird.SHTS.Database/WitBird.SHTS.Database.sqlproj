@@ -216,7 +216,7 @@
     <Build Include="StoredProcedure\DemandSubscription\sp_InsertOrUpdateDemandSubscription.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_SelectAllSubscriedSubscriptions.sql" />
     <Build Include="StoredProcedure\DemandSubscription\sp_InsertDemandSubscriptionDetail.sql" />
-    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionDateTimeField.sql" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastRequestTime" />
     <Build Include="StoredProcedure\Resource\sp_GetResourceByFilter.sql" />
     <Build Include="StoredProcedure\Resource\sp_GetUserResource.sql" />
     <Build Include="StoredProcedure\DemandQuote\sp_InsertDemandQuoteHistory.sql" />
@@ -232,10 +232,14 @@
     <Build Include="StoredProcedure\UserVip\sp_ReviewedVipInfoById.sql" />
     <Build Include="StoredProcedure\UserVip\sp_SelectVipUserReviewList.sql" />
     <Build Include="StoredProcedure\User\sp_SelectTradeRecordForSpecifiedResourceByUserId.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserSelectOnlySubscried.sql" />
+    <Build Include="StoredProcedure\Demand\sp_DemandSelectForWeChatPush.sql" />
+    <Build Include="Function\fSplit.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
     <None Include="WitBird.SHTS.Database.sqlproj.user" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastPushTime" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />

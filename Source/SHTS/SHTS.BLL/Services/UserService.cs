@@ -476,6 +476,35 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
+        /// 根据绑定的wechatuserid获取已关注的微信用户列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<WeChatUser> GetWeChatUserOnlySubscribed()
+        {
+            List<WeChatUser> users = new List<WeChatUser>();
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+
+                users = userDao.GetWeChatUserOnlySubscribed(conn);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("根据绑定的wechatuserid获取已关注的微信用户列表", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return users;
+        }
+
+        /// <summary>
         /// Gets wechat user information by open id.
         /// </summary>
         /// <param name="openId"></param>

@@ -68,7 +68,8 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             string keyWords = requestMessage.Content;
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
 
-            responseMessage.Content = string.Format(SearchResultUrl, keyWords, keyWords);
+            //responseMessage.Content = string.Format(SearchResultUrl, keyWords, keyWords);
+            responseMessage.Content = "更新交互时间成功。";
 
             return responseMessage;
         }

@@ -78,7 +78,35 @@
         }
     }
 }
+<style>
+    .nav-right {
+        margin-top:5px;
+    }
 
+    .keyWords {
+        width: 85%;
+        padding: 3px;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function searchByKeyWords() {
+        var keywords = $('#keyWords').val();
+        if (keywords == '') {
+            return false;
+        }
+        else {
+            var href = "/wechat/index/search?keyWords=" + keywords;
+            window.location.href = href;
+        }
+    }
+</script>
+<div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
+    <div class="nav-right">
+        <input type="text" id="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
+        <a href="javascript:void(0)" onclick="searchByKeyWords();">搜索</a>
+    </div>
+</div>
 <div id="nav">
     <ul id="navul">
         <li class="navli" id="space"><a href="/wechat/resource/spacelist">活动场地</a></li>

@@ -1,24 +1,662 @@
-﻿@*@{
-        ViewBag.Title = "Index";
-        Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+﻿@model Witbird.SHTS.Model.DemandSubscription
+@{
+    ViewBag.Title = "需求订阅设置";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        #uploader-demo label {
+            position: inherit;
+            font-size: 10px;
+            color: transparent;
+            top: 0px;
+            padding-left: 0px;
+            width: 80% !important;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            width: 96%;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell {
+                margin-bottom: 10px;
+            }
+
+                .reg-form .cell select {
+                    height: 100%;
+                    width: 31%;
+                }
+
+                .reg-form .cell textarea {
+                    height: 100%;
+                    width: 96%;
+                }
+
+
+                .reg-form .cell input {
+                    font-size: 14px;
+                    width: 90%;
+                }
+
+        .upbtn {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 77px;
+            height: 37px;
+            overflow: hidden;
+            bottom: auto;
+            right: auto;
+        }
+
+        #fileform {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        #fileheer {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .webuploader-element-invisible {
+            position: inherit !important;
+        }
+
+        .bytype {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+            .bytype input {
+                height: 15px !important;
+                width: 15px !important;
+            }
+
+            .bytype label {
+                color: #333 !important;
+                font-size: 14px;
+                font-weight: normal;
+                top: -5px;
+                left: 30px;
+            }
+
+        .subscribe {
+            height: auto;
+            /*border: 1px solid #CECECF;*/
+            margin-bottom: 20px;
+        }
+
+        .addbtn {
+        }
+
+        .closebtn {
+            margin-left: 90%;
+            margin-top: 10px;
+            position: absolute;
+            cursor: pointer;
+        }
+
+            .closebtn img {
+                width: 20px;
+                height: 20px;
+            }
+
+        #es {
+            color: #333 !important;
+            font-size: 20px;
+            font-weight: normal;
+            top: -9px;
+            left: 20px;
+        }
+
+        .disabled {
+            background-color: #F5F5F5;
+            color: #ACA899;
+            cursor: not-allowed;
+        }
+
+        .subscribeDetails {
+            padding: 10px;
+            border: 1px solid #DDD;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function addDemand() {
+            var Title = document.getElementById("Title").value;
+            var Phone = document.getElementById("Phone").value;
+            var ContentText = document.getElementById("ContentText").value;
+
+            if (Title != "") {
+                if (Phone != "") {
+                    if (ContentText != "") {
+                        $.ajax({
+                            url: '/wechat/demand/add',
+                            data: $("#addForm").serialize(),
+                            type: 'POST',
+                            success: function (msg) {
+                                if (msg == "success") {
+                                    alert("发布成功");
+                                    window.location.href = "/wechat/demand/mydemands";
+                                }
+                                else {
+                                    alert(msg);
+                                }
+                            },
+                            error: function (msg) {
+                                alert("网络异常，发布失败");
+                            }
+                        });
+                    }
+                    else {
+                        alert("内容不能为空");
+                    }
+                }
+                else {
+                    alert("电话不能为空");
+                }
+            }
+            else {
+                alert("标题不能为空");
+            }
+        }
+
+        // Adds new location into subscibed areas.
+        function addArea() {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            var provinceId = $('#ddlProvince').val();
+            var cityId = $('#ddlCity').val();
+            var areaId = $('#ddlArea').val();
+
+            if (provinceId == '' && cityId == '' && areaId == '') {
+                alert('请选择区域位置。');
+                return;
+            }
+
+            var subscribedAreasList = getAllSubscriedAreas();
+            var provinceName = $('#ddlProvince').find('option:selected').text();
+            var cityName = $('#ddlCity').find('option:selected').text();
+            var areaName = $('#ddlArea').find('option:selected').text();
+
+            if (cityId == '') {
+                cityName = '---';
+            }
+
+            if (areaId == '') {
+                areaName = '---';
+            }
+
+            var newAreaId = provinceId + '_' + cityId + '_' + areaId;
+            var newCount = subscribedAreasList.length + 1;
+            var newAreaValue = provinceName + '/' + cityName + '/' + areaName;
+
+            if (isNewAreaAlreadySelected(subscribedAreasList, newAreaId)) {
+                alert('该区域位置已经包含到所选区域位置中，请勿重复添加。');
+                return;
+            }
+
+            var newAreaHtml = '<div id="' + newAreaId + '" class="cell"><input type="text" disabled="disabled" class="text" value="'
+                + newAreaValue + '"><span class="closebtn" title="删除"><img src="/Content/images/button_grey_close.png"  class="candisabled"  onclick="deleteArea(\''
+                + newAreaId + '\')" /></span></div>';
+
+            $('#selectedAreas').append(newAreaHtml);
+            saveNewAreaInfo(newAreaId);
+            resetCities();
+        }
+
+        function resetCities() {
+            $('#ddlProvince').get(0).selectedIndex = 0;
+            $('#ddlCity').empty();
+            $('#ddlCity').append('<option value="">全省/市</option>');
+            $('#ddlArea').empty();
+            $('#ddlArea').append('<option value="">全县/区</option>');
+        }
+
+        function saveNewAreaInfo(newAreaId) {
+            var subscribedAreasList = getAllSubscriedAreas();
+
+            if (subscribedAreasList.length == 0) {
+                $('#subscribedAreas').val(newAreaId);
+            }
+            else {
+                var areas = '';
+                for (var i = 0; i < subscribedAreasList.length; i++) {
+                    areas += subscribedAreasList[i] + ',';
+                }
+
+                areas += newAreaId;
+                $('#subscribedAreas').val(areas);
+            }
+        }
+
+        function deleteAreaIdFromCache(areaId) {
+            var subscribedAreasList = getAllSubscriedAreas();
+            var areas = '';
+            var deleteIndex = -1;
+
+            for (var i = 0; i < subscribedAreasList.length; i++) {
+                if (subscribedAreasList[i] == areaId) {
+                    deleteIndex = i;
+                }
+                else {
+                    areas += subscribedAreasList[i] + ',';
+                }
+            }
+
+            subscribedAreasList.splice(deleteIndex);
+
+            if (areas.length > 0) {
+                areas = areas.substring(0, areas.length - 1);
+            }
+
+            $('#subscribedAreas').val(areas);
+        }
+
+        // Gets all subscribed areas from hidden field.
+        function getAllSubscriedAreas() {
+            // value = 'provinceId_cityId_areaId,provinceId_cityId_areaId'
+            var subscribedAreas = $('#subscribedAreas').val();
+
+            if (subscribedAreas == undefined) {
+                subscribedAreas = '';
+            }
+
+            return splitIgnoreEmptyValue(subscribedAreas, ',');
+        }
+
+        // Deletes one selected location
+        function deleteArea(areaId) {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            // delete areaid from hidden field
+            deleteAreaIdFromCache(areaId);
+            $('#' + areaId).remove();
+        }
+
+        // Splits string value to an array list by specified separator.
+        function splitIgnoreEmptyValue(sourceValue, separator) {
+            var array = new Array();
+
+            if (sourceValue != undefined && sourceValue != '') {
+                var tempArray = sourceValue.split(separator);
+                for (var i = 0; i < tempArray.length; i++) {
+                    var value = tempArray[i];
+                    if (value != '') {
+                        array.push(value);
+                    }
+                }
+            }
+
+            return array;
+        }
+
+        // Checks whether currently selected location has already been included in selected locations.
+        function isNewAreaAlreadySelected(sourceArray, newAreaId) {
+            if (sourceArray.length == 0) {
+                return false;
+            }
+            else {
+                for (var i = 0; i < sourceArray.length; i++) {
+                    var areaId = sourceArray[i];
+                    // select province only
+                    var index = areaId.indexOf('__');
+                    if (index > -1 && newAreaId.indexOf(areaId.substring(0, index)) > -1) {
+                        return true;
+                    }
+                    else if (newAreaId.indexOf(areaId) > -1) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        function addKeyword() {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            var keyword = $('#keyword').val();
+            if (keyword.trim() == '') {
+                $('#keyword').val('');
+                alert('请输入订阅的关键词，如主持人、女歌手。');
+                return;
+            }
+
+            var subscribedKeywords = $('#subscribedKeywords').val();
+            var keywordsList = splitIgnoreEmptyValue(subscribedKeywords, ',');
+
+
+            for (var i = 0; i < keywordsList.length; i++) {
+                if (keywordsList[i] == keyword || subscribedKeywords.indexOf(keyword) > -1) {
+                    alert('该关键词已经添加，请更换新的关键词');
+                    return;
+                }
+            }
+
+            if (subscribedKeywords.trim().length == 0) {
+                subscribedKeywords = keyword;
+            }
+            else {
+                subscribedKeywords += ',' + keyword;
+            }
+
+            $('#subscribedKeywords').val(subscribedKeywords);
+
+            var newKeywordHtml = '<div class="cell"><input type="text" disabled="disabled" class="text" value="'
+                + keyword + '"><span class="closebtn" title="删除"><img src="/Content/images/button_grey_close.png" class="candisabled" onclick="deleteKeyword(this);" /></span></div>';
+            $('#selectedKeywords').append(newKeywordHtml);
+
+            // reset textbox.
+            $('#keyword').val('');
+        }
+
+        function deleteKeyword(closeBtn) {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            var keyword = $(closeBtn).parent().parent().find('input').val();
+            var subscribedKeywords = $('#subscribedKeywords').val();
+            var keywordsList = splitIgnoreEmptyValue(subscribedKeywords, ',');
+
+            subscribedKeywords = '';
+            for (var i = 0; i < keywordsList.length; i++) {
+                if (keywordsList[i] != keyword) {
+                    subscribedKeywords += keywordsList[i] + ',';
+                }
+            }
+
+            if (subscribedKeywords.length > 0) {
+                subscribedKeywords = subscribedKeywords.substring(0, subscribedKeywords.length - 1);
+            }
+
+            $('#subscribedKeywords').val(subscribedKeywords);
+            $(closeBtn).parent().parent().remove();
+        }
+
+        function enableSubscribed() {
+            if (isEnableSubscription()) {
+                $('#enable').val('true');
+                // enable all controls
+                $('.subscribeDetails').removeClass('disabled');
+                $('.subscribeDetails').find('*').each(function () {
+                    $(this).removeClass('disabled');
+                });
+                $('.candisabled').each(function () {
+                    $(this).removeAttr('disabled');
+                });
+            }
+            else {
+                $('#enable').val('false');
+
+                // disable all controls
+                $('.subscribeDetails').addClass('disabled');
+                $('.subscribeDetails').find('*').each(function () {
+                    $(this).addClass('disabled');
+                });
+                $('.candisabled').each(function () {
+                    $(this).attr('disabled', true);
+                });
+            }
+        }
+
+        function isEnableSubscription() {
+            return $('#enableSubscription').is(':checked');
+        }
+
+        function setSubscribedTypes() {
+            var subscriedTypes = '';
+            $('.bytype input[type=checkbox]:checked').each(function () {
+                subscriedTypes += $(this).val() + ',';
+            });
+
+            if (subscriedTypes.length > 0) {
+                subscriedTypes = subscriedTypes.substring(0, subscriedTypes.length - 1);
+            }
+
+            $('#subscriedTypes').val(subscriedTypes);
+        }
+    </script>
+    <script language="javascript">
+        // string.trim()
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        }
+        String.prototype.ltrim = function () {
+            return this.replace(/(^\s*)/g, "");
+        }
+        String.prototype.rtrim = function () {
+            return this.replace(/(\s*$)/g, "");
+        }
+    </script>
+}
+
+<div class="wrap" style="width: 100%; ">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+        <form action="/wechat/subscribe/update" class="reg-form" method="post">
+            <br />
+            <div class="cell" style="height:20px;">
+                @{
+                    var enabled = "false";
+                    var checkedString = "";
+
+                    if (Model.IsSubscribed)
+                    {
+                        enabled = "true";
+                        checkedString = "checked=checked";
+                    }
+
+                    <input type="hidden" id="enable" name="enable" value="@enabled">
+
+                    <input type="checkbox" id="enableSubscription" @checkedString onchange="enableSubscribed();" style="width: 25px; height: 25px;">
+                }
+                <label for="enableSubscription" id="es">启用需求订阅</label>
+            </div>
+            <div class="cell" style="color:#ACA899;">注：当有新需求发布时，根据您的订阅规则推送到微信号，方便您及时查看。</div>
+            <div class="subscribeDetails">
+                <div class="subscribe">
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置需求类型：</h3>
+                    @{
+                        var types = string.Empty;
+                        var byspace = string.Empty;
+                        var byactor = string.Empty;
+                        var byequipment = string.Empty;
+                        var byothers = string.Empty;
+
+                        foreach (var type in Model.SubscribedTypes)
+                        {
+                            types += type.SubscriptionValue + ",";
+                            if (type.SubscriptionValue.Equals("1"))
+                            {
+                                byspace = "checked='checked'";
+                            }
+                            else if (type.SubscriptionValue.Equals("2"))
+                            {
+                                byactor = "checked='checked'";
+                            }
+                            else if (type.SubscriptionValue.Equals("3"))
+                            {
+                                byequipment = "checked='checked'";
+                            }
+                            else if (type.SubscriptionValue.Equals("4"))
+                            {
+                                byothers = "checked='checked'";
+                            }
+                            else
+                            {
+                                // nothing to do.
+                            }
+                        }
+
+                        if (types.Length > 0)
+                        {
+                            types = types.Substring(0, types.Length - 1);
+                        }
+                    }
+                    <input type="hidden" id="subscriedTypes" name="subscriedTypes" value="@types">
+                    <div class="bytype">
+                        <input type="checkbox" id="byspace" class="candisabled" value="1" @byspace onchange="setSubscribedTypes();">
+                        <label for="byspace" class="candisabled">活动场地</label>
+                        <input type="checkbox" id="byactor" class="candisabled" value="2" @byactor onchange="setSubscribedTypes();">
+                        <label for="byactor" class="candisabled">演艺人员</label>
+                        <input type="checkbox" id="byequipment" class="candisabled" value="3" @byequipment onchange="setSubscribedTypes();">
+                        <label for="byequipment" class="candisabled">活动设备</label>
+                        <input type="checkbox" id="byothers" class="candisabled" value="4" @byothers onchange="setSubscribedTypes();">
+                        <label for="byothers" class="candisabled">其他资源</label>
+                    </div>
+                </div>
+                <div class="subscribe">
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置区域位置（可选）：</h3>
+                    @{
+                        var areaIds = string.Empty;
+                        foreach (var area in Model.SubscribedAreas)
+                        {
+                            areaIds += area.SubscriptionValue + ",";
+                        }
+
+                        if (areaIds.Length > 0)
+                        {
+                            areaIds = areaIds.Substring(0, areaIds.Length - 1);
+                        }
+                    }
+                    <input type="hidden" id="subscribedAreas" name="subscribedAreas" value="@areaIds" />
+                    <div id="selectedAreas">
+                        @{
+                            for (int i = 0; i < Model.SubscribedAreas.Count; i++)
+                            {
+                                var areaId = Model.SubscribedAreas[i].SubscriptionValue;
+                                var areaName = Witbird.SHTS.Web.Public.StaticUtility.GetLocationName(areaId);
+
+                                <div id="@areaId" class="cell">
+                                    <input type="text" disabled="disabled" class="text" value="@areaName">
+                                    <span class="closebtn" title="删除">
+                                        <img src="/Content/images/button_grey_close.png" onclick="deleteArea('@areaId');" class="candisabled" />
+                                    </span>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="cell">
+                        <select id="ddlProvince" class="text candisabled" name="Province" onchange="loadCities() ">
+                            <option value="">省份</option>
+                            @if (Witbird.SHTS.Web.Public.StaticUtility.GetProvice() != null)
+                            {
+                                foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.GetProvice())
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                        <select id="ddlCity" class="text candisabled" name="City" onchange="loadAreas() ">
+                            <option value="">全省/市</option>
+                        </select>
+                        <select id="ddlArea" class="text candisabled" name="Area">
+                            <option value="">全县/区</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();">添加区域</a>
+                    </div>
+                </div>
+                <div class="subscribe">
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置特殊关键词（可选）：</h3>
+                    @{
+                        var keywords = string.Empty;
+                        foreach (var keyword in Model.SubscribedKeywords)
+                        {
+                            keywords += keyword.SubscriptionValue + ",";
+                        }
+
+                        if (keywords.Length > 0)
+                        {
+                            keywords = keywords.Substring(0, keywords.Length - 1);
+                        }
+                    }
+                    <input type="hidden" id="subscribedKeywords" name="subscribedKeywords" value="@keywords" />
+                    <div id="selectedKeywords">
+                        @{
+                            for (int i = 0; i < Model.SubscribedKeywords.Count; i++)
+                            {
+                                var keyword = Model.SubscribedKeywords[i].SubscriptionValue;
+
+                                <div class="cell">
+                                    <input type="text" disabled="disabled" class="text" value="@keyword">
+                                    <span class="closebtn" title="删除">
+                                        <img src="/Content/images/button_grey_close.png" class="candisabled" onclick="deleteKeyword(this);" />
+                                    </span>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="cell">
+                        <input type="text" id="keyword" placeholder="请输入关键字，如主持人、女歌手" class="text candisabled">
+                    </div>
+
+                    <div class="">
+                        <a href="javascript:void(0);" title="添加关键字" class="candisabled" onclick="addKeyword();">添加关键字</a>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <button type="submit" id="js-mobile_btn" class="button btn-green" onclick="javascript:void(0)">保存订阅设置</button>
+            </div>
+        </form>
+    </div>
+    @{
+        var errorMessage = ViewData["UpdateSubscriptionResult"] ?? string.Empty;
     }
+    <input type="hidden" id="txtMessage" value="@errorMessage" />
+</div>
 
-    <h2>Index</h2>*@
+@section FooterJS
+{
+    <script>
+        enableSubscribed();
+        var message = $('#txtMessage').val();
+        if (message != '') {
+            $('#txtMessage').val('');
+            alert(message);
+        }
+    </script>
+    <script src="~/Content/js/city.js"></script>
+}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>手机底部导航栏 - 何问起</title>
-    <base target="_blank" />
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="http://hovertree.com/texiao/mobile/5/hovertreebottom.css" media="all">
-</head>
-
-<body>
-    <div class="bg"></div><div class="hovertreebottom"><nav><div id="hovertreebottom_ul"><ul class="box"><li><a href="javascript:;" class=""><span>何问起</span></a><dl><dd><a href="http://hovertree.com"><span>首页</span></a></dd><dd><a href="http://hovertree.com/texiao/"><span>特效</span></a></dd><dd><a href="http://hovertree.com/menu/aspnet/"><span>ASP.NET</span></a></dd><dd><a href="http://hovertree.com/down/"><span>源码下载</span></a></dd><dd><a href="http://hovertree.com/hvtart/bjae/j0x9ww3x.htm"><span>原文</span></a></dd></dl></li><li><a href="javascript:;" class=""><span>柯乐义</span></a><dl><dd><a href="http://keleyi.com"><span>首页</span></a></dd><dd><a href="http://keleyi.com/a/bjad/5vw5k0au.htm"><span>CSS3旋转</span></a></dd><dd><a href="http://tool.keleyi.com/"><span>工具</span></a></dd><dd><a href="http://keleyi.com/menu/jquery/"><span>jQuery</span></a></dd></dl></li><li><a href="javascript:;" class="on"><span>HoverTree</span></a><dl><dd><a href="http://m.hovertree.com/"><span>谜语</span></a></dd><dd><a href="http://m.hovertree.com/yzdd/bjae/a8rbum7w.htm"><span>看图回答</span></a></dd><dd><a href="http://m.hovertree.com/miyu/bjae/m81a842g.htm"><span>何问起（猜字）</span></a></dd><dd><a href="http://hovertree.com/menu/sqlserver/"><span>Sql Server</span></a></dd></dl></li></ul></div></nav><div id="hovertreebottom_masklayer" class="masklayer_div on">&nbsp;</div></div>
-    <script src="http://hovertree.com/texiao/mobile/5/hovertreebottom.js"></script>
-    <script type="text/javascript">hovertreebottom.bindClick(document.getElementById("hovertreebottom_ul").querySelectorAll("li>a"), document.getElementById("hovertreebottom_masklayer"));</script>
-</body>
-</html>

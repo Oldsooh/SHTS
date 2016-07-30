@@ -52,6 +52,9 @@ namespace Witbird.SHTS.Web
             var tenPayV3Info = new TenPayV3Info(tenPayV3_AppId, tenPayV3_AppSecret, tenPayV3_MchId, tenPayV3_Key,
                                                 tenPayV3_TenpayNotify);
             TenPayV3InfoCollection.Register(tenPayV3Info);
+
+            // Start wechat push subscribe demand working thread.
+            Witbird.SHTS.Web.Areas.Wechat.Subscription.WorkingThread.Instance.Run();
         }
 
         /// <summary>

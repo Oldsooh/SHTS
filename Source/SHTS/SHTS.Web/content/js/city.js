@@ -1,7 +1,7 @@
 ﻿function loadCities() {
     $("#ddlCity").html();
     $("#ddlCity").html('<option value="">加载中</option>');
-    $("#ddlArea").html('<option value="">----</option>');
+    $("#ddlArea").html('<option value="">---</option>');
 
     var provinceId = $("#ddlProvince").val();
     var nowTime = new Date().getTime();

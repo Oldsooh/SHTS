@@ -276,7 +276,12 @@ namespace Witbird.SHTS.DAL
             SqlCommand command = connection.CreateCommand();
             command.CommandText = storedProcName;
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddRange(parameters);
+
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
             returnReader = command.ExecuteReader();
             return returnReader;
         }

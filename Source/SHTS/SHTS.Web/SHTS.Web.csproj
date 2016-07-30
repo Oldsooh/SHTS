@@ -203,7 +203,7 @@
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
-    <Compile Include="Areas\Wechat\Controllers\QouteController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\QuoteController.cs" />
     <Compile Include="Areas\Wechat\Controllers\SubscribeController.cs" />
     <Compile Include="Areas\Wechat\Controllers\WechatBaseController.cs" />
     <Compile Include="Areas\Wechat\Controllers\NewsController.cs" />
@@ -622,6 +622,7 @@
     <Content Include="Areas\Wechat\Content\images\arr-left.png" />
     <Content Include="Areas\Wechat\Content\images\arr-right.png" />
     <Content Include="Areas\Wechat\Content\images\bg.png" />
+    <Content Include="Content\images\button_grey_close.png" />
     <Content Include="Areas\Wechat\Content\images\projection.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\button_bg.gif" />
     <Content Include="Areas\Wechat\Content\images\shouwei\col_icon.gif" />
@@ -744,6 +745,7 @@
     <Content Include="Content\images\qq.png" />
     <Content Include="Content\images\search.ele.png" />
     <Content Include="Content\images\stop.png" />
+    <Content Include="Content\images\subscribedDemandBackground.jpg" />
     <Content Include="Content\images\user\IdentiyImg.jpg" />
     <Content Include="Content\images\backgrounds.32.png" />
     <Content Include="Content\images\banner.jpg" />
@@ -937,6 +939,8 @@
     <Content Include="Areas\Wechat\Views\Demand\MyDemands.cshtml" />
     <Content Include="Areas\Wechat\Views\Demand\Edit.cshtml" />
     <Content Include="Areas\Wechat\Views\Subscribe\Index.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\RecievedQuotes.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\PostedQuotes.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

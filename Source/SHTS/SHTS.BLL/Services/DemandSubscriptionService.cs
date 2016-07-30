@@ -10,7 +10,7 @@ using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.Daos;
 using System.Data.SqlClient;
 
-namespace Witbird.SHTS.BLL.Service
+namespace Witbird.SHTS.BLL.Services
 {
     /// <summary>
     /// 微信订阅业务逻辑处理类
@@ -41,7 +41,7 @@ namespace Witbird.SHTS.BLL.Service
             }
             catch (Exception ex)
             {
-                LogService.Log("获取已订阅需求推送的用户详细订阅信息", ex.ToString());
+                LogService.LogWexin("获取已订阅需求推送的用户详细订阅信息", ex.ToString());
             }
             finally
             {
@@ -65,10 +65,14 @@ namespace Witbird.SHTS.BLL.Service
             {
                 conn.Open();
                 subscription = subscriptionDao.SelectSubscriptionByUserId(conn, userId);
+                if (subscription == null)
+                {
+                    subscription = AddDefautlSubcription(userId);
+                }
             }
             catch (Exception ex)
             {
-                LogService.Log("根据用户ID获取用户需求订阅信息", ex.ToString());
+                LogService.LogWexin("根据用户ID获取用户需求订阅信息", ex.ToString());
             }
             finally
             {
@@ -94,7 +98,6 @@ namespace Witbird.SHTS.BLL.Service
                 using (TransactionScope scope = new TransactionScope())
                 {
                     conn.Open();
-                    subscription.IsSubscribed = subscription.IsSubscribed;
                     subscription.LastUpdatedTimestamp = DateTime.Now;
                     subscriptionDao.InsertOrUpdateSubscription(conn, subscription);
 
@@ -128,7 +131,7 @@ namespace Witbird.SHTS.BLL.Service
             }
             catch (Exception ex)
             {
-                LogService.Log("更新用户需求订阅信息并返回更新后的结果", ex.ToString());
+                LogService.LogWexin("更新用户需求订阅信息并返回更新后的结果", ex.ToString());
             }
             finally
             {
@@ -151,11 +154,11 @@ namespace Witbird.SHTS.BLL.Service
             try
             {
                 conn.Open();
-                isSuccessful = subscriptionDao.UpdateDemandSubscriptionDateTimeField(conn, userId, "LastPushTimestamp");
+                isSuccessful = subscriptionDao.UpdateDemandSubscriptionLastPushTime(conn, userId);
             }
             catch (Exception ex)
             {
-                LogService.Log("更新最后推送时间", ex.ToString());
+                LogService.LogWexin("更新最后推送时间", ex.ToString());
             }
             finally
             {
@@ -183,7 +186,7 @@ namespace Witbird.SHTS.BLL.Service
                     conn.Open();
                     foreach (var userId in userIds)
                     {
-                        subscriptionDao.UpdateDemandSubscriptionDateTimeField(conn, userId, "LastPushTimestamp");
+                        subscriptionDao.UpdateDemandSubscriptionLastPushTime(conn, userId);
                     }
 
                     isSuccessful = true;
@@ -193,7 +196,7 @@ namespace Witbird.SHTS.BLL.Service
             catch (Exception ex)
             {
                 isSuccessful = false;
-                LogService.Log("更新最后推送时间", ex.ToString());
+                LogService.LogWexin("更新最后推送时间", ex.ToString());
             }
             finally
             {
@@ -216,11 +219,11 @@ namespace Witbird.SHTS.BLL.Service
             try
             {
                 conn.Open();
-                isSuccessful = subscriptionDao.UpdateDemandSubscriptionDateTimeField(conn, userId, "LastRequestTimestamp");
+                isSuccessful = subscriptionDao.UpdateDemandSubscriptionLastRequestTime(conn, userId);
             }
             catch (Exception ex)
             {
-                LogService.Log("更新最后主动请求交互时间", ex.ToString());
+                LogService.LogWexin("更新最后主动请求交互时间", ex.ToString());
             }
             finally
             {
@@ -235,9 +238,9 @@ namespace Witbird.SHTS.BLL.Service
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddDefautlSubcription(int userId)
+        public DemandSubscription AddDefautlSubcription(int userId)
         {
-            var isSuccessful = false;
+            DemandSubscription subscription = null;
             var conn = DBHelper.GetSqlConnection();
 
             try
@@ -250,7 +253,7 @@ namespace Witbird.SHTS.BLL.Service
                     conn.Open();
 
                     var currentTime = DateTime.Now;
-                    var subscription = new DemandSubscription()
+                    subscription = new DemandSubscription()
                     {
                         InsertedTimestamp = currentTime,
                         IsSubscribed = true,
@@ -274,26 +277,23 @@ namespace Witbird.SHTS.BLL.Service
                                 SubscriptionValue = item.Id.ToString()
                             };
 
-                            isSuccessful = isSuccessful && subscriptionDao.InsertSubscriptionDetail(conn, subscriptionDetail);
+                            subscriptionDao.InsertSubscriptionDetail(conn, subscriptionDetail);
                         }
                     }
-
-                    if (isSuccessful)
-                    {
-                        scope.Complete();
-                    }
+                    
+                    scope.Complete();
                 }
             }
             catch (Exception ex)
             {
-                LogService.Log("添加默认的需求订阅信息当新用户关注时", ex.ToString());
+                LogService.LogWexin("添加默认的需求订阅信息当新用户关注时", ex.ToString());
             }
             finally
             {
                 conn.Close();
             }
 
-            return isSuccessful;
+            return subscription;
         }
 
         #endregion Public methods

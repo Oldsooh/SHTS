@@ -142,6 +142,75 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
+        public List<Demand> SelectDemandsForWeChatPush(List<DemandSubscriptionDetail> subscriptionDetails, DateTime lastPushTime)
+        {
+            List<Demand> result = new List<Demand>();
+            
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+
+                var categories = string.Empty;
+                var locations = string.Empty;
+                var keywords = string.Empty;
+
+                foreach (var detail in subscriptionDetails)
+                {
+                    if (detail.SubscriptionType == DemandSubscriptionType.Area.ToString())
+                    {
+                        locations += detail.SubscriptionValue + ",";
+                    }
+                    else if (detail.SubscriptionType == DemandSubscriptionType.Category.ToString())
+                    {
+                        categories += detail.SubscriptionValue + ",";
+                    }
+                    else if (detail.SubscriptionType == DemandSubscriptionType.Keywords.ToString())
+                    {
+                        keywords += detail.SubscriptionValue + ",";
+                    }
+                    else
+                    {
+                        // nothing to do.
+                    }
+                }
+
+                // Removes last comma.
+                if (categories.Length > 0)
+                {
+                    categories = categories.Substring(0, categories.Length - 1);
+                }
+                if (locations.Length > 0)
+                {
+                    locations = locations.Substring(0, locations.Length - 1);
+                }
+                if (keywords.Length > 0)
+                {
+                    keywords = keywords.Substring(0, keywords.Length - 1);
+                }
+                
+                DemandParameters parameters = new DemandParameters()
+                {
+                    Categories = categories,
+                    Locations = locations,
+                    Keywords = keywords,
+                    InsertTime = lastPushTime
+                };
+
+                result = demandDao.SelectDemandsForWeChatPush(conn, parameters);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("SelectDemandsForWeChatPush", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
         private void FillDemandCategoryName(List<Demand> result, System.Data.SqlClient.SqlConnection conn)
         {
             if (result != null && result.Count > 0)

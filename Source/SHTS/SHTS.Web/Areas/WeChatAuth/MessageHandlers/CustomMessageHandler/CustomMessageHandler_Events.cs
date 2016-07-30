@@ -42,7 +42,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         /// 0: 关键字， 1: 关键字
         /// </summary>
         public static string SearchResultUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
-            "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>\r\n\r\n直接回复想要搜索的关键字即可获取:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。";
+            "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>";
 
         /// <summary>
         /// 关于我们的链接
@@ -50,13 +50,15 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
 
         UserService userService = new UserService();
+        DemandSubscriptionService subscriptionService = new DemandSubscriptionService();
 
         private Article GetWelcomeInfo()
         {
             return new Article()
             {
                 Title = "欢迎您关注中国活动在线网",
-                Description = "活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。\r\n\r\n直接回复想要搜索的关键字即可获取:\r\n\r\n[1]活动场地资源\r\n[2]演艺人员资源\r\n[3]活动设备资源\r\n[4]其他资源\r\n[5]需求信息。",
+                Description = @"活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，
+                                包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。",
                 PicUrl = BannerImgUrl,
                 Url = AboutUsUrl
             };
@@ -67,6 +69,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             IResponseMessageBase responseMessage = null;
             var openId = requestMessage.FromUserName;
             var content = "";
+            WeChatUser wechatUser = null;
 
             var textResponseMessage = CreateResponseMessage<ResponseMessageText>();
             var newsResponseMessage = CreateResponseMessage<ResponseMessageNews>();
@@ -78,7 +81,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                     {
                         content = string.Empty;
 
-                        WeChatUser wechatUser = null;
                         User user = null;
 
                         try
@@ -130,7 +132,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         content = string.Empty;
 
                         var hasUserLoggedIn = false;
-                        WeChatUser wechatUser = null;
                         User user = null;
 
                         try
@@ -188,7 +189,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                         content = string.Empty;
 
                         var hasUserIdentified = false;
-                        WeChatUser wechatUser = null;
                         User user = null;
 
                         try
@@ -383,6 +383,16 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                     break;
                 #endregion
 
+                #region 更新交互时间
+                case "UpdateRequestTime":
+                    {
+                        content = string.Empty;
+                        textResponseMessage.Content = "更新交互时间成功。";
+                        responseMessage = textResponseMessage;
+                    }
+                    break;
+                #endregion
+
                 #region 默认返回
                 default:
                     {
@@ -391,6 +401,16 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                     }
                     break;
                 #endregion
+            }
+
+            // Update request time.
+            if (wechatUser == null)
+            {
+                wechatUser = userService.GetWeChatUser(openId);
+            }
+            if (wechatUser.IsNotNull())
+            {
+                subscriptionService.UpdateLastRequestTimestamp(wechatUser.Id);
             }
 
             return responseMessage;

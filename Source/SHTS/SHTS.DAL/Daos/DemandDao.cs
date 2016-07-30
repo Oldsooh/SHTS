@@ -21,6 +21,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_UpdateDemandWeixinBuyFee = "sp_UpdateDemandWeixinFeeByDemandId";
         private const string sp_UpdateDemandStatus = "sp_UpdateDemandStatus";
         private const string sp_SelectTradeOrderByOpenIdAndDemandId = "sp_SelectTradeOrderByOpenIdAndDemandId";
+        private const string sp_DemandSelectForWeChatPush = "sp_DemandSelectForWeChatPush";
 
         public List<Demand> SelectDemands(int pageCount, int pageIndex, out int count, SqlConnection conn)
         {
@@ -166,6 +167,24 @@ namespace Witbird.SHTS.DAL.Daos
             return result;
         }
 
+        public List<Demand> SelectDemandsForWeChatPush(SqlConnection conn, DemandParameters parameters)
+        {
+            List<Demand> result = null;
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@Locations", parameters.Locations),
+                new SqlParameter("@Categories", parameters.Categories),
+                new SqlParameter("@InsertTime", parameters.InsertTime),
+                new SqlParameter("@Keywords", parameters.Keywords)
+            };
+
+            Dictionary<string, DataTable> dts;
+            dts = DBHelper.GetMuiltiDataFromDB(conn, sp_DemandSelectForWeChatPush, sqlParameters);
+            result = DBHelper.DataTableToList<Demand>(dts["0"]);
+
+            return result;
+        }
+
         /// <summary>
         /// 根据Id查询需求
         /// </summary>
@@ -306,7 +325,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// <returns></returns>
         public static bool UpdatesDemandWeixinBuyFee(SqlConnection conn, int demandId, int weixinBuyFee)
         {
-            SqlParameter[] parameters = new SqlParameter[] 
+            SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@DemandId", demandId),
                 new SqlParameter("@WeixinBuyFee", weixinBuyFee)
@@ -324,7 +343,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// <returns></returns>
         public static int SelectTradeOrderByOpenIdAndDemandId(SqlConnection conn, string wechatUserOpenId, int demandId)
         {
-            SqlParameter[] parameters = new SqlParameter[] 
+            SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@UserName", wechatUserOpenId),
                 new SqlParameter("@ResourceId", demandId)

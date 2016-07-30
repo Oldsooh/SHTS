@@ -26,6 +26,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string SP_WeChatUserUpdate = "sp_WeChatUserUpdate";
         private const string SP_WeChatUserDeleteById = "sp_WeChatUserDeleteById";
         private const string SP_WeChatUserDeleteByOpenId = "sp_WeChatUserDeleteByOpenId";
+        private const string SP_WeChatUserSelectOnlySubscried = "sp_WeChatUserSelectOnlySubscried";
 
         private const string SP_AddUserBankInfo = "sp_AddUserBankInfo";
         private const string SP_UpdateUserBankInfo = "sp_UpdateUserBankInfo";
@@ -439,6 +440,22 @@ namespace Witbird.SHTS.DAL.Daos
             }
 
             return user;
+        }
+
+        public List<WeChatUser> GetWeChatUserOnlySubscribed(SqlConnection conn)
+        {
+            List<WeChatUser> users = new List<WeChatUser>();
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_WeChatUserSelectOnlySubscried, null))
+            {
+                while (reader.Read())
+                {
+                    var user = ConvertToWeChatUserObject(reader);
+                    users.Add(user);
+                }
+            }
+
+            return users;
         }
 
         /// <summary>

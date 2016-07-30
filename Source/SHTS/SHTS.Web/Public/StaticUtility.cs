@@ -269,6 +269,49 @@ namespace Witbird.SHTS.Web.Public
                 return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(cityId)).ToList();
             }
         }
+
+        public static string GetLocationName(string locationId)
+        {
+            string result = "";
+
+            if (!string.IsNullOrWhiteSpace(locationId))
+            {
+                var ids = locationId.Split(new char[] { '_' });
+
+                if (ids.Length == 3)
+                {
+                    City province = AllCities.Where(v => v.IsActive && v.EntityType == 1).
+                        FirstOrDefault(x => x.Id.Equals(ids[0], StringComparison.InvariantCultureIgnoreCase));
+                    City city = null;
+                    City area = null;
+                    if (province != null)
+                    {
+                        result += province.Name;
+                        city = GetCity(province.Id).FirstOrDefault(x => x.Id.Equals(ids[1], StringComparison.InvariantCultureIgnoreCase));
+
+                        if (city != null)
+                        {
+                            result += city.Name;
+                            area = GetArea(city.Id).FirstOrDefault(x => x.Id.Equals(ids[2], StringComparison.InvariantCultureIgnoreCase));
+                            if (area != null)
+                            {
+                                result += area.Name;
+                            }
+                            else
+                            {
+                                result += "/---";
+                            }
+                        }
+                        else
+                        {
+                            result += "/---";
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
         #endregion
 
     }

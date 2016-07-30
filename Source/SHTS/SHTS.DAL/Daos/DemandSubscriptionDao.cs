@@ -20,7 +20,8 @@ namespace Witbird.SHTS.DAL.Daos
         const string SP_SelectDemandSubscriptionByWeChatUserId = "sp_SelectDemandSubscriptionByWeChatUserId";
         const string SP_SelectAllSubscriedSubscriptions = "sp_SelectAllSubscriedSubscriptions";
         const string SP_InsertDemandSubscriptionDetail = "sp_InsertDemandSubscriptionDetail";
-        const string SP_UpdateDemandSubscriptionDateTimeField = "sp_UpdateDemandSubscriptionDateTimeField";
+        const string SP_UpdateDemandSubscriptionLastRequestTime = "sp_UpdateDemandSubscriptionLastRequestTime";
+        const string SP_UpdateDemandSubscriptionLastPushTime = "sp_UpdateDemandSubscriptionLastPushTime";
 
         const string Parameter_SubscriptionId = "@SubscriptionId";
         const string Parameter_WeChatUserId = "@WeChatUserId";
@@ -78,7 +79,7 @@ namespace Witbird.SHTS.DAL.Daos
         /// <returns></returns>
         public DemandSubscription SelectSubscriptionByUserId(SqlConnection conn, int userId)
         {
-            var subscription = new DemandSubscription();
+            DemandSubscription subscription = null;
             SqlParameter[] parameters = new SqlParameter[] 
             {
                 new SqlParameter(Parameter_WeChatUserId, userId)
@@ -122,10 +123,10 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(Parameter_SubscriptionId, subscription.SubscriptionId),
                 new SqlParameter(Parameter_WeChatUserId, subscription.WeChatUserId),
                 new SqlParameter(Parameter_IsSubscribed, subscription.IsSubscribed),
-                new SqlParameter(Parameter_LastRequestTimestamp, subscription.LastRequestTimestamp),
-                new SqlParameter(Parameter_LastPushTimestamp, subscription.LastPushTimestamp),
+                new SqlParameter(Parameter_LastRequestTimestamp, subscription.LastRequestTimestamp ?? subscription.LastUpdatedTimestamp),
+                new SqlParameter(Parameter_LastPushTimestamp, subscription.LastPushTimestamp ?? subscription.LastUpdatedTimestamp),
                 new SqlParameter(Parameter_LastUpdatedTimestamp, subscription.LastUpdatedTimestamp),
-                new SqlParameter(Parameter_InsertedTimestamp, subscription.InsertedTimestamp)
+                new SqlParameter(Parameter_InsertedTimestamp, subscription.LastUpdatedTimestamp)
             };
 
             using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_InsertOrUpdateDemandSubscription, parameters))
@@ -180,15 +181,24 @@ namespace Witbird.SHTS.DAL.Daos
         /// <param name="subscriptionId"></param>
         /// <param name="dateTimeFieldName"></param>
         /// <returns></returns>
-        public bool UpdateDemandSubscriptionDateTimeField(SqlConnection conn, int subscriptionId, string dateTimeFieldName)
+        public bool UpdateDemandSubscriptionLastRequestTime(SqlConnection conn, int userId)
         {
             SqlParameter[] parameters = new SqlParameter[] 
             {
-                new SqlParameter(Parameter_SubscriptionId, subscriptionId),
-                new SqlParameter("@FieldName", dateTimeFieldName)
+                new SqlParameter(Parameter_WeChatUserId, userId)
             };
 
-            return DBHelper.RunNonQueryProcedure(conn, SP_UpdateDemandSubscriptionDateTimeField, parameters) > 0;
+            return DBHelper.RunNonQueryProcedure(conn, SP_UpdateDemandSubscriptionLastRequestTime, parameters) > 0;
+        }
+
+        public bool UpdateDemandSubscriptionLastPushTime(SqlConnection conn, int userId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter(Parameter_WeChatUserId, userId)
+            };
+
+            return DBHelper.RunNonQueryProcedure(conn, SP_UpdateDemandSubscriptionLastPushTime, parameters) > 0;
         }
 
         #endregion

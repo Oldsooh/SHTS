@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Witbird.SHTS.Model
 {
@@ -19,6 +20,39 @@ namespace Witbird.SHTS.Model
             get
             {
                 return this.subscriptionDetails;
+            }
+        }
+
+        /// <summary>
+        /// 获取用户订阅的需求类型
+        /// </summary>
+        public List<DemandSubscriptionDetail> SubscribedTypes
+        {
+            get
+            {
+                return this.subscriptionDetails.Where(x => x.SubscriptionType == DemandSubscriptionType.Category.ToString()).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 获取用户订阅的区域位置
+        /// </summary>
+        public List<DemandSubscriptionDetail> SubscribedAreas
+        {
+            get
+            {
+                return this.subscriptionDetails.Where(x => x.SubscriptionType == DemandSubscriptionType.Area.ToString()).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 获取用户订阅的关键字
+        /// </summary>
+        public List<DemandSubscriptionDetail> SubscribedKeywords
+        {
+            get
+            {
+                return this.subscriptionDetails.Where(x => x.SubscriptionType == DemandSubscriptionType.Keywords.ToString()).ToList();
             }
         }
     }
