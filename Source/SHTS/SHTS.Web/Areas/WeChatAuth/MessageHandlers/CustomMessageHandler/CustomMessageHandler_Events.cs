@@ -387,9 +387,15 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                 case "UpdateRequestTime":
                     {
                         content = string.Empty;
-                        textResponseMessage.Content = "更新交互时间成功。";
+                        textResponseMessage.Content = "更新成功。最新交互时间： " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss tt");
                         responseMessage = textResponseMessage;
                     }
+                    break;
+                #endregion
+
+                #region 获取订阅内容
+                case "GetSubscribedDemands":
+                    Witbird.SHTS.Web.Areas.Wechat.Subscription.WorkingThread.Instance.SendSubscribedDemandManually(openId);
                     break;
                 #endregion
 
@@ -419,12 +425,12 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         /// <summary>
         /// 微信自动发送过来的位置信息.
         /// </summary>
-        public override IResponseMessageBase OnEvent_LocationRequest(RequestMessageEvent_Location requestMessage)
-        {
-            var responseMessage = CreateResponseMessage<ResponseMessageText>();
-            responseMessage.Content = string.Format("{0}:{1}", requestMessage.Latitude, requestMessage.Longitude);
-            return responseMessage;
-        }
+        //public override IResponseMessageBase OnEvent_LocationRequest(RequestMessageEvent_Location requestMessage)
+        //{
+        //    var responseMessage = CreateResponseMessage<ResponseMessageText>();
+        //    responseMessage.Content = string.Format("{0}:{1}", requestMessage.Latitude, requestMessage.Longitude);
+        //    return responseMessage;
+        //}
 
         /// <summary>
         /// 通过扫描关注

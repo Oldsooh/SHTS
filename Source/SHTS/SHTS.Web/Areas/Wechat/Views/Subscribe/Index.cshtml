@@ -61,6 +61,7 @@
                 .reg-form .cell input {
                     font-size: 14px;
                     width: 90%;
+                    color:black;
                 }
 
         .upbtn {
@@ -111,8 +112,6 @@
 
         .subscribe {
             height: auto;
-            /*border: 1px solid #CECECF;*/
-            margin-bottom: 20px;
         }
 
         .addbtn {
@@ -152,44 +151,6 @@
     </style>
 
     <script type="text/javascript">
-        function addDemand() {
-            var Title = document.getElementById("Title").value;
-            var Phone = document.getElementById("Phone").value;
-            var ContentText = document.getElementById("ContentText").value;
-
-            if (Title != "") {
-                if (Phone != "") {
-                    if (ContentText != "") {
-                        $.ajax({
-                            url: '/wechat/demand/add',
-                            data: $("#addForm").serialize(),
-                            type: 'POST',
-                            success: function (msg) {
-                                if (msg == "success") {
-                                    alert("发布成功");
-                                    window.location.href = "/wechat/demand/mydemands";
-                                }
-                                else {
-                                    alert(msg);
-                                }
-                            },
-                            error: function (msg) {
-                                alert("网络异常，发布失败");
-                            }
-                        });
-                    }
-                    else {
-                        alert("内容不能为空");
-                    }
-                }
-                else {
-                    alert("电话不能为空");
-                }
-            }
-            else {
-                alert("标题不能为空");
-            }
-        }
 
         // Adds new location into subscibed areas.
         function addArea() {
@@ -295,6 +256,16 @@
             }
 
             return splitIgnoreEmptyValue(subscribedAreas, ',');
+        }
+
+        function getAllSubscriedTypes() {
+            var subscribedTypes = $('#subscriedTypes').val();
+
+            if (subscribedTypes == undefined) {
+                subscribedTypes = '';
+            }
+
+            return splitIgnoreEmptyValue(subscribedTypes, ',');
         }
 
         // Deletes one selected location
@@ -453,6 +424,27 @@
 
             $('#subscriedTypes').val(subscriedTypes);
         }
+
+        function submit() {
+            var subscriptionForm = $('#subscriptionForm');
+            if (isEnableSubscription()){
+                var subscribedAreas = getAllSubscriedAreas();
+                var subscribedTypes = getAllSubscriedTypes();
+
+                if (subscribedTypes.length == 0) {
+                    alert('请选择需要订阅的需求类型！');
+                }
+                else if (subscribedAreas.length == 0) {
+                    alert('请选择需求类型所属的区域位置！');
+                }
+                else {
+                    subscriptionForm.submit();
+                }
+            }
+            else {
+                subscriptionForm.submit();
+            }
+        }
     </script>
     <script language="javascript">
         // string.trim()
@@ -470,7 +462,7 @@
 
 <div class="wrap" style="width: 100%; ">
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
-        <form action="/wechat/subscribe/update" class="reg-form" method="post">
+        <form id="subscriptionForm" action="/wechat/subscribe/update" class="reg-form" method="post">
             <br />
             <div class="cell" style="height:20px;">
                 @{
@@ -489,7 +481,9 @@
                 }
                 <label for="enableSubscription" id="es">启用需求订阅</label>
             </div>
-            <div class="cell" style="color:#ACA899;">注：当有新需求发布时，根据您的订阅规则推送到微信号，方便您及时查看。</div>
+            <div class="cell" style="color:#ACA899;">
+                注：启用后，当有新需求发布时，我们将会根据您的订阅规则给您主动推送需求信息，方便您及时查看。
+            </div>
             <div class="subscribeDetails">
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置需求类型：</h3>
@@ -543,7 +537,7 @@
                     </div>
                 </div>
                 <div class="subscribe">
-                    <h3 class="" style="font-size:14px; padding: 5px;">设置区域位置（可选）：</h3>
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置区域位置：</h3>
                     @{
                         var areaIds = string.Empty;
                         foreach (var area in Model.SubscribedAreas)
@@ -596,8 +590,16 @@
                         <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();">添加区域</a>
                     </div>
                 </div>
+            </div>
+
+            <div class="subscribeDetails">
+
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置特殊关键词（可选）：</h3>
+
+                    <div class="cell" style="color:#ACA899;">
+                        如果配置了特殊的关键词，它将与条件一为并列关系，即需同时满足所有条件的需求才能被推送给您。
+                    </div>
                     @{
                         var keywords = string.Empty;
                         foreach (var keyword in Model.SubscribedKeywords)
@@ -636,10 +638,10 @@
                     </div>
                 </div>
             </div>
-            <div class="bottom">
-                <button type="submit" id="js-mobile_btn" class="button btn-green" onclick="javascript:void(0)">保存订阅设置</button>
-            </div>
         </form>
+        <div class="bottom">
+            <button type="button" class="button btn-green" style="width: 96%;margin:0 auto;display:block;" onclick="submit();">保存订阅设置</button>
+        </div>
     </div>
     @{
         var errorMessage = ViewData["UpdateSubscriptionResult"] ?? string.Empty;

@@ -39,10 +39,23 @@
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <style>
         /*Override bootstrap css*/
-        .btn-group-root { width: 100%; padding: 2px 5px; }
-            .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li { width: 100%; }
-        .btn { padding: 2px 5px; }
-        .navbar-brand { height: 20px; padding: 0px 10px; }
+        .btn-group-root {
+            width: 100%;
+            padding: 2px 5px;
+        }
+
+            .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li {
+                width: 100%;
+            }
+
+        .btn {
+            padding: 2px 5px;
+        }
+
+        .navbar-brand {
+            height: 20px;
+            padding: 0px 10px;
+        }
         /*Override bootstrap css*/
     </style>
     @{
@@ -52,25 +65,33 @@
             case 1:
                 // 活动场地共有7个类别
                 <style>
-                    .btn-group-root .btn-group { width: 14.28%; }
+                    .btn-group-root .btn-group {
+                        width: 14.28%;
+                    }
                 </style>
                 break;
             case 2:
                 //演义人员有3个类别，当选择组织为个人的时候，会增加一个演员性别，共4个类别。会在FilterPartial中重写该css
                 <style>
-                    .btn-group-root .btn-group { width: 33.3%; }
+                    .btn-group-root .btn-group {
+                        width: 33.3%;
+                    }
                 </style>
                 break;
             case 3:
                 // 活动设备有2个条件
                 <style>
-                    .btn-group-root .btn-group { width: 50%; }
+                    .btn-group-root .btn-group {
+                        width: 50%;
+                    }
                 </style>
                 break;
             case 4:
                 //其他资源有2个条件
                 <style>
-                    .btn-group-root .btn-group { width: 50%; }
+                    .btn-group-root .btn-group {
+                        width: 50%;
+                    }
                 </style>
                 break;
             default:
@@ -78,16 +99,39 @@
         }
     }
 }
+
 <style>
     .nav-right {
-        margin-top:5px;
+        margin-top: 5px;
     }
 
     .keyWords {
         width: 85%;
-        padding: 3px;
-        margin-right: 5px;
+        padding: 5px;
+        font-size: 16px;
+        border-radius: 7px 0px 0px 7px;
+        outline: none;
+        border: 2px solid #898989;
+        border-right: none;
     }
+
+    .searchbtn {
+        height: 36px;
+        width: 40px;
+        margin-left: -5px;
+        border-radius: 0px 7px 7px 0px;
+        border: 2px solid #898989;
+        border-left: none;
+        position: absolute;
+        background: none;
+        padding: 2px;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .searchbtn img {
+            height: 95%;
+        }
 </style>
 <script>
     function searchByKeyWords() {
@@ -104,7 +148,9 @@
 <div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
     <div class="nav-right">
         <input type="text" id="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
-        <a href="javascript:void(0)" onclick="searchByKeyWords();">搜索</a>
+        <button type="button" name="search" onclick="searchByKeyWords();" class="searchbtn">
+            <img src="~/Content/images/search.png" />
+        </button>
     </div>
 </div>
 <div id="nav">

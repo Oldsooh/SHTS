@@ -25,6 +25,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords)
         {
             DemandSubscription subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
+            var errorMessage = string.Empty;
+            var isValid = true;
 
             try
             {
@@ -54,11 +56,19 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     }
                 }
+                else
+                {
+                    if (enable)
+                    {
+                        errorMessage = "请选择需要订阅的需求类型！";
+                        isValid = false;
+                    }
+                }
                 #endregion
 
                 #region Handle subscribed location areas
                 var areas = subscribedAreas.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                if (areas.Length > 0)
+                if (isValid && areas.Length > 0)
                 {
                     foreach (var value in areas)
                     {
@@ -71,7 +81,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         };
 
                         subscription.SubscriptionDetails.Add(detail);
-
+                    }
+                }
+                else
+                {
+                    if (enable)
+                    {
+                        errorMessage = "请选择需求类型所属的区域位置！";
+                        isValid = false;
                     }
                 }
 
@@ -79,7 +96,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 #region Handle subscribed spcified keywords
                 var keywords = subscribedKeywords.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                if (keywords.Length > 0)
+                if (isValid && keywords.Length > 0)
                 {
                     foreach (var value in keywords)
                     {
@@ -98,15 +115,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 #endregion
 
-                subscription.IsSubscribed = enable;
-
-                if (subscriptionService.UpdateSubscription(subscription))
+                if (isValid)
                 {
-                    ViewData["UpdateSubscriptionResult"] = "更新订阅设置成功！";
+                    subscription.IsSubscribed = enable;
+
+                    isValid = subscriptionService.UpdateSubscription(subscription);
+                }
+
+                if (isValid)
+                {
+                    ViewData["UpdateSubscriptionResult"] = "更新订阅设置成功。";
                 }
                 else
                 {
-                    ViewData["UpdateSubscriptionResult"] = "更新订阅设置失败！";
+                    if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        errorMessage = "更新订阅设置失败！";
+                    }
+
+                    ViewData["UpdateSubscriptionResult"] = errorMessage;
                 }
             }
             catch(Exception ex)

@@ -3,6 +3,7 @@ using Senparc.Weixin.MP.Entities.Request;
 using Senparc.Weixin.MP.MessageHandlers;
 using System.IO;
 using System.Web.Configuration;
+using System;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 {
@@ -69,7 +70,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
 
             //responseMessage.Content = string.Format(SearchResultUrl, keyWords, keyWords);
-            responseMessage.Content = "更新交互时间成功。";
+            responseMessage.Content = "更新成功。最新交互时间： " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss tt");
 
             return responseMessage;
         }

@@ -735,6 +735,7 @@
     <Content Include="Content\gallery\js\jquery.DB_gallery.js" />
     <Content Include="Content\images\arw_l.gif" />
     <Content Include="Content\images\error.png" />
+    <Content Include="Content\images\find.png" />
     <Content Include="Content\images\keifu.png" />
     <Content Include="Content\images\mid_banner\banner_02.png" />
     <Content Include="Content\images\mid_banner\denglu-1.png" />
@@ -744,6 +745,7 @@
     <Content Include="Content\images\pay\chinabank_logo.jpg" />
     <Content Include="Content\images\qq.png" />
     <Content Include="Content\images\search.ele.png" />
+    <Content Include="Content\images\search.png" />
     <Content Include="Content\images\stop.png" />
     <Content Include="Content\images\subscribedDemandBackground.jpg" />
     <Content Include="Content\images\user\IdentiyImg.jpg" />

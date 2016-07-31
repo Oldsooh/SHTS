@@ -3,16 +3,39 @@
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @model Witbird.SHTS.Web.Models.SearchViewModel
+
 <style>
     .nav-right {
-        padding-top: 10px;
+        margin-top: 5px;
     }
 
     .keyWords {
         width: 85%;
-        padding: 3px;
-        margin-right: 5px;
+        padding: 5px;
+        font-size: 16px;
+        border-radius: 7px 0px 0px 7px;
+        outline: none;
+        border: 2px solid #898989;
+        border-right: none;
     }
+
+    .searchbtn {
+        height: 38px;
+        width: 40px;
+        margin-left: -5px;
+        border-radius: 0px 7px 7px 0px;
+        border: 2px solid #898989;
+        border-left: none;
+        position: absolute;
+        background: none;
+        padding: 2px;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .searchbtn img {
+            height: 95%;
+        }
 </style>
 <script>
     function searchByKeyWords() {
@@ -26,12 +49,23 @@
         }
     }
 </script>
-<div style="padding-left:10px;font-size:16px; margin:0 auto;padding-bottom:10px;background:#FFF;">
+<div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
     <div class="nav-right">
         <input type="text" id="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
-        <a href="javascript:void(0)" onclick="searchByKeyWords();">搜索</a>
+        <button type="button" name="search" onclick="searchByKeyWords();" class="searchbtn">
+            <img src="~/Content/images/search.png" />
+        </button>
     </div>
-    <span class="yellow2" style="font-weight: bold;">共搜索到@(Model.TotalHit)条相关记录</span>
+    @if (!string.IsNullOrEmpty(Model.Keywords))
+    {
+        <span class="yellow2" style="font-weight: bold;">共搜索到@(Model.TotalHit)条相关记录</span>
+    }
+    else
+    {
+        <script>
+            $('#keyWords').focus();
+        </script>
+    }
 </div>
 
 <div id="main">
