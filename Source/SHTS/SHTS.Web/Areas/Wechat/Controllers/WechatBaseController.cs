@@ -96,7 +96,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             try
             {
                 // 当前是否是用电脑测试，绕过微信授权检测方便电脑测试
-                bool isTestOnPCEnvironment = true;
+                bool isTestOnPCEnvironment = false;
                 // 当前请求是否来自微信授权结果
                 bool isRequestFromWeChatAuth = false;
 
