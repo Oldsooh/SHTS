@@ -37,25 +37,16 @@
             height: 95%;
         }
 </style>
-<script>
-    function searchByKeyWords() {
-        var keywords = $('#keyWords').val();
-        if (keywords == '') {
-            return false;
-        }
-        else {
-            var href = "/wechat/index/search?keyWords=" + keywords;
-            window.location.href = href;
-        }
-    }
-</script>
 <div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
-    <div class="nav-right">
-        <input type="text" id="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
-        <button type="button" name="search" onclick="searchByKeyWords();" class="searchbtn">
-            <img src="~/Content/images/search.png" />
-        </button>
-    </div>
+    <form id="search" action="/wechat/index/search" method="get">
+        <div class="nav-right">
+            <input type="text" id="keyWords" name="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
+            <button type="submit" class="searchbtn">
+                <img src="~/Content/images/search.png" />
+            </button>
+        </div>
+    </form>
+
     @if (!string.IsNullOrEmpty(Model.Keywords))
     {
         <span class="yellow2" style="font-weight: bold;">共搜索到@(Model.TotalHit)条相关记录</span>

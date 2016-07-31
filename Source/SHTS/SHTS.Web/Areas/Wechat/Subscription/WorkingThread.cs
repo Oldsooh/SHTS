@@ -63,7 +63,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
 
         public void SendSubscribedDemandManually(string openId)
         {
-            Task.Factory.StartNew(() => 
+            Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -81,7 +81,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                     SendTextMessage(wechatUser, NotSubscriedMessage);
                                 }
                                 else
-                                {                                 
+                                {
                                     // Selects demand and send to wechat user by subscription details.
                                     var lastPushTime = subscription.LastPushTimestamp ?? DateTime.Now.AddDays(-2);
                                     var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
@@ -107,7 +107,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     LogService.LogWexin("手动获取需求推送发生异常", ex.ToString());
                 }
@@ -125,6 +125,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                 {
                     try
                     {
+                        LogService.LogWexin("微信推送开始, 当前时间：" + DateTime.Now.ToString(), string.Empty);
+
                         // Get all subscribed details.
                         var subscriptions = subscriptionService.GetSubscriptionsOnlySubscribed();
                         // Get all subscribed wechat users.
@@ -256,24 +258,24 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                 }
 
                 var demand = demands[i];
-                // First demand will add a background image, others not.
-                if (i == 0)
-                {
-                    var article = new Article()
-                    {
-                        Description = demand.Description,
-                        PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
-                        Title = demand.Title,
-                        Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"
-                    };
+                //// First demand will add a background image, others not.
+                //if (i == 0)
+                //{
+                //    var article = new Article()
+                //    {
+                //        Description = demand.Description,
+                //        PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
+                //        Title = demand.Title,
+                //        Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"
+                //    };
 
-                    articles.Add(article);
-                }
-                else
+                //    articles.Add(article);
+                //}
+                //else
                 {
                     var article = new Article()
                     {
-                        Description = demand.Description,
+                        Description = string.Empty,//demand.Description,
                         PicUrl = string.Empty,
                         Title = demand.Title,
                         Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"

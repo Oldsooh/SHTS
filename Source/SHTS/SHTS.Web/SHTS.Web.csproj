@@ -1154,7 +1154,7 @@
     <Content Include="Content\kindeditor\themes\simple\simple.css" />
     <Content Include="Content\kindeditor\uploadfiles\image\20141017\20141017200615_4418.jpg" />
     <Content Include="Content\kindeditor\zh_CN.js" />
-    <Content Include="Content\wechat\css\common1.css" />
+    <Content Include="Content\wechat\css\common2.css" />
     <Content Include="Content\wechat\images\banner.jpg" />
     <Content Include="Content\wechat\images\banner1.jpg" />
     <Content Include="Content\wechat\images\functionare1.jpg" />
