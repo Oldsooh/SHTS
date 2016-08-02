@@ -169,13 +169,14 @@ namespace Witbird.SHTS.DAL.Daos
 
         public List<Demand> SelectDemandsForWeChatPush(SqlConnection conn, DemandParameters parameters)
         {
-            List<Demand> result = null;
+            List<Demand> result = new List<Demand>();
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@Locations", parameters.Locations),
                 new SqlParameter("@Categories", parameters.Categories),
                 new SqlParameter("@InsertTime", parameters.InsertTime),
-                new SqlParameter("@Keywords", parameters.Keywords)
+                new SqlParameter("@Keywords", parameters.Keywords),
+                new SqlParameter("@PageCount", parameters.PageCount)
             };
 
             Dictionary<string, DataTable> dts;

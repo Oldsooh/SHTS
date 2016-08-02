@@ -2,7 +2,8 @@
 	@Locations nvarchar(1000),
 	@Categories nvarchar(1000),
 	@Keywords nvarchar(1000),
-	@InsertTime datetime
+	@InsertTime datetime,
+	@PageCount int
 AS
 BEGIN
 
@@ -34,13 +35,26 @@ BEGIN
 	INSERT INTO #Keywords
 	SELECT * FROM dbo.fSplit(@Keywords, ',')
 
-	SELECT TOP 7 demand.* FROM dbo.Demand demand
-	INNER JOIN #Category cate ON (cate.CategoryId = demand.CategoryId OR cate.CategoryId IS NULL OR cate.CategoryId = '')
-	INNER JOIN #Location loc ON (loc.Province = demand.Province AND (loc.City = demand.City OR loc.City IS NULL OR loc.City = '') AND (loc.Area = demand.Area OR loc.Area IS NULL OR loc.Area = '')) 
-	OR ((loc.Province IS NULL OR loc.Province = '') AND (loc.City IS NULL OR loc.City = '') AND (loc.Area IS NULL OR loc.Area = ''))
-	INNER JOIN #Keywords words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
-	WHERE demand.InsertTime >= @InsertTime AND (demand.Status IS NULL OR demand.Status <> 2)
-	ORDER BY demand.Id DESC
+	IF (@PageCount > 0)
+	BEGIN
+		SELECT TOP (@PageCount) demand.* FROM dbo.Demand demand
+		INNER JOIN #Category cate ON (cate.CategoryId = demand.CategoryId OR cate.CategoryId IS NULL OR cate.CategoryId = '')
+		INNER JOIN #Location loc ON (loc.Province = demand.Province AND (loc.City = demand.City OR loc.City IS NULL OR loc.City = '') AND (loc.Area = demand.Area OR loc.Area IS NULL OR loc.Area = '')) 
+		OR ((loc.Province IS NULL OR loc.Province = '') AND (loc.City IS NULL OR loc.City = '') AND (loc.Area IS NULL OR loc.Area = ''))
+		INNER JOIN #Keywords words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
+		WHERE demand.InsertTime >= @InsertTime AND (demand.Status IS NULL OR demand.Status <> 2) AND demand.IsActive = 1
+		ORDER BY demand.Id DESC
+	END
+	ELSE
+	BEGIN
+		SELECT demand.* FROM dbo.Demand demand
+		INNER JOIN #Category cate ON (cate.CategoryId = demand.CategoryId OR cate.CategoryId IS NULL OR cate.CategoryId = '')
+		INNER JOIN #Location loc ON (loc.Province = demand.Province AND (loc.City = demand.City OR loc.City IS NULL OR loc.City = '') AND (loc.Area = demand.Area OR loc.Area IS NULL OR loc.Area = '')) 
+		OR ((loc.Province IS NULL OR loc.Province = '') AND (loc.City IS NULL OR loc.City = '') AND (loc.Area IS NULL OR loc.Area = ''))
+		INNER JOIN #Keywords words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
+		WHERE demand.InsertTime >= @InsertTime AND (demand.Status IS NULL OR demand.Status <> 2) AND demand.IsActive = 1
+		ORDER BY demand.Id DESC
+	END
 
 END
 GO

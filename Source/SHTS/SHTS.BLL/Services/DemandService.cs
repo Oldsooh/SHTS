@@ -142,7 +142,7 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
-        public List<Demand> SelectDemandsForWeChatPush(List<DemandSubscriptionDetail> subscriptionDetails, DateTime lastPushTime)
+        public List<Demand> SelectDemandsForWeChatPush(List<DemandSubscriptionDetail> subscriptionDetails, DateTime lastPushTime, int pageCount = 0)
         {
             List<Demand> result = new List<Demand>();
             
@@ -194,7 +194,8 @@ namespace Witbird.SHTS.BLL.Services
                     Categories = categories,
                     Locations = locations,
                     Keywords = keywords,
-                    InsertTime = lastPushTime
+                    InsertTime = lastPushTime,
+                    PageCount = pageCount
                 };
 
                 result = demandDao.SelectDemandsForWeChatPush(conn, parameters);

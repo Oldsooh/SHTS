@@ -943,6 +943,7 @@
     <Content Include="Areas\Wechat\Views\Subscribe\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\Quote\RecievedQuotes.cshtml" />
     <Content Include="Areas\Wechat\Views\Quote\PostedQuotes.cshtml" />
+    <Content Include="Areas\Wechat\Views\Subscribe\ViewAll.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

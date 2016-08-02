@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -14,10 +15,42 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         //
         // GET: /Wechat/Subscribe/
         DemandSubscriptionService subscriptionService = new DemandSubscriptionService();
+        DemandService demandService = new DemandService();
 
         public ActionResult Index()
         {
             DemandSubscription model = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
+            return View(model);
+        }
+
+        public ActionResult ViewAll(long ticks)
+        {
+            DemandModel model = new DemandModel();
+
+            try
+            {
+                var subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
+                if (subscription.IsNotNull())
+                {
+                    var lastPushTime = new DateTime(ticks);
+
+                    // Gets demands by user's subscription details.
+                    var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
+
+                    if (!demands.IsNotNull())
+                    {
+                        demands = new List<Demand>();
+                    }
+
+                    model.Demands = demands;
+                }
+            }
+
+            catch(Exception ex)
+            {
+                LogService.LogWexin("查看所有推荐出错", ex.ToString());
+            }
+
             return View(model);
         }
 

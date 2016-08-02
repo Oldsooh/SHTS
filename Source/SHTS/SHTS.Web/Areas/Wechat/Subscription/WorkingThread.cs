@@ -20,9 +20,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
     /// </summary>
     public class WorkingThread
     {
-        TimeSpan PushInterval = new TimeSpan(1, 0, 0);
-        // For test use only.
-        //TimeSpan PushInterval = new TimeSpan(0, 1, 0);
+        TimeSpan PushInterval = new TimeSpan(0, 30, 0);
         bool isRunning = true;
         static WorkingThread instance = null;
         DemandSubscriptionService subscriptionService = null;
@@ -89,7 +87,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                     var isSendSuccessFul = false;
                                     if (demands.HasItem())
                                     {
-                                        var articles = ConstructArticles(demands);
+                                        var articles = ConstructArticles(demands, lastPushTime);
                                         isSendSuccessFul = SendArticles(wechatUser, articles);
                                     }
                                     else
@@ -140,7 +138,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                 var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
                                 if (wechatUser.IsNotNull())
                                 {
-                                    // Message cannot be reached after 48 hours later.
+                                    // Message cannot be reached after 48 hours later
                                     if (!IsLastRequestTimeExceed48Hours(subscription))
                                     {
                                         // Gets demands by user's subscription details.
@@ -149,7 +147,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
 
                                         if (demands.HasItem())
                                         {
-                                            var articles = ConstructArticles(demands);
+                                            var articles = ConstructArticles(demands, lastPushTime);
                                             var isSendSuccessFul = SendArticles(wechatUser, articles);
 
                                             if (isSendSuccessFul)
@@ -167,7 +165,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                     }
                                     else
                                     {
-                                        // Nothing to do.
+                                        // Send by email， to do
                                     }
                                 }
                             }
@@ -245,56 +243,57 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
             return isSuccessFul;
         }
 
-        private List<Article> ConstructArticles(List<Demand> demands)
+        private List<Article> ConstructArticles(List<Demand> demands, DateTime lastPushTime)
         {
             List<Article> articles = new List<Article>();
 
+            if (demands.Count > 7)
+            {
+                // Construct view more item
+                var viewMore = new Article()
+                {
+                    Description = "查看更多需求信息",
+                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
+                    Title = "您有新的" + demands.Count + "条需求推荐信息，以下共显示7条，点击查看所有推荐",
+                    Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/subscribe/viewall/?ticks=" + lastPushTime.Ticks.ToString()
+                };
+
+                articles.Add(viewMore);
+            }
+            else
+            {
+                // Construct view more item
+                var viewMore = new Article()
+                {
+                    Description = "",
+                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
+                    Title = "您有新的" + demands.Count + "条需求推荐信息，立即查看",
+                    Url = string.Empty
+                };
+
+                articles.Add(viewMore);
+            }
+
             for (int i = 0; i < demands.Count; i++)
             {
-                // The wechat articles limited to 7 item in total.
+                // The wechat articles limited to 8 item in total.
                 if (i >= 7)
                 {
                     break;
                 }
 
                 var demand = demands[i];
-                //// First demand will add a background image, others not.
-                //if (i == 0)
-                //{
-                //    var article = new Article()
-                //    {
-                //        Description = demand.Description,
-                //        PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
-                //        Title = demand.Title,
-                //        Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"
-                //    };
-
-                //    articles.Add(article);
-                //}
-                //else
+                
+                var article = new Article()
                 {
-                    var article = new Article()
-                    {
-                        Description = string.Empty,//demand.Description,
-                        PicUrl = string.Empty,
-                        Title = demand.Title,
-                        Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"
-                    };
+                    Description = demand.Description,
+                    PicUrl = string.Empty,
+                    Title = demand.Title,
+                    Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demand.Id + "?showwxpaytitle=1"
+                };
 
-                    articles.Add(article);
-                }
+                articles.Add(article);
             }
-
-            // Construct view more item
-            var viewMore = new Article()
-            {
-                Description = "查看更多需求信息",
-                PicUrl = string.Empty,
-                Title = "查看更多需求信息",
-                Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/index?showwxpaytitle=1"
-            };
-
-            articles.Add(viewMore);
 
             return articles;
         }
