@@ -36,12 +36,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     // Gets demands by user's subscription details.
                     var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
-
-                    if (!demands.IsNotNull())
-                    {
-                        demands = new List<Demand>();
-                    }
-
+                    
                     model.Demands = demands;
                 }
             }
@@ -49,6 +44,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             catch(Exception ex)
             {
                 LogService.LogWexin("查看所有推荐出错", ex.ToString());
+            }
+
+            if (!model.Demands.IsNotNull())
+            {
+                model.Demands = new List<Demand>();
             }
 
             return View(model);
