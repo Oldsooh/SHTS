@@ -1,9 +1,0 @@
-﻿CREATE PROCEDURE [dbo].[sp_UpdateDemandSubscriptionLastRequestTime]
-	@WeChatUserId int
-AS
-BEGIN
-	DECLARE @currentTime datetime = GETDATE()
-
-	UPDATE dbo.DemandSubscription SET LastRequestTimestamp = @currentTime WHERE WeChatUserId = @WeChatUserId
-END
-GO

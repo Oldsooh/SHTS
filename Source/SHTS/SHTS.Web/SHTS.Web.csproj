@@ -197,6 +197,7 @@
     <Compile Include="Areas\WeChatAuth\MessageHandlers\CustomMessageHandler\CustomMessageHandler_Events.cs" />
     <Compile Include="Areas\WeChatAuth\Utilities\Server.cs" />
     <Compile Include="Areas\WeChatAuth\WeChatAreaRegistration.cs" />
+    <Compile Include="Areas\Wechat\Common\WeChatClient.cs" />
     <Compile Include="Areas\Wechat\Controllers\AccountController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\CityController.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Areas\Wechat\Models\DemandModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Wechat\Models\DemandQuoteModel.cs" />
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
@@ -944,6 +946,11 @@
     <Content Include="Areas\Wechat\Views\Quote\RecievedQuotes.cshtml" />
     <Content Include="Areas\Wechat\Views\Quote\PostedQuotes.cshtml" />
     <Content Include="Areas\Wechat\Views\Subscribe\ViewAll.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\Quote.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\Show.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\Detail.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\QuotesPagingPartial.cshtml" />
+    <Content Include="Areas\Wechat\Views\Quote\RecievedQuotesPagingPartial.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
@@ -1155,9 +1162,10 @@
     <Content Include="Content\kindeditor\themes\simple\simple.css" />
     <Content Include="Content\kindeditor\uploadfiles\image\20141017\20141017200615_4418.jpg" />
     <Content Include="Content\kindeditor\zh_CN.js" />
-    <Content Include="Content\wechat\css\common2.css" />
+    <Content Include="Content\wechat\css\common3.css" />
     <Content Include="Content\wechat\images\banner.jpg" />
     <Content Include="Content\wechat\images\banner1.jpg" />
+    <Content Include="Content\wechat\images\demandUserPhoto.png" />
     <Content Include="Content\wechat\images\functionare1.jpg" />
     <Content Include="Content\wechat\images\functionare2.jpg" />
     <Content Include="Content\wechat\images\functionare3.jpg" />
@@ -1362,7 +1370,6 @@
   <ItemGroup>
     <Folder Include="Areas\WeChatAuth\Models\" />
     <Folder Include="Areas\WeChatAuth\Views\Shared\" />
-    <Folder Include="Areas\Wechat\Common\" />
     <Folder Include="Content\kindeditor\attached\" />
     <Folder Include="Content\m\js\" />
     <Folder Include="Content\wechat\js\" />

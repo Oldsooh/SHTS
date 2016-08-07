@@ -1,0 +1,147 @@
+﻿@model Witbird.SHTS.Model.Demand
+@{
+    ViewBag.Title = "需求报价列表";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell select {
+                height: 100%;
+                width: 32.5%;
+            }
+
+            .reg-form .cell textarea {
+                height: 100%;
+                width: 96%;
+            }
+
+            .reg-form .cell label {
+                color: #333 !important;
+                font-size: 16px;
+                font-weight: normal;
+                position: initial;
+                padding: 0;
+            }
+
+        .commonlist {
+            border: none;
+            margin: 0 auto;
+        }
+        
+        .red{
+            background-color:red;
+        }
+
+        .green{
+            background-color:green;
+        }
+        .state{
+            font-size:15px;
+        }
+    </style>
+}
+
+<div class="main">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+
+        @if (Model != null)
+        {
+            <ul class="commonlist" style="">
+                <li class="atitle">
+                    <a href="/wechat/demand/show/@(Model.Id)" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;font-size:16px;">[@Model.StatusValueString]</lable>@Model.Title
+                    </a>
+                </li>
+                <li>
+                    位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Province, Model.City, Model.Area)</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预算：
+                    @if (Model.Budget == 0)
+                    {
+                        <span class="yellow">面议</span>
+                    }
+                    else
+                    {
+                        <span class="yellow">@Model.Budget</span>
+                    }
+                </li>
+                <li>时间：<span class="yellow">@Model.StartTime.Value.ToString("yyyy/MM/dd") - @Model.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+            </ul>
+            <br />
+            if (Model.TotalQuoteCount > 0)
+            {
+                <lable style="color: #FD9102;font-size:16px;">一共有(@Model.TotalQuoteCount)条报价记录，其中(@Model.TotalNotHandledQuoteCount)条暂未处理！</lable>
+
+                <ul class="commonlist" style="">
+                    @foreach (var quote in Model.QuoteEntities)
+                    {
+                        var status = string.Empty;
+                        var bgColor = string.Empty;
+                        switch (quote.AcceptStatus)
+                        {
+                            case "Accept":
+                                status = "[已同意]";
+                                bgColor = "green";
+                                break;
+                            case "Denied":
+                                status = "[已驳回]";
+                                bgColor = "green";
+                                break;
+                            case "Wait":
+                                status = "[未处理]";
+                                bgColor = "red";
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                        <li class="atitle">
+                            <span class="state @bgColor">@status</span>
+                            <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
+                                @(quote.ContactName)报价@(quote.QuotePrice)元
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <ul class="commonlist" style="">
+                    <li class="atitle">
+
+                        <lable style="color: #FD9102;font-size:16px;">暂无报价记录！</lable>
+                    </li>
+                </ul>
+            }
+        }
+        else
+        {
+            <lable style="color: #FD9102;font-size:16px;">您所查询的需求不存在或已删除！</lable>
+        }
+    </div>
+</div>

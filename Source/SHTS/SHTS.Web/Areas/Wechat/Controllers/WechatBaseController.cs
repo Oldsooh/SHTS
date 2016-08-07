@@ -10,22 +10,22 @@ using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Common.Extensions;
+using Witbird.SHTS.Web.Areas.Wechat.Common;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class WechatBaseController : Witbird.SHTS.Web.Controllers.BaseController
     {
-        protected string AppId = ConfigurationManager.AppSettings["WeixinAppId"];
-        protected string AppSecret = ConfigurationManager.AppSettings["WeixinAppSecret"];
+        /// <summary>
+        /// 当前是否是用电脑测试，绕过微信授权检测方便电脑测试
+        /// </summary>
+        protected bool RunWeChatWebSiteOnPCEnvironment = ConfigurationManager.AppSettings["RunWeChatWebSiteOnPCEnvironment"].ToBoolean();
 
         //与QAuthCallController中定义的应该一致
         public const string WeChatUserInfo = "WeChatUserInfo";
         public const string WeChatOpenIdCookieName = "WeChatOpenId";
 
-        /// <summary>
-        /// 请先关注我们的链接
-        /// </summary>
-        public const string FollowUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
         // User service
         UserService userService = new UserService();
 
@@ -95,12 +95,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
-                // 当前是否是用电脑测试，绕过微信授权检测方便电脑测试
-                bool isTestOnPCEnvironment = false;
                 // 当前请求是否来自微信授权结果
                 bool isRequestFromWeChatAuth = false;
 
-                if (isTestOnPCEnvironment)
+                if (RunWeChatWebSiteOnPCEnvironment)
                 {
                     SetWeChatUserSessionForTestingUseOnly();
                 }
@@ -211,7 +209,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             var redirectUrl = GetOriginalUrlString(filterContext);
             var state = string.Empty; //保存一些临时值，暂未使用
-            var authUrl = OAuthApi.GetAuthorizeUrl(AppId, redirectUrl, state, OAuthScope.snsapi_userinfo);
+            var authUrl = OAuthApi.GetAuthorizeUrl(WeChatClient.App.AppId, redirectUrl, state, OAuthScope.snsapi_userinfo);
 
             return new RedirectResult(authUrl);
         }
@@ -238,7 +236,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 OAuthAccessTokenResult accessTokenResult = null;
 
                 //通过，用code换取access_token
-                accessTokenResult = OAuthApi.GetAccessToken(AppId, AppSecret, code);
+                accessTokenResult = OAuthApi.GetAccessToken(WeChatClient.App.AppId, WeChatClient.App.AppSecret, code);
 
                 //LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
                 if (accessTokenResult.errcode == ReturnCode.请求成功)

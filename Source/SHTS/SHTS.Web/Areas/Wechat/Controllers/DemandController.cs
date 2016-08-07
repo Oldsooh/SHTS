@@ -42,6 +42,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         DemandService demandService = new DemandService();
         OrderService orderService = new OrderService();
         CityService cityService = new CityService();
+        DemandQuoteService quoteService = new DemandQuoteService();
 
         public ActionResult Index(string page, string category, string area, string starttime, string endtime, string startbudget, string endbudget)
         {
@@ -137,10 +138,19 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
 
                     // 如果是自己发布的需求，无需购买即可查看
-                    hasWeChatUserBoughtForDemand = (demand.UserId == CurrentWeChatUser.UserId);
-                    hasWeChatUserBoughtForDemand = hasWeChatUserBoughtForDemand || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
+                    var isPostedByMyself = (demand.UserId == CurrentWeChatUser.UserId);
+                    hasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
 
-
+                    // 查询报价记录
+                    if (isPostedByMyself)
+                    {
+                        var quotes = quoteService.GetAllDemandQuotesForOneDemand(demand.Id);
+                        if (quotes.HasItem())
+                        {
+                            demand.QuoteEntities.AddRange(quotes);
+                        }
+                    }
+                    
                     if (!hasWeChatUserBoughtForDemand)
                     {
                         demand.Phone = "未购买查看权限";
@@ -238,6 +248,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     demand.ViewCount = 0;
                     demand.InsertTime = DateTime.Now;
                     demand.Status = (int)DemandStatus.InProgress;
+                    demand.WeixinBuyFee = (int)BuyDemandFee;
 
                     if (demandManager.AddDemand(demand))
                     {

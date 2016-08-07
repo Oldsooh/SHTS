@@ -11,6 +11,7 @@ using Senparc.Weixin.MP.AdvancedAPIs;
 using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.Entities;
 using System.Configuration;
+using Witbird.SHTS.Web.Areas.Wechat.Common;
 
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
@@ -26,18 +27,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
         DemandSubscriptionService subscriptionService = null;
         UserService userService = null;
         DemandService demandService = null;
-
-        static string AppId = ConfigurationManager.AppSettings["WeixinAppId"];
-        static string AppSecret = ConfigurationManager.AppSettings["WeixinAppSecret"];
-
-        const string RequestTimeExceedMessage = @"亲爱的需求订阅用户，由于微信服务号消息限制，48小时内如无主动交互我们将无法向您推送您订阅的最新需求信息。为了保证您的正常使用，你可以:
-1. 点击菜单 需求信息 -> 获取订阅 以获取需求订阅内容并更新交互时间
-2. 点击菜单 需求信息 -> 更新订阅 仅更新交互时间
-3. 回复任意消息内容即可更新交互时间";
-
-        const string NoResultFoundMessage = @"活动在线客服MM暂时还没发布符合您的订阅规则的相关需求哦，请稍后再试。";
-
-        const string NotSubscriedMessage = @"由于您没有开启需求订阅，暂时无法获取需求内容。请点击菜单 需求信息 -> 需求订阅设置 来开启吧！开启后，您就可以免费收到最新发布的需求内容哦！";
 
         public WorkingThread()
         {
@@ -76,7 +65,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                 // Current user does not subscribe demands.
                                 if (!subscription.IsSubscribed)
                                 {
-                                    SendTextMessage(wechatUser, NotSubscriedMessage);
+                                    WeChatClient.Sender.SendText(wechatUser.OpenId, WeChatClient.Constant.NotEnableSubscription);
                                 }
                                 else
                                 {
@@ -88,11 +77,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                     if (demands.HasItem())
                                     {
                                         var articles = ConstructArticles(demands, lastPushTime);
-                                        isSendSuccessFul = SendArticles(wechatUser, articles);
+                                        isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
                                     }
                                     else
                                     {
-                                        isSendSuccessFul = SendTextMessage(wechatUser, NoResultFoundMessage);
+                                        isSendSuccessFul = WeChatClient.Sender.SendText(wechatUser.OpenId, WeChatClient.Constant.NoSubcribedDemansFound);
                                     }
 
                                     if (isSendSuccessFul)
@@ -139,7 +128,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                 if (wechatUser.IsNotNull())
                                 {
                                     // Message cannot be reached after 48 hours later
-                                    if (!IsLastRequestTimeExceed48Hours(subscription))
+                                    if (!IsLastRequestTimeExceed48Hours(wechatUser))
                                     {
                                         // Gets demands by user's subscription details.
                                         var lastPushTime = subscription.LastPushTimestamp ?? DateTime.Now.AddDays(-2);
@@ -148,7 +137,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                         if (demands.HasItem())
                                         {
                                             var articles = ConstructArticles(demands, lastPushTime);
-                                            var isSendSuccessFul = SendArticles(wechatUser, articles);
+                                            var isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
 
                                             if (isSendSuccessFul)
                                             {
@@ -158,9 +147,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                         }
 
                                         // If last request time is closed to 48 hours, send remind message to update request time.
-                                        if (IsLastRequestTimeExceed45Hours(subscription))
+                                        if (IsLastRequestTimeExceed47Hours(wechatUser))
                                         {
-                                            SendTextMessage(wechatUser, RequestTimeExceedMessage);
+                                            WeChatClient.Sender.SendText(wechatUser.OpenId, WeChatClient.Constant.RequestTimeExceedMessage);
                                         }
                                     }
                                     else
@@ -182,67 +171,26 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
             });
         }
 
-        private bool IsLastRequestTimeExceed48Hours(DemandSubscription subscription)
+        private bool IsLastRequestTimeExceed48Hours(WeChatUser wechatUser)
         {
-            if (!subscription.LastRequestTimestamp.HasValue)
+            if (!wechatUser.LastRequestTimestamp.HasValue)
             {
                 return true;
             }
 
-            return (DateTime.Now - subscription.LastRequestTimestamp.Value).TotalHours > 48;
+            return (DateTime.Now - wechatUser.LastRequestTimestamp.Value).TotalHours > 48;
         }
 
-        private bool IsLastRequestTimeExceed45Hours(DemandSubscription subscription)
+        private bool IsLastRequestTimeExceed47Hours(WeChatUser wechatUser)
         {
-            if (!subscription.LastRequestTimestamp.HasValue)
+            if (!wechatUser.LastRequestTimestamp.HasValue)
             {
                 return true;
             }
 
-            return (DateTime.Now - subscription.LastRequestTimestamp.Value).TotalHours >= 45;
+            return (DateTime.Now - wechatUser.LastRequestTimestamp.Value).TotalHours >= 47;
         }
-
-        private bool SendArticles(WeChatUser wechatUser, List<Article> articles)
-        {
-            bool isSuccessFul = false;
-            AccessTokenContainer.Register(AppId, AppSecret);
-
-            try
-            {
-                var wxResult = CustomApi.SendNews(AppId, wechatUser.OpenId, articles);
-                if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
-                {
-                    isSuccessFul = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogService.LogWexin("SendSubscribedDemands wechatUserId: " + wechatUser.Id, ex.ToString());
-            }
-
-            return isSuccessFul;
-        }
-
-        private bool SendTextMessage(WeChatUser wechatUser, string message)
-        {
-            bool isSuccessFul = false;
-            AccessTokenContainer.Register(AppId, AppSecret);
-            try
-            {
-                var wxResult = CustomApi.SendText(AppId, wechatUser.OpenId, message);
-                if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
-                {
-                    isSuccessFul = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogService.LogWexin("SendTextMessage, wechatUserId: " + wechatUser.Id, ex.ToString());
-            }
-
-            return isSuccessFul;
-        }
-
+        
         private List<Article> ConstructArticles(List<Demand> demands, DateTime lastPushTime)
         {
             List<Article> articles = new List<Article>();

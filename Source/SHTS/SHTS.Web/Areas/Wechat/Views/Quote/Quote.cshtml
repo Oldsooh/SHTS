@@ -1,0 +1,211 @@
+﻿@model Witbird.SHTS.Model.Demand
+@{
+    ViewBag.Title = "需求报价";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+    var currentWeChatUser = Session[Witbird.SHTS.Web.Areas.Wechat.Controllers.WechatBaseController.WeChatUserInfo] as Witbird.SHTS.Model.WeChatUser;
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            width:95%;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell select {
+                height: 100%;
+                width: 32.5%;
+            }
+
+            .reg-form .cell textarea {
+                height: 100%;
+                width: 96%;
+            }
+            .reg-form .cell input{
+                width:95%;
+            }
+            .reg-form .cell label {
+                color: #333 !important;
+                font-size: 16px;
+                font-weight: normal;
+                position: initial;
+                padding: 0;
+            }
+
+        .commonlist {
+            border: none;
+            width:95%;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        function addQuote() {
+            var contactName = $('#js-mobile_ipt').val();
+            var contactPhone = $('#contactPhone').val();
+            var quotePrice = $('#quotePrice').val();
+            var quoteDetail = $('#quoteDetail').val();
+
+            if (contactName == '') {
+                alert('请输入您的姓名！');
+                return;
+            }
+            if (contactPhone == '') {
+                alert('请输入您的联系方式！');
+                return;
+            }
+            if (quotePrice == '' || quotePrice < 0) {
+                alert("请输入正确的报价金额");
+                return;
+            }
+
+            if (quoteDetail == '') {
+                alert('请输入您的报价细则！');
+                return;
+            }
+
+            $('#quoteForm').submit();
+        }
+    </script>
+}
+
+<div class="main">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+
+        @if (Model != null)
+        {
+            <ul class="commonlist" style="">
+                <li class="atitle">
+                    <a href="/wechat/demand/show/@(Model.Id)" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;font-size:16px;">[@Model.StatusValueString]</lable>@Model.Title
+                    </a>
+                </li>
+                <li>
+                    位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Province, Model.City, Model.Area)</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预算：
+                    @if (Model.Budget == 0)
+                    {
+                        <span class="yellow">面议</span>
+                    }
+                    else
+                    {
+                        <span class="yellow">@Model.Budget</span>
+                    }
+                </li>
+                <li>时间：<span class="yellow">@Model.StartTime.Value.ToString("yyyy/MM/dd") - @Model.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+
+            </ul>
+            <br />
+            if (Model.UserId == (currentWeChatUser.UserId ?? -1))
+            {
+                <ul class="commonlist" style="">
+                    <li class="atitle">
+                        <lable style="color: #FD9102;font-size:16px;">不能对自己发布的需求进行报价哦！</lable>
+                    </li>
+                </ul>
+            }
+            else if (Model.InProgress)
+            {
+                var hasAlreadyQuoted = false;
+                var quoteId = -1;
+
+                if (Model.QuoteEntities.Count > 0)
+                {
+                    var quote = Model.QuoteEntities[0];
+                    if (quote.WeChatUserId == currentWeChatUser.Id)
+                    {
+                        hasAlreadyQuoted = true;
+                        quoteId = quote.QuoteId;
+                    }
+                }
+
+                if (hasAlreadyQuoted)
+                {
+                    <ul class="commonlist" style="">
+                        <li class="atitle">
+                            <lable style="color: #FD9102;font-size:16px;">该需求您已提供报价！</lable>
+                        </li>
+                    </ul>
+                    <div class="bottom" style="padding-left: 5px;padding-right: 5px;margin:0 auto;">
+                        <button id="js-mobile_btn" type="button" class="button btn-green" onclick="window.location.href='/wechat/quote/detail?quoteId=@(quoteId)'">查看报价</button>
+                    </div>
+                }
+                else
+                {
+                    <form action="/wechat/quote/quote" id="quoteForm" class="reg-form" method="post">
+                        <input type="hidden" name="demandId" value="@Model.Id" />
+                        <div class="cell">
+                            <input type="text" name="contactName" id="js-mobile_ipt" placeholder="请输入您的姓名" class="text" style="width:50%;position:initial;">
+                            <input type="radio" id="maleTitle" name="contactTitle" value="1" checked="checked" style="width:20px;height:20px;position:initial;vertical-align:middle;" />
+                            <label for="maleTitle" style="vertical-align:middle;">先生</label>
+                            <input type="radio" id="femaleTitle" name="contactTitle" value="2" style="width:20px;height:20px;position:initial;margin-left:5px;vertical-align:middle;" />
+                            <label for="femaleTitle" style="vertical-align:middle;">女士</label>
+                        </div>
+                        <div class="cell">
+                            <input type="text" id="contactPhone" name="contactPhone" placeholder="请输入您的电话" class="text">
+                        </div>
+                        <div class="cell">
+                            <input type="number" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额，单位元" class="text" min="0">
+                        </div>
+                        <div class="cell" style="height: 200px;">
+                            <textarea id="quoteDetail" name="quoteDetail" placeholder="请输入您的报价细则" class="text" style="height: 180px; width: 95%;"></textarea>
+                        </div>
+                    </form>
+                    <div class="bottom" style="margin:0 auto;">
+                        <button id="js-mobile_btn" type="button" class="button btn-green" onclick="addQuote();">立即报价</button>
+                    </div>
+                }
+            }
+            else
+            {
+                <ul class="commonlist" style="">
+                    <li class="atitle">
+                        <lable style="color: #FD9102;font-size:16px;">需求已经找到资源提供商，已不提供报价功能！</lable>
+                    </li>
+                </ul>
+            }
+        }
+        else
+        {
+            <ul class="commonlist" style="">
+                <li class="atitle">
+                    <lable style="color: #FD9102;font-size:16px;">您所查询的需求不存在或已删除！</lable>
+                </li>
+            </ul>
+        }
+    </div>
+</div>
+@{
+    var errorMessage = ViewData["ErrorMessage"] ?? string.Empty;
+}
+<input type="hidden" id="txtMessage" value="@errorMessage" />
+@section FooterJS
+{
+    <script>
+        var message = $('#txtMessage').val();
+        if (message != '') {
+            $('#txtMessage').val('');
+            alert(message);
+        }
+    </script>
+}

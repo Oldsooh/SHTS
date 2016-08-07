@@ -3,7 +3,6 @@
     [SubscriptionId] INT NOT NULL IDENTITY, 
     [WeChatUserId] INT NOT NULL, 
     [IsSubscribed] BIT NOT NULL, 
-    [LastRequestTimestamp] DATETIME NULL, 
     [LastPushTimestamp] DATETIME NULL, 
     [InsertedTimestamp] DATETIME NOT NULL, 
     [LastUpdatedTimestamp] DATETIME NOT NULL,

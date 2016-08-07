@@ -29,5 +29,6 @@ namespace Witbird.SHTS.Model
         public Nullable<bool> HasSubscribed { get; set; }
         public Nullable<bool> HasAuthorized { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
+        public Nullable<System.DateTime> LastRequestTimestamp { get; set; }
     }
 }

@@ -398,10 +398,10 @@ namespace Witbird.SHTS.BLL.Services
             var conn = DBHelper.GetSqlConnection();
             try
             {
-                conn.Open();
 
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
+                    conn.Open();
                     foreach (var demandId in demandIds)
                     {
                         result = DemandDao.UpdatesDemandWeixinBuyFee(conn, demandId, weixinBuyFee);

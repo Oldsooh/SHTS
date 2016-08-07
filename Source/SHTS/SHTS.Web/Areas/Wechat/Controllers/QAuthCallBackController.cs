@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Controllers;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
@@ -44,13 +45,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    var appId = ConfigurationManager.AppSettings["WeixinAppId"];
-                    var secret = ConfigurationManager.AppSettings["WeixinAppSecret"];
-
                     OAuthAccessTokenResult accessTokenResult = null;
 
                     //通过，用code换取access_token
-                    accessTokenResult = OAuthApi.GetAccessToken(appId, secret, code);
+                    accessTokenResult = OAuthApi.GetAccessToken(WeChatClient.App.AppId, WeChatClient.App.AppSecret, code);
 
                     //LogService.LogWexin("AccessToken请求状态", accessTokenResult.errcode.ToString());
                     if (accessTokenResult.errcode == ReturnCode.请求成功)
@@ -122,7 +120,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 // 授权失败，重新发发起用户授权
                 var redirectUrl = GetUrl("/wechat/QAuthCallBack/CallBack");
-                var appId = ConfigurationManager.AppSettings["WeixinAppId"];
+                var appId = WeChatClient.App.AppId;
                 var authUrl = OAuthApi.GetAuthorizeUrl(appId, redirectUrl, callBackUrl, OAuthScope.snsapi_userinfo);
 
                 result = Redirect(authUrl);

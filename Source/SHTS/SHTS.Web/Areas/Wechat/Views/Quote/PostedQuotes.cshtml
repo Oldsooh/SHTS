@@ -1,6 +1,73 @@
-﻿@{
-    ViewBag.Title = "PostedQuotes";
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandQuoteModel
+@{
+    ViewBag.Title = "我提供的需求报价";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 
-<h2>我发出的需求报价列表</h2>
+@section head
+{
+    <style type="text/css">
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+
+        .red{
+            background-color:red;
+        }
+
+        .green{
+            background-color:green;
+        }
+        .state{
+            font-size:15px;
+        }
+    </style>
+}
+
+<div id="main">
+    <ul class="commonlist">
+        @if (Model != null && Model.Quotes != null && Model.Quotes.Count > 0)
+        {
+            foreach (var quote in Model.Quotes)
+            {
+                var status = string.Empty;
+                var bgColor = string.Empty;
+                switch (quote.AcceptStatus)
+                {
+                    case "Accept":
+                        status = "[同意报价]";
+                        bgColor = "green";
+                        break;
+                    case "Denied":
+                        status = "[驳回报价]";
+                        bgColor = "red";
+                        break;
+                    case "Wait":
+                        status = "[等待处理]";
+                        bgColor = "blue";
+                        break;
+                    default:
+                        break;
+                }
+                <li class="atitle">
+                    <span class="state @bgColor">@status</span>
+                    <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;">[报价@(quote.QuotePrice)元]</lable>@quote.Demand.Title
+                    </a>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="atitle">
+                <lable style="color: #FD9102;">您还没有提供需求报价记录！</lable>
+            </li>
+        }
+
+    </ul>
+    <div style="clear: both; height: 10px;"></div>
+
+    @Html.Partial("QuotesPagingPartial", Model)
+</div>
+

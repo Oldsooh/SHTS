@@ -162,8 +162,8 @@
             var cityId = $('#ddlCity').val();
             var areaId = $('#ddlArea').val();
 
-            if (provinceId == '' && cityId == '' && areaId == '') {
-                alert('请选择区域位置。');
+            if (provinceId == '' || cityId == '') {
+                alert('请选择需求区域省份与城市，区/县可不选！');
                 return;
             }
 

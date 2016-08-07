@@ -19,9 +19,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         //
         // GET: /M/User/
         OrderService orderService;
+        DemandQuoteService quoteService;
+
         public UserController()
         {
             orderService = new OrderService();
+            quoteService = new DemandQuoteService();
         }
         public ActionResult Index()
         {

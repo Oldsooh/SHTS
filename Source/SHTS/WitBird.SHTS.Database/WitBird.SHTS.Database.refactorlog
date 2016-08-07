@@ -434,4 +434,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="HistoryId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e90c100f-ee76-4e66-bb55-a6e9fd34c92d" ChangeDateTime="08/07/2016 04:04:09">
+    <Property Name="ElementName" Value="[dbo].[WeChatUser].[LastRequestTimestamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WeChatUser]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastUpdatedTimestamp" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5d54d690-5a11-4a02-9729-11edcac285fb" ChangeDateTime="08/07/2016 04:04:19">
+    <Property Name="ElementName" Value="[dbo].[WeChatUser].[LastUpdatedTimestamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WeChatUser]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastRequestTimestamp" />
+  </Operation>
 </Operations>

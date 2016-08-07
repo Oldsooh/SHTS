@@ -3,13 +3,38 @@
     ViewBag.Title = Model.Demand.Title;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
     string buyDemandFee = ViewData["BuyDemandFee"] as string;
+    var currentWeChatUser = Session[Witbird.SHTS.Web.Areas.Wechat.Controllers.WechatBaseController.WeChatUserInfo] as Witbird.SHTS.Model.WeChatUser;
 }
 @section head
 {
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <style type="text/css">
         #demand a {
             color: #ffffff;
             background-color: #2577e3;
+        }
+
+        .buypanel {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 93%;
+            border: 1px #ffd800 dashed;
+            background: #fbdddd;
+            color: #2577e3;
+        }
+
+            .buypanel button {
+                width: 48%;
+                height: 30px;
+                border-radius: 15px;
+                outline: none;
+                font-size: 15px;
+            }
+
+        .btn-blue {
+            background-color: #337ab7;
         }
     </style>
 }
@@ -49,18 +74,21 @@
                     {
                         <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
                             <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
-                            <span class="yellow2" style="font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>
+                            <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
                             ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
                             <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
                         </div>
                     }
                     else
                     {
-                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                        <div class="buypanel">
                             <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商，还在等待什么！立即获取用户联系方式吧！第一手联系客户，更多的合作可能！仅需
-                            <span class="yellow2" style="font-weight:bold;">@(@Model.Demand.WeixinBuyFee)元</span>
+                            <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
                             ，戳下面链接立即获取！<br />
-                            <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
+                            @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
+                            @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
+                            <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+                            <button type="button" class="button btn-green"  onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">需求报价</button>
                         </div>
                     }
                 </li>
@@ -82,6 +110,18 @@
                 <li>
                     电子邮箱：
                     <span class="yellow2">@Model.Demand.Email</span>
+                </li>
+                <li>
+                    <div class="buypanel" style="background:none;border:none;">
+                        @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
+                        {
+                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看需求报价</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">需求报价</button>
+                        }
+                    </div>
                 </li>
             }
         }

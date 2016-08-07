@@ -24,9 +24,9 @@ namespace Witbird.SHTS.Model
         }
 
         /// <summary>
-        /// 需求标题
+        /// 需求信息
         /// </summary>
-        public string DemandTitle { get; set; }
+        public Demand Demand { get; set; }
 
         /// <summary>
         /// 获取该报价所有未读消息数目

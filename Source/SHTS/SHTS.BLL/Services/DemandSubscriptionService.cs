@@ -207,33 +207,6 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
-        /// 更新最后主动请求交互时间
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public bool UpdateLastRequestTimestamp(int userId)
-        {
-            var isSuccessful = false;
-            var conn = DBHelper.GetSqlConnection();
-
-            try
-            {
-                conn.Open();
-                isSuccessful = subscriptionDao.UpdateDemandSubscriptionLastRequestTime(conn, userId);
-            }
-            catch (Exception ex)
-            {
-                LogService.LogWexin("更新最后主动请求交互时间", ex.ToString());
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            return isSuccessful;
-        }
-
-        /// <summary>
         /// 添加默认的需求订阅信息当新用户关注时
         /// </summary>
         /// <param name="userId"></param>
@@ -258,7 +231,6 @@ namespace Witbird.SHTS.BLL.Services
                         InsertedTimestamp = currentTime,
                         IsSubscribed = true,
                         LastPushTimestamp = currentTime,
-                        LastRequestTimestamp = currentTime,
                         LastUpdatedTimestamp = currentTime,
                         WeChatUserId = userId
                     };

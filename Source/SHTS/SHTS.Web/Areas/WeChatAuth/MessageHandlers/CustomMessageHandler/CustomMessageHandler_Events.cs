@@ -12,6 +12,7 @@ using WitBird.SHTS.Areas.WeChatAuth.Utilities;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Areas.Wechat.Common;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 {
@@ -44,23 +45,16 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         public static string SearchResultUrl = "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
             "/wechat/index/search?keyWords={0}&page=1\">点击查看关键字\"{1}\"的的搜索结果。</a>";
 
-        /// <summary>
-        /// 关于我们的链接
-        /// </summary>
-        public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
-
         UserService userService = new UserService();
-        DemandSubscriptionService subscriptionService = new DemandSubscriptionService();
 
         private Article GetWelcomeInfo()
         {
             return new Article()
             {
                 Title = "欢迎您关注中国活动在线网",
-                Description = @"活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，
-                                包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。",
+                Description = WeChatClient.Constant.WelcomeMessageWhenSubscribed,
                 PicUrl = BannerImgUrl,
-                Url = AboutUsUrl
+                Url = WeChatClient.Constant.AboutUsUrl
             };
         }
 
@@ -410,14 +404,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             }
 
             // Update request time.
-            if (wechatUser == null)
-            {
-                wechatUser = userService.GetWeChatUser(openId);
-            }
-            if (wechatUser.IsNotNull())
-            {
-                subscriptionService.UpdateLastRequestTimestamp(wechatUser.Id);
-            }
+            userService.UpdateWeChatUserLastRequestTimestamp(openId);
 
             return responseMessage;
         }

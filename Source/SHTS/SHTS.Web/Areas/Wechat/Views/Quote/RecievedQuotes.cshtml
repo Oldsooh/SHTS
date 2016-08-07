@@ -1,6 +1,54 @@
-﻿@{
-    ViewBag.Title = "RecievedQuotes";
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
+@{
+    ViewBag.Title = "我收到的需求报价";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 
-<h2>我收到的需求报价列表</h2>
+@section head
+{
+    <style type="text/css">
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .state {
+            font-size: 15px;
+        }
+    </style>
+}
+
+<div id="main">
+    <ul class="commonlist">
+        @if (Model != null && Model.Demands != null && Model.Demands.Count > 0)
+        {
+            foreach (var demand in Model.Demands)
+            {
+                <li class="atitle">
+                    <a href="/wechat/quote/show?demandId=@(demand.Id)" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;">[@(demand.TotalQuoteCount)条报价]</lable>@demand.Title
+                    </a>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="atitle">
+                <lable style="color: #FD9102;">暂无收到报价的需求记录！</lable>
+            </li>
+        }
+
+    </ul>
+    <div style="clear: both; height: 10px;"></div>
+
+    @Html.Partial("RecievedQuotesPagingPartial", Model)
+</div>
+

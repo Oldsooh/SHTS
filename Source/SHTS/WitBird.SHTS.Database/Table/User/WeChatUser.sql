@@ -14,5 +14,6 @@
     [AccessTokenExpireTime] DATETIME NULL, 
     [HasSubscribed] BIT NULL, 
 	[HasAuthorized] BIT NULL, 
-    [CreatedTime] DATETIME NULL 
+    [CreatedTime] DATETIME NULL, 
+    [LastRequestTimestamp] DATETIME NULL 
 )

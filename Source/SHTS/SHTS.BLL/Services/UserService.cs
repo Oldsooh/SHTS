@@ -476,6 +476,35 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
+        /// 根据微信会员Id查询微信用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public WeChatUser GetWeChatUserByWeChatUserId(int wechatUserId)
+        {
+            WeChatUser user = null;
+
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+
+                user = userDao.GetWeChatUserByWeChatUserId(wechatUserId, conn);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("根据userId获取微信用户失败， userId=" + wechatUserId, ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return user;
+        }
+
+        /// <summary>
         /// 根据绑定的wechatuserid获取已关注的微信用户列表
         /// </summary>
         /// <param name="id"></param>
@@ -618,6 +647,35 @@ namespace Witbird.SHTS.BLL.Services
             }
 
             return result;
+        }
+
+
+
+        /// <summary>
+        /// 更新最后主动请求交互时间
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public bool UpdateWeChatUserLastRequestTimestamp(string openId)
+        {
+            var isSuccessful = false;
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                isSuccessful = userDao.UpdateWeChatUserLastRequestTime(conn, openId);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogWexin("更新最后主动请求交互时间", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isSuccessful;
         }
 
         #endregion WeChat User
@@ -943,17 +1001,16 @@ namespace Witbird.SHTS.BLL.Services
             var conn = DBHelper.GetSqlConnection();
             try
             {
-                conn.Open();
-                UserVip vipInfo = userDao.SelectUserVipInfoByUserId(conn, userId);
-
-                vipInfo.State = (int)VipState.VIP;
-                vipInfo.StartTime = DateTime.Now;
-                vipInfo.EndTime = DateTime.Now.AddYears(1);
-                vipInfo.LastUpdatedTime = DateTime.Now;
-                vipInfo.Duration = 1;
-
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
+                    conn.Open();
+                    UserVip vipInfo = userDao.SelectUserVipInfoByUserId(conn, userId);
+
+                    vipInfo.State = (int)VipState.VIP;
+                    vipInfo.StartTime = DateTime.Now;
+                    vipInfo.EndTime = DateTime.Now.AddYears(1);
+                    vipInfo.LastUpdatedTime = DateTime.Now;
+                    vipInfo.Duration = 1;
                     result = userDao.UpdateUserVipState(conn, userId, (int)VipState.VIP);
                     if (result)
                     {
@@ -985,20 +1042,19 @@ namespace Witbird.SHTS.BLL.Services
             var conn = DBHelper.GetSqlConnection();
             try
             {
-                conn.Open();
-                UserVip vipInfo = userDao.SelectUserVipInfoByUserId(conn, userId);
-                User user = userDao.GetUserById(userId, conn);
-
-                user.IdentiyImg = string.Empty;
-                user.Vip = (int)VipState.Normal;
-                vipInfo.State = (int)VipState.Normal;
-                vipInfo.IdentifyImg = string.Empty;
-                vipInfo.StartTime = DateTime.Now;
-                vipInfo.EndTime = DateTime.Now;
-                vipInfo.LastUpdatedTime = DateTime.Now;
-
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
+                    conn.Open();
+                    UserVip vipInfo = userDao.SelectUserVipInfoByUserId(conn, userId);
+                    User user = userDao.GetUserById(userId, conn);
+
+                    user.IdentiyImg = string.Empty;
+                    user.Vip = (int)VipState.Normal;
+                    vipInfo.State = (int)VipState.Normal;
+                    vipInfo.IdentifyImg = string.Empty;
+                    vipInfo.StartTime = DateTime.Now;
+                    vipInfo.EndTime = DateTime.Now;
+                    vipInfo.LastUpdatedTime = DateTime.Now;
                     result = userDao.UpdateUser(conn, user);
                     if (result)
                     {

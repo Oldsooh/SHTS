@@ -17,7 +17,6 @@ namespace Witbird.SHTS.Model
         public int SubscriptionId { get; set; }
         public int WeChatUserId { get; set; }
         public bool IsSubscribed { get; set; }
-        public Nullable<System.DateTime> LastRequestTimestamp { get; set; }
         public Nullable<System.DateTime> LastPushTimestamp { get; set; }
         public System.DateTime InsertedTimestamp { get; set; }
         public System.DateTime LastUpdatedTimestamp { get; set; }

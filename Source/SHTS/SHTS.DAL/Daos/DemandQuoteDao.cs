@@ -36,6 +36,7 @@ namespace Witbird.SHTS.DAL.Daos
         const string SP_DeleteDemandQuote = "sp_DeleteDemandQuote";
         const string SP_SelectDemandQuotesByDemandId = "sp_SelectDemandQuotesByDemandId";
         const string SP_SelectDemandQuotesByWeChatUserId = "sp_SelectDemandQuotesByWeChatUserId";
+        const string SP_SelectDemandQuoteByDemandIdAndWeChatUserId = "sp_SelectDemandQuoteByDemandIdAndWeChatUserId";
 
         #endregion
 
@@ -91,6 +92,7 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(Parameter_QuoteId, history.QuoteId),
                 new SqlParameter(Parameter_WeChatUserId, history.WeChatUserId),
                 new SqlParameter(Parameter_Comments, history.Comments),
+                new SqlParameter(Parameter_HasRead, history.HasRead),
                 new SqlParameter(Parameter_InsertedTimestamp, history.InsertedTimestamp),
                 new SqlParameter(Parameter_IsActive, history.IsActive),
             };
@@ -192,6 +194,7 @@ namespace Witbird.SHTS.DAL.Daos
         public List<DemandQuote> SelectDemandQuotesByWechatUserId(SqlConnection conn, int wechatUserId, int pageSize, int pageIndex, out int totalCount)
         {
             var quotes = new List<DemandQuote>();
+            var demands = new List<Demand>();
             totalCount = 0;
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -201,24 +204,86 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@PageSize", pageSize)
             };
 
-            using (var reader = DBHelper.RunProcedure(conn, SP_SelectDemandQuotesByWeChatUserId, parameters))
-            {
-                while (reader.Read())
-                {
-                    totalCount = reader["TotalCount"].DBToInt32();
-                }
+            var dts = DBHelper.GetMuiltiDataFromDB(conn, SP_SelectDemandQuotesByWeChatUserId, parameters);
 
-                if (reader.NextResult())
+            totalCount = Int32.Parse(dts["0"].Rows[0][0].ToString());
+            quotes = DBHelper.DataTableToList<DemandQuote>(dts["1"]);
+            demands = DBHelper.DataTableToList<Demand>(dts["2"]);
+
+            if (quotes.HasItem() && demands.HasItem())
+            {
+                foreach (var quote in quotes)
                 {
-                    while (reader.Read())
+                    var demand = demands.FirstOrDefault(x => x.Id == quote.DemandId);
+                    if (demand.IsNotNull())
                     {
-                        var quote = ConvertToDemandQuote(reader);
-                        quotes.Add(quote);
+                        quote.Demand = demand;
                     }
                 }
             }
 
             return quotes;
+        }
+
+        /// <summary>
+        /// Selects all demand quotes by wechat user id.
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="demandId"></param>
+        /// <returns></returns>
+        public List<Demand> SelectRecievedQuotes(SqlConnection conn, int wechatUserId, int pageSize, int pageIndex, out int totalCount)
+        {
+            var quotes = new List<DemandQuote>();
+            var demands = new List<Demand>();
+            totalCount = 0;
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter(Parameter_WeChatUserId, wechatUserId),
+                new SqlParameter("@PageIndex", pageIndex),
+                new SqlParameter("@PageSize", pageSize)
+            };
+
+            var dts = DBHelper.GetMuiltiDataFromDB(conn, "sp_SelectRecievedQuotes", parameters);
+
+            totalCount = Int32.Parse(dts["0"].Rows[0][0].ToString());
+            demands = DBHelper.DataTableToList<Demand>(dts["1"]);
+            quotes = DBHelper.DataTableToList<DemandQuote>(dts["2"]);
+
+            if (quotes.HasItem() && demands.HasItem())
+            {
+                foreach (var quote in quotes)
+                {
+                    var demand = demands.FirstOrDefault(x => x.Id == quote.DemandId);
+                    if (demand.IsNotNull())
+                    {
+                        demand.QuoteEntities.Add(quote);
+                    }
+                }
+            }
+
+            return demands;
+        }
+
+        public DemandQuote SelectDemandQuoteByDemandIdAndWeChatUserId(SqlConnection conn, int demandId, int wechatUserId)
+        {
+            DemandQuote quote = null;
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter(Parameter_DemandId, demandId),
+                new SqlParameter(Parameter_WeChatUserId, wechatUserId)
+            };
+
+            using (var reader = DBHelper.RunProcedure(conn, SP_SelectDemandQuoteByDemandIdAndWeChatUserId, parameters))
+            {
+                while (reader.Read())
+                {
+                    quote = ConvertToDemandQuote(reader);
+                }
+            }
+
+            return quote;
         }
 
         /// <summary>
@@ -235,6 +300,17 @@ namespace Witbird.SHTS.DAL.Daos
             };
 
             return DBHelper.RunNonQueryProcedure(conn, SP_DeleteDemandQuote, parameters) > 0;
+        }
+
+        public bool UpdateAllQuotesStatus(SqlConnection conn, int demandId, int quoteId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter(Parameter_DemandId, demandId),
+                new SqlParameter(Parameter_QuoteId, quoteId)
+            };
+
+            return DBHelper.RunNonQueryProcedure(conn, "sp_UpdateAllQuotesStatus", parameters) > 0;
         }
 
         #endregion
@@ -254,15 +330,13 @@ namespace Witbird.SHTS.DAL.Daos
                 ContactName = reader["ContactName"].DBToString(),
                 ContactPhoneNumber = reader["ContactPhoneNumber"].DBToString(),
                 DemandId = reader["DemandId"].DBToInt32(),
-                DemandTitle = reader["DemandTitle"].DBToString(),
                 HandleStatus = reader["HandleStatus"].DBToBoolean(),
                 InsertedTimestamp = reader["InsertedTimestamp"].DBToDateTime().Value,
                 IsActive = reader["IsActive"].DBToBoolean(),
                 LastUpdatedTimestamp = reader["LastUpdatedTimestamp"].DBToDateTime().Value,
                 QuoteId = reader["QuoteId"].DBToInt32(),
                 QuotePrice = reader["QuotePrice"].DBToDecimal(),
-                WeChatUserId = reader["WeChatUserId"].DBToInt32(),
-                WeChatUserName = reader["WeChatUserName"].DBToString()
+                WeChatUserId = reader["WeChatUserId"].DBToInt32()
             };
         }
 

@@ -9,7 +9,7 @@ using Witbird.SHTS.Common;
 using System.Transactions;
 using Witbird.SHTS.DAL.Daos;
 
-namespace Witbird.SHTS.BLL.Service
+namespace Witbird.SHTS.BLL.Services
 {
     /// <summary>
     /// 微信报价业务逻辑处理类
@@ -41,11 +41,11 @@ namespace Witbird.SHTS.BLL.Service
 
             try
             {
-                conn.Open();
                 var currentTime = DateTime.Now;
 
                 using (TransactionScope scope = new TransactionScope())
                 {
+                    conn.Open();
                     quote.InsertedTimestamp = currentTime;
                     quote.LastUpdatedTimestamp = currentTime;
                     quote.HandleStatus = false;
@@ -57,12 +57,14 @@ namespace Witbird.SHTS.BLL.Service
                     {
                         foreach (var item in quote.QuoteHistories)
                         {
-                            item.QuoteId = quote.QuoteId;
-                            item.InsertedTimestamp = currentTime;
-                            item.HasRead = false;
-
                             if (item.Operation == Operation.Add)
                             {
+                                item.Operation = Operation.None;
+                                item.QuoteId = quote.QuoteId;
+                                item.InsertedTimestamp = currentTime;
+                                item.HasRead = false;
+                                item.IsActive = true;
+
                                 quoteDao.InsertDemandQuoteHistory(conn, item);
                             }
                         }
@@ -71,7 +73,7 @@ namespace Witbird.SHTS.BLL.Service
                     scope.Complete();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.Log("Adds new demand quote with comments.", ex.ToString());
             }
@@ -97,11 +99,11 @@ namespace Witbird.SHTS.BLL.Service
 
             try
             {
-                conn.Open();
                 var currentTime = DateTime.Now;
 
                 using (TransactionScope scope = new TransactionScope())
                 {
+                    conn.Open();
                     quote.LastUpdatedTimestamp = currentTime;
                     quote = quoteDao.InsertOrUpdateDemandQuote(conn, quote);
 
@@ -151,11 +153,11 @@ namespace Witbird.SHTS.BLL.Service
 
             try
             {
-                conn.Open();
                 var currentTime = DateTime.Now;
 
                 using (TransactionScope scope = new TransactionScope())
                 {
+                    conn.Open();
                     var parentQuote = quoteDao.SelectDemandQuoteByQuoteId(conn, quoteHistory.QuoteId, false);
 
                     if (parentQuote.IsNotNull())
@@ -175,7 +177,7 @@ namespace Witbird.SHTS.BLL.Service
                     scope.Complete();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.Log("Failed to add new demand comments.", ex.ToString());
             }
@@ -202,7 +204,7 @@ namespace Witbird.SHTS.BLL.Service
                 conn.Open();
                 isSuccessful = quoteDao.DeleteDemandQuote(conn, quoteId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.Log("Deletes quote and corresponding histories.", ex.ToString());
             }
@@ -232,7 +234,7 @@ namespace Witbird.SHTS.BLL.Service
                 conn.Open();
                 quotes = quoteDao.SelectDemandQuotesByDemandId(conn, demandId, pageSize, pageIndex, out totalCount);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.Log("Failed to select quotes without histories for one demand.", ex.ToString());
             }
@@ -245,6 +247,21 @@ namespace Witbird.SHTS.BLL.Service
         }
 
         /// <summary>
+        /// Selects quotes without histories for one specified demand.
+        /// </summary>
+        /// <param name="demandId"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId)
+        {
+            int pageSize = int.MaxValue;
+            int pageIndex = 1;
+            int totalCount = 0;
+            return GetAllDemandQuotesForOneDemand(demandId, pageSize, pageIndex, out totalCount);
+        }
+
+        /// <summary>
         /// Selects all demand quotes which posted by speficied user.
         /// </summary>
         /// <param name="demandId"></param>
@@ -252,7 +269,7 @@ namespace Witbird.SHTS.BLL.Service
         /// <param name="pageIndex"></param>
         /// <param name="totalCount"></param>
         /// <returns></returns>
-        public List<DemandQuote> GetAllDemandQuotesForOneUser(int wechatUserId, int pageSize, int pageIndex, out int totalCount)
+        public List<DemandQuote> GetPostedQuotes(int wechatUserId, int pageSize, int pageIndex, out int totalCount)
         {
             var quotes = new List<DemandQuote>();
             var conn = DBHelper.GetSqlConnection();
@@ -276,22 +293,78 @@ namespace Witbird.SHTS.BLL.Service
         }
 
         /// <summary>
-        /// Selects demand quote with details.
+        /// Selects all demand which has qoute record.
+        /// </summary>
+        /// <param name="demandId"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        public List<Demand> GetRecievedQuotes(int wechatUserId, int pageSize, int pageIndex, out int totalCount)
+        {
+            var demands = new List<Demand>();
+            var conn = DBHelper.GetSqlConnection();
+            totalCount = 0;
+
+            try
+            {
+                conn.Open();
+                demands = quoteDao.SelectRecievedQuotes(conn, wechatUserId, pageSize, pageIndex, out totalCount);
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("Selects all demand quotes which posted by speficied user.", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return demands;
+        }
+
+        /// <summary>
+        /// Selects demand quote by demandId and wechatuserid.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public DemandQuote GetDemandQuoteWithAllHistories(int quoteId)
+        public DemandQuote SelectDemandQuoteByDemandIdAndWeChatUserId(int demandId, int wechatUserId)
         {
             DemandQuote quote = null;
             var conn = DBHelper.GetSqlConnection();
             try
             {
                 conn.Open();
-                quote = quoteDao.SelectDemandQuoteByQuoteId(conn, quoteId, true);
+                quote = quoteDao.SelectDemandQuoteByDemandIdAndWeChatUserId(conn, demandId, wechatUserId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                LogService.Log("SelectDemandQuoteByDemandIdAndWeChatUserId", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return quote;
+        }
+
+        /// <summary>
+        /// Selects demand quote with details.
+        /// </summary>
+        /// <returns></returns>
+        public DemandQuote GetDemandQuote(int quoteId, bool searchHistories)
+        {
+            DemandQuote quote = null;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                quote = quoteDao.SelectDemandQuoteByQuoteId(conn, quoteId, searchHistories);
+            }
+            catch (Exception ex)
             {
                 LogService.Log("Selects demand quote with details.", ex.ToString());
             }
@@ -302,6 +375,29 @@ namespace Witbird.SHTS.BLL.Service
 
             return quote;
         }
+
+        public bool UpdateAllQuotesStatus(int demandId, int quoteId)
+        {
+            var isSuccessFul = false;
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                isSuccessFul = quoteDao.UpdateAllQuotesStatus(conn, demandId, quoteId);
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("UpdateAllQuotesStatus", ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isSuccessFul;
+        }
+
         #endregion Public methods
 
         #region Private methods

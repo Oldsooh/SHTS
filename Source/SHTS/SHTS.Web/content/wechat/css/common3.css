@@ -26,7 +26,7 @@ li {
 }
 
 body {
-    background-color: #f9f8f8;
+    /*background-color: #f9f8f8;*/
 }
 
 .wrap {
@@ -37,8 +37,9 @@ body {
 #top {
     width: 100%;
     overflow: hidden;
-    padding: 3px;
     background-color: #f9f9f8;
+    border-bottom: 1px solid #337ab7;
+    margin-bottom: 10px;
 }
 
 .back {

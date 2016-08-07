@@ -442,6 +442,31 @@ namespace Witbird.SHTS.DAL.Daos
             return user;
         }
 
+        /// <summary>
+        /// 根据绑定的会员账号Id查询微信用户
+        /// </summary>
+        /// <param name="conn">连接对象</param>
+        /// <returns>用户实体</returns>
+        public WeChatUser GetWeChatUserByWeChatUserId(int wechatUserId, SqlConnection conn)
+        {
+            WeChatUser user = null;
+
+            SqlParameter[] sqlParameters = new SqlParameter[]
+            {
+                new SqlParameter("@WeChatUserId", wechatUserId)
+            };
+
+            using (SqlDataReader reader = DBHelper.RunProcedure(conn, "sp_WeChatUserSelectByWeChatUserId", sqlParameters))
+            {
+                while (reader.Read())
+                {
+                    user = ConvertToWeChatUserObject(reader);
+                }
+            }
+
+            return user;
+        }
+
         public List<WeChatUser> GetWeChatUserOnlySubscribed(SqlConnection conn)
         {
             List<WeChatUser> users = new List<WeChatUser>();
@@ -555,6 +580,22 @@ namespace Witbird.SHTS.DAL.Daos
                 SP_WeChatUserDeleteByOpenId, sqlParameters) > 0;
         }
 
+
+        /// <summary>
+        /// Updates demand subscription's specified datetime type field to current date time value.
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="wechatUserId"></param>
+        /// <returns></returns>
+        public bool UpdateWeChatUserLastRequestTime(SqlConnection conn, string openId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@OpenId", openId)
+            };
+
+            return DBHelper.RunNonQueryProcedure(conn, "sp_UpdateWeChatUserLastRequestTime", parameters) > 0;
+        }
 
         #endregion WeChat User
 
