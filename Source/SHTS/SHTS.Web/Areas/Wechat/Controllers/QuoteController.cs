@@ -42,7 +42,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Quote(int demandId, string contactName, string contactTitle, string contactPhone, decimal quotePrice, string quoteDetail)
+        public ActionResult Quote(int demandId, string contactName, string contactTitle, //string contactPhone,
+            decimal quotePrice, string quoteDetail)
         {
             string errorMessage = string.Empty;
             int quoteId = 0;
@@ -51,7 +52,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 // Check parameters.
                 if (string.IsNullOrWhiteSpace(contactName) ||
-                    string.IsNullOrWhiteSpace(contactPhone) ||
+                    //string.IsNullOrWhiteSpace(contactPhone) ||
                     string.IsNullOrWhiteSpace(quoteDetail))
                 {
                     errorMessage = "请输入您的联系方式及报价细则！";
@@ -70,7 +71,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         DemandQuote quote = new DemandQuote()
                         {
                             ContactName = contactName + contactTitle,
-                            ContactPhoneNumber = contactPhone,
+                            ContactPhoneNumber = string.Empty,//contactPhone,
                             DemandId = demandId,
                             WeChatUserId = CurrentWeChatUser.Id,
                             QuotePrice = quotePrice
@@ -262,35 +263,35 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        var demandQuotes = quoteService.GetAllDemandQuotesForOneDemand(quote.DemandId);
-                        var acceptQuote = demandQuotes.FirstOrDefault(x => x.HandleStatus &&
-                            x.AcceptStatus.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase));
+                    //if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                    //{
+                    //    var demandQuotes = quoteService.GetAllDemandQuotesForOneDemand(quote.DemandId);
+                    //    var acceptQuote = demandQuotes.FirstOrDefault(x => x.HandleStatus &&
+                    //        x.AcceptStatus.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase));
 
-                        if (acceptQuote.IsNotNull())
-                        {
-                            errorMessage = "对该需求您已采纳了如下报价，请驳回其他报价信息：";
-                            errorMessage += "\r\n联系人：" + acceptQuote.ContactName;
-                            errorMessage += "\r\n联系电话：" + acceptQuote.ContactPhoneNumber;
-                            errorMessage += "\r\n报价金额：" + acceptQuote.QuotePrice + "元";
-                        }
-                        else
-                        {
-                            var result = quoteService.UpdateAllQuotesStatus(quote.DemandId, quote.QuoteId);
-                            if (!result)
-                            {
-                                errorMessage = "更新报价状态失败，请重新尝试！";
-                            }
-                        }
-                    }
-                    else
-                    {
+                    //    if (acceptQuote.IsNotNull())
+                    //    {
+                    //        errorMessage = "对该需求您已采纳了如下报价，请驳回其他报价信息：";
+                    //        errorMessage += "\r\n联系人：" + acceptQuote.ContactName;
+                    //        errorMessage += "\r\n联系电话：" + acceptQuote.ContactPhoneNumber;
+                    //        errorMessage += "\r\n报价金额：" + acceptQuote.QuotePrice + "元";
+                    //    }
+                    //    else
+                    //    {
+                    //        var result = quoteService.UpdateAllQuotesStatus(quote.DemandId, quote.QuoteId);
+                    //        if (!result)
+                    //        {
+                    //            errorMessage = "更新报价状态失败，请重新尝试！";
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
                         quote.HandleStatus = true;
-                        quote.AcceptStatus = DemandQuoteStatus.Denied.ToString();
+                        quote.AcceptStatus = statusId;
 
                         quoteService.UpdateQuoteRecord(quote);
-                    }
+                    //}
 
                     if (string.IsNullOrEmpty(errorMessage))
                     {
@@ -301,7 +302,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         }
                         else
                         {
-                            message += "驳回，预祝您下次报价成功！";
+                            message += "拒绝，预祝您下次报价成功！如需联系请点击下面链接";
                         }
 
                         // Sends notification to wechat client.

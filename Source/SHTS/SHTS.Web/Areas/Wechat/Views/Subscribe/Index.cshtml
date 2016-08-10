@@ -9,6 +9,7 @@
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <script src="~/Content/js/city.js"></script>
     <style type="text/css">
         .reg-form .cell label {
             position: absolute;
@@ -61,7 +62,7 @@
                 .reg-form .cell input {
                     font-size: 14px;
                     width: 90%;
-                    color:black;
+                    color: black;
                 }
 
         .upbtn {
@@ -427,7 +428,7 @@
 
         function submit() {
             var subscriptionForm = $('#subscriptionForm');
-            if (isEnableSubscription()){
+            if (isEnableSubscription()) {
                 var subscribedAreas = getAllSubscriedAreas();
                 var subscribedTypes = getAllSubscriedTypes();
 
@@ -659,6 +660,5 @@
             alert(message);
         }
     </script>
-    <script src="~/Content/js/city.js"></script>
 }
 

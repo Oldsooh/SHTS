@@ -1,7 +1,7 @@
 ﻿* {
     margin: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 body, button, input, select, textarea {
@@ -215,7 +215,7 @@ body {
 }
 
     .commonLi a {
-        font-size: 12px;
+        font-size: 16px;
     }
 
 .p_newslist_ico {
@@ -262,7 +262,7 @@ body {
 
 .commonlist {
     font-family: "微软雅黑";
-    font-size: 13px;
+    font-size: 16px;
     color: #898989;
     padding: 0px 10px;
     text-align: left;
@@ -272,7 +272,7 @@ body {
 
     .commonlist li {
         margin: 5px 0;
-        font-size: 14px;
+        font-size: 16px;
     }
 
 
@@ -286,7 +286,7 @@ body {
     }
 
 .state {
-    font-size: 12px;
+    font-size: 16px;
     color: #fff;
     padding: 0px 2px;
     display: inline-block;
@@ -298,7 +298,7 @@ body {
 
 .yellow {
     color: #E87505;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .yellow2 {

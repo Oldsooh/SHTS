@@ -103,7 +103,7 @@
 
             <div class="ur_title">标题：<span class="red ch">*</span></div>
             <div class="ur_box">
-                <input class="ur_txt1" name="title" maxlength="50" />
+                <input class="ur_txt1" name="title" maxlength="50" value="寻找" />
                 <span style="color: #ff0000;">&nbsp;&nbsp; 必填</span><span style="color: #4193ff;">&nbsp;&nbsp;请认真填写，方便提供商看到.</span>
             </div>
             <div class="clearfix"></div>
@@ -185,8 +185,8 @@
 
             <div class="ur_title">预算金额：<span class="red ch">*</span></div>
             <div class="ur_box">
-                <input class="ur_txt1" name="budget" maxlength="50" value="0" />
-                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;必须填写一个整数，如果面议，请填 0</span>
+                <input type="number" class="ur_txt1" name="budget" maxlength="50" value="0" />
+                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;填写金额数增加供应商关注度</span>
             </div>
             <div class="clearfix"></div>
 
@@ -218,7 +218,7 @@
 
 
 
-            <div class="ur_title lh24">简短描述：<span class="red ch">*</span></div>
+            @*<div class="ur_title lh24">简短描述：<span class="red ch">*</span></div>
             <div class="ur_box">
                 <textarea class="ur_tra" name="description" maxlength="300" rows="5"></textarea>
                 <span style="color: #4193ff;">
@@ -226,13 +226,20 @@
                     <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>&nbsp;300字最佳，太少大多都不好. 用于列表页简短描述. 方便供应商看见，提高曝光率哦！
                 </span>
             </div>
-            <div class="clearfix"></div>
+            <div class="clearfix"></div>*@
 
 
             @*<div class="ur_title lh24"><span class="red ch"></span>内容：</div>*@
             <div class="ur_box">
                 <div style="height: 30px; line-height: 20px; color: #ff0000; font-size: 16px;">警告：禁止 详情内容 出现联系方式，一旦发现，系统将用星号 ** 代替</div>
-                <textarea id="editorContent" name="contentStyle"></textarea>
+                <textarea id="editorContent" name="contentStyle">
+                    寻找
+                    <text><br /><br /></text>
+                    时间：
+                    <text><br /><br /></text>
+                    地点：<text><br /><br /></text>
+                    详细需求：<text><br /><br /></text>
+                </textarea>
             </div>
             <div class="clearfix"></div>
 

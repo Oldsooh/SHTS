@@ -153,31 +153,45 @@ namespace Witbird.SHTS.DAL.Daos
         /// <param name="conn"></param>
         /// <param name="demandId"></param>
         /// <returns></returns>
-        public List<DemandQuote> SelectDemandQuotesByDemandId(SqlConnection conn, int demandId, int pageSize, int pageIndex, out int totalCount)
+        public List<DemandQuote> SelectDemandQuotesByDemandId(SqlConnection conn, int demandId)//, int pageSize, int pageIndex, out int totalCount)
         {
             var quotes = new List<DemandQuote>();
-            totalCount = 0;
+            var quoteHistories = new List<DemandQuoteHistory>();
+            //totalCount = 0;
 
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter(Parameter_DemandId, demandId),
-                new SqlParameter("@PageIndex", pageIndex),
-                new SqlParameter("@PageSize", pageSize)
+                new SqlParameter(Parameter_DemandId, demandId)//,
+                //new SqlParameter("@PageIndex", pageIndex),
+                //new SqlParameter("@PageSize", pageSize)
             };
 
             using (var reader = DBHelper.RunProcedure(conn, SP_SelectDemandQuotesByDemandId, parameters))
             {
-                while (reader.Read())
-                {
-                    totalCount = reader["TotalCount"].DBToInt32();
-                }
+                //while (reader.Read())
+                //{
+                //    //totalCount = reader["TotalCount"].DBToInt32();
+                //}
+
+                //if (reader.NextResult())
+                //{
+                    while (reader.Read())
+                    {
+                        var quote = ConvertToDemandQuote(reader);
+                        quotes.Add(quote);
+                    }
+                //}
 
                 if (reader.NextResult())
                 {
                     while (reader.Read())
                     {
-                        var quote = ConvertToDemandQuote(reader);
-                        quotes.Add(quote);
+                        var history = ConvertToDemandQuoteHistory(reader);
+                        var quote = quotes.FirstOrDefault(x => x.QuoteId == history.QuoteId);
+                        if (quote.IsNotNull())
+                        {
+                            quote.QuoteHistories.Add(history);
+                        }
                     }
                 }
             }

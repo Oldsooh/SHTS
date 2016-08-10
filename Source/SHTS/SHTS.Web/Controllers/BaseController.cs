@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.Web.Controllers
@@ -143,6 +145,32 @@ namespace Witbird.SHTS.Web.Controllers
             }
 
             return url + subUrl;
+        }
+
+        /// <summary>
+        /// 购买需求联系方式需要的价钱
+        /// </summary>
+        public decimal BuyDemandFee
+        {
+            get
+            {
+                decimal amount = 1m;//默认购买需要花费1元钱
+
+                try
+                {
+                    if (!decimal.TryParse(ConfigurationManager.AppSettings["BuyDemandFee"], out amount))
+                    {
+                        amount = 1m;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogService.LogWexin("微信购买需求联系方式金额配置出错,请检查Web.config中<BuyDemandFee>配置", ex.ToString());
+                    amount = 1m;
+                }
+
+                return amount;
+            }
         }
     }
 }

@@ -48,7 +48,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <summary>
             /// 用户关注公众号时候的欢迎信息
             /// </summary>
-            public const string WelcomeMessageWhenSubscribed = @"活动在线网是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。";
+            public const string WelcomeMessageWhenSubscribed = @"中国活动在线网(http://www.activity-line.com)是一个提供举办活动所需的资源网，与文艺演出、巡演、会议、展会、拓展训练及企业培训、婚礼及各类型赛事活动等相关，包含活动场地、演艺人员和工作人员、活动设备、媒体、翻译速记、摄像摄影、鲜花、礼品、餐饮等各类型资源，覆盖范围从一线城市、各省会城市到全国的各县级城市。
+";
             
             /// <summary>
             /// 请先关注我们的链接

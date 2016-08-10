@@ -88,7 +88,7 @@
                             @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
                             @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
                             <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
-                            <button type="button" class="button btn-green"  onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">需求报价</button>
+                            <button type="button" class="button btn-green"  onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                         </div>
                     }
                 </li>
@@ -115,11 +115,11 @@
                     <div class="buypanel" style="background:none;border:none;">
                         @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                         {
-                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看需求报价</button>
+                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
                         }
                         else
                         {
-                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">需求报价</button>
+                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                         }
                     </div>
                 </li>

@@ -223,16 +223,61 @@ namespace Witbird.SHTS.BLL.Services
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId, int pageSize, int pageIndex, out int totalCount)
+        //public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId, int pageSize, int pageIndex, out int totalCount)
+        //{
+        //    var quotes = new List<DemandQuote>();
+        //    var conn = DBHelper.GetSqlConnection();
+        //    totalCount = 0;
+
+        //    try
+        //    {
+        //        conn.Open();
+        //        quotes = quoteDao.SelectDemandQuotesByDemandId(conn, demandId, pageSize, pageIndex, out totalCount);
+
+        //        if (quotes.HasItem())
+        //        {
+        //            foreach (var quote in quotes)
+        //            {
+        //                var history = GetDemandQuote(quote.QuoteId, true);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogService.Log("Failed to select quotes without histories for one demand.", ex.ToString());
+        //    }
+        //    finally
+        //    {
+        //        conn.Close();
+        //    }
+
+        //    return quotes;
+        //}
+
+        /// <summary>
+        /// Selects quotes without histories for one specified demand.
+        /// </summary>
+        /// <param name="demandId"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId)
         {
             var quotes = new List<DemandQuote>();
             var conn = DBHelper.GetSqlConnection();
-            totalCount = 0;
 
             try
             {
                 conn.Open();
-                quotes = quoteDao.SelectDemandQuotesByDemandId(conn, demandId, pageSize, pageIndex, out totalCount);
+                quotes = quoteDao.SelectDemandQuotesByDemandId(conn, demandId);
+
+                if (quotes.HasItem())
+                {
+                    foreach (var quote in quotes)
+                    {
+                        var history = GetDemandQuote(quote.QuoteId, true);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -244,21 +289,6 @@ namespace Witbird.SHTS.BLL.Services
             }
 
             return quotes;
-        }
-
-        /// <summary>
-        /// Selects quotes without histories for one specified demand.
-        /// </summary>
-        /// <param name="demandId"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <returns></returns>
-        public List<DemandQuote> GetAllDemandQuotesForOneDemand(int demandId)
-        {
-            int pageSize = int.MaxValue;
-            int pageIndex = 1;
-            int totalCount = 0;
-            return GetAllDemandQuotesForOneDemand(demandId, pageSize, pageIndex, out totalCount);
         }
 
         /// <summary>

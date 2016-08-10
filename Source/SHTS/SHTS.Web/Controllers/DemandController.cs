@@ -104,7 +104,8 @@ namespace Witbird.SHTS.Web.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Add(string categoryId, string title, string description, string contentStyle,
+        public ActionResult Add(string categoryId, string title, //string description,
+            string contentStyle,
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string timeLength, string peopleNumber, string budget)
         {
@@ -118,7 +119,7 @@ namespace Witbird.SHTS.Web.Controllers
             {
                 if (!string.IsNullOrEmpty(categoryId) &&
                     !string.IsNullOrEmpty(title) &&
-                    !string.IsNullOrEmpty(description) &&
+                    //!string.IsNullOrEmpty(description) &&
                     !string.IsNullOrEmpty(contentStyle) &&
                     !string.IsNullOrEmpty(startTime) &&
                     !string.IsNullOrEmpty(endTime) &&
@@ -130,7 +131,7 @@ namespace Witbird.SHTS.Web.Controllers
                     demand.UserId = user.UserId;
                     demand.CategoryId = Int32.Parse(categoryId);
                     demand.Title = title;
-                    demand.Description = description;
+                    demand.Description = string.Empty;//description;
                     demand.ContentStyle = contentStyle;
                     demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
                     demand.Province = string.IsNullOrEmpty(provinceId) ? string.Empty : provinceId;
@@ -154,6 +155,7 @@ namespace Witbird.SHTS.Web.Controllers
                     demand.ViewCount = 0;
                     demand.InsertTime = DateTime.Now;
                     demand.Status = (int)DemandStatus.InProgress;
+                    demand.WeixinBuyFee = (int)BuyDemandFee;
 
                     if (demandManager.AddDemand(demand))
                     {

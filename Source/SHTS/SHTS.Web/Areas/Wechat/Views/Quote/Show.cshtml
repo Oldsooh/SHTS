@@ -49,21 +49,49 @@
                 padding: 0;
             }
 
+        .atitle a {
+            font-size: 17px;
+        }
+
         .commonlist {
             border: none;
             margin: 0 auto;
         }
-        
-        .red{
-            background-color:red;
+
+            .commonlist li {
+                font-size: 17px;
+            }
+
+                .commonlist li span {
+                    font-size: 17px;
+                }
+
+        .red {
+            background-color: red;
         }
 
-        .green{
-            background-color:green;
+        .green {
+            background-color: green;
         }
-        .state{
-            font-size:15px;
+
+        .blue {
+            background-color: #337ab7;
         }
+
+        .state {
+            font-size: 15px;
+        }
+
+        .bottom {
+            width: 94%;
+        }
+
+            .bottom button {
+                height: 25px;
+                width: 48%;
+                border-radius: 10px;
+                font-size: 15px;
+            }
     </style>
 }
 
@@ -91,15 +119,21 @@
                     }
                 </li>
                 <li>时间：<span class="yellow">@Model.StartTime.Value.ToString("yyyy/MM/dd") - @Model.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+
             </ul>
             <br />
             if (Model.TotalQuoteCount > 0)
             {
-                <lable style="color: #FD9102;font-size:16px;">一共有(@Model.TotalQuoteCount)条报价记录，其中(@Model.TotalNotHandledQuoteCount)条暂未处理！</lable>
-
                 <ul class="commonlist" style="">
-                    @foreach (var quote in Model.QuoteEntities)
+
+                    <li>
+
+                        <lable class="yellow" style="font-size:17px;">共有(@Model.TotalQuoteCount)条报价，其中(@Model.TotalNotHandledQuoteCount)条未处理！</lable>
+
+                    </li>
+                    @for (int i = 0; i < Model.QuoteEntities.Count; i++)
                     {
+                        var quote = Model.QuoteEntities[i];
                         var status = string.Empty;
                         var bgColor = string.Empty;
                         switch (quote.AcceptStatus)
@@ -110,7 +144,7 @@
                                 break;
                             case "Denied":
                                 status = "[已驳回]";
-                                bgColor = "green";
+                                bgColor = "blue";
                                 break;
                             case "Wait":
                                 status = "[未处理]";
@@ -119,9 +153,9 @@
                             default:
                                 break;
                         }
-                        
                         <li class="atitle">
                             <span class="state @bgColor">@status</span>
+                            @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
                             <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
                                 @(quote.ContactName)报价@(quote.QuotePrice)元
                             </a>
@@ -134,14 +168,14 @@
                 <ul class="commonlist" style="">
                     <li class="atitle">
 
-                        <lable style="color: #FD9102;font-size:16px;">暂无报价记录！</lable>
+                        <lable style="color: #FD9102;font-size:17px;">暂无报价记录！</lable>
                     </li>
                 </ul>
             }
         }
         else
         {
-            <lable style="color: #FD9102;font-size:16px;">您所查询的需求不存在或已删除！</lable>
+            <lable style="color: #FD9102;font-size:17px;">您所查询的需求不存在或已删除！</lable>
         }
     </div>
 </div>

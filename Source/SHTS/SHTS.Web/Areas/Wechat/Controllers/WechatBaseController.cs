@@ -60,32 +60,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         /// <summary>
-        /// 购买需求联系方式需要的价钱
-        /// </summary>
-        public decimal BuyDemandFee
-        {
-            get
-            {
-                decimal amount = 1m;//默认购买需要花费1元钱
-
-                try
-                {
-                    if (!decimal.TryParse(ConfigurationManager.AppSettings["BuyDemandFee"], out amount))
-                    {
-                        amount = 1m;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogService.LogWexin("微信购买需求联系方式金额配置出错,请检查Web.config中<BuyDemandFee>配置", ex.ToString());
-                    amount = 1m;
-                }
-
-                return amount;
-            }
-        }
-
-        /// <summary>
         /// 在执行具体Action之前进行微信权限检测，保存wechat用户信息
         /// </summary>
         /// <param name="filterContext"></param>
@@ -140,6 +114,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
         }
 
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            base.OnException(filterContext);
+            Response.Redirect("/wechat/error/error_503");
+        }
         /// <summary>
         /// 检测微信用户授权信息，如果不符合则需要重新进行微信授权验证。
         /// </summary>
@@ -218,10 +198,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// 返回授权失败处理结果
         /// </summary>
         /// <returns></returns>
-        private ActionResult GetWechatAuthFailedResult()
+        public ActionResult GetWechatAuthFailedResult()
         {
-            var msg = "您请求的页面发生错误，请返回原链接重新发起请求。如频繁遇到此错误，请联系活动在线客服。感谢您使用活动在线网！祝您生活愉快！";
-            return Content(msg);
+            return new RedirectResult("/wechat/error/error_503");
         }
 
         /// <summary>

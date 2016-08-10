@@ -54,6 +54,10 @@
             border: none;
             margin: 0 auto;
         }
+
+            .commonlist li span {
+                font-size: 17px;
+            }
     </style>
     @*for chat history*@
     <style>
@@ -155,11 +159,10 @@
                 }
 
         .bottom {
-            height: 50px;
             width: 94%;
             background: #fff;
-            margin: 0 auto;
-            margin-bottom: 35px;
+            position: fixed;
+            bottom: 5px;
         }
 
             .bottom button {
@@ -176,8 +179,8 @@
     <script>
 
         window.onload = function () {
-            scrollToButtom();
-            $('#btnSend').click(function () {
+            //scrollToButtom();
+            @*$('#btnSend').click(function () {
                 var arrIconSrc = '@currentWeChatUser.Photo';
                 var text = document.getElementById('text');
                 var content = document.getElementById('chatHistory');
@@ -210,14 +213,14 @@
                         alert('留言消息发送失败！');
                     });
                 }
-            });
+            });*@
             $('#btnAccept').click(function () {
-                if (confirm('您确认接受该报价吗？如果接受，其他报价将被驳回！')) {
+                if (confirm('您确认接受该报价吗？')) {
                     updateQuoteStatus('Accept');
                 }
             });
             $('#btnReject').click(function () {
-                if (confirm('您确认驳回该报价吗？')) {
+                if (confirm('您确认拒绝该报价吗？')) {
                     updateQuoteStatus('Denied');
                 }
             });
@@ -234,7 +237,7 @@
                         alert(msg);
                     }
                     else {
-                        window.location = window.location;
+                        window.location.href = window.location.href;
                     }
                 }).error(function () {
                     alert('更新失败！');
@@ -254,20 +257,65 @@
 
         @if (Model != null)
         {
-            var contactName = "联系人：" + Model.ContactName;
-            var contactPhone = "电话：" + Model.ContactPhoneNumber;
-            var quotePrice = "报价：" + Model.QuotePrice + "元";
+            //var contactName = "联系人：" + Model.ContactName;
+            //var contactPhone = "电话：" + Model.ContactPhoneNumber;
+            //var quotePrice = "报价：" + Model.QuotePrice + "元";
 
             <input type="hidden" id="quoteId" value="@Model.QuoteId" />
+
+            var quoteStatus = string.Empty;
+            var isPostedByMySelf = (Model.WeChatUserId == currentWeChatUser.Id);
+            if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (isPostedByMySelf)
+                {
+                    quoteStatus = "该报价/报名已被采纳！赶紧联系客户洽谈吧！点击下方需求链接，购买查看客户电话";
+                }
+                else
+                {
+                    quoteStatus = "您已采纳该报价/报名！";
+                }
+            }
+            else if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Denied.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (isPostedByMySelf)
+                {
+                    quoteStatus = "该报价/报名已被拒绝！预祝下次报价成功！";
+                }
+                else
+                {
+                    quoteStatus = "您已拒绝该报价/报价！";
+                }
+            }
+            else
+            {
+                if (isPostedByMySelf)
+                {
+                    quoteStatus = "报价等待处理中！长时间未处理赶紧购买联系方式直接联系吧！点击下方需求链接，购买查看客户电话";
+                }
+                else
+                {
+                    quoteStatus = "报价等待处理中！";
+                }
+            }
+
             <ul class="commonlist" style="">
+
                 <li class="atitle">
+                    <lable style="color: #FD9102;font-size:17px;">@quoteStatus</lable>
+                </li>
+                <li class="atitle">
+                    <br />
                     <a href="/wechat/demand/show/@(Model.Demand.Id)" style="margin-right: 10px;">
                         <lable style="color: #FD9102;font-size:16px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
                     </a>
                 </li>
                 <li>
-                    位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预算：
+                    区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
+
+                </li>
+                <li>
+                    金额预算：
                     @if (Model.Demand.Budget == 0)
                     {
                         <span class="yellow">面议</span>
@@ -277,101 +325,67 @@
                         <span class="yellow">@Model.Demand.Budget</span>
                     }
                 </li>
-                <li>时间：<span class="yellow">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
-
-            </ul>
-
-            <br />
-            var quoteStatus = string.Empty;
-            var isPostedByMySelf = (Model.WeChatUserId == currentWeChatUser.Id);
-            if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (isPostedByMySelf)
-                {
-                    quoteStatus = "该报价已被采纳！赶紧联系需求方洽谈吧！";
-                }
-                else
-                {
-                    quoteStatus = "您已采纳该报价！感情联系资源方洽谈吧！";
-                }
-            }
-            else if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Denied.ToString(), StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (isPostedByMySelf)
-                {
-                    quoteStatus = "该报价已被驳回！预祝下次报价成功！";
-                }
-                else
-                {
-                    quoteStatus = "您已驳回该报价！";
-                }
-            }
-            else
-            {
-                if (isPostedByMySelf)
-                {
-                    quoteStatus = "该报价还未处理！长时间未处理赶紧购买联系方式直接联系吧！";
-                }
-                else
-                {
-                    quoteStatus = "您还未处理该报价，尽快处理吧！";
-                }
-            }
-
-            <ul class="commonlist" style="">
+                <li>需求时间：<span class="yellow">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
                 <li class="atitle">
-                    <lable style="color: #FD9102;font-size:17px;">@quoteStatus</lable>
+                    <br />
+                    <lable>以下为本次报价信息：</lable>
                 </li>
+                <li>
+                    联系姓名：<span class="yellow">@Model.ContactName</span>
+                </li>
+                @*<li>联系电话：<span class="yellow">@Model.ContactPhoneNumber</span>&nbsp;<a href="tel:@Model.ContactPhoneNumber">立即拨打</a></li>*@
+                <li>报价金额：<span class="yellow">@(Model.QuotePrice)元</span></li>
+                <li>报价细则：@Model.QuoteHistories[0].Comments</li>
             </ul>
-            <div id="container">
-                <lable style="font-size:16px;">以下显示所有报价回复记录:</lable>
-                <ul id="chatHistory" class="content">
-                    @if (Model.WeChatUserId == currentWeChatUser.Id)
-                {
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactName</span></li>
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactPhone</span></li>
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@quotePrice</span></li>
-                    }
-                    else
+            @*<div id="container">
+                    <lable style="font-size:16px;">以下显示所有报价回复记录:</lable>
+                    <ul id="chatHistory" class="content">
+                        @if (Model.WeChatUserId == currentWeChatUser.Id)
                     {
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactName</span></li>
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactPhone</span></li>
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@quotePrice</span></li>
-                    }
-
-                    @foreach (var history in Model.QuoteHistories)
-                {
-                    if (!string.IsNullOrWhiteSpace(history.Comments))
-                    {
-                        // Posted by myself
-                        if (history.WeChatUserId == currentWeChatUser.Id)
+                            <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactName</span></li>
+                            <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactPhone</span></li>
+                            <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@quotePrice</span></li>
+                        }
+                        else
                         {
-                                <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@history.Comments</span></li>
-                            }
-                            else
+                            <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactName</span></li>
+                            <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactPhone</span></li>
+                            <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@quotePrice</span></li>
+                        }
+
+                        @foreach (var history in Model.QuoteHistories)
+                    {
+                        if (!string.IsNullOrWhiteSpace(history.Comments))
+                        {
+                            // Posted by myself
+                            if (history.WeChatUserId == currentWeChatUser.Id)
                             {
-                                <li>
-                                    <img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@history.Comments</span>
-                                </li>
+                                    <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@history.Comments</span></li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@history.Comments</span>
+                                    </li>
+                                }
                             }
                         }
-                    }
 
-                </ul>
-            </div>
+                    </ul>
+                </div>*@
             if (!Model.HandleStatus)
             {
                 if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                 {
                     <div class="bottom">
-                        <button type="button" id="btnAccept" class="button btn-green" style="float:left;">接受报价</button>
+                        <button type="button" id="btnAccept" class="button btn-green" style="float:left;">接受报价/报名</button>
                         <button type="button" id="btnReject" class="button btn-gray" style="float:right;">拒绝</button>
                     </div>
                 }
-                <div class="footer">
-                    <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
-                    <button id="btnSend" class="button btn-green">发送</button>
-                </div>
+                @*<div class="footer">
+                        <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
+                        <button id="btnSend" class="button btn-green">发送</button>
+                    </div>*@
             }
         }
         else

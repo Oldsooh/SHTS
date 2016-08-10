@@ -79,23 +79,23 @@
                 <span class="red ch"></span>标题：
             </div>
             <div class="ur_box">
-                <input class="ur_txt1" name="Title" value="@Model.Activity.Title"/>
-                <span style="color: #4193ff;">&nbsp;&nbsp;必填，活动标题，标题党也好.</span>
+                <input class="ur_txt1" name="Title" value="@Model.Activity.Title" maxlength="12"/>
+                <span style="color: #4193ff;">&nbsp;&nbsp;必填，最多不超过12字</span>
             </div>
             <div class="clearfix"></div>
 
 
 
-            <div class="ur_title">
+            @*<div class="ur_title">
                 <span class="red ch"></span>关键字：
             </div>
             <div class="ur_box">
                 <input class="ur_txt1" name="Keywords" value="@Model.Activity.Keywords"/>
                 <span style="color: #4193ff;">&nbsp;&nbsp;多个关键字请用英文半角逗号","隔开，不要使用中文全角逗号“，”哦！</span>
             </div>
-            <div class="clearfix"></div>
+            <div class="clearfix"></div>*@
 
-            <div class="ur_title lh24">
+            @*<div class="ur_title lh24">
                 <span class="red ch"></span>地址：
             </div>
             <div class="ur_box">
@@ -125,7 +125,7 @@
                 <input name="Adress" type="text" class="ur_txt1" value="@Model.Activity.Adress"/>
                 <span style="color: #4193ff;">&nbsp;&nbsp;详细活动地址.</span>
             </div>
-            <div class="clearfix"></div>
+            <div class="clearfix"></div>*@
 
             <div class="ur_title lh24">
                 <span class="red ch"></span>组图：

@@ -21,8 +21,9 @@
         }
 
         .state {
-            font-size: 15px;
+            font-size: 16px;
         }
+
     </style>
 }
 
@@ -32,11 +33,22 @@
         {
             foreach (var demand in Model.Demands)
             {
-                <li class="atitle">
-                    <a href="/wechat/quote/show?demandId=@(demand.Id)" style="margin-right: 10px;">
-                        <lable style="color: #FD9102;">[@(demand.TotalQuoteCount)条报价]</lable>@demand.Title
-                    </a>
-                </li>
+                if (!demand.IsAllQuoteHandled)
+                {
+                    <li class="atitle">
+                        <a href="/wechat/quote/show?demandId=@(demand.Id)" style="margin-right: 10px;">
+                            <lable style="color: #FD9102;">[共@(demand.TotalQuoteCount)条，已处理完毕]</lable>@(demand.Title)
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="atitle">
+                        <a href="/wechat/quote/show?demandId=@(demand.Id)" style="margin-right: 10px;">
+                            <lable style="color: #FD9102;">[共@(demand.TotalQuoteCount)条(<span style="color:red;">@(demand.TotalNotHandledQuoteCount)条未处理</span>)]</lable>@demand.Title
+                        </a>
+                    </li>
+                }
             }
         }
         else
