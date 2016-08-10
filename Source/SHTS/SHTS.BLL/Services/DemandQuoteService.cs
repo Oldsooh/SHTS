@@ -36,7 +36,7 @@ namespace Witbird.SHTS.BLL.Services
         {
             ParameterChecker.Check(quote, "Quote");
             ParameterChecker.Check(quote.ContactName, "Contact Name");
-            ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
+            //ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
             var conn = DBHelper.GetSqlConnection();
 
             try
@@ -94,7 +94,7 @@ namespace Witbird.SHTS.BLL.Services
         {
             ParameterChecker.Check(quote, "Quote");
             ParameterChecker.Check(quote.ContactName, "Contact Name");
-            ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
+            //ParameterChecker.Check(quote.ContactPhoneNumber, "Contact Phone Numer");
             var conn = DBHelper.GetSqlConnection();
 
             try
