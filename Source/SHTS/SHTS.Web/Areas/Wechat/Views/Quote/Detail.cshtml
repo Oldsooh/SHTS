@@ -236,11 +236,11 @@
                     if (msg != '') {
                         alert(msg);
                     }
-                    else {
-                        window.location.href = window.location.href;
-                    }
+
+                    window.location.href = window.location.href;
                 }).error(function () {
                     alert('更新失败！');
+                    window.location.href = window.location.href;
                 });
             }
             function scrollToButtom() {

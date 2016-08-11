@@ -914,7 +914,8 @@ namespace Witbird.SHTS.DAL.Daos
                 Sex = reader["Sex"].DBToInt32(),
                 UserId = reader["UserId"].DBToNullableInt32(),
                 HasSubscribed = reader["HasSubscribed"].DBToBoolean(),
-                HasAuthorized = reader["HasAuthorized"].DBToBoolean()
+                HasAuthorized = reader["HasAuthorized"].DBToBoolean(),
+                LastRequestTimestamp = reader["LastRequestTimestamp"].DBToDateTime()
             };
 
             return weChatUser;

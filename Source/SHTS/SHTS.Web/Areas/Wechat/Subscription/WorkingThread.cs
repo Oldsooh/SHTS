@@ -21,7 +21,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
     /// </summary>
     public class WorkingThread
     {
-        TimeSpan PushInterval = new TimeSpan(0, 30, 0);
+        TimeSpan PushInterval = new TimeSpan(0, 5, 0);
         bool isRunning = true;
         static WorkingThread instance = null;
         DemandSubscriptionService subscriptionService = null;
@@ -113,6 +113,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                     try
                     {
                         LogService.LogWexin("微信推送开始, 当前时间：" + DateTime.Now.ToString(), string.Empty);
+                        
+                        var totalSubscribedUserCount = 0;
+                        var totalPushSuccessfulCount = 0;
 
                         // Get all subscribed details.
                         var subscriptions = subscriptionService.GetSubscriptionsOnlySubscribed();
@@ -127,6 +130,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                 var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
                                 if (wechatUser.IsNotNull())
                                 {
+                                    totalSubscribedUserCount++;
+
                                     // Message cannot be reached after 48 hours later
                                     if (!IsLastRequestTimeExceed48Hours(wechatUser))
                                     {
@@ -143,6 +148,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                             {
                                                 // Update last push time
                                                 subscriptionService.UpdateLastPushTimestamp(wechatUser.Id);
+                                                totalPushSuccessfulCount++;
                                             }
                                         }
 
@@ -159,6 +165,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                 }
                             }
                         }
+
+                        LogService.LogWexin("微信推送结束, 当前时间：" + DateTime.Now.ToString(), "订阅用户共" + totalSubscribedUserCount + "人，成功推送给" + totalPushSuccessfulCount);
                     }
                     catch (Exception ex)
                     {

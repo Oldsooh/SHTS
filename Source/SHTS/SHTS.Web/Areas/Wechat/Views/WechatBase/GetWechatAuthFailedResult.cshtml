@@ -1,0 +1,28 @@
+﻿@model Witbird.SHTS.Model.Demand
+@{
+    ViewBag.Title = "页面请求发生错误";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .commonlist {
+            border: none;
+            width: 95%;
+            margin: 0 auto;
+        }
+    </style>
+}
+
+<div class="main">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+
+        <ul class="commonlist" style="">
+            <li class="atitle">
+                <lable style="color: #FD9102;font-size:16px;">您请求的页面发生错误，请返回原链接重新发起请求。如频繁遇到此错误，请联系活动在线客服。感谢您使用活动在线网！祝您生活愉快！</lable>
+            </li>
+        </ul>
+    </div>
+</div>

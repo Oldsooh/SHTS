@@ -2,7 +2,7 @@
 AS
 BEGIN
 
-SELECT * FROM dbo.WeChatUser WHERE HasSubscribed = 1;
+SELECT * FROM dbo.WeChatUser WHERE HasSubscribed = 1 AND LastRequestTimestamp IS NOT NULL;
 
 END
 GO
