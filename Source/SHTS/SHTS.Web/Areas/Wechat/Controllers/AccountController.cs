@@ -138,6 +138,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 SinglePageService singlePageService = new SinglePageService();
                 model.RegNotice = singlePageService.GetSingPageById("94");
+                if (CurrentWeChatUser.UserId.HasValue && CurrentUser != null)
+                {
+                    model.ErrorMsg = "UserLoggedIn";
+                }
             }
             catch (Exception ex)
             {

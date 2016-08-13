@@ -1,6 +1,6 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
 @{
-    ViewBag.Title = "需求信息推荐列表";
+    ViewBag.Title = "今日需求推荐列表";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head
@@ -18,7 +18,7 @@
     @if (Model.Demands != null && Model.Demands.Count > 0)
     {
         <div style="padding-left:10px;font-size:16px; margin:0 auto;    background: #FFF;">
-                <span class="yellow2" style="font-weight: bold;">您本次一共收到@(Model.Demands.Count)条需求推荐</span>
+                <span class="yellow2" style="font-weight: bold;">今日一共有@(Model.Demands.Count)条需求推荐</span>
         </div>
 
         foreach (var item in Model.Demands)

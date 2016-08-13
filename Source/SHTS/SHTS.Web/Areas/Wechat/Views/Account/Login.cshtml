@@ -10,14 +10,27 @@
     <link href="~/content/css/login.css" rel="stylesheet" />
     <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
     <style type="text/css">
-        .reg-form .cell label { position: absolute; font-size: 10px; color: red !important; top: 30px; padding-left: 12px; }
-        .wrap { height: auto;width:100%;}
-        .register-box { position: initial; }
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+            width: 100%;
+        }
+
+        .register-box {
+            position: initial;
+        }
     </style>
 }
 <div class="wrap">
     <div class="register-box" style="height: 376px; width: 100%; padding-top:15px; ">
-        <form class="reg-form" id="js-form-mobile" method="post" action="#">
+        <form class="reg-form" id="js-form-mobile" method="post" action="#" style="height: auto;">
             <div class="cell">
                 <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
             </div>
@@ -29,8 +42,9 @@
                 <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6" />
                 <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); " />
             </div>
+
             <div class="bottom">
-                <button type="submit" id="js_mobile_btn" style="width:100%;" class="button btn-green">绑定账号</button>
+                <button type="submit" id="btnLogin" style="width:100%;" class="button btn-green">绑定账号</button>
             </div>
             <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                 <p>
@@ -47,20 +61,24 @@
     <script src="~/Content/js/Account/login.js"></script>
     <script>
         $(function () {
-            $("#wechat-js-mobile_btn").click(function () {
-                //检查是否已绑定账号
-                var loggedusername = $('#loggedusername').val();
-                if (loggedusername != "") {
-                    alert("该微信号当前已绑定会员账号：" + loggedusername + ", 请先解除绑定重试。");
+
+            //检查是否已绑定账号
+            var loggedusername = $('#loggedusername').val();
+            if (loggedusername != "" & $("#errormsg").val() == "") {
+                if (confirm("该微信号当前已绑定会员账号：" + loggedusername + "，如需绑定新账号请先解除旧帐号绑定。点击确定按钮立即解除旧帐号绑定！")) {
                     window.location = "/wechat/account/logout";
                 }
                 else {
-                    $("#js-form-mobile").validate({
-                        submitHandler: function (form) {
-                            form.submit();
-                        }
-                    });
+                    // nothing
                 }
+            }
+
+            $("#btnLogin").click(function () {
+                $("#js-form-mobile").validate({
+                    submitHandler: function (form) {
+                        form.submit();
+                    }
+                });
             });
         });
     </script>

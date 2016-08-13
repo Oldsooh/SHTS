@@ -21,7 +21,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
     /// </summary>
     public class WorkingThread
     {
-        TimeSpan PushInterval = new TimeSpan(0, 5, 0);
+        TimeSpan PushInterval = new TimeSpan(0, 30, 0);
         bool isRunning = true;
         static WorkingThread instance = null;
         DemandSubscriptionService subscriptionService = null;
@@ -76,7 +76,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                                     var isSendSuccessFul = false;
                                     if (demands.HasItem())
                                     {
-                                        var articles = ConstructArticles(demands, lastPushTime);
+                                        var articles = ConstructArticles(demands);
                                         isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
                                     }
                                     else
@@ -141,7 +141,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
 
                                         if (demands.HasItem())
                                         {
-                                            var articles = ConstructArticles(demands, lastPushTime);
+                                            var articles = ConstructArticles(demands);
                                             var isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
 
                                             if (isSendSuccessFul)
@@ -166,7 +166,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                             }
                         }
 
-                        LogService.LogWexin("微信推送结束, 当前时间：" + DateTime.Now.ToString(), "订阅用户共" + totalSubscribedUserCount + "人，成功推送给" + totalPushSuccessfulCount);
+                        LogService.LogWexin("微信推送结束, 当前时间：" + DateTime.Now.ToString(), 
+                            "订阅用户共" + totalSubscribedUserCount + "人，成功推送给" + totalPushSuccessfulCount + "人");
                     }
                     catch (Exception ex)
                     {
@@ -199,7 +200,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
             return (DateTime.Now - wechatUser.LastRequestTimestamp.Value).TotalHours >= 47;
         }
         
-        private List<Article> ConstructArticles(List<Demand> demands, DateTime lastPushTime)
+        private List<Article> ConstructArticles(List<Demand> demands)
         {
             List<Article> articles = new List<Article>();
 
@@ -209,9 +210,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                 var viewMore = new Article()
                 {
                     Description = "查看更多需求信息",
-                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
-                    Title = "您有新的" + demands.Count + "条需求推荐信息，以下共显示7条，点击查看所有推荐",
-                    Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/subscribe/viewall/?ticks=" + lastPushTime.Ticks.ToString()
+                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribed.jpg",
+                    Title = "您有新的" + demands.Count + "条需求推荐信息，以下共显示7条。点击查看今日所有推荐",
+                    Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/subscribe/viewall/?ticks=" + DateTime.Today.Ticks.ToString()
                 };
 
                 articles.Add(viewMore);
@@ -222,9 +223,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Subscription
                 var viewMore = new Article()
                 {
                     Description = "",
-                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribedDemandBackground.jpg",
-                    Title = "您有新的" + demands.Count + "条需求推荐信息，立即查看",
-                    Url = string.Empty
+                    PicUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/content/images/subscribed.jpg",
+                    Title = "您有新的" + demands.Count + "条需求推荐信息。点击查看今日所有推荐",
+                    Url = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/subscribe/viewall/?ticks=" + DateTime.Today.Ticks.ToString()
                 };
 
                 articles.Add(viewMore);

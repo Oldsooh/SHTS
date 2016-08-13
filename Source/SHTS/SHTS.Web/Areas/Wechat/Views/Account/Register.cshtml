@@ -191,7 +191,7 @@
                         <button type="submit" id="js_mobile_btn" class="button btn-green">立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
-                        <p>已有账号<a href="/wechat/account/login" style="color: #0099FF;">马上绑定</a>
+                        <p>已有账号<a href="/wechat/account/login" style="color: #0099FF;">立即绑定</a>
                         </p>
                     </div>
                 </form>
@@ -246,7 +246,7 @@
                         <button type="submit" id="js_mail_btn" class="button btn-green">立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
-                        <p>已有账号<a href="/Wechat/account/login" style="color: #0099FF;">马上绑定</a>
+                        <p>已有账号<a href="/Wechat/account/login" style="color: #0099FF;">立即绑定</a>
                         </p>
                     </div>
                 </form>
@@ -321,12 +321,24 @@
                         window.location = "/wechat/account/login";
                     }
                     else {
-                        window.location = "/wechat/index/index";
+                        window.location = "/wechat/user/index";
                     }
                 }
                 else {
-                    alert($("#errormsg").val());
+
+                    if (msg == "UserLoggedIn") {
+                        if (confirm("您已经注册过活动在线网会员并绑定了该微信号，是否立即前往查看？")) {
+                            window.location = "/Wechat/user/ViewUser";
+                        }
+                        else {
+                            // nothing to do.
+                        }
+                    }
+                    else {
+                        alert($("#errormsg").val());
+                    }
                 }
+                $("#errormsg").val('');
             }
     });
     </script>
