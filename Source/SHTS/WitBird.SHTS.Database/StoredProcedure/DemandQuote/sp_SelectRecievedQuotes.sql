@@ -14,7 +14,7 @@ INSERT INTO #Demands
 SELECT DISTINCT demand.Id AS DemandId FROM Demand demand 
 INNER JOIN WeChatUser wechatUser ON wechatUser.Id = @WeChatUserId AND demand.UserId = wechatUser.UserId
 INNER JOIN DemandQuote quote ON quote.DemandId = demand.Id AND quote.IsActive = 1
-WHERE demand.IsActive = 1 AND demand.[Status] = 1
+WHERE demand.IsActive = 1 --AND demand.[Status] = 1
 
 -- total count
 SELECT COUNT(1) FROM #Demands
