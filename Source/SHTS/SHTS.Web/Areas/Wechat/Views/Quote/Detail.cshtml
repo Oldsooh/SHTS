@@ -328,13 +328,13 @@
                 <li>需求时间：<span class="yellow">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
                 <li class="atitle">
                     <br />
-                    <lable>以下为本次报价信息：</lable>
+                    <lable>以下为本次报价/报名信息：</lable>
                 </li>
                 <li>
                     联系姓名：<span class="yellow">@Model.ContactName</span>
                 </li>
                 @*<li>联系电话：<span class="yellow">@Model.ContactPhoneNumber</span>&nbsp;<a href="tel:@Model.ContactPhoneNumber">立即拨打</a></li>*@
-                <li>报价金额：<span class="yellow">@(Model.QuotePrice)元</span></li>
+                <li>报价金额/人数：<span class="yellow">@((int)Model.QuotePrice)元/人</span></li>
                 <li>报价细则：@Model.QuoteHistories[0].Comments</li>
             </ul>
             @*<div id="container">

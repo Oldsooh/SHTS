@@ -9,6 +9,7 @@ using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Areas.Wechat.Models;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -59,7 +60,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else if (quotePrice < 0)
                 {
-                    errorMessage = "请输入正确的报价金额！";
+                    errorMessage = "请输入正确的报价金额或报名人数！";
                 }
                 else
                 {
@@ -90,8 +91,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         quote = quoteService.NewQuoteRecord(quote);
                         quoteId = quote.QuoteId;
 
-                        var message = quote.ContactName + "报价" + quote.QuotePrice + "元";
                         // Sends notification to wechat client.
+                        var message = quote.ContactName + "报价/报名" + (int)quote.QuotePrice + "元/人";
                         Task.Factory.StartNew(() =>
                         {
                             var toWeChatUser = userService.GetWeChatUser(demand.UserId);
@@ -240,6 +241,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             if (quote.IsNotNull())
             {
                 quote.Demand = demandService.GetDemandById(quote.DemandId);
+                foreach (var history in quote.QuoteHistories)
+                {
+                    history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
+                }
             }
 
             return View(quote);
@@ -295,10 +300,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     if (string.IsNullOrEmpty(errorMessage))
                     {
-                        var message = "您的报价已被";
+                        var message = "您的报价/报名已被";
                         if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
                         {
-                            message += "采纳，赶紧联系洽谈！";
+                            message += "采纳，立即点击下面链接联系客户";
                         }
                         else
                         {
@@ -393,7 +398,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             try
             {
-                var viewUrl = "您收到了新的报价提醒:{0}\r\n <a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
+                var viewUrl = "您收到了新的报价/报名提醒:{0}\r\n <a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
             "/wechat/quote/detail?quoteId={1}\">点击这里，立即查看</a>";
 
                 WeChatClient.Sender.SendText(openId, string.Format(viewUrl, message, quoteId));

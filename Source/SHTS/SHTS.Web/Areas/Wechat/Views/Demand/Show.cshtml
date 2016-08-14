@@ -23,10 +23,11 @@
             border: 1px #ffd800 dashed;
             background: #fbdddd;
             color: #2577e3;
+            text-align: center;
         }
 
             .buypanel button {
-                width: 48%;
+                width: 100%;
                 height: 30px;
                 border-radius: 15px;
                 outline: none;
@@ -66,71 +67,73 @@
                 @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)
             </span>
         </li>
-        @{
-            if (!Model.HasCurrentWeChatUserBought)
-            {
-                <li>
-                    @if (Model.Demand.IsCompleted)
+        @if (Model.HasCurrentWeChatUserBought)
+        {
+            <li>
+                详细地址：
+                <span class="yellow2">@Model.Demand.Address</span>
+            </li>
+            <li>
+                联系电话：
+                <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
+            </li>
+            <li>
+                QQ/微信：
+                <span class="yellow2">@Model.Demand.QQWeixin</span>
+            </li>
+            <li>
+                电子邮箱：
+                <span class="yellow2">@Model.Demand.Email</span>
+            </li>
+            <li>
+                <div class="buypanel" style="background:none;border:none;">
+                    @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                     {
-                        <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                            <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
-                            <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
-                            ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
-                            <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
-                        </div>
+                        <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
                     }
                     else
                     {
-                        <div class="buypanel">
-                            <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商，还在等待什么！立即获取用户联系方式吧！第一手联系客户，更多的合作可能！仅需
-                            <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
-                            ，戳下面链接立即获取！<br />
-                            @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
-                            @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
-                            <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
-                            <button type="button" class="button btn-green"  onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
-                        </div>
+                        <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                     }
-                </li>
-            }
-            else
-            {
-                <li>
-                    详细地址：
-                    <span class="yellow2">@Model.Demand.Address</span>
-                </li>
-                <li>
-                    联系电话：
-                    <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
-                </li>
-                <li>
-                    QQ/微信：
-                    <span class="yellow2">@Model.Demand.QQWeixin</span>
-                </li>
-                <li>
-                    电子邮箱：
-                    <span class="yellow2">@Model.Demand.Email</span>
-                </li>
-                <li>
-                    <div class="buypanel" style="background:none;border:none;">
-                        @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
-                        {
-                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
-                        }
-                    </div>
-                </li>
-            }
+                </div>
+            </li>
         }
         <li>需求内容：</li>
     </ul>
     <div class="active_info">
         @(new HtmlString(Model.Demand.ContentText))
     </div>
-    <div style="clear: both; height: 10px;"></div>
+    @if (!Model.HasCurrentWeChatUserBought)
+    {<ul class="details">
+        <li>
+            @if (Model.Demand.IsCompleted)
+            {
+                <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
+                    <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
+                    ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
+                    <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
+                </div>
+            }
+            else
+            {
+                <div class="buypanel">
+                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！<br />
+                    您可以免费提供您的报价/报名信息:
+                    <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
+                    <br />
+                    <br />
+                    客户接受报价/报名后点击下面按钮获取联系方式，也可以直接联系客户！@*仅需<span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>！*@
+                    <br />
+                    @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
+                    @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
+                    <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+                </div>
+            }
+        </li>
+    </ul>
+    }
+<div style="clear: both; height: 10px;"></div>
 </div>
 <script>
     function buyDemand(demandId) {

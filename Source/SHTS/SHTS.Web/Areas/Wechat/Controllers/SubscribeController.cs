@@ -32,7 +32,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 var subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
                 if (subscription.IsNotNull())
                 {
-                    var lastPushTime = new DateTime(ticks);
+                    //var lastPushTime = new DateTime(ticks);
+                    var lastPushTime = DateTime.Today;// 今日所有推荐
 
                     // Gets demands by user's subscription details.
                     var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
