@@ -129,7 +129,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             {
                 if (!string.IsNullOrEmpty(demand.Title) &&
                     !string.IsNullOrEmpty(demand.ContentText) &&
-                    demand.CategoryId != 0)
+                    demand.ResourceType != 0)
                 {
                     User user = Session[USERINFO] as User;
                     demand.UserId = user.UserId;

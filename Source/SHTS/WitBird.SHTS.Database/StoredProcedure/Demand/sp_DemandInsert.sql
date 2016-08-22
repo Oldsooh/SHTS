@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE sp_DemandInsert
 	@UserId			int,
-	@CategoryId		int,
+	@ResourceType	int,
 	@Title			nvarchar(100),
 	@Description	nvarchar(300),
 	@ContentStyle	text,
@@ -21,7 +21,7 @@ AS
 BEGIN
 	Insert into Demand
 	([UserId]
-      ,[CategoryId]
+      ,ResourceType
       ,[Title]
       ,[Description]
       ,[ContentStyle]
@@ -44,7 +44,7 @@ BEGIN
 	  values
 	  (
 	  @UserId,
-	  @CategoryId,
+	  @ResourceType,
 	  @Title,
 	  @Description,
 	  @ContentStyle,

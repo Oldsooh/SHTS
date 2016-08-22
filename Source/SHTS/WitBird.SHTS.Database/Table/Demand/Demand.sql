@@ -2,7 +2,8 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	[UserId] INT NOT NULL, 
-    [CategoryId] INT NOT NULL,
+    [ResourceType] INT NOT NULL,
+	[ResourceTypeId] INT NULL,
 	[Title] NVARCHAR(100) NOT NULL, 
     [Description] NVARCHAR(300) NULL, 
     [ContentStyle] TEXT NULL, 

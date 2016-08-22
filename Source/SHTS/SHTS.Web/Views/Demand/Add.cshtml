@@ -5,6 +5,12 @@
 }
 @section head
 {
+    <style type="text/css">
+    .hd {
+        display: none;
+    }
+</style>
+
     <script src="/Content/upload/jquery-1.4.2.min.js"></script>
     <script src="/Content/js/city.js"></script>
 
@@ -56,12 +62,35 @@
         }
 
         function demandCategoryChange() {
-            var categoryId = $("#categoryId").val();
-            if (categoryId == '2') {//2为演义人员
+            var ResourceType = $("#ResourceType").val();
+            if (ResourceType == '2') {//2为演义人员
                 document.getElementById("peopleNumberBox").style.display = "block";
             }
             else {
                 document.getElementById("peopleNumberBox").style.display = "none";
+            }
+            changeResType(ResourceType);
+        }
+        function changeResType(typeId) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (typeId) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
             }
         }
     </script>
@@ -78,28 +107,33 @@
         </div>
         <form id="addform" method="post">
 
-            <div class="ur_title lh24">类别：<span class="red ch">*</span></div>
+            <div class="ur_title lh24">需求类别：<span class="red ch">*</span></div>
             <div class="ur_box">
-                <select name="categoryId" id="categoryId" onchange="demandCategoryChange()">
-                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                <select name="ResourceType" id="ResourceType" onchange="demandCategoryChange()">
+                    @foreach (var item in Html.ResourceList())
                     {
-                        foreach (var item in Model.DemandCategories)
-                        {
-                            if (item.IsActive)
-                            {
-                        <option value="@item.Id">@item.Name</option>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <option value="">暂无类别</option>
+                        <option value="@item.Value">@item.Text</option>
                     }
                 </select>
             </div>
             <div class="clearfix"></div>
 
-
+            <div class="ur_title">
+                需求类型：<span class="red ch">*</span>
+            </div>
+            <div class="ur_box sp">
+                @Html.DropDownListFor(model => model.SpaceTypeId, Html.SpaceTypeList(), "请选择需求类型")
+            </div>
+            <div class="ur_box ac hd">
+                @Html.DropDownListFor(model => model.ActorTypeId, Html.ActorTypeList(), "请选择需求类型")
+            </div>
+            <div class="ur_box eq hd">
+                @Html.DropDownListFor(model => model.EquipTypeId, Html.EquipTypeList(), "请选择需求类型")
+            </div>
+            <div class="ur_box ot hd">
+                @Html.DropDownListFor(model => model.OtherTypeId, Html.OtherTypeList(), "请选择需求类型")
+            </div>
+            <div class="clearfix"></div>
 
             <div class="ur_title">标题：<span class="red ch">*</span></div>
             <div class="ur_box">
@@ -107,9 +141,6 @@
                 <span style="color: #ff0000;">&nbsp;&nbsp; 必填</span><span style="color: #4193ff;">&nbsp;&nbsp;请认真填写，方便提供商看到.</span>
             </div>
             <div class="clearfix"></div>
-
-
-
 
             <div class="ur_title lh24">地区：</div>
             <div class="ur_box">
@@ -136,14 +167,6 @@
             </div>
             <div class="clearfix"></div>
 
-
-
-
-
-
-
-
-
             <div class="ur_title">起止时间：<span class="red ch">*</span></div>
             <div class="ur_box">
                 <input class="ur_txt1 Wdate" name="startTime" maxlength="50" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="height: 32px; width: 130px; border: #dddddd 1px solid;" />
@@ -153,17 +176,12 @@
             </div>
             <div class="clearfix"></div>
 
-
-
-
             <div class="ur_title">联系电话：<span class="red ch">*</span></div>
             <div class="ur_box">
                 <input class="ur_txt1" name="phone" maxlength="50" />
                 <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>
             </div>
             <div class="clearfix"></div>
-
-
 
             <div class="ur_title">QQ/微信：<span class="red ch"></span></div>
             <div class="ur_box">
@@ -172,16 +190,12 @@
             </div>
             <div class="clearfix"></div>
 
-
-
             <div class="ur_title">电子邮箱：<span class="red ch"></span></div>
             <div class="ur_box">
                 <input class="ur_txt1" name="email" maxlength="50" />
                 <span style="color: #4193ff;">&nbsp;&nbsp; 选填</span>
             </div>
             <div class="clearfix"></div>
-
-
 
             <div class="ur_title">预算金额：<span class="red ch">*</span></div>
             <div class="ur_box">
@@ -190,19 +204,12 @@
             </div>
             <div class="clearfix"></div>
 
-
-
-
-
             <div class="ur_title"><span class="red ch"></span>需求时长：</div>
             <div class="ur_box">
                 <input class="ur_txt1" name="timeLength" maxlength="50" />
                 <span style="color: #4193ff;">&nbsp;&nbsp; 如：2天、2-3周、约1个月、时长不定......</span>
             </div>
             <div class="clearfix"></div>
-
-
-
 
             <div id="peopleNumberBox" style="display: none;">
                 <div class="ur_title"><span class="red ch"></span>人员数量：</div>
@@ -212,12 +219,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-
-
-
-
-
-
+            
             @*<div class="ur_title lh24">简短描述：<span class="red ch">*</span></div>
             <div class="ur_box">
                 <textarea class="ur_tra" name="description" maxlength="300" rows="5"></textarea>
@@ -243,8 +245,6 @@
             </div>
             <div class="clearfix"></div>
 
-
-
             <div class="ur_tj">
                 <input type="button" class="tjzl_btn" value="发 布" onclick="addDemand()" />
                 <span class="ur_box_radio" style="margin-left: 10px;">
@@ -253,8 +253,6 @@
                 </span>
             </div>
             <div class="clearfix"></div>
-
-
 
             <div class="ur_title lh24"></div>
             <div class="ur_box">

@@ -81,6 +81,9 @@
         .webuploader-element-invisible {
             position: inherit !important;
         }
+        .hd {
+        display: none;
+    }
     </style>
 
     <script type="text/javascript">
@@ -124,12 +127,35 @@
         }
 
         function demandCategoryChange() {
-            var categoryId = $("#categoryId").val();
-            if (categoryId == '2') {//2为演义人员
+            var ResourceType = $("#ResourceType").val();
+            if (ResourceType == '2') {//2为演义人员
                 document.getElementById("peopleNumberBox").style.display = "block";
             }
             else {
                 document.getElementById("peopleNumberBox").style.display = "none";
+            }
+            changeResType(ResourceType);
+        }
+        function changeResType(typeId) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (typeId) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
             }
         }
     </script>
@@ -154,20 +180,39 @@
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
         <form action="/wechat/demand/add" id="addForm" class="reg-form" method="post">
             <div class="cell" style="padding-top:10px;">
-                <select name="CategoryId" class="text" id="categoryId" onchange="demandCategoryChange()" style="width:328px">
-                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
+                <select name="ResourceType" class="text" id="ResourceType" onchange="demandCategoryChange()" style="width:160px">
+                    <option value="-1">请选择需求类别</option>
+                    @foreach (var item in Html.ResourceList())
                     {
-                        foreach (var item in Model.DemandCategories)
-                        {
-                            if (item.IsActive)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        }
+                        <option value="@item.Value">@item.Text</option>
                     }
-                    else
+                </select>
+                <select name="SpaceTypeId" class="text sp hd" id="SpaceTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.SpaceTypeList())
                     {
-                        <option value="">---</option>
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="ActorTypeId" class="text ac hd" id="ActorTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.ActorTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="EquipTypeId" class="text eq hd" id="EquipTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.EquipTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="OtherTypeId" class="text ot hd" id="OtherTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.OtherTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
                     }
                 </select>
             </div>
@@ -219,7 +264,15 @@
                 <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
             </div>
             <div class="cell" style="height: 200px;">
-                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 180px; width: 94%;"></textarea>
+                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 200px; width: 94%;">
+寻找
+
+时间：
+
+地点：
+
+详细需求：
+                </textarea>
             </div>
             <div class="bottom">
                 <button type="button" id="js-mobile_btn" class="button btn-green" onclick="addDemand()">发布需求</button>

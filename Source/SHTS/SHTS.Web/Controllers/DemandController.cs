@@ -18,7 +18,7 @@ namespace Witbird.SHTS.Web.Controllers
         DemandService demandService = new DemandService();
         CityService cityService = new CityService();
 
-        public ActionResult Index(string page, string category, string area, string starttime, string endtime, string startbudget, string endbudget)
+        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, string area, string starttime, string endtime, string startbudget, string endbudget)
         {
             DemandModel model = new DemandModel();
 
@@ -33,9 +33,22 @@ namespace Witbird.SHTS.Web.Controllers
                 Int32.TryParse(page, out tempPage);
             }
 
+            // 每次更换需求列别需要重置需求类型选中的值
+            if (string.IsNullOrEmpty(ResourceType))
+            {
+                ResourceTypeId = string.Empty;
+            }
+            if (!(LastResourceType ?? string.Empty).Equals(ResourceType, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ResourceTypeId = string.Empty;
+            }
+            LastResourceType = ResourceType;
+
             //-------------------------------初始化页面参数（不含分页）-----------------------
             model.PageIndex = tempPage;
-            model.Category = category ?? string.Empty;
+            model.LastResourceType = LastResourceType ?? string.Empty;
+            model.ResourceType = ResourceType ?? string.Empty;
+            model.ResourceTypeId = ResourceTypeId ?? string.Empty;
             model.City = city;
             model.Area = area ?? string.Empty;
             model.StartBudget = startbudget ?? string.Empty;
@@ -48,17 +61,14 @@ namespace Witbird.SHTS.Web.Controllers
             DemandParameters parameters = new DemandParameters();
             parameters.PageCount = 10;//每页显示10条 (与下面保持一致)
             parameters.PageIndex = tempPage;
-            parameters.Category = model.Category;
+            parameters.ResourceType = model.ResourceType;
+            parameters.ResourceTypeId = model.ResourceTypeId;
             parameters.City = model.City;
             parameters.Area = model.Area;
             parameters.StartBudget = model.StartBudget;
             parameters.EndBudget = model.EndBudget;
             parameters.StartTime = model.StartTime;
             parameters.EndTime = model.EndTime;
-
-
-            //需求类型
-            model.DemandCategories = demandManager.GetDemandCategories();
 
             if (!string.IsNullOrEmpty(city))
             {
@@ -97,15 +107,14 @@ namespace Witbird.SHTS.Web.Controllers
                 return Redirect("/account/login");
             }
             DemandModel model = new DemandModel();
-            model.DemandCategories = demandManager.GetDemandCategories();
             model.Provinces = cityService.GetProvinces(true);
             return View(model);
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Add(string categoryId, string title, //string description,
-            string contentStyle,
+        public ActionResult Add(int ResourceType, int? SpaceTypeId, int? ActorTypeId, int? EquipTypeId, int? OtherTypeId,
+            string title, string contentStyle, //string description,
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string timeLength, string peopleNumber, string budget)
         {
@@ -117,8 +126,7 @@ namespace Witbird.SHTS.Web.Controllers
             }
             else
             {
-                if (!string.IsNullOrEmpty(categoryId) &&
-                    !string.IsNullOrEmpty(title) &&
+                if (!string.IsNullOrEmpty(title) &&
                     //!string.IsNullOrEmpty(description) &&
                     !string.IsNullOrEmpty(contentStyle) &&
                     !string.IsNullOrEmpty(startTime) &&
@@ -129,7 +137,26 @@ namespace Witbird.SHTS.Web.Controllers
                     user = Session[USERINFO] as User;
                     Demand demand = new Demand();
                     demand.UserId = user.UserId;
-                    demand.CategoryId = Int32.Parse(categoryId);
+                    demand.ResourceType = ResourceType;
+
+                    switch(demand.ResourceType)
+                    {
+                        case 1:
+                            demand.ResourceTypeId = SpaceTypeId;
+                            break;
+                        case 2:
+                            demand.ResourceTypeId = ActorTypeId;
+                            break;
+                        case 3:
+                            demand.ResourceTypeId = EquipTypeId;
+                            break;
+                        case 4:
+                            demand.ResourceTypeId = OtherTypeId;
+                            break;
+                        default:
+                            break;
+                    }
+
                     demand.Title = title;
                     demand.Description = string.Empty;//description;
                     demand.ContentStyle = contentStyle;
@@ -182,7 +209,7 @@ namespace Witbird.SHTS.Web.Controllers
             user = Session[USERINFO] as User;
 
             DemandModel model = new DemandModel();
-            model.DemandCategories = demandManager.GetDemandCategories();
+            
 
             //页码，总数重置
             int page = 1;
@@ -246,7 +273,6 @@ namespace Witbird.SHTS.Web.Controllers
 
             DemandModel model = new DemandModel();
 
-            model.DemandCategories = demandManager.GetDemandCategories();
             model.Provinces = cityService.GetProvinces(true);//省
 
             if (!string.IsNullOrEmpty(id))
@@ -285,7 +311,9 @@ namespace Witbird.SHTS.Web.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Edit(string id, string categoryId, string title, string description, string contentStyle,
+        public ActionResult Edit(int ResourceType, int? SpaceTypeId, int? ActorTypeId, int? EquipTypeId, int? OtherTypeId,
+            string id, string title, //string description,
+            string contentStyle,
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string timeLength, string peopleNumber, string budget)
         {
@@ -298,9 +326,9 @@ namespace Witbird.SHTS.Web.Controllers
             else
             {
                 if (!string.IsNullOrEmpty(id) &&
-                    !string.IsNullOrEmpty(categoryId) &&
+                    //!string.IsNullOrEmpty(ResourceType) &&
                     !string.IsNullOrEmpty(title) &&
-                    !string.IsNullOrEmpty(description) &&
+                    //!string.IsNullOrEmpty(description) &&
                     !string.IsNullOrEmpty(contentStyle) &&
                     !string.IsNullOrEmpty(startTime) &&
                     !string.IsNullOrEmpty(endTime) &&
@@ -310,9 +338,28 @@ namespace Witbird.SHTS.Web.Controllers
                     Demand demand = demandManager.GetDemandById(Int32.Parse(id));
                     if (demand.UserId == user.UserId)
                     {
-                        demand.CategoryId = Int32.Parse(categoryId);
+                        demand.ResourceType = ResourceType;
+
+                        switch (demand.ResourceType)
+                        {
+                            case 1:
+                                demand.ResourceTypeId = SpaceTypeId;
+                                break;
+                            case 2:
+                                demand.ResourceTypeId = ActorTypeId;
+                                break;
+                            case 3:
+                                demand.ResourceTypeId = EquipTypeId;
+                                break;
+                            case 4:
+                                demand.ResourceTypeId = OtherTypeId;
+                                break;
+                            default:
+                                break;
+                        }
+
                         demand.Title = title;
-                        demand.Description = description;
+                        demand.Description = string.Empty;//description;
                         demand.ContentStyle = contentStyle;
                         demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
                         demand.Province = string.IsNullOrEmpty(provinceId) ? string.Empty : provinceId;

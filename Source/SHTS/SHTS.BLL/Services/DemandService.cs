@@ -36,24 +36,6 @@ namespace Witbird.SHTS.BLL.Services
                 int tempCount = 0;
                 result = demandDao.SelectDemands(pageCount, pageIndex, out tempCount, conn);
                 count = tempCount;
-                if (result != null && result.Count > 0)
-                {
-                    List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
-                    if (categories != null && categories.Count > 0)
-                    {
-                        foreach (var demand in result)
-                        {
-                            foreach (var category in categories)
-                            {
-                                if (demand.CategoryId == category.Id)
-                                {
-                                    demand.CategoryName = category.Name;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
             }
             catch (Exception e)
             {
@@ -82,24 +64,6 @@ namespace Witbird.SHTS.BLL.Services
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByCity(pageCount, pageIndex, city, out tempCount, conn);
                 count = tempCount;
-                if (result != null && result.Count > 0)
-                {
-                    List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
-                    if (categories != null && categories.Count > 0)
-                    {
-                        foreach (var demand in result)
-                        {
-                            foreach (var category in categories)
-                            {
-                                if (demand.CategoryId == category.Id)
-                                {
-                                    demand.CategoryName = category.Name;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
             }
             catch (Exception e)
             {
@@ -127,7 +91,6 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByParameters(parameters, out tempCount, conn);
-                FillDemandCategoryName(result, conn);
                 count = tempCount;
             }
             catch (Exception e)
@@ -212,28 +175,6 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
-        private void FillDemandCategoryName(List<Demand> result, System.Data.SqlClient.SqlConnection conn)
-        {
-            if (result != null && result.Count > 0)
-            {
-                List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
-                if (categories != null && categories.Count > 0)
-                {
-                    foreach (var demand in result)
-                    {
-                        foreach (var category in categories)
-                        {
-                            if (demand.CategoryId == category.Id)
-                            {
-                                demand.CategoryName = category.Name;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// 根据用户ID查询需求列表
         /// </summary>
@@ -253,7 +194,6 @@ namespace Witbird.SHTS.BLL.Services
                 conn.Open();
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByUserId(userId, pageCount, pageIndex, out tempCount, conn);
-                FillDemandCategoryName(result, conn);
                 count = tempCount;
             }
             catch (Exception e)
@@ -288,24 +228,6 @@ namespace Witbird.SHTS.BLL.Services
                 int tempCount = 0;
                 result = demandDao.SelectDemandsByCity(pageCount, pageIndex, city, out tempCount, conn);
                 count = tempCount;
-                if (result != null && result.Count > 0)
-                {
-                    List<DemandCategory> categories = demandDao.SelectDemandCategories(conn);
-                    if (categories != null && categories.Count > 0)
-                    {
-                        foreach (var demand in result)
-                        {
-                            foreach (var category in categories)
-                            {
-                                if (demand.CategoryId == category.Id)
-                                {
-                                    demand.CategoryName = category.Name;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
             }
             catch (Exception e)
             {

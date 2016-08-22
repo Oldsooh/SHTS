@@ -46,7 +46,8 @@ namespace Witbird.SHTS.DAL.Daos
             object Province = DBNull.Value;
             object City = DBNull.Value;
             object Area = DBNull.Value;
-            object Category = DBNull.Value;
+            object ResourceType = DBNull.Value;
+            object ResourceTypeId = DBNull.Value;
             object StartBudget = DBNull.Value;
             object EndBudget = DBNull.Value;
             object StartTime = DBNull.Value;
@@ -65,9 +66,13 @@ namespace Witbird.SHTS.DAL.Daos
             {
                 Area = parameters.Area;
             }
-            if (!string.IsNullOrEmpty(parameters.Category))
+            if (!string.IsNullOrEmpty(parameters.ResourceType))
             {
-                Category = parameters.Category;
+                ResourceType = parameters.ResourceType;
+            }
+            if (!string.IsNullOrEmpty(parameters.ResourceTypeId))
+            {
+                ResourceTypeId = parameters.ResourceTypeId;
             }
             if (!string.IsNullOrEmpty(parameters.StartBudget))
             {
@@ -94,12 +99,14 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@Province", Province),
                 new SqlParameter("@City", City),
                 new SqlParameter("@Area", Area),
-                new SqlParameter("@Category", Category),
+                new SqlParameter("@ResourceType", ResourceType),
+                new SqlParameter("@ResourceTypeId", ResourceTypeId),
                 new SqlParameter("@StartBudget", StartBudget),
                 new SqlParameter("@EndBudget", EndBudget),
                 new SqlParameter("@StartTime", StartTime),
                 new SqlParameter("@EndTime", EndTime)
             };
+
             Dictionary<string, DataTable> dts;
             dts = DBHelper.GetMuiltiDataFromDB(conn, sp_DemandSelectByParameters, sqlParameters);
             count = Int32.Parse(dts["0"].Rows[0][0].ToString());
@@ -295,7 +302,8 @@ namespace Witbird.SHTS.DAL.Daos
             SqlParameter[] sqlParameters = new SqlParameter[]
             {
                 new SqlParameter("@Id", demand.Id),
-                new SqlParameter("@CategoryId", demand.CategoryId),
+                new SqlParameter("@ResourceType", demand.ResourceType),
+                new SqlParameter("@ResourceTypeId", demand.ResourceTypeId??-1),
                 new SqlParameter("@Title", demand.Title),
                 new SqlParameter("@Description", Description),
                 new SqlParameter("@ContentStyle", ContentStyle),

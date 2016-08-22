@@ -54,7 +54,6 @@ namespace Witbird.SHTS.Model
         public DbSet<SpacePeople> SpacePeople { get; set; }
         public DbSet<SpaceSize> SpaceSize { get; set; }
         public DbSet<SpaceType> SpaceType { get; set; }
-        public DbSet<Test> Test { get; set; }
         public DbSet<Trade> Trade { get; set; }
         public DbSet<TradeHistory> TradeHistory { get; set; }
         public DbSet<TradeOrder> TradeOrder { get; set; }
@@ -67,10 +66,9 @@ namespace Witbird.SHTS.Model
         public DbSet<ActorSex> ActorSex { get; set; }
         public DbSet<WeChatUser> WeChatUser { get; set; }
         public DbSet<DemandQuoteHistory> DemandQuoteHistory { get; set; }
-        public DbSet<DemandSubscription> DemandSubscription { get; set; }
         public DbSet<DemandSubscriptionDetail> DemandSubscriptionDetail { get; set; }
-        public DbSet<SmsRecord> SmsRecord { get; set; }
         public DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public DbSet<DemandQuote> DemandQuote { get; set; }
+        public DbSet<DemandSubscription> DemandSubscription { get; set; }
     }
 }

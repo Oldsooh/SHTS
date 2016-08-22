@@ -5,6 +5,11 @@
 }
 @section head
 {
+    <style type="text/css">
+        .hd {
+            display: none;
+        }
+    </style>
     <script src="/Content/upload/jquery-1.4.2.min.js"></script>
     <script src="/Content/js/city.js"></script>
 
@@ -56,12 +61,37 @@
         }
 
         function demandCategoryChange() {
-            var categoryId = $("#categoryId").val();
-            if (categoryId == '2') {//2为演义人员
+            var ResourceType = $("#ResourceType").val();
+            if (ResourceType == '2') {//2为演义人员
                 document.getElementById("peopleNumberBox").style.display = "block";
             }
             else {
                 document.getElementById("peopleNumberBox").style.display = "none";
+            }
+
+            changeResType(ResourceType);
+        }
+
+        function changeResType(typeId) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (typeId) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
             }
         }
     </script>
@@ -77,39 +107,124 @@
             <p class="n1">编辑需求</p>
         </div>
         <form id="addform" method="post">
-            <input type="hidden" name="id" value="@Model.Demand.Id" />
 
-            <div class="ur_title lh24"><span class="red ch"></span>类别：</div>
-            <div class="ur_box">
-                <select name="categoryId" id="categoryId" onchange="demandCategoryChange()">
-                    @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
-                    {
-                        foreach (var item in Model.DemandCategories)
+            @{
+                var hideSpaceTypeClass = "hd";
+                var hideActorTypeClass = "hd";
+                var hideEquipTypeClass = "hd";
+                var hideOtherTypeClass = "hd";
+                var resourceType = Model.Demand.ResourceType;
+                var resourceTypeId = (Model.Demand.ResourceTypeId ?? -1).ToString();
+
+                <input type="hidden" name="id" value="@Model.Demand.Id" />
+
+                <div class="ur_title lh24"><span class="red ch"></span>类别：</div>
+                <div class="ur_box">
+                    <select name="ResourceType" id="ResourceType" onchange="demandCategoryChange()">
+                        @foreach (var item in Html.ResourceList())
                         {
-                            if (item.IsActive)
+                            if (item.Value.Equals(Model.Demand.ResourceType.ToString()))
                             {
-                                if (item.Id == Model.Demand.CategoryId)
-                                {
-                        <option value="@item.Id" selected="selected">@item.Name</option>
-                                }
-                                else
-                                {
-                        <option value="@item.Id">@item.Name</option> 
-                                }
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
                             }
                         }
-                    }
-                    else
-                    {
-                        <option value="">---</option>
-                    }
-                </select>
-            </div>
-            <div class="clearfix"></div>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
 
+                switch (Model.Demand.ResourceType)
+                {
+                    case 1:
+                        hideSpaceTypeClass = string.Empty;
+                        break;
+                    case 2:
+                        hideActorTypeClass = string.Empty;
+                        break;
+                    case 3:
+                        hideEquipTypeClass = string.Empty;
+                        break;
+                    case 4:
+                        hideOtherTypeClass = string.Empty;
+                        break;
+                    default:
+                        break;
+                }
 
+                <div class="ur_title">
+                    需求类型：
+                </div>
+                <div class="ur_box sp @hideSpaceTypeClass">
+                    <select name="SpaceTypeId">
+                        <option>请选择需求类型</option>
+                        @foreach (var item in Html.SpaceTypeList())
+                        {
+                            if (resourceType == 1 && item.Value.Equals(resourceTypeId))
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="ur_box ac @hideActorTypeClass">
 
+                    <select name="ActorTypeId">
+                        <option>请选择需求类型</option>
+                        @foreach (var item in Html.ActorTypeList())
+                        {
+                            if (resourceType == 2 && item.Value.Equals(resourceTypeId))
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="ur_box eq @hideEquipTypeClass">
+                    <select name="EquipTypeId">
+                        <option>请选择需求类型</option>
+                        @foreach (var item in Html.EquipTypeList())
+                        {
+                            if (resourceType == 3 && item.Value.Equals(resourceTypeId))
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="ur_box ot @hideOtherTypeClass">
+                    <select name="OtherTypeId">
+                        <option>请选择需求类型</option>
+                        @foreach (var item in Html.OtherTypeList())
+                        {
+                            if (resourceType == 4 && item.Value.Equals(resourceTypeId))
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="clearfix"></div>
 
+            }
             <div class="ur_title"><span class="red ch"></span>标题：</div>
             <div class="ur_box">
                 <input class="ur_txt1" name="title" maxlength="50" value="@Model.Demand.Title" />
@@ -130,11 +245,11 @@
                         {
                             if (!string.IsNullOrEmpty(Model.Demand.Province) && Model.Demand.Province == item.Id)
                             {
-                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                <option value="@item.Id" selected="selected">@item.Name</option>
                             }
                             else
                             {
-                        <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id">@item.Name</option>
                             }
                         }
                     }
@@ -147,11 +262,11 @@
                         {
                             if (!string.IsNullOrEmpty(Model.Demand.City) && Model.Demand.City == item.Id)
                             {
-                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                <option value="@item.Id" selected="selected">@item.Name</option>
                             }
                             else
                             {
-                        <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id">@item.Name</option>
                             }
                         }
                     }
@@ -164,11 +279,11 @@
                         {
                             if (!string.IsNullOrEmpty(Model.Demand.Area) && Model.Demand.Area == item.Id)
                             {
-                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                <option value="@item.Id" selected="selected">@item.Name</option>
                             }
                             else
                             {
-                        <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id">@item.Name</option>
                             }
                         }
                     }
@@ -187,15 +302,15 @@
 
 
             @{string st = string.Empty;
-              if (Model.Demand.StartTime.HasValue)
-              {
-                  st = Model.Demand.StartTime.Value.ToString("yyyy-MM-dd");
-              }
-              string et = string.Empty;
-              if (Model.Demand.EndTime.HasValue)
-              {
-                  et = Model.Demand.EndTime.Value.ToString("yyyy-MM-dd");
-              }
+                if (Model.Demand.StartTime.HasValue)
+                {
+                    st = Model.Demand.StartTime.Value.ToString("yyyy-MM-dd");
+                }
+                string et = string.Empty;
+                if (Model.Demand.EndTime.HasValue)
+                {
+                    et = Model.Demand.EndTime.Value.ToString("yyyy-MM-dd");
+                }
             }
             <div class="ur_title"><span class="red ch"></span>起止时间：</div>
             <div class="ur_box">
@@ -256,7 +371,7 @@
 
 
 
-            @{ string peopleNumberBox = "none"; if (Model.Demand.CategoryId == 2) { peopleNumberBox = "block"; }}
+            @{ string peopleNumberBox = "none"; if (Model.Demand.ResourceType == 2) { peopleNumberBox = "block"; }}
             <div id="peopleNumberBox" style="display: @peopleNumberBox;">
                 <div class="ur_title"><span class="red ch"></span>人员数量：</div>
                 <div class="ur_box">
@@ -275,7 +390,8 @@
                 <textarea class="ur_tra" name="description" maxlength="300" rows="5">@Model.Demand.Description</textarea>
                 <span style="color: #4193ff;">
                     <br />
-                    <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>300字最佳&nbsp;&nbsp;太少大多都不好. 用于列表页简短描述. 方便供应商看见，提高曝光率哦！</span>
+                    <span style="color: #ff0000;">&nbsp;&nbsp;必填</span>300字最佳&nbsp;&nbsp;太少大多都不好. 用于列表页简短描述. 方便供应商看见，提高曝光率哦！
+                </span>
             </div>
             <div class="clearfix"></div>
 

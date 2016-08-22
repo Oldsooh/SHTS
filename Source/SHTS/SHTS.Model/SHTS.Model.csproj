@@ -177,9 +177,6 @@
     <Compile Include="SinglePage.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SmsRecord.cs">
-      <DependentUpon>SHTSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Space.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
@@ -196,9 +193,6 @@
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SpaceType.cs">
-      <DependentUpon>SHTSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Test.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Trade.cs">

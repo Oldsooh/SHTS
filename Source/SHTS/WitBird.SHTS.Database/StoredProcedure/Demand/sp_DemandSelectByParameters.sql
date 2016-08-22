@@ -4,7 +4,8 @@
 	@Province		NVARCHAR(50),
 	@City			NVARCHAR(50),
 	@Area			NVARCHAR(50),
-	@Category		NVARCHAR(50),
+	@ResourceType	NVARCHAR(50),
+	@ResourceTypeId	NVARCHAR(50),
 	@StartBudget	NVARCHAR(50),
 	@EndBudget		NVARCHAR(50),
 	@StartTime		NVARCHAR(50),
@@ -15,7 +16,8 @@ BEGIN
 	and (@Province is null or Province = @Province)
 	and (@City is null or City = @City) 
 	and (@Area is null or Area = @Area) 
-	and (@Category is null or CategoryId = @Category)
+	and (@ResourceType is null or ResourceType = @ResourceType)
+	and (@ResourceTypeId is null or ResourceTypeId = @ResourceTypeId)
 	and (@StartBudget is null or Budget >= @StartBudget)
 	and (@EndBudget is null or Budget <= @EndBudget)
 	and (@StartTime is null or StartTime >= @StartTime) 
@@ -29,7 +31,8 @@ BEGIN
 			and (@Province is null or Province = @Province)
 			and (@City is null or City = @City) 
 			and (@Area is null or Area = @Area) 
-			and (@Category is null or CategoryId = @Category)
+			and (@ResourceType is null or ResourceType = @ResourceType)
+			and (@ResourceTypeId is null or ResourceTypeId = @ResourceTypeId)
 			and (@StartBudget is null or Budget >= @StartBudget)
 			and (@EndBudget is null or Budget <= @EndBudget)
 			and (@StartTime is null or StartTime >= @StartTime) 

@@ -176,7 +176,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="/admin/">首页</a></li>
-            <li><a href="/admin/news/index">需求列表</a></li>
+            <li><a href="/admin/demand/index">需求列表</a></li>
         </ul>
     </div>
 
@@ -231,17 +231,7 @@
                                         <span>@item.RowNumber</span>
                                     </td>
                                     <td>
-                                        @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
-                                        {
-                                            foreach (var category in Model.DemandCategories)
-                                            {
-                                                if (item.CategoryId == category.Id)
-                                                {
-                                                    <span>@category.Name</span>
-                                                    break;
-                                                }
-                                            }
-                                        }
+                                        <span>@item.ResourceTypeName</span>
                                     </td>
                                     <td>
                                         <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>

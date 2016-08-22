@@ -23,38 +23,41 @@ BEGIN
 
 	CREATE TABLE #Category
 	(
-		CategoryId int
+		TypeId int,
+		SubTypeId int
 	)
 	INSERT INTO #Category
-	SELECT Value FROM dbo.fSplit(@Categories, ',')
+	SELECT 
+		(SELECT t.Value FROM (SELECT ROW_NUMBER() OVER(ORDER BY GETDATE()) AS number, Value FROM fsplit (tempCategory.Value, '_')) AS t WHERE number=1) AS TypeId,
+		(SELECT t.Value FROM (SELECT ROW_NUMBER() OVER(ORDER BY GETDATE()) AS number, Value FROM fsplit (tempCategory.Value, '_')) AS t WHERE number=2) AS SubTypeId
+	FROM (SELECT Value FROM dbo.fSplit(@Categories, ',')) AS tempCategory
 
-	CREATE TABLE #Keywords
+	CREATE TABLE #Keyword
 	(
 		Keyword nvarchar(100)
 	)
-	INSERT INTO #Keywords
+	INSERT INTO #Keyword
 	SELECT * FROM dbo.fSplit(@Keywords, ',')
 
 	IF (@PageCount > 0)
 	BEGIN
 		SELECT TOP (@PageCount) demand.* FROM dbo.Demand demand
-		INNER JOIN #Category cate ON (cate.CategoryId = demand.CategoryId OR cate.CategoryId IS NULL OR cate.CategoryId = '')
+		INNER JOIN #Category cate ON (cate.TypeId = demand.ResourceType AND (cate.SubTypeId IS NULL OR cate.SubTypeId = -1 OR cate.SubTypeId = demand.ResourceTypeId))
 		INNER JOIN #Location loc ON (loc.Province = demand.Province AND (loc.City = demand.City OR loc.City IS NULL OR loc.City = '') AND (loc.Area = demand.Area OR loc.Area IS NULL OR loc.Area = '')) 
 		OR ((loc.Province IS NULL OR loc.Province = '') AND (loc.City IS NULL OR loc.City = '') AND (loc.Area IS NULL OR loc.Area = ''))
-		INNER JOIN #Keywords words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
+		INNER JOIN #Keyword words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
 		WHERE demand.InsertTime >= @InsertTime AND (demand.Status IS NULL OR demand.Status <> 2) AND demand.IsActive = 1
 		ORDER BY demand.Id DESC
 	END
 	ELSE
 	BEGIN
 		SELECT demand.* FROM dbo.Demand demand
-		INNER JOIN #Category cate ON (cate.CategoryId = demand.CategoryId OR cate.CategoryId IS NULL OR cate.CategoryId = '')
+		INNER JOIN #Category cate ON (cate.TypeId = demand.ResourceType AND (cate.SubTypeId IS NULL OR cate.SubTypeId = -1 OR cate.SubTypeId = demand.ResourceTypeId))
 		INNER JOIN #Location loc ON (loc.Province = demand.Province AND (loc.City = demand.City OR loc.City IS NULL OR loc.City = '') AND (loc.Area = demand.Area OR loc.Area IS NULL OR loc.Area = '')) 
 		OR ((loc.Province IS NULL OR loc.Province = '') AND (loc.City IS NULL OR loc.City = '') AND (loc.Area IS NULL OR loc.Area = ''))
-		INNER JOIN #Keywords words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
+		INNER JOIN #Keyword words ON (CHARINDEX(words.Keyword, demand.Title, 0) > 0 OR words.Keyword IS NULL OR words.Keyword = '')
 		WHERE demand.InsertTime >= @InsertTime AND (demand.Status IS NULL OR demand.Status <> 2) AND demand.IsActive = 1
 		ORDER BY demand.Id DESC
 	END
-
 END
 GO

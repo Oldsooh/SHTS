@@ -35,19 +35,10 @@
                 <tr>
                     <td>@item.RowNumber</td>
                     <td style="text-align: left;">
-                        <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                        <a href="/demand/@(item.Id).html" target="_blank" style="color: #3858FA;">@item.Title</a>
                     </td>
                     <td>
-                        @if (Model.DemandCategories != null && Model.DemandCategories.Count > 0)
-                        {
-                            foreach (var category in Model.DemandCategories)
-                            {
-                                if (category.Id == item.CategoryId)
-                                {
-                            <span>@category.Name</span>
-                                }
-                            }
-                        }
+                        <span>@item.ResourceTypeName</span>
                     </td>
                     <td>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</td>
                     <td>￥@item.Budget</td>

@@ -113,6 +113,7 @@
 
         .subscribe {
             height: auto;
+            margin-bottom: 10px;
         }
 
         .addbtn {
@@ -148,6 +149,10 @@
             padding: 10px;
             border: 1px solid #DDD;
             margin-bottom: 20px;
+        }
+
+        .hd {
+            display: none;
         }
     </style>
 
@@ -186,7 +191,7 @@
             var newAreaValue = provinceName + '/' + cityName + '/' + areaName;
 
             if (isNewAreaAlreadySelected(subscribedAreasList, newAreaId)) {
-                alert('该区域位置已经包含到所选区域位置中，请勿重复添加。');
+                alert('您当前选择的区域位置已经包含到所选区域位置中，请勿重复添加。');
                 return;
             }
 
@@ -259,16 +264,6 @@
             return splitIgnoreEmptyValue(subscribedAreas, ',');
         }
 
-        function getAllSubscriedTypes() {
-            var subscribedTypes = $('#subscriedTypes').val();
-
-            if (subscribedTypes == undefined) {
-                subscribedTypes = '';
-            }
-
-            return splitIgnoreEmptyValue(subscribedTypes, ',');
-        }
-
         // Deletes one selected location
         function deleteArea(areaId) {
             if (!isEnableSubscription()) {
@@ -280,23 +275,6 @@
             $('#' + areaId).remove();
         }
 
-        // Splits string value to an array list by specified separator.
-        function splitIgnoreEmptyValue(sourceValue, separator) {
-            var array = new Array();
-
-            if (sourceValue != undefined && sourceValue != '') {
-                var tempArray = sourceValue.split(separator);
-                for (var i = 0; i < tempArray.length; i++) {
-                    var value = tempArray[i];
-                    if (value != '') {
-                        array.push(value);
-                    }
-                }
-            }
-
-            return array;
-        }
-
         // Checks whether currently selected location has already been included in selected locations.
         function isNewAreaAlreadySelected(sourceArray, newAreaId) {
             if (sourceArray.length == 0) {
@@ -306,7 +284,7 @@
                 for (var i = 0; i < sourceArray.length; i++) {
                     var areaId = sourceArray[i];
                     // select province only
-                    var index = areaId.indexOf('__');
+                    var index = areaId.indexOf('__');// two dashes
                     if (index > -1 && newAreaId.indexOf(areaId.substring(0, index)) > -1) {
                         return true;
                     }
@@ -413,17 +391,152 @@
             return $('#enableSubscription').is(':checked');
         }
 
-        function setSubscribedTypes() {
-            var subscriedTypes = '';
-            $('.bytype input[type=checkbox]:checked').each(function () {
-                subscriedTypes += $(this).val() + ',';
-            });
+        function getAllSubscriedTypes() {
+            var subscribedTypes = $('#subscriedTypes').val();
 
-            if (subscriedTypes.length > 0) {
-                subscriedTypes = subscriedTypes.substring(0, subscriedTypes.length - 1);
+            if (subscribedTypes == undefined) {
+                subscribedTypes = '';
             }
 
-            $('#subscriedTypes').val(subscriedTypes);
+            return splitIgnoreEmptyValue(subscribedTypes, ',');
+        }
+
+        function addType() {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            var typeId = $('#ResourceType').val();
+            var typeName = $('#ResourceType').find('option:selected').text();
+            var subTypeId = '-1';
+            var subTypeName = '不限类型';
+
+            if (typeof (typeId) == 'undefined' || typeId == '-1') {
+                alert("请选择您需要订阅的需求类别！");
+                return;
+            }
+
+            switch (typeId) {
+                case '1':
+                    subTypeId = $('#SpaceTypeId').val();
+                    subTypeName = $('#SpaceTypeId').find('option:selected').text();
+                    break;
+                case '2':
+                    subTypeId = $('#ActorTypeId').val();
+                    subTypeName = $('#ActorTypeId').find('option:selected').text();
+                    break;
+                case '3':
+                    subTypeId = $('#EquipTypeId').val();
+                    subTypeName = $('#EquipTypeId').find('option:selected').text();
+                    break;
+                case '4':
+                    subTypeId = $('#OtherTypeId').val();
+                    subTypeName = $('#OtherTypeId').find('option:selected').text();
+                    break;
+                default:
+                    alert('请选择正确的需求类别！');
+                    return;
+            }
+
+            if (typeof (subTypeId) == 'undefined') {
+                subTypeId = '-1';
+            }
+
+            var subscriedTypes = getAllSubscriedTypes();
+
+            if (isNewTypeAlreadySelected(subscriedTypes, typeId, subTypeId)) {
+                alert('您当前选择的需求类别与类型已包含在已选列表中，请勿重复添加！');
+            }
+            else {
+                var newKey = typeId + '_' + subTypeId;
+                var displayValue = typeName + '/' + subTypeName;
+
+                // Appends new added type into page.
+                var newTypeHtml = '<div id="' + newKey + '" class="cell"><input type="text" disabled="disabled" class="text" value="'
+                + displayValue + '"><span class="closebtn" title="删除"><img src="/Content/images/button_grey_close.png"  class="candisabled"  onclick="deleteType(\''
+                + newKey + '\')" /></span></div>';
+
+                $('#selectedTypes').append(newTypeHtml);
+
+                // Saves data to cache.
+                subscriedTypes.push(newKey);
+
+                var typeCache = '';
+                for (var i = 0; i < subscriedTypes.length; i++) {
+                    typeCache += subscriedTypes[i] + ',';
+                }
+
+                $('#subscriedTypes').val(typeCache);
+
+                // Resets dropdown list
+                $('#ResourceType').get(0).selectedIndex = 0;
+                $('#SpaceTypeId').get(0).selectedIndex = 0;
+                $('#SpaceTypeId').addClass('hd');
+                $('#ActorTypeId').get(0).selectedIndex = 0;
+                $('#ActorTypeId').addClass('hd');
+                $('#EquipTypeId').get(0).selectedIndex = 0;
+                $('#EquipTypeId').addClass('hd');
+                $('#OtherTypeId').get(0).selectedIndex = 0;
+                $('#OtherTypeId').addClass('hd');
+            }
+        }
+
+        function deleteType(key) {
+            if (!isEnableSubscription()) {
+                return;
+            }
+
+            deleteTypeFromCache(key);
+            $('#' + key).remove();
+        }
+
+        function deleteTypeFromCache(key) {
+            var subscriedTypes = getAllSubscriedTypes();
+            var typeCache = '';
+            var deleteIndex = -1;
+
+            for (var i = 0; i < subscriedTypes.length; i++) {
+                if (subscriedTypes[i] == key) {
+                    deleteIndex = i;
+                }
+                else {
+                    typeCache += subscriedTypes[i] + ',';
+                }
+            }
+
+            subscriedTypes.splice(deleteIndex);
+
+            if (typeCache.length > 0) {
+                typeCache = typeCache.substring(0, typeCache.length - 1);
+            }
+
+            $('#subscriedTypes').val(typeCache);
+        }
+
+        // Checks whether currently selected demand type and subtype has already been included in selected list.
+        function isNewTypeAlreadySelected(sourceArray, newTypeId, newSubTypeId) {
+            if (sourceArray.length == 0) {
+                return false;
+            }
+            else {
+                for (var i = 0; i < sourceArray.length; i++) {
+                    var subscriedType = sourceArray[i];
+                    var typeArray = splitIgnoreEmptyValue(subscriedType, '_');
+                    var typeId = typeArray[0];
+                    var subTypeId = typeArray[1];
+
+                    if (typeId == newTypeId) {
+                        if (subTypeId == '-1') {
+                            return true;
+                        }
+                        else if (subTypeId == newSubTypeId) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
         }
 
         function submit() {
@@ -433,7 +546,7 @@
                 var subscribedTypes = getAllSubscriedTypes();
 
                 if (subscribedTypes.length == 0) {
-                    alert('请选择需要订阅的需求类型！');
+                    alert('请选择需要订阅的需求类别！');
                 }
                 else if (subscribedAreas.length == 0) {
                     alert('请选择需求类型所属的区域位置！');
@@ -445,6 +558,51 @@
             else {
                 subscriptionForm.submit();
             }
+        }
+
+        function demandCategoryChange() {
+            var ResourceType = $("#ResourceType").val();
+            changeResType(ResourceType);
+        }
+
+        function changeResType(typeId) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (typeId) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Splits string value to an array list by specified separator.
+        function splitIgnoreEmptyValue(sourceValue, separator) {
+            var array = new Array();
+
+            if (sourceValue != undefined && sourceValue != '') {
+                var tempArray = sourceValue.split(separator);
+                for (var i = 0; i < tempArray.length; i++) {
+                    var value = tempArray[i];
+                    if (value != '') {
+                        array.push(value);
+                    }
+                }
+            }
+
+            return array;
         }
     </script>
     <script language="javascript">
@@ -483,59 +641,95 @@
                 <label for="enableSubscription" id="es">启用需求订阅</label>
             </div>
             <div class="cell" style="color:#ACA899;height:auto;">
-                注：启用后，当有新需求发布时，我们将会根据您的订阅规则给您主动推送需求信息，方便您及时查看。
+                注：
+                <br /> 1. 启用后，我们将会根据您的订阅内容给您主动推送最新需求信息，方便您及时查看。
+                <br /> 2. 选择好需求类别与类型、区域位置、关键字之后，记得点击对应的添加按钮才能生效哦！
             </div>
             <div class="subscribeDetails">
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置需求类型：</h3>
                     @{
-                        var types = string.Empty;
-                        var byspace = string.Empty;
-                        var byactor = string.Empty;
-                        var byequipment = string.Empty;
-                        var byothers = string.Empty;
+                        var subscriedTypes = string.Empty;
 
-                        foreach (var type in Model.SubscribedTypes)
-                        {
-                            types += type.SubscriptionValue + ",";
-                            if (type.SubscriptionValue.Equals("1"))
-                            {
-                                byspace = "checked='checked'";
-                            }
-                            else if (type.SubscriptionValue.Equals("2"))
-                            {
-                                byactor = "checked='checked'";
-                            }
-                            else if (type.SubscriptionValue.Equals("3"))
-                            {
-                                byequipment = "checked='checked'";
-                            }
-                            else if (type.SubscriptionValue.Equals("4"))
-                            {
-                                byothers = "checked='checked'";
-                            }
-                            else
-                            {
-                                // nothing to do.
-                            }
-                        }
+                        <div id="selectedTypes">
 
-                        if (types.Length > 0)
-                        {
-                            types = types.Substring(0, types.Length - 1);
-                        }
+                            @for (int i = 0; i < Model.SubscribedTypes.Count; i++)
+                            {
+                                var subcribedTypeId = Model.SubscribedTypes[i].SubscriptionValue;
+                                var typeIdArray = Model.SubscribedTypes[i].SubscriptionValue.Split('_');
+                                var typeId = -1;
+                                var subTypeId = -1;
+
+                                if (typeIdArray.Length == 1)
+                                {
+                                    typeId = Convert.ToInt32(typeIdArray[0]);
+                                }
+                                else if (typeIdArray.Length == 2)
+                                {
+                                    typeId = Convert.ToInt32(typeIdArray[0]);
+                                    subTypeId = Convert.ToInt32(typeIdArray[1]);
+                                }
+
+                                subscriedTypes += subcribedTypeId + ",";
+
+                                <div id="@subcribedTypeId" class="cell">
+                                    <input type="text" disabled="disabled" class="text" value="@Html.GetResourceTypeNameById(typeId, subTypeId)">
+                                    <span class="closebtn" title="删除">
+                                        <img src="/Content/images/button_grey_close.png" onclick="deleteType('@subcribedTypeId');" class="candisabled" />
+                                    </span>
+                                </div>
+                            }
+
+                            @if (subscriedTypes.Length > 0)
+                            {
+                                subscriedTypes = subscriedTypes.Substring(0, subscriedTypes.Length - 1);
+                            }
+
+                        </div>
+
+                        <input type="hidden" id="subscriedTypes" name="subscriedTypes" value="@subscriedTypes">
+
+                        <div class="cell">
+                            <select name="ResourceType" class="text candisabled" id="ResourceType" onchange="demandCategoryChange()" style="width:160px">
+                                <option value="-1">请选择需求类别</option>
+                                @foreach (var item in Html.ResourceList())
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <select name="SpaceTypeId" class="text sp hd candisabled" id="SpaceTypeId" style="width:160px">
+                                <option value="-1">不限类型</option>
+                                @foreach (var item in Html.SpaceTypeList())
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <select name="ActorTypeId" class="text ac hd candisabled" id="ActorTypeId" style="width:160px">
+                                <option value="-1">不限类型</option>
+                                @foreach (var item in Html.ActorTypeList())
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <select name="EquipTypeId" class="text eq hd candisabled" id="EquipTypeId" style="width:160px">
+                                <option value="-1">不限类型</option>
+                                @foreach (var item in Html.EquipTypeList())
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <select name="OtherTypeId" class="text ot hd candisabled" id="OtherTypeId" style="width:160px">
+                                <option value="-1">不限类型</option>
+                                @foreach (var item in Html.OtherTypeList())
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="">
+                            <a href="javascript:void(0);" class="candisabled" title="添加类型" onclick="addType();">添加类型</a>
+                        </div>
                     }
-                    <input type="hidden" id="subscriedTypes" name="subscriedTypes" value="@types">
-                    <div class="bytype">
-                        <input type="checkbox" id="byspace" class="candisabled" value="1" @byspace onchange="setSubscribedTypes();">
-                        <label for="byspace" class="candisabled">活动场地</label>
-                        <input type="checkbox" id="byactor" class="candisabled" value="2" @byactor onchange="setSubscribedTypes();">
-                        <label for="byactor" class="candisabled">演艺人员</label>
-                        <input type="checkbox" id="byequipment" class="candisabled" value="3" @byequipment onchange="setSubscribedTypes();">
-                        <label for="byequipment" class="candisabled">活动设备</label>
-                        <input type="checkbox" id="byothers" class="candisabled" value="4" @byothers onchange="setSubscribedTypes();">
-                        <label for="byothers" class="candisabled">其他资源</label>
-                    </div>
                 </div>
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置区域位置：</h3>

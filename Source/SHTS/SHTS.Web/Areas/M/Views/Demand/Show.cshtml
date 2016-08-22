@@ -21,7 +21,7 @@
         </li>
         <li>发布时间：<span class="yellow2">@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm")</span></li>
         <li>发布来源：<span class="yellow2">@Model.Demand.UserName</span></li>
-        <li>需求类型：<span class="yellow2">@Model.Demand.CategoryName</span></li>
+        <li>需求类型：<span class="yellow2">@Model.Demand.ResourceTypeName</span></li>
         <li>区域位置：<span class="yellow2">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span></li>
         <li>起止时间：<span class="yellow2">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
         <li>参与人数：<span class="yellow2">@Model.Demand.PeopleNumber</span></li>

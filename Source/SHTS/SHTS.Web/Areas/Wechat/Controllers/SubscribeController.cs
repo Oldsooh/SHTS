@@ -72,7 +72,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 subscription.SubscriptionDetails.Clear();
                 subscription.WeChatUserId = CurrentWeChatUser.Id;
 
-                #region Handle subscribed demand categories
+                #region Handle subscribed types
                 var types = subscriedTypes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (types.Length > 0)
                 {
@@ -94,7 +94,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     if (enable)
                     {
-                        errorMessage = "请选择需要订阅的需求类型！";
+                        errorMessage = "请选择需要订阅的需求类别与类型！";
                         isValid = false;
                     }
                 }

@@ -99,10 +99,7 @@ namespace Witbird.SHTS.Web.Public
                 {
                     if (item.EntityType != 1 && item.Id == id)
                     {
-                        if (item.Id != "beijingshi" &&
-                           item.Id != "shanghaishi" &&
-                           item.Id != "tianjinshi" &&
-                           item.Id != "chongqingshi")//如果是直辖市则不返回“直辖市”
+                        if (item.Id != "zhixiashi")//如果是直辖市则不返回“直辖市”
                         {
                             result = item.Name;
                         }
@@ -132,10 +129,7 @@ namespace Witbird.SHTS.Web.Public
                     {
                         if (item.EntityType == 1 && item.Id == provinceId)
                         {
-                            if (provinceId != "beijingshi" &&
-                                provinceId != "shanghaishi" &&
-                                provinceId != "tianjinshi" &&
-                                provinceId != "chongqingshi")//如果是直辖市则不返回“直辖市”
+                            if (provinceId != "zhixiashi")//如果是直辖市则不返回“直辖市”
                             {
                                 result = item.Name;
                             }
@@ -175,10 +169,7 @@ namespace Witbird.SHTS.Web.Public
                     {
                         if (item.EntityType == 1 && item.Id == provinceId)
                         {
-                            if (provinceId != "beijingshi" &&
-                                provinceId != "shanghaishi" &&
-                                provinceId != "tianjinshi" &&
-                                provinceId != "chongqingshi")//如果是直辖市则不返回“直辖市”
+                            if (provinceId != "zhixiashi")//如果是直辖市则不返回“直辖市”
                             {
                                 result = item.Name;
                             }

@@ -44,7 +44,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         CityService cityService = new CityService();
         DemandQuoteService quoteService = new DemandQuoteService();
 
-        public ActionResult Index(string page, string category, string area, string starttime, string endtime, string startbudget, string endbudget)
+        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, string area, string starttime, string endtime, string startbudget, string endbudget)
         {
             DemandModel model = new DemandModel();
 
@@ -59,9 +59,22 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 Int32.TryParse(page, out tempPage);
             }
 
+            // 每次更换需求列别需要重置需求类型选中的值
+            if (string.IsNullOrEmpty(ResourceType))
+            {
+                ResourceTypeId = string.Empty;
+            }
+            if (!(LastResourceType ?? string.Empty).Equals(ResourceType, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ResourceTypeId = string.Empty;
+            }
+            LastResourceType = ResourceType;
+
             //-------------------------------初始化页面参数（不含分页）-----------------------
             model.PageIndex = tempPage;
-            model.Category = category ?? string.Empty;
+            model.LastResourceType = LastResourceType ?? string.Empty;
+            model.ResourceType = ResourceType ?? string.Empty;
+            model.ResourceTypeId = ResourceTypeId ?? string.Empty;
             model.City = city;
             model.Area = area ?? string.Empty;
             model.StartBudget = startbudget ?? string.Empty;
@@ -74,18 +87,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             DemandParameters parameters = new DemandParameters();
             parameters.PageCount = 10;//每页显示10条 (与下面保持一致)
             parameters.PageIndex = tempPage;
-            parameters.Category = model.Category;
+            parameters.ResourceType = model.ResourceType;
+            parameters.ResourceTypeId = model.ResourceTypeId;
             parameters.City = model.City;
             parameters.Area = model.Area;
             parameters.StartBudget = model.StartBudget;
             parameters.EndBudget = model.EndBudget;
             parameters.StartTime = model.StartTime;
             parameters.EndTime = model.EndTime;
-
-
-            //需求类型
-            model.DemandCategories = demandManager.GetDemandCategories();
-
+            
             if (!string.IsNullOrEmpty(city))
             {
                 model.Areas = cityService.GetAreasByCityId(city, true);
@@ -185,25 +195,28 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return Redirect("/wechat/account/login");
             }
             DemandModel model = new DemandModel();
-            model.DemandCategories = demandManager.GetDemandCategories();
             model.Provinces = cityService.GetProvinces(true);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Add(string categoryId, string title, string contentText,
+        public ActionResult Add(int ResourceType, int? SpaceTypeId, int? ActorTypeId, int? EquipTypeId, int? OtherTypeId,
+            string title, string contentText,
             string province, string city, string area, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string peopleNumber, string budget)
         {
             string result = "发布失败";
             if (!CurrentWeChatUser.IsUserLoggedIn)
             {
-                result = "长时间为操作，请重新登录";
+                result = "您还未登录或登录已过期，请重新登录后操作！";
             }
             else
             {
-                if (!string.IsNullOrEmpty(categoryId) &&
-                    !string.IsNullOrEmpty(title) &&
+                if (ResourceType < 1)
+                {
+                    result = "请选择需求类别";
+                }
+                else if (!string.IsNullOrEmpty(title) &&
                     !string.IsNullOrEmpty(contentText) &&
                     !string.IsNullOrEmpty(startTime) &&
                     !string.IsNullOrEmpty(endTime) &&
@@ -213,7 +226,26 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     User user = CurrentUser;
                     Demand demand = new Demand();
                     demand.UserId = user.UserId;
-                    demand.CategoryId = Int32.Parse(categoryId);
+                    demand.ResourceType = ResourceType;
+
+                    switch (demand.ResourceType)
+                    {
+                        case 1:
+                            demand.ResourceTypeId = SpaceTypeId;
+                            break;
+                        case 2:
+                            demand.ResourceTypeId = ActorTypeId;
+                            break;
+                        case 3:
+                            demand.ResourceTypeId = EquipTypeId;
+                            break;
+                        case 4:
+                            demand.ResourceTypeId = OtherTypeId;
+                            break;
+                        default:
+                            break;
+                    }
+
                     demand.Title = title;
                     demand.ContentText = contentText;
                     demand.ContentStyle = demand.ContentText;
@@ -395,7 +427,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             DemandModel model = new DemandModel();
             model.ActionName = "MyDemands";
-            model.DemandCategories = demandManager.GetDemandCategories();
 
             //页码，总数重置
             int pageIndex = 1;
@@ -444,7 +475,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             DemandModel model = new DemandModel();
 
-            model.DemandCategories = demandManager.GetDemandCategories();
             model.Provinces = cityService.GetProvinces(true);//省
 
             if (id > 0)
@@ -474,7 +504,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, string categoryId, string title, string contentText,
+        public ActionResult Edit(int id, int ResourceType, int? SpaceTypeId, int? ActorTypeId, int? EquipTypeId, int? OtherTypeId,
+            string title, string contentText,
             string province, string city, string area, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string peopleNumber, string budget)
         {
@@ -485,8 +516,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             else
             {
-                if (id > 0 &&
-                    !string.IsNullOrEmpty(categoryId) &&
+                if (ResourceType < 1)
+                {
+                    result = "请选择需求类别";
+                }
+                else if (id > 0 &&
                     !string.IsNullOrEmpty(title) &&
                     !string.IsNullOrEmpty(contentText) &&
                     !string.IsNullOrEmpty(startTime) &&
@@ -508,7 +542,26 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         }
                         else
                         {
-                            demand.CategoryId = Int32.Parse(categoryId);
+                            demand.ResourceType = ResourceType;
+
+                            switch (demand.ResourceType)
+                            {
+                                case 1:
+                                    demand.ResourceTypeId = SpaceTypeId;
+                                    break;
+                                case 2:
+                                    demand.ResourceTypeId = ActorTypeId;
+                                    break;
+                                case 3:
+                                    demand.ResourceTypeId = EquipTypeId;
+                                    break;
+                                case 4:
+                                    demand.ResourceTypeId = OtherTypeId;
+                                    break;
+                                default:
+                                    break;
+                            }
+
                             demand.Title = title;
                             demand.ContentText = contentText;
                             demand.ContentStyle = demand.ContentText;

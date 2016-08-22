@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE sp_DemandUpdate
 	@Id				int,
-	@CategoryId		int,
+	@ResourceType	int,
+	@ResourceTypeId	int,
 	@Title			nvarchar(100),
 	@Description	nvarchar(300),
 	@ContentStyle	text,
@@ -22,7 +23,8 @@ AS
 BEGIn
 	Update Demand
 	set
-	   [CategoryId]=@CategoryId
+	   ResourceType=@ResourceType
+	  ,ResourceTypeId=@ResourceTypeId
       ,[Title]=@Title
       ,[Description]=@Description
       ,[ContentStyle]=@ContentStyle

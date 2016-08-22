@@ -25,7 +25,6 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         public ActionResult Index(string id)
         {
             DemandModel model = new DemandModel();
-            model.DemandCategories = demandManager.GetDemandCategories();
 
             //页码，总数重置
             int page = 1;
@@ -59,7 +58,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         public ActionResult Category()
         {
             DemandModel model = new DemandModel();
-            model.DemandCategories = demandManager.GetDemandCategories();
+            //model.DemandCategories = demandManager.GetDemandCategories();
             return View(model);
         }
 

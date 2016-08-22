@@ -157,7 +157,7 @@
                     foreach (var item in Model.Demands)
                     {
                     <li class="tradeli">
-                        <span class="tradeli_status">[ @item.CategoryName ]</span>
+                        <span class="tradeli_status">[ @item.ResourceTypeName ]</span>
                         @{ string url = "/demand/" + item.Id + ".html";}
                         <a class="tradea" href="@url" target="_blank">@item.Title</a>
                         <span class="tradeli_date">@item.InsertTime.ToString("MM-dd")</span>

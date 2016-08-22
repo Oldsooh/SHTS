@@ -24,7 +24,7 @@
                 <a href="/m/demand/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
                 <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
             </li>
-            <li>需求类型：<span class="yellow">@item.CategoryName</span></li>
+            <li>需求类型：<span class="yellow">@item.ResourceTypeName</span></li>
             <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
             <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
             <li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>

@@ -104,15 +104,16 @@
         }
 
         function demandCategoryChange() {
-            var categoryId = $("#categoryId").val();
-            if (categoryId == '2') {//2为演义人员
+            var ResourceType = $("#ResourceType").val();
+            if (ResourceType == '2') {//2为演义人员
                 document.getElementById("peopleNumberBox").style.display = "block";
             }
             else {
                 document.getElementById("peopleNumberBox").style.display = "none";
             }
         }
-    </script>
+    </script>
+
 }
 
 <div class="wrap" style="width: 100%">
@@ -120,7 +121,7 @@
         <div class="reg-slogan" style="color: #333; font-size: 25px; margin-bottom: 10px;">发布需求</div>
         <form action="/m/demand/add"  id="addForm" class="reg-form"  method="post">
             <div class="cell">
-                <select name="CategoryId" class="text" id="categoryId" onchange="demandCategoryChange()">
+                <select name="ResourceType" class="text" id="ResourceType" onchange="demandCategoryChange()">
                     <option value="1">活动场地</option>
                     <option value="2">演艺人员</option>
                     <option value="3">活动设备</option>

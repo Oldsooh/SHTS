@@ -16,7 +16,7 @@ namespace Witbird.SHTS.Model
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int CategoryId { get; set; }
+        public int ResourceType { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string ContentStyle { get; set; }
@@ -38,5 +38,6 @@ namespace Witbird.SHTS.Model
         public string Email { get; set; }
         public Nullable<int> WeixinBuyFee { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<int> ResourceTypeId { get; set; }
     }
 }

@@ -13,7 +13,10 @@
 {
     <link href="/Content/css/demand.css" rel="stylesheet" />
     <style type="text/css">
-        .listdivitemtable tr td { border: 1px solid #f1f1f1; padding-left: 10px; }
+        .listdivitemtable tr td {
+            border: 1px solid #f1f1f1;
+            padding-left: 10px;
+        }
     </style>
 }
 
@@ -33,7 +36,9 @@
         </div>
         <table class="listdivitemtable">
             <tr>
-                <td>需求类型：<span>@Model.Demand.CategoryName</span></td>
+                <td>需求类别：<span>@Model.Demand.ResourceTypeName</span></td>
+
+                <td>需求类型：<span>@Html.GetResourceSubTypeNameById(Model.Demand.ResourceType, Model.Demand.ResourceTypeId)</span></td>
                 <td>
                     预算金额：
                     @if (Model.Demand.Budget == 0)
@@ -45,7 +50,7 @@
                         <span>@Model.Demand.Budget 元</span>
                     }
                 </td>
-                <td>需求时长：<span>@Model.Demand.TimeLength</span></td>
+                @*<td>需求时长：<span>@Model.Demand.TimeLength</span></td>*@
             </tr>
 
             <tr>
@@ -73,25 +78,25 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    地区：<span>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
+                    区域位置：<span>@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
                     <span style="color: #4193ff;">@Model.Demand.Address</span>
                 </td>
             </tr>
         </table>
         <div class="showContent">
             @*@if (Model.IsMember)
-            {
-                @(new HtmlString(Model.Demand.ContentStyle))
-            }
-            else
-            {
-                <div style="font-size:26px; color: #4193ff; line-height:30px;">
-                    亲，只有会员才可以查询详情哦！你现在只能看到简短描述。
-                    <br />
-                    <br />
-                </div>
-                @(new HtmlString(Model.Demand.Description))
-            }*@
+                {
+                    @(new HtmlString(Model.Demand.ContentStyle))
+                }
+                else
+                {
+                    <div style="font-size:26px; color: #4193ff; line-height:30px;">
+                        亲，只有会员才可以查询详情哦！你现在只能看到简短描述。
+                        <br />
+                        <br />
+                    </div>
+                    @(new HtmlString(Model.Demand.Description))
+                }*@
 
             @(new HtmlString(Model.Demand.ContentStyle))
         </div>

@@ -18,7 +18,9 @@ namespace Witbird.SHTS.Model
 
         public string Area { get; set; }
 
-        public string Category { get; set; }
+        public string ResourceType { get; set; }
+
+        public string ResourceTypeId { get; set; }
 
         public string StartBudget { get; set; }
 

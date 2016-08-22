@@ -62,6 +62,18 @@ namespace System.Web.Mvc
             return list;
         }
 
+        public static string GetSpaceTypeById(this HtmlHelper helper, int spaceTypeId)
+        {
+            return GetSpaceTypeById(spaceTypeId);
+        }
+
+        private static string GetSpaceTypeById(int spaceTypeId)
+        {
+            var space = SpaceTypeListProperty.FirstOrDefault(v => v.Id == spaceTypeId);
+
+            return space == null ? "不限类型" : space.Name;
+        }
+
         /// <summary>
         /// 设备类型
         /// </summary>
@@ -97,9 +109,14 @@ namespace System.Web.Mvc
         }
         public static string GetEquipTypeById(this HtmlHelper helper, int equipTypeId)
         {
+            return GetEquipTypeById(equipTypeId);
+        }
+
+        private static string GetEquipTypeById(int equipTypeId)
+        {
             var equip = EquipTypeListProperty.FirstOrDefault(v => v.Id == equipTypeId);
 
-            return equip == null ? "未知" : equip.Name;
+            return equip == null ? "不确定" : equip.Name;
         }
 
         /// <summary>
@@ -136,9 +153,14 @@ namespace System.Web.Mvc
         }
         public static string GetActorTypeById(this HtmlHelper helper, int actorTypeId)
         {
+            return GetActorTypeById(actorTypeId);
+        }
+
+        private static string GetActorTypeById(int actorTypeId)
+        {
             var actor = ActorTypeListProperty.FirstOrDefault(v => v.Id == actorTypeId);
 
-            return actor == null ? "未知" : actor.Name;
+            return actor == null ? "不限类型" : actor.Name;
         }
         /// <summary>
         /// 演员组织类型
@@ -204,9 +226,14 @@ namespace System.Web.Mvc
         }
         public static string GetOtherTypeById(this HtmlHelper helper, int otherTypeId)
         {
+            return GetOtherTypeById(otherTypeId);
+        }
+
+        private static string GetOtherTypeById(int otherTypeId)
+        {
             var actor = OtherTypeListProperty.FirstOrDefault(v => v.Id == otherTypeId);
 
-            return actor == null ? "未知" : actor.Name;
+            return actor == null ? "不限类型" : actor.Name;
         }
         #endregion
 
@@ -284,7 +311,7 @@ namespace System.Web.Mvc
         {
             var size = SpaceSizeListProperty.FirstOrDefault(v => v.Id == spaceSizeId);
 
-            return size == null ? "未知" : size.Name;
+            return size == null ? "不确定" : size.Name;
         }
 
         /// <summary>
@@ -320,6 +347,59 @@ namespace System.Web.Mvc
             }
 
             return list;
+        }
+
+        public static string GetResourceSubTypeNameById(this HtmlHelper helper, int resourceTypeId, int? resourceSubTypeId)
+        {
+            string typeName = string.Empty;
+            var subTypeId = resourceSubTypeId ?? -1;
+
+            switch (resourceTypeId)
+            {
+                case 1:
+                    typeName = GetSpaceTypeById(subTypeId);
+                    break;
+                case 2:
+                    typeName = GetActorTypeById(subTypeId);
+                    break;
+                case 3:
+                    typeName = GetEquipTypeById(subTypeId);
+                    break;
+                case 4:
+                    typeName = GetOtherTypeById(subTypeId);
+                    break;
+                default:
+                    typeName = "不限类型";
+                    break;
+            }
+
+            return typeName;
+        }
+
+        public static string GetResourceTypeNameById(this HtmlHelper helper, int resourceTypeId, int resourceSubTypeId)
+        {
+            string typeName = string.Empty;
+
+            switch (resourceTypeId)
+            {
+                case 1:
+                    typeName = "活动场地/" + GetSpaceTypeById(resourceSubTypeId);
+                    break;
+                case 2:
+                    typeName = "演艺人员/" + GetActorTypeById(resourceSubTypeId);
+                    break;
+                case 3:
+                    typeName = "活动设备/" + GetEquipTypeById(resourceSubTypeId);
+                    break;
+                case 4:
+                    typeName = "其他资源/" + GetOtherTypeById(resourceSubTypeId);
+                    break;
+                default:
+                    typeName = "不限类别/不限类型";
+                    break;
+            }
+
+            return typeName;
         }
 
         /// <summary>
@@ -462,7 +542,7 @@ namespace System.Web.Mvc
                     statu = "审核不通过";
                     break;
                 default:
-                    statu = "未知";
+                    statu = "不确定";
                     break;
             }
 

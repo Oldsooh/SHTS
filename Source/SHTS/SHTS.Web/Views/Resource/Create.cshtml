@@ -46,7 +46,7 @@
                 标题<span class="red ch">*</span>
             </div>
             <div class="ur_box">
-                @Html.TextBoxFor(model => model.Title, new { @class = "ur_txt1" })
+                @Html.TextBoxFor(model => model.Title, new { @class = "ur_txt1", @maxlength= "50"})
                 @Html.ValidationMessageFor(model => model.Title, null, new { @style = "color: #4193ff" })
             </div>
             <div class="clearfix"></div>
