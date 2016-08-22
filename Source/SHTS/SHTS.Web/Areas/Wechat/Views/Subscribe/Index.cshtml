@@ -154,6 +154,10 @@
         .hd {
             display: none;
         }
+
+        .selecttype select {
+            width: 48% !important;
+        }
     </style>
 
     <script type="text/javascript">
@@ -522,8 +526,16 @@
                 for (var i = 0; i < sourceArray.length; i++) {
                     var subscriedType = sourceArray[i];
                     var typeArray = splitIgnoreEmptyValue(subscriedType, '_');
-                    var typeId = typeArray[0];
-                    var subTypeId = typeArray[1];
+                    var typeId = '-1';
+                    var subTypeId = '-1';
+
+                    if (typeArray.length == 1) {
+                        typeId = typeArray[0];
+                    }
+                    else if (typeArray.length == 2) {
+                        typeId = typeArray[0];
+                        subTypeId = typeArray[1];
+                    }
 
                     if (typeId == newTypeId) {
                         if (subTypeId == '-1') {
@@ -689,36 +701,36 @@
 
                         <input type="hidden" id="subscriedTypes" name="subscriedTypes" value="@subscriedTypes">
 
-                        <div class="cell">
-                            <select name="ResourceType" class="text candisabled" id="ResourceType" onchange="demandCategoryChange()" style="width:160px">
+                        <div class="cell selecttype">
+                            <select name="ResourceType" class="text candisabled" id="ResourceType" onchange="demandCategoryChange()">
                                 <option value="-1">请选择需求类别</option>
                                 @foreach (var item in Html.ResourceList())
                                 {
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <select name="SpaceTypeId" class="text sp hd candisabled" id="SpaceTypeId" style="width:160px">
+                            <select name="SpaceTypeId" class="text sp hd candisabled" id="SpaceTypeId">
                                 <option value="-1">不限类型</option>
                                 @foreach (var item in Html.SpaceTypeList())
                                 {
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <select name="ActorTypeId" class="text ac hd candisabled" id="ActorTypeId" style="width:160px">
+                            <select name="ActorTypeId" class="text ac hd candisabled" id="ActorTypeId">
                                 <option value="-1">不限类型</option>
                                 @foreach (var item in Html.ActorTypeList())
                                 {
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <select name="EquipTypeId" class="text eq hd candisabled" id="EquipTypeId" style="width:160px">
+                            <select name="EquipTypeId" class="text eq hd candisabled" id="EquipTypeId">
                                 <option value="-1">不限类型</option>
                                 @foreach (var item in Html.EquipTypeList())
                                 {
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <select name="OtherTypeId" class="text ot hd candisabled" id="OtherTypeId" style="width:160px">
+                            <select name="OtherTypeId" class="text ot hd candisabled" id="OtherTypeId">
                                 <option value="-1">不限类型</option>
                                 @foreach (var item in Html.OtherTypeList())
                                 {
