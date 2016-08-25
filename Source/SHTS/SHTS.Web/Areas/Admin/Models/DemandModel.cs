@@ -15,5 +15,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Models
         public DemandCategory demandCategory { get; set; }
 
         public List<DemandCategory> DemandCategories { get; set; }
+
+        public String ResourceType { get; set; }
     }
 }

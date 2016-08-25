@@ -8,6 +8,7 @@
 @section head
 {
     <link href="/content/css/demand.css" rel="stylesheet" />
+    <link href="/content/css/resource.css" rel="stylesheet" />
     <script src="/content/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
         function timeRedirect(obj) {
@@ -23,6 +24,29 @@
             window.location.href = url;
         }
     </script>
+    <style>
+.listdivitemnumber {
+    width:50px;
+}
+.listdivitemsummary{
+    width:700px;
+}
+    .listdivitemlink {
+        padding-top:0;
+        margin-top:24px;
+        margin-right:20px;
+    }
+   .listdivitemtext{
+       height:auto;
+       max-height:66px;
+   }
+    .listdivitemnumber {
+        height:50px;
+    }
+    .listdivitemtable tr td{
+        height:30px;
+    }
+    </style>
 }
 
 
@@ -151,34 +175,34 @@
                         break;
                 }
 
-            <div class="class_list">
-                <h2>需求类型：</h2>
-                     
-                <ul>
-                    <li>
-                        @if (string.IsNullOrEmpty(Model.ResourceTypeId))
-                        {
-                            <a class="no" href="@urlResourceTypeId">不限</a>
-                        }
-                        else
-                        {
-                            <a href="@urlResourceTypeId">不限</a>
-                        }
-                    </li>
+                <div class="class_list">
+                    <h2>需求类型：</h2>
 
-                    @foreach (var item in resourceSubTypeList)
-                    {
-                        if (item.Value.Equals(Model.ResourceTypeId))
+                    <ul>
+                        <li>
+                            @if (string.IsNullOrEmpty(Model.ResourceTypeId))
+                            {
+                                <a class="no" href="@urlResourceTypeId">不限</a>
+                            }
+                            else
+                            {
+                                <a href="@urlResourceTypeId">不限</a>
+                            }
+                        </li>
+
+                        @foreach (var item in resourceSubTypeList)
                         {
-                            <li><a class="no" href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
+                            if (item.Value.Equals(Model.ResourceTypeId))
+                            {
+                                <li><a class="no" href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
+                            }
                         }
-                        else
-                        {
-                            <li><a href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
-                        }
-                    }
-                </ul>
-            </div>
+                    </ul>
+                </div>
 
             }
 
@@ -263,9 +287,9 @@
                             <p>@number</p>
                         </div>
                         <div class="listdivitemsummary">
-                            <div class="title">
+                            <div class="listdivitemtitle">
                                 <lable style="color: #FD9102;font-size: 15px;">[@item.StatusValueString]</lable>@item.Title
-                                <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                <span>发布于 @item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
                             </div>
                             <table class="listdivitemtable">
                                 <tr>
@@ -275,7 +299,7 @@
                                 </tr>
                                 <tr>
                                     @*<td>需求时长：<span>@item.TimeLength</span></td>*@
-                                    <td>参与人数：<span>@item.PeopleNumber</span></td>
+                                    @*<td>参与人数：<span>@item.PeopleNumber</span></td>*@
                                     <td>开始时间：<span>@item.StartTime.Value.ToString("yyyy/MM/dd")</span></td>
                                     <td>
                                         预算金额：
@@ -289,10 +313,10 @@
                                         }
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="3" style="height: 60px; line-height: 20px; color: #868686; font-size:12px; overflow:hidden;">@item.Description</td>
-                                </tr>
                             </table>
+                            <div class="listdivitemtext">
+                                @item.ContentText
+                            </div>
                         </div>
                         <div class="listdivitemlink">
                             @{ string url = "/demand/" + item.Id + ".html"; }
@@ -311,6 +335,8 @@
             {
                 string urlPage = string.Empty;
                 urlPage = string.IsNullOrEmpty(Model.ResourceType) ? urlPage : urlPage + "&ResourceType=" + Model.ResourceType;
+                urlPage = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlPage : urlPage + "&ResourceTypeId=" + Model.ResourceTypeId;
+                urlPage = string.IsNullOrEmpty(Model.LastResourceType) ? urlPage : urlPage + "&LastResourceType=" + Model.LastResourceType;
                 urlPage = string.IsNullOrEmpty(Model.Area) ? urlPage : urlPage + "&area=" + Model.Area;
                 urlPage = string.IsNullOrEmpty(Model.StartBudget) ? urlPage : urlPage + "&startbudget=" + Model.StartBudget;
                 urlPage = string.IsNullOrEmpty(Model.EndBudget) ? urlPage : urlPage + "&endbudget=" + Model.EndBudget;

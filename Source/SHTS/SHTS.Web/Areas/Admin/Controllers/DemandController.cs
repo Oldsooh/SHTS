@@ -22,7 +22,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         DemandService demandService = new DemandService();
 
         [Permission(EnumRole.Editer)]
-        public ActionResult Index(string id)
+        public ActionResult Index(string id, string resourceType)
         {
             DemandModel model = new DemandModel();
 
@@ -33,7 +33,16 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 Int32.TryParse(id, out page);
             }
             int allCount = 0;
-            model.Demands = demandService.GetDemands(20, page, out allCount);//每页显示20条
+            //model.Demands = demandService.GetDemands(20, page, out allCount);//每页显示20条
+
+            DemandParameters parameters = new DemandParameters();
+            parameters.PageCount = 20;
+            parameters.PageIndex = page;
+            parameters.ResourceType = resourceType;
+
+            model.Demands = demandService.GetDemandsByParameters(parameters, out allCount);
+
+            model.ResourceType = resourceType;
             //分页
             if (model.Demands != null && model.Demands.Count > 0)
             {

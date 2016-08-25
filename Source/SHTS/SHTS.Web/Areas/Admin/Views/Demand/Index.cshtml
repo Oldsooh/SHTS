@@ -295,12 +295,12 @@
                                 //上一页
                                 if (Model.PageIndex > 1)
                                 {
-                                    <span><a href="/admin/demand/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                                    <span><a href="/admin/demand/index?id=@(Model.PageIndex - 1)&resourceType=@Model.ResourceType" class="prv">上一页</a></span>
                                 }
                                 //首页
                                 if (Model.PageStep < Model.PageIndex)
                                 {
-                                    <span><a href="/admin/demand/index/1">首页</a></span>
+                                    <span><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">首页</a></span>
                                 }
                                 //分页
                                 for (int i = step; i < step + Model.PageStep; i++)
@@ -309,34 +309,31 @@
                                     {
                                         if (i == Model.PageIndex)
                                         {
-                                            <span><a href="/admin/demand/index/@i" class="no">@i</a></span>
+                                            <span><a href="/admin/demand/index?id=@i&&resourceType=@Model.ResourceType" class="no">@i</a></span>
                                         }
                                         else
                                         {
-                                            <span><a href="/admin/demand/index/@i">@i</a></span>
+                                            <span><a href="/admin/demand/index?id=@i&resourceType=@Model.ResourceType">@i</a></span>
                                         }
                                     }
                                 }
                                 //末页
                                 if (step + Model.PageStep <= Model.PageCount)
                                 {
-                                    <span><a href="/admin/demand/index/@Model.PageCount">末页</a></span>
+                                    <span><a href="/admin/demand/index?id=@(Model.PageCount)&resourceType=@Model.ResourceType">末页</a></span>
                                 }
                                 //下一页
                                 if (Model.PageIndex < Model.PageCount)
                                 {
-                                    <span><a href="/admin/demand/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                                    <span><a href="/admin/demand/index?id=@(Model.PageIndex + 1)&resourceType=@Model.ResourceType" class="next">下一页</a></span>
                                 }
                             }
                         }
-
                     }
                 </div>
                 <!--分页结束-->
 
             </div>
-
-
         </div>
 
         <script type="text/javascript">
