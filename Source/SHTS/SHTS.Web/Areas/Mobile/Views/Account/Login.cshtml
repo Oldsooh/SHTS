@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "会员登录 中国活动在线网手机版";
+    Layout = "~/Areas/mobile/Views/Shared/mobileLayoutPage.cshtml";
+}
+
+@model Witbird.SHTS.Web.Models.Account.LoginViewModel
+
+@section head
+{
+    <link href="~/content/css/login.css" rel="stylesheet" />
+    <link href="~/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+            width: 100%;
+        }
+
+        .register-box {
+            position: initial;
+        }
+    </style>
+}
+<div class="wrap">
+    <div class="register-box" style="height: 376px; width: 100%; padding-top:15px; ">
+        <form class="reg-form" id="js-form-mobile" method="post" action="#" style="height: auto;">
+            <div class="cell">
+                <input type="text" name="username" id="js-mobile_ipt" value="@Model.username" placeholder="账户名/手机号/邮箱" class="text" maxlength="20" />
+            </div>
+            <div class="cell">
+                <input type="password" name="password" id="js-mobile_pwd_ipt" placeholder="输入密码" class="text" />
+            </div>
+            <div class="cell vcode">
+                <input type="hidden" id="IsAutoLogin" name="IsAutoLogin" value="0" />
+                <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6" />
+                <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); " />
+            </div>
+
+            <div class="bottom">
+                <button type="submit" id="btnLogin" style="width:100%;" class="button btn-green">立即登录</button>
+            </div>
+            <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                <p>
+                    还没有账号？<a href="/mobile/account/register" style="color: #0099FF;">立即注册</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<input type="hidden" id="errormsg" value="@Model.ErrorMsg" />
+@section FooterJS
+{
+    <script src="~/Content/js/Account/login.js"></script>
+    <script>
+        $(function () {
+            $("#btnLogin").click(function () {
+                $("#js-form-mobile").validate({
+                    submitHandler: function (form) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+}

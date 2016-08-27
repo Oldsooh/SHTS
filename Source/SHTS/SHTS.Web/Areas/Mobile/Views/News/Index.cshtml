@@ -1,0 +1,99 @@
+﻿@model Witbird.SHTS.Web.Areas.Mobile.Models.NewsModel
+@{
+    ViewBag.Title = "新闻列表 中国活动在线网手机版";
+    Layout = "~/Areas/Mobile/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #news a { color: #ffffff; background-color: #2577e3; }
+    </style>
+}
+
+<div id="main">
+    @if (Model.Newses != null && Model.Newses.Count > 0)
+    {
+        foreach (var item in Model.Newses)
+        {
+            <ul class="commonlist">
+                <li class="atitle">
+                    @if (item.Category == Witbird.SHTS.Model.EnumNews.Notice.ToString())
+                    {
+                        <span class="yellow">[公告]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Company.ToString())
+                    {
+                        <span class="yellow">[公司]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Industry.ToString())
+                    {
+                        <span class="yellow">[行业]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Resource.ToString())
+                    {
+                        <span class="yellow">[资源]</span>
+                    }
+                    else if (item.Category == Witbird.SHTS.Model.EnumNews.Supplydemand.ToString())
+                    {
+                        <span class="yellow">[供求]</span>
+                    }
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <span class="yellow" style="color:#ff0000;">[图]</span>
+                    }
+                    <span class="state blue">@item.InsertTime.Value.ToString("MM-dd")</span>
+                    <a href="/Mobile/news/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                </li>
+            </ul>
+        }
+    }
+</div>
+<!--分页开始-->
+<div class="fenye" style="margin: 0 auto;">
+    @if (Model.PageCount > 1)
+    {
+        for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+        {
+            if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+            {
+                //上一页
+                if (Model.PageIndex > 1)
+                {
+                    <span><a href="/Mobile/news/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                }
+                //首页
+                if (Model.PageStep < Model.PageIndex)
+                {
+                    <span><a href="/Mobile/news/index/1" class="prv">1</a></span><span>.</span>
+                }
+                //分页
+                for (int i = step; i < step + Model.PageStep; i++)
+                {
+                    if (i <= Model.PageCount)
+                    {
+                        if (i == Model.PageIndex)
+                        {
+                            <span><a href="/Mobile/news/index/@i" class="no">@i</a></span>
+                        }
+                        else
+                        {
+                            <span><a href="/Mobile/news/index/@i">@i</a></span>
+                        }
+                    }
+                }
+                //末页
+                if (step + Model.PageStep <= Model.PageCount)
+                {
+                    <span>.</span><span><a href="/Mobile/news/index/@(Model.PageCount)" class="prv">@(Model.PageCount)</a></span>
+                }
+                //下一页
+                if (Model.PageIndex < Model.PageCount)
+                {
+                    <span><a href="/Mobile/news/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                }
+            }
+        }
+
+    }
+</div>
+<!--分页结束-->

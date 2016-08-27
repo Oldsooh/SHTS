@@ -1,0 +1,75 @@
+﻿@model Witbird.SHTS.Web.Models.ActivityModel.ActivitysViewModel
+@{
+    ViewBag.Title = "活动在线";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@section head
+{
+    <style type="text/css">
+        #activity a
+        {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+        #link img {
+            max-width: 100%;
+        }
+
+        #oTop img {
+            max-width: 100%;
+        }
+
+        #oTop {
+            width: 100%;
+            position: relative;
+        }
+
+        #oLink1 {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 14%;
+            height: 35%;
+        }
+
+        #oLink2 {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 86%;
+            height: 100%;
+        }
+
+        .nav a {
+            width: 20%;
+        }
+
+        .nav a.last {
+            border-right: none;
+        }
+    </style>
+}
+<div id="main">
+    @if (Model.ActivityList != null && Model.ActivityList.Count > 0)
+    {
+        foreach (var item in Model.ActivityList)
+        {
+        <ul class="commonlist">
+            <li class="atitle">
+
+                <span class="state blue">@item.StartTime.Value.ToString("MM-dd")</span>&nbsp;&nbsp;<a href="/Wechat/activity/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+            </li>
+            <li>地点：<span class="yellow">@item.Adress</span></li>
+            <li>时间：<span class="yellow">@string.Format("{0:F}",item.StartTime)
+            </span></li>
+            <li>标签：<span class="yellow">@item.Keywords</span></li>
+        </ul>
+        }
+    }
+    <div style="clear: both; height: 10px;"></div>
+
+    @Html.Partial("PagingPartial", Model)
+</div>
+
+

@@ -1,0 +1,188 @@
+﻿@charset "utf-8";
+
+/*报名页*/
+.xtitle{
+	font-family:"微软雅黑";
+	font-size:16px;
+	color:#000;}
+.details li{
+	line-height:180%;}
+.orange{
+	background:#fb8e00;
+}
+.red{
+	background:#d53100}
+.green{
+	background:#87c239}
+.info_title{
+	font-weight:bold;
+	margin-bottom:5px;}
+.people{
+	font-size:14px;
+	font-family:"微软雅黑";
+	margin-bottom:50px;
+}
+.people dt{
+	background:#f5f5f5;
+	border:1px solid #979797;
+	width:140px;
+	padding:2px 5px;
+	text-align:center;
+	margin:10px 0 10px 0;
+}
+.people dt a {
+	color:#000}
+.people span{
+	display:inline-block;
+	width:33%;}
+.company{
+	color:#7ed321;}
+.people dd{
+	line-height:180%;}
+
+.baoming a {
+    color: #FFFFFF;
+    display: block;
+    font-size: 16px;
+    line-height: 120%;
+}
+#user,#web,#job,#phone,#email,#login{
+	display:none;
+	margin-left:56px;}
+.active_form input{
+	border:1px solid #979797;
+	height:40px;
+	margin:20px 10px;
+	width:75%;
+	border-radius:7px;
+	padding-left:3px;
+	line-height:40px;
+	font-size:12px;}
+.active_form{
+	font-size:14px;
+	font-family:"微软雅黑";
+	margin-top:20px;
+	}
+.active_form .login_btn{
+	width:100%;
+	background:url(../../images/shouwei/button_bg.gif@v=1) repeat;
+	color:#fff;
+	font-size:16px;
+	font-family:"微软雅黑";
+	border:none;
+	margin-left:0;}
+.active_form #all{
+	width:20px;
+	height:20px;
+	background:#d8d8d8;
+	margin:0 20px 0 0;
+	float:left}
+
+/*详情页*/
+.main{
+	text-align:left;
+	background:#fff;
+	padding:5px 15px;}
+.details{
+	font-family:"微软雅黑";
+	font-size:14px;
+	color:#000;}
+.details li{
+	line-height:180%;}
+.circle{
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius: 78.5px 78.5px 78.5px 78.5px;
+	margin-right:6px;
+	}
+.active_info{
+	font-size:14px;
+	font-family:"微软雅黑";
+		line-height: 180%;
+	 margin-top: 10px;}
+
+.people{
+	font-size:14px;
+	font-family:"微软雅黑";
+	margin-bottom:50px;
+}
+.people dt{
+	background:#f5f5f5;
+	border:1px solid #979797;
+	width:140px;
+	padding:2px 5px;
+	text-align:center;
+	margin:10px 0 10px 0;}
+.people span{
+	display:inline-block;
+	width:33%;}
+.company{
+	color:#7ed321;}
+.people dd{
+	line-height:180%;}
+.baoming {
+    background: none repeat scroll 0 0 #87C239;
+    border-radius: 5px;
+    font-family: "微软雅黑";
+    font-size: 18px;
+    right: 1%;
+    padding: 5px 0;
+    position: fixed;
+    text-align: center;
+    top: 65%;
+    width:7%;
+		color:#fff;
+		font-size:16px;
+		line-height:120%;
+}
+
+/*列表页*/
+
+.active{
+	font-family:"微软雅黑";
+	font-size:13px;
+	color:#898989;
+	padding:5px 15px;
+    text-align:left;
+    background:#FFF;
+	border-bottom:1px solid #DCDCDC;}
+.active li{
+	margin:5px 0}
+.peoplenum {
+    height: 13px;
+    line-height: 13px;
+}
+.atitle{
+	font-size:16px;}
+.atitle a{
+	color:#000}
+.state{
+	font-size:13px;
+	color:#fff;
+	padding:0 3px;
+	display:inline-block;
+	height:18px;
+	line-height:18px;
+	}
+
+
+/*分页样式*/
+.more{ width:100%; border:1px solid #DCDCDC; background-color:#EEE; height:36px; line-height:36px; text-align:center; }
+.page_now{ height:26px; line-height:26px;}
+.page_kind_list{height:24px; line-height:24px; padding:0px 6px; border:1px solid #dcdcdc; margin-right:5px; background-color:#EEE; margin-bottom:2px; font-size:12px; color:#646464; }
+.mb12{ margin-bottom:12px;}
+.page_kind .last_page{ margin-right:0px;} 
+/**/
+.font14{ font-size:14px;}
+.font13{ font-size:13px;}
+.font12{ font-size:12px;}
+.font11{ font-size:11px;}
+.mt10{ margin-top:10px;}	
+.fl{ float:left; display:inline;}
+.mr12{ margin-right:12px;}
+.c64{ color:#646464;text-decoration:none;}
+.fr{ float:right; display:inline;}
+/*尾部*/
+#foot{ background-color:#E6E6E6; padding:12px 10px; border-top:1px solid #dcdcdc;}
+.to_top{ background:url(../../images/shouwei/to_top.gif) no-repeat 0 5px; padding-left:12px;}

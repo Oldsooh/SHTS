@@ -1,0 +1,419 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+body, button, input, select, textarea {
+    font: 12px/1.5 \5fae\8f6f\96c5\9ed1,\5b8b\4f53,Arial,Verdana;
+}
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #ff9a15;
+    }
+
+img {
+    border: 0;
+}
+
+li {
+    list-style: none;
+}
+
+body {
+    /*background-color: #f9f8f8;*/
+}
+
+.wrap {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#top {
+    width: 100%;
+    overflow: hidden;
+    background-color: #f9f9f8;
+    border-bottom: 1px solid #337ab7;
+    margin-bottom: 10px;
+}
+
+.back {
+    float: left;
+    display: inline-block;
+}
+
+    .back a {
+        background-image: url('/Areas/Wechat/Content/images/arr-left.png'); /* height: 20px; */
+        display: block;
+        background-repeat: no-repeat;
+        padding-left: 15px;
+        margin-top: 10px;
+        line-height: 20px;
+        background-size: 8px;
+        background-position: 2px;
+    }
+
+#city {
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 5px;
+}
+
+#city span{
+    color: #337ab7;
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 70px;
+}
+
+#usercenter {
+    display: inline-block;
+    float: right;
+}
+
+.username {
+    height: 20px;
+    overflow: hidden;
+    display: block;
+    background: url('/Areas/Wechat/Content/images/usercenter.png');
+    background-repeat: no-repeat;
+    text-align: center;
+    padding-right: 40px;
+    margin-top: 10px;
+    background-position-x: 60px;
+}
+
+#logo {
+    float: left;
+    display: inline-block;
+}
+
+    #logo img {
+        max-width: 90px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+#nav {
+    clear: both;
+    width: 100%;
+    height: 61px;
+    background-color: #FDFDFD;
+    border-top: 1px solid #F3F3F3;
+    border-bottom: 1px solid #F3F3F3;
+    overflow: hidden;
+}
+
+#navul {
+    text-align: center;
+}
+
+.navli {
+    width: 25%;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    border-bottom: 1px dashed #E7E7E7;
+}
+
+    .navli a {
+        font-size: 14px;
+        color: #4385DD;
+        font-family: 'Microsoft YaHei';
+        padding: 3px 4px;
+    }
+
+
+
+.cotentMain {
+    width: 100%;
+    min-height: 30px;
+    clear: both;
+}
+
+
+
+#footer {
+    width: 100%;
+    height: 50px;
+    line-height: 20px;
+    padding-top: 10px;
+    clear: both;
+    text-align: center;
+    border-top: 1px dashed #E7E7E7;
+}
+
+
+
+
+
+.slide {
+    padding: 5px 0;
+    margin: 5px auto;
+    overflow: hidden;
+    text-align: center;
+}
+
+    .slide img {
+        width: 98%;
+    }
+
+.commonTitle {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background-color: #FDFDFD;
+    font-family: 'Microsoft YaHei';
+    border-top: 2px solid #e5e5e5;
+    border-bottom: 2px solid #F3F3F3;
+    clear: both;
+}
+
+    .commonTitle h3 {
+        margin-left: 10px;
+        padding: 0 5px;
+        font-size: 18px;
+        color: #4385DD;
+        float: left;
+        border-bottom: 2px #ff9a15 solid;
+        bottom: 1px;
+    }
+
+    .commonTitle a {
+        margin-right: 10px;
+        font-size: 16px;
+        color: #4385DD;
+        float: right;
+    }
+
+.commonList {
+    width: 100%;
+    background-color: #FCFCFC;
+    clear: both;
+    margin-bottom: 20px;
+}
+
+.commonUl {
+    padding-top: 5px;
+}
+
+.commonLi {
+    padding-left: 10px;
+    height: 25px;
+    line-height: 25px;
+    padding-right: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+    .commonLi a {
+        font-size: 16px;
+    }
+
+.p_newslist_ico {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    text-align: right;
+    top: -2px;
+}
+
+.p_newslist_ico_num {
+    display: inline-block;
+    height: 34px;
+    line-height: 34px;
+    overflow: hidden;
+    background- position: right -428px;
+    padding-left: 10px;
+    padding-right: 15px;
+    color: #888;
+    font-size: 10px;
+    font-style: normal;
+}
+
+.p_newslist_ico_num_yellow {
+    color: #ff9a15;
+    font-size: 12px;
+}
+
+.resourceFour {
+    width: 100%;
+    padding: 10px 0;
+    border-top: 2px solid #cdcdcd;
+}
+
+.resourceFourLi {
+    width: 25%;
+    float: left;
+    text-align: center;
+}
+
+    .resourceFourLi img {
+        width: 90%;
+    }
+
+.commonlist {
+    font-family: "微软雅黑";
+    font-size: 16px;
+    color: #898989;
+    padding: 0px 10px;
+    text-align: left;
+    background: #FFF;
+    border-bottom: 1px solid #DCDCDC;
+}
+
+    .commonlist li {
+        margin: 5px 0;
+        font-size: 16px;
+    }
+
+
+
+.atitle {
+    font-size: 16px;
+}
+
+    .atitle a { /*color: #1CB03A;*/
+        font-size: 16px;
+    }
+
+.state {
+    font-size: 16px;
+    color: #fff;
+    padding: 0px 2px;
+    display: inline-block;
+}
+
+.blue {
+    background: #2577e3;
+}
+
+.yellow {
+    color: #E87505;
+    font-size: 16px;
+}
+
+.yellow2 {
+    color: #E87505;
+}
+
+/*详情页*/
+.main {
+    text-align: left;
+    background: #fff;
+    padding: 0px 10px;
+}
+
+    .main img {
+        max-width: 300px;
+    }
+
+#main img {
+    max-width: 300px;
+}
+
+.details {
+    font-family: "微软雅黑";
+    font-size: 14px;
+    color: #000;
+}
+
+    .details li {
+        line-height: 180%;
+    }
+
+.dtitle {
+    text-align: center;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    font-size: 20px;
+    color: #337ab7;
+    overflow: hidden;
+}
+
+.circle {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 78.5px 78.5px 78.5px 78.5px;
+    margin-right: 6px;
+}
+
+.active_info {
+    font-size: 14px;
+    font-family: "微软雅黑";
+    line-height: 180%;
+    margin-top: 10px;
+}
+
+
+.fenye {
+    width: auto;
+    height: auto;
+    text-align: center;
+    padding: 10px 0;
+}
+
+    .fenye span {
+        font-size: 14px;
+        text-align: center;
+    }
+
+        .fenye span a {
+            width: auto !important;
+            width: 14px;
+            min-width: 14px;
+            padding-left: 7px;
+            padding- right: 7px;
+            height: 28px;
+            line-height: 28px;
+            border: #d9d9d9 1px solid;
+            color: #000;
+            display: inline-block;
+            white-space: nowrap;
+            background: #FFF;
+        }
+
+    .fenye a.prv {
+        min-width: 40px;
+        background-image: url(../images/pay/ico_pre.gif);
+        background-repeat: no- repeat;
+        background-position: 10px center;
+        color: #666;
+    }
+
+    .fenye a.next {
+        min-width: 40px;
+        background-image: url(../images/pay/ico_next.gif);
+        background-repeat: no-repeat;
+        background-position: 70px center;
+        color: #666;
+    }
+
+    .fenye a.no, .fenye span a:hover {
+        border: #1f61b8 1px solid;
+        background-color: #2577e3;
+        color: #fff;
+    }
+
+    .fenye span input {
+        width: 20px;
+        min-width: 14px;
+        padding-left: 7px;
+        padding-right: 7px;
+        height: 28px;
+        line-height: 28px;
+        border: #d9d9d9 1px solid;
+        color: #999;
+        display: inline-block;
+        white-space: nowrap;
+        background: #FFF;
+    }

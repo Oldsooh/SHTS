@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* 14.11.11 by hezc */
+.c_center ul a:before{ background-image:url(http://img.58cdn.com.cn/m58/m3/img/ucenter.png?v=4.12.1);}
+.c_center ul .my_weidian:before{background-position:0 -174px}.c_center ul .my_weidian_no:before{background-position:0 -154px}
+.c_center ul .my_weidian:after,.c_center ul .my_weidian_no:after{content:'新!'; position:absolute; top:11px; left:93px; color:#FF2700; font-size:12px;}
+
+.wd_tit{ font-size:17px; line-height:45px; padding:0 15px; border-bottom:1px solid #FC6E02;}.wd_tit i{ color:#FC6E02;}
+.wd_h2{ background:#EFF2F3; line-height:40px; font-size:14px; color:#585858; padding:0 15px; margin-bottom:10px;}
+.wd_buzhou{ line-height:22px; font-size:13px;}
+.wd_buzhou li{ padding:0 10px 10px 35px; position:relative;}
+.wd_buzhou li:after{content:'1'; display: block; width:14px; height:14px; background:#F78520; text-align:center; color:#fff;border-radius:10px; line-height:14px; position:absolute; left:15px; top:4px; font-size:11px;}
+.wd_buzhou li:nth-child(2):after{content:'2';}
+.wd_buzhou li:nth-child(3):after{content:'3';}
+.wd_nshu li:nth-child(n):after{content:''; width:10px; height:10px; top:6px;left:17px;}

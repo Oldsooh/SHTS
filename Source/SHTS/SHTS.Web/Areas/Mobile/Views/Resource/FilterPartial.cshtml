@@ -1,0 +1,745 @@
+﻿@model Witbird.SHTS.Model.Extensions.UserFilter
+@{
+    //用于增加筛选项
+    RouteValueDictionary GeneralDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "province" || item.Key == "city" || item.Key == "ara")
+        {
+            continue;
+        }
+        GeneralDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制地区
+    RouteValueDictionary CountryDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "province" || item.Key == "city" || item.Key == "ara")
+        {
+            continue;
+        }
+        CountryDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地类型
+    RouteValueDictionary SptpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sptp")
+        {
+            continue;
+        }
+        SptpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地特点
+    RouteValueDictionary SpftDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spft")
+        {
+            continue;
+        }
+        SpftDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制配套设备
+    RouteValueDictionary SpfcDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spfc")
+        {
+            continue;
+        }
+        SpfcDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地面积
+    RouteValueDictionary SpszDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "spsz")
+        {
+            continue;
+        }
+        SpszDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary SppcDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sppc")
+        {
+            continue;
+        }
+        SppcDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary SpttDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "sptt")
+        {
+            continue;
+        }
+        SpttDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制场地人数
+    RouteValueDictionary AcwkDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "actp")
+        {
+            continue;
+        }
+        AcwkDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制设备类别
+    RouteValueDictionary EqtpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "eqtp")
+        {
+            continue;
+        }
+        EqtpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制其他类别
+    RouteValueDictionary OttpDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "ottp")
+        {
+            continue;
+        }
+        OttpDictionary.Add(item.Key, (object)item.Value);
+    }
+
+
+    //不限制演员组织类别
+    RouteValueDictionary AcfmDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "acfm")
+        {
+            continue;
+        }
+        AcfmDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    //不限制演员性别
+    RouteValueDictionary AcsxDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "acsx")
+        {
+            continue;
+        }
+        AcsxDictionary.Add(item.Key, (object)item.Value);
+    }
+
+    Dictionary<string, object> zindex77 = new Dictionary<string, object>();
+    zindex77.Add("style", (object)"z-index:777");
+
+    Dictionary<string, object> noClass = new Dictionary<string, object>();
+    noClass.Add("class", (object)"no");
+
+    Dictionary<string, object> zindex777_noClass = new Dictionary<string, object>();
+    zindex777_noClass.Add("class", (object)"no");
+    zindex777_noClass.Add("style", (object)"z-index:777");
+
+    Dictionary<string, object> curTimeClass = new Dictionary<string, object>();
+    curTimeClass.Add("id", (object)"curtime");
+    curTimeClass.Add("style", (object)"display:none;");
+}
+
+<div id="fixed-top" class="btn-group btn-group-root" role="group" aria-label="...">
+
+    @if (Model.SelectedFilter.ContainsKey("city"))
+    {
+        var cityfilter = Model.SelectedFilter.First(v => v.Key == "city");
+        var city = Witbird.SHTS.Web.Public.StaticUtility.AllCities.FirstOrDefault(v => v.Id == cityfilter.Value);
+        if (city != null)
+        {
+            var cities = Witbird.SHTS.Web.Public.StaticUtility.AllCities.Where(v => v.EntityType == 3 && v.ParentId == city.Id).ToList();
+            if (cities.Count > 0)
+            {
+                var name = "区域";
+                <div class="btn-group" role="group">
+                    @if (Model.SelectedFilter.ContainsKey("ara"))
+                    {
+                        var area = cities.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["ara"]));
+                        if (area != null)
+                        {
+                            name = area.Name;
+                        }
+                    }
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @name
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            @if (Model.SelectedFilter.ContainsKey("ara"))
+                            {
+                                @Html.ActionLink("不限", Model.ActionName, CountryDictionary)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("不限", Model.ActionName, CountryDictionary, noClass)
+                            }
+                        </li>
+                        @foreach (var ct in cities)
+                        {
+                            CountryDictionary.Add("ara", ct.Id);
+                            <li>
+                                @if (Model.SelectedFilter.ContainsKey("ara") && Model.SelectedFilter["ara"].Equals(ct.Id))
+                                {
+                                    @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary, noClass)
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary)
+                                }
+                            </li>
+                                CountryDictionary.Remove("ara");
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    }
+    @if (Model.SelectedFilter.ContainsKey("sptp") || Model.UnselectFilter.ContainsKey("sptp"))
+    {
+        var name = "类型";
+        var spaceTypeList = Witbird.SHTS.Web.Public.MiscData.SpaceTypeList;
+
+        if (Model.SelectedFilter.ContainsKey("sptp"))
+        {
+            var type = spaceTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["sptp"]));
+
+            if (type != null)
+            {
+                name = type.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("sptp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SptpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SptpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in spaceTypeList)
+                {
+                    SptpDictionary.Add("sptp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("sptp") && Model.SelectedFilter["sptp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SptpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SptpDictionary)</li>
+                    }
+
+                    SptpDictionary.Remove("sptp");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spft") || Model.UnselectFilter.ContainsKey("spft"))
+    {
+        var name = "特点";
+        var spaceFeatureList = Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList;
+
+        if (Model.SelectedFilter.ContainsKey("spft"))
+        {
+            var first = spaceFeatureList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["spft"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spft"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpftDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpftDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in spaceFeatureList)
+                {
+                    SpftDictionary.Add("spft", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spft") && Model.SelectedFilter["spft"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpftDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpftDictionary)</li>
+                    }
+                    SpftDictionary.Remove("spft");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spfc") || Model.UnselectFilter.ContainsKey("spfc"))
+    {
+        var name = "设施";
+        var spaceFacilityList = Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList;
+
+        if (Model.SelectedFilter.ContainsKey("spfc"))
+        {
+            var first = spaceFacilityList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["spfc"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spfc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpfcDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpfcDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in spaceFacilityList)
+                {
+                    SpfcDictionary.Add("spfc", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spfc") && Model.SelectedFilter["spfc"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpfcDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpfcDictionary)</li>
+                    }
+                    SpfcDictionary.Remove("spfc");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("spsz") || Model.UnselectFilter.ContainsKey("spsz"))
+    {
+        var name = "面积";
+        var spaceSizeList = Witbird.SHTS.Web.Public.MiscData.SpaceSizeList;
+
+        if (Model.SelectedFilter.ContainsKey("spsz"))
+        {
+            var first = spaceSizeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["spsz"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("spsz"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpszDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SpszDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in spaceSizeList)
+                {
+                    SpszDictionary.Add("spsz", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("spsz") && Model.SelectedFilter["spsz"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpszDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SpszDictionary)</li>
+                    }
+                    SpszDictionary.Remove("spsz");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("sppc") || Model.UnselectFilter.ContainsKey("sppc"))
+    {
+        var name = "人数";
+        var spacePeopleList = Witbird.SHTS.Web.Public.MiscData.SpacePeopleList;
+
+        if (Model.SelectedFilter.ContainsKey("sppc"))
+        {
+            var first = spacePeopleList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["sppc"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("sppc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SppcDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, SppcDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in spacePeopleList)
+                {
+                    SppcDictionary.Add("sppc", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("sppc") && Model.SelectedFilter["sppc"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SppcDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, SppcDictionary)</li>
+                    }
+                    SppcDictionary.Remove("sppc");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("sptt") || Model.UnselectFilter.ContainsKey("sptt"))
+    {
+        var name = "酒宴";
+        if (Model.SelectedFilter.ContainsKey("sptt"))
+        {
+            if (Model.SelectedFilter["sptt"].Equals("1"))
+            {
+                name = "需要";
+            }
+            else
+            {
+                name = "不需要";
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                @if (Model.SelectedFilter.ContainsKey("sptt"))
+                {
+                    <li>@Html.ActionLink("不限", Model.ActionName, SpttDictionary)</li>
+                    if (Model.SelectedFilter["sptt"].Equals("1"))
+                    {
+                        SpttDictionary.Add("sptt", "1");
+                        <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary, noClass)</li>
+                        SpttDictionary.Remove("sptt");
+
+                        SpttDictionary.Add("sptt", "0");
+                        <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary)</li>
+                        SpttDictionary.Remove("sptt");
+                    }
+                    else
+                    {
+                        SpttDictionary.Add("sptt", "1");
+                        <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary)</li>
+                        SpttDictionary.Remove("sptt");
+
+                        SpttDictionary.Add("sptt", "0");
+                        <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary, noClass)</li>
+                        SpttDictionary.Remove("sptt");
+                    }
+                }
+                else
+                {
+                    <li>@Html.ActionLink("不限", Model.ActionName, SpttDictionary, noClass)</li>
+
+                    SpttDictionary.Add("sptt", "1");
+                    <li>@Html.ActionLink("需要", Model.ActionName, SpttDictionary)</li>
+                    SpttDictionary.Remove("sptt");
+
+                    SpttDictionary.Add("sptt", "0");
+                    <li>@Html.ActionLink("不需要", Model.ActionName, SpttDictionary)</li>
+                    SpttDictionary.Remove("sptt");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("acfm") || Model.UnselectFilter.ContainsKey("acfm"))
+    {
+        var name = "组织类型";
+        var actorFromList = Witbird.SHTS.Web.Public.MiscData.ActorFromList;
+
+        if (Model.SelectedFilter.ContainsKey("acfm"))
+        {
+            var first = actorFromList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["acfm"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("acfm"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcfmDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcfmDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in actorFromList)
+                {
+                    AcfmDictionary.Add("acfm", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("acfm") && Model.SelectedFilter["acfm"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcfmDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcfmDictionary)</li>
+                    }
+                    AcfmDictionary.Remove("acfm");
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.SelectedFilter.ContainsKey("acfm") && Model.SelectedFilter["acfm"] == "1")
+    {
+        //当选择了组织列别为个人的时候，会多一个筛选项为演员性别，所以这里重写css改变宽度为25%。
+        <style>
+            .btn-group-root .btn-group { width: 25%; }
+        </style>
+        if (Model.SelectedFilter.ContainsKey("acsx") || Model.UnselectFilter.ContainsKey("acsx"))
+        {
+            var name = "演员性别";
+            var actorSexList = Witbird.SHTS.Web.Public.MiscData.ActorSexList;
+
+            if (Model.SelectedFilter.ContainsKey("acsx"))
+            {
+                var first = actorSexList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["acsx"]));
+                if (first != null)
+                {
+                    name = first.Name;
+                }
+            }
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @name
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        @if (Model.SelectedFilter.ContainsKey("acsx"))
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, AcsxDictionary)
+                        }
+                        else
+                        {
+                            @Html.ActionLink("不限", Model.ActionName, AcsxDictionary, noClass)
+                        }
+                    </li>
+                    @foreach (var item in actorSexList)
+                    {
+                        AcsxDictionary.Add("acsx", item.Id);
+                        if (Model.SelectedFilter.ContainsKey("acsx") && Model.SelectedFilter["acsx"].Equals(item.Id.ToString()))
+                        {
+                            <li>@Html.ActionLink(item.Name, Model.ActionName, AcsxDictionary, noClass)</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink(item.Name, Model.ActionName, AcsxDictionary)</li>
+                        }
+                        AcsxDictionary.Remove("acsx");
+                    }
+                </ul>
+            </div>
+        }
+    }
+
+
+    @if (Model.SelectedFilter.ContainsKey("actp") || Model.UnselectFilter.ContainsKey("actp"))
+    {
+        var name = "演出类别";
+        var actorTypeList = Witbird.SHTS.Web.Public.MiscData.ActorTypeList;
+
+        if (Model.SelectedFilter.ContainsKey("actp"))
+        {
+            var first = actorTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["actp"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("actp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcwkDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, AcwkDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in actorTypeList)
+                {
+                    AcwkDictionary.Add("actp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("actp") && Model.SelectedFilter["actp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcwkDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, AcwkDictionary)</li>
+                    }
+                    AcwkDictionary.Remove("actp");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("eqtp") || Model.UnselectFilter.ContainsKey("eqtp"))
+    {
+        var name = "设备类别";
+        var equipTypeList = Witbird.SHTS.Web.Public.MiscData.EquipTypeList;
+
+        if (Model.SelectedFilter.ContainsKey("eqtp"))
+        {
+            var first = equipTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["eqtp"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("eqtp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, EqtpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, EqtpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in equipTypeList)
+                {
+                    EqtpDictionary.Add("eqtp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("eqtp") && Model.SelectedFilter["eqtp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, EqtpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, EqtpDictionary)</li>
+                    }
+                    EqtpDictionary.Remove("eqtp");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("ottp") || Model.UnselectFilter.ContainsKey("ottp"))
+    {
+        var name = "资源类别";
+        var otherTypeList = Witbird.SHTS.Web.Public.MiscData.OtherTypeList;
+
+        if (Model.SelectedFilter.ContainsKey("ottp"))
+        {
+            var first = otherTypeList.FirstOrDefault(x => x.Id.ToString().Equals(Model.SelectedFilter["ottp"]));
+            if (first != null)
+            {
+                name = first.Name;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("ottp"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, OttpDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, OttpDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in otherTypeList)
+                {
+                    OttpDictionary.Add("ottp", item.Id);
+                    if (Model.SelectedFilter.ContainsKey("ottp") && Model.SelectedFilter["ottp"].Equals(item.Id.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, OttpDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.Name, Model.ActionName, OttpDictionary)</li>
+                    }
+                    OttpDictionary.Remove("ottp");
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+<div style="clear: both;"></div>

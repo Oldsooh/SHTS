@@ -1,0 +1,91 @@
+﻿@model Witbird.SHTS.Web.Areas.Mobile.Models.DemandModel
+@{
+    ViewBag.Title = Model.Demand.Title;
+    Layout = "~/Areas/Mobile/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+
+        .buypanel {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 93%;
+            border: 1px #ffd800 dashed;
+            background: #fbdddd;
+            color: #2577e3;
+            text-align: center;
+        }
+
+            .buypanel button {
+                width: 100%;
+                height: 30px;
+                border-radius: 15px;
+                outline: none;
+                font-size: 15px;
+            }
+
+        .btn-blue {
+            background-color: #337ab7;
+        }
+    </style>
+}
+
+<div class="main">
+    <ul class="details">
+        <li class="dtitle">
+            <lable style="color: #FD9102;font-size:20px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
+        </li>
+        <li>发布时间：<span class="yellow2">@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm")</span></li>
+        <li>发布来源：<span class="yellow2">@Model.Demand.UserName</span></li>
+        <li>需求类别：<span class="yellow2">@Model.Demand.ResourceTypeName</span></li>
+        <li>需求类型：<span class="yellow2">@Html.GetResourceSubTypeNameById(Model.Demand.ResourceType, Model.Demand.ResourceTypeId)</span></li>
+        <li>起止时间：<span class="yellow2">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+        <li>参与人数：<span class="yellow2">@Model.Demand.PeopleNumber</span></li>
+        <li>
+            预算金额：
+            @if (Model.Demand.Budget == 0)
+            {
+                <span class="yellow2">面议</span>
+            }
+            else
+            {
+                <span class="yellow2">@Model.Demand.Budget 元</span>
+            }
+        </li>
+        <li>
+            区域位置：
+            <span class="yellow2">
+                @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)
+            </span>
+        </li>
+        <li>
+            详细地址：
+            <span class="yellow2">@Model.Demand.Address</span>
+        </li>
+        <li>
+            联系电话：
+            <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
+        </li>
+        <li>
+            QQ/微信：
+            <span class="yellow2">@Model.Demand.QQWeixin</span>
+        </li>
+        <li>
+            电子邮箱：
+            <span class="yellow2">@Model.Demand.Email</span>
+        </li>
+        <li>需求内容：</li>
+    </ul>
+    <div class="active_info">
+        @(new HtmlString(Model.Demand.ContentText))
+    </div>
+    <div style="clear: both; height: 10px;"></div>
+</div>

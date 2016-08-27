@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="wap-font-scale" content="no" />
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="@ViewBag.Keywords" />
+    <meta name="description" content="@ViewBag.Description" />
+    <link href="/content/Mobile/css/common4.css" rel="stylesheet" />
+    <style>
+        .location { margin-top: 5px; margin-bottom: 5px; padding-left: 10px; font-size: 14px; }
+        #nav { margin-top: 10px; height: auto; }
+        .navli { width: 20%; }
+    </style>
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/js/jquery.cookie.js"></script>
+    <script src="~/Content/js/jquery.validate.min.js"></script>
+    <script src="~/Content/dialog/js/dsdialog.js"></script>
+    <script src="~/Content/js/jquery.form.js"></script>
+    <script src="~/Content/js/template.js"></script>
+
+    @if (Session["CityId"] == null)
+    {
+        <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+        <script>
+            function setLocalCity() {
+                // 新浪根据ip获取地址
+                var localprovince = '';
+                var localcity = '';
+                localprovince = remote_ip_info["province"];
+                localcity = remote_ip_info["city"];
+                var nowTime = new Date().getTime();
+                var url = encodeURI("/Mobile/city/setlocalcity?cityName=" + localcity + "&time=" + nowTime);
+                $.get(url, function (data, status) {
+                    if (status == "success") {
+                        if (data != "" && data != "no") {
+                            document.getElementById("currentCityName").innerHTML = data;
+                            //自动定位到城市后刷新获取相应数据
+                            window.location = window.location;
+                        }
+                        else {
+                            document.getElementById("currentCityName").innerHTML = "全国";
+                        }
+                    }
+                });
+            }
+
+            setLocalCity();
+        </script>
+    }
+    @RenderSection("head", false)
+</head>
+<body>
+    <div class="wrap">
+        <div id="top">
+            <div class="back">
+                <a href="javascript:history.go(-1);" style="font-size: 18px;">返回</a>
+            </div>
+            <div id="logo">
+                <a href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect">
+                    <img src="/content/images/logo.png" alt="logo" />
+                </a>
+            </div>
+
+            <div id="city">
+                @{
+                    if (Session["CityName"] != null)
+                    {
+
+                        <span id="currentCityName" onclick="window.location = '/Mobile/city/index'" style="font-size: 18px;">@Session["CityName"].ToString()</span>
+                <span style="font-size: 18px;">▼</span>
+                    }
+                    else
+                    {
+                        <span id="currentCityName" style="font-size: 18px;">正在定位</span>
+                    }
+                }
+            </div>
+            <div id="usercenter">
+                    <a href="~/Mobile/user/index" class="username">会员中心</a>
+            </div>
+        </div>
+
+        @*<div class="location">
+                当前位置：<a href="/Mobile/user/index">会员中心</a><span class="ch">&nbsp;&gt;&nbsp;</span> <span style="font-size:15px;font-weight:bold;">@ViewBag.Title</span>
+            </div>*@
+
+        @RenderBody()
+
+    </div>
+    @RenderSection("FooterJS", false)
+</body>
+</html>

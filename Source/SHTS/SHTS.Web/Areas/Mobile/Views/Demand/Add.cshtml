@@ -1,0 +1,276 @@
+﻿@model Witbird.SHTS.Web.Areas.Mobile.Models.DemandModel
+@{
+    ViewBag.Title = "发布需求 中国活动在线网手机版";
+    Layout = "~/Areas/Mobile/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        #uploader-demo label {
+            position: inherit;
+            font-size: 10px;
+            color: transparent;
+            top: 0px;
+            padding-left: 0px;
+            width: 80% !important;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell select {
+                height: 100%;
+                width: 32.3%;
+            }
+
+            .reg-form .cell textarea {
+                height: 100%;
+                width: 96%;
+            }
+    </style>
+    <link href="/Content/webuploader/demo.css" rel="stylesheet" />
+    <style>
+        .upbtn {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 77px;
+            height: 37px;
+            overflow: hidden;
+            bottom: auto;
+            right: auto;
+        }
+
+        #fileform {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        #fileheer {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .webuploader-element-invisible {
+            position: inherit !important;
+        }
+
+        .hd {
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function addDemand() {
+            var Title = document.getElementById("Title").value;
+            var Phone = document.getElementById("Phone").value;
+            var ContentText = document.getElementById("ContentText").value;
+
+            if (Title != "") {
+                if (Phone != "") {
+                    if (ContentText != "") {
+                        $.ajax({
+                            url: '/Mobile/demand/add',
+                            data: $("#addForm").serialize(),
+                            type: 'POST',
+                            success: function (msg) {
+                                if (msg == "success") {
+                                    alert("发布成功");
+                                    window.location.href = "/Mobile/demand/mydemands";
+                                }
+                                else {
+                                    alert(msg);
+                                }
+                            },
+                            error: function (msg) {
+                                alert("网络异常，发布失败");
+                            }
+                        });
+                    }
+                    else {
+                        alert("内容不能为空");
+                    }
+                }
+                else {
+                    alert("电话不能为空");
+                }
+            }
+            else {
+                alert("标题不能为空");
+            }
+        }
+
+        function demandCategoryChange() {
+            var ResourceType = $("#ResourceType").val();
+            if (ResourceType == '2') {//2为演义人员
+                document.getElementById("peopleNumberBox").style.display = "block";
+            }
+            else {
+                document.getElementById("peopleNumberBox").style.display = "none";
+            }
+            changeResType(ResourceType);
+        }
+        function changeResType(typeId) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (typeId) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
+            }
+        }
+    </script>
+    <link href="/content/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+}
+
+<div class="wrap" style="width: 100%; ">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+        <form action="/Mobile/demand/add" id="addForm" class="reg-form" method="post">
+            <div class="cell" style="padding-top:10px;">
+                <select name="ResourceType" class="text" id="ResourceType" onchange="demandCategoryChange()" style="width:160px">
+                    <option value="-1">请选择需求类别</option>
+                    @foreach (var item in Html.ResourceList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="SpaceTypeId" class="text sp hd" id="SpaceTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.SpaceTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="ActorTypeId" class="text ac hd" id="ActorTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.ActorTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="EquipTypeId" class="text eq hd" id="EquipTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.EquipTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select name="OtherTypeId" class="text ot hd" id="OtherTypeId" style="width:160px">
+                    <option>请选择具体类型</option>
+                    @foreach (var item in Html.OtherTypeList())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="cell">
+                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text" value="寻找">
+            </div>
+            <div class="cell">
+                @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
+                <input id="starttime" name="StartTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
+                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;">
+
+                <input id="endtime" name="EndTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
+                       readonly="readonly" placeholder="结束时间" style="background:#fff;width:130px;left:174px;">
+            </div>
+            <div class="cell" id="peopleNumberBox" style="display: none;">
+                <input type="number" min="1" name="PeopleNumber" placeholder="人员数量" class="text">
+            </div>
+            <div class="cell">
+                <input type="number" min="0" name="Budget" placeholder="预算金额(如果为面议，请填写0)" class="text">
+            </div>
+            <div class="cell">
+                <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text">
+            </div>
+            <div class="cell">
+                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="QQ/微信" class="text">
+            </div>
+            <div class="cell">
+                <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text">
+            </div>
+            <div class="cell">
+                <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
+                    <option value="">省份</option>
+                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    {
+                        foreach (var item in Model.Provinces)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+                <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
+                    <option value="">全省/市</option>
+                </select>
+                <select id="ddlArea" class="text" name="Area">
+                    <option value="">全县/区</option>
+                </select>
+            </div>
+            <div class="cell">
+                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
+            </div>
+            <div class="cell" style="height: 200px;">
+                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 200px; width: 94%;">
+寻找
+
+时间：
+
+地点：
+
+详细需求：
+                </textarea>
+            </div>
+            <div class="bottom">
+                <button type="button" id="js-mobile_btn" class="button btn-green" onclick="addDemand()">发布需求</button>
+            </div>
+            <div class="cell">
+            </div>
+        </form>
+    </div>
+</div>
+
+@section FooterJS
+{
+    <script src="~/Content/js/city.js"></script>
+}

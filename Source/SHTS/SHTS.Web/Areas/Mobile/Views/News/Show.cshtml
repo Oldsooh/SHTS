@@ -1,0 +1,54 @@
+﻿@model Witbird.SHTS.Web.Areas.Mobile.Models.NewsModel
+@{
+    ViewBag.Title = Model.News.Title;
+    Layout = "~/Areas/Mobile/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #news a
+        {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+}
+
+<div class="main">
+    <ul class="details">
+        <li class="dtitle">
+            <h2 style="font-size: 16px; color: #1CB03A;">@Model.News.Title</h2>
+        </li>
+        <li>发布时间：<span class="yellow2"> @Model.News.InsertTime.Value.ToString("yyyy-MM-dd HH:mm")</span></li>
+        <li>新闻类型：
+            @if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Notice.ToString())
+                {
+                    <span class="yellow2">[公告]</span>
+                }
+            else if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Company.ToString())
+                {
+                    <span class="yellow2">[公司]</span>
+                }
+            else if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Industry.ToString())
+                {
+                    <span class="yellow2">[行业]</span>
+                }
+            else if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Resource.ToString())
+                {
+                    <span class="yellow2">[资源]</span>
+                }
+            else if (Model.News.Category == Witbird.SHTS.Model.EnumNews.Supplydemand.ToString())
+                {
+                    <span class="yellow2">[供求]</span>
+                }
+        </li>
+    </ul>
+    <div class="active_info">
+        @if (!string.IsNullOrEmpty(Model.News.ImageUrl))
+        {
+            <img src="@Model.News.ImageUrl" style="width:300px; margin-bottom:10px;" /><br />
+        }
+        @(new HtmlString(Model.News.ContentStyle))
+    </div>
+    <div style="clear: both; height: 10px;"></div>
+</div>

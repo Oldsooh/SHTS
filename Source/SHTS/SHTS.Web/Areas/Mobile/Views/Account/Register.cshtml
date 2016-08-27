@@ -1,0 +1,336 @@
+﻿@model Witbird.SHTS.Web.Models.UserRegisterViewModel
+
+@{
+    ViewBag.Title = "会员注册 中国活动在线网手机版";
+    Layout = "~/Areas/mobile/Views/Shared/mobileLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/content/css/reg.css" rel="stylesheet" />
+    <style type="text/css">
+        .register-box {
+            position: initial;
+            width: 100%;
+        }
+
+        .switch a {
+            font-size: 16px;
+        }
+    </style>
+}
+<div class="wrap regwrap" style="width: 100%;">
+    <div class="register-box" style="height: 700px; top: 0px;">
+        <div class="regheader">
+            <div class="switch" id="switch">
+                <a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);" tabindex="7">个人用户</a>
+                <a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">企业用户</a>
+                <div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
+            </div>
+        </div>
+        @if (Model.User.UserType == 0)
+            {
+            <form class="reg-form" id="js-form-mobile" enctype="multipart/form-data" method="post" action="#" style="display: none;">
+                <div class="cell">
+                    <input type="text" name="UserName" onblur="VerifyInfo(this, 'UserName'); " value="@Model.User.UserName" id="js_mobile_name" placeholder="账户名称" class="text" maxlength="20" />
+                    <div class="verifyblock">
+                        <img src="~/Content/images/load.gif" />
+                    </div>
+                    <input type="hidden" name="UserType" value="0" />
+                </div>
+                <div class="cell">
+                    <input type="password" name="EncryptedPassword" id="js_mobile_pwd_ipt" placeholder="账户密码" class="text" />
+                </div>
+                <div class="cell">
+                    <input type="password" name="EncryptedPasswordRepter" id="js_mobile_pwd_ipt_Re" placeholder="重复密码" class="text" />
+                </div>
+                <div class="cell">
+                    <input type="text" name="Email" onblur="VerifyInfo(this, 'Email'); " value="@Model.User.Email" id="js_mobile_email" placeholder="注册邮箱" class="text" />
+                    <div class="verifyblock">
+                        <img src="~/Content/images/load.gif" />
+                    </div>
+                </div>
+                <div class="cell">
+                    <input type="text" name="Cellphone" onblur="VerifyInfo(this, 'Cellphone'); " value="@Model.User.Cellphone" id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11" />
+                    <div class="verifyblock">
+                        <img src="~/Content/images/load.gif" />
+                    </div>
+                </div>
+                @*<div class="cell vcode">
+                        <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
+                        <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
+                    </div>*@
+                <div class="cell">
+                    <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard' ); " value="@Model.User.UCard" id="js_mobile_card" placeholder="认证身份证号" class="text usercard" />
+                    <div class="verifyblock">
+                        <img src="~/Content/images/load.gif" />
+                    </div>
+                </div>
+                <div class="cell" style="height: auto; font-size: 12px; display: none;">
+                    <span>身份证照片:</span>
+                    <div class="inputdiv">
+                        <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg" />
+                    </div>
+                </div>
+                <div class="user-agreement">
+                    <input type="checkbox" id="js_mobile_chk" checked="checked" />
+                    <label for="js-mail_chk">同意<a href="http://www.activity-line.com/about/94.html">《活动在线用户服务协议》</a></label>
+                </div>
+                <div class="bottom">
+                    <button type="submit" id="js_mobile_btn" class="button btn-green">立即注册</button>
+                </div>
+                <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                    <p>
+                        已有账号<a href="/mobile/account/login" style="color: #0099FF;">立即登录</a>
+                    </p>
+                </div>
+            </form>
+                <form class="reg-form" id="js-form-mail" method="post" action="#">
+                    <div class="cell">
+                        <input type="text" name="UserName" onblur="VerifyInfo(this, 'UserName'); " id="js_email_name" placeholder="账户名称" class="text" maxlength="20" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                        <input type="hidden" name="UserType" value="1" />
+                    </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPassword" id="js-mail_pwd_ipt" placeholder="账户密码" class="text" />
+
+                    </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPassword" id="js-email_pwd_ipt_Re" placeholder="重复密码" class="text" />
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Email" onblur="VerifyInfo(this, 'Email'); " placeholder="企业邮箱" id="js_mail_email" class="text" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Cellphone" onblur="VerifyInfo(this, 'Cellphone'); " id="js_email_ipt" placeholder="认证手机号码" class="text" maxlength="11" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    @*<div class="cell vcode">
+                            <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
+                            <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt'); " class="button">免费获取验证码</a>
+                        </div>*@
+                    <div class="cell">
+                        <input type="text" name="UCard" onblur="VerifyInfo(this, 'UCard'); " id="js_email_card" placeholder="企业名称" class="text usercard" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell" style="height: auto; font-size: 12px;display: none;">
+                        <span>营业执照:</span>
+                        <div class="inputdiv">
+                            <input type="file" title="点击上传图片" id="js_email_IdentiyImg" name="IdentiyImg" />
+                        </div>
+                    </div>
+                    <div class="user-agreement">
+                        <input type="checkbox" id="js-mail_chk" checked="checked" />
+                        <label for="js-mail_chk">同意<a href="http://www.activity-line.com/about/94.html">《活动在线用户服务协议》</a></label>
+                    </div>
+                    <div class="bottom">
+                        <button type="submit" id="js_mail_btn" class="button btn-green">立即注册</button>
+                    </div>
+                    <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                        <p>
+                            已有账号<a href="/mobile/account/login" style="color: #0099FF;">立即登录</a>
+                        </p>
+                    </div>
+                </form>
+        }
+        else
+        {
+            <form class="reg-form" id="js-form-mobile" enctype="multipart/form-data" method="post" action="#" style="display: none;">
+                <div class="cell">
+                    <input type="text" name="UserName" onblur="VerifyInfo(this, 'UserName' ); " id="js_mobile_name" placeholder="账户名称" class="text" maxlength="20" />
+                    <div class="verifyblock">
+                        <img src="~/Content/images/load.gif" />
+                    </div>
+                    <input type="hidden" name="UserType" value="0" />
+                </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPassword" id="js_mobile_pwd_ipt" placeholder="账户密码" class="text" />
+                    </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPasswordRepter" id="js_mobile_pwd_ipt_Re" placeholder="重复密码" class="text" />
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Email" onblur="VerifyInfo(this, 'Email'); " id="js_mobile_email" placeholder="注册邮箱" class="text" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Cellphone" onblur="VerifyInfo(this, 'Cellphone'); " id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    @*<div class="cell vcode">
+                            <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
+                            <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
+                        </div>*@
+                    <div class="cell">
+                        <input type="text" name="UCard" onblur="VerifyInfo(this, 'UCard'); " id="js_mobile_card" placeholder="认证身份证号" class="text usercard" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell" style="height: auto; font-size: 12px;display: none;">
+                        <span>身份证照片:</span>
+                        <div class="inputdiv">
+                            <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg" />
+                        </div>
+                    </div>
+                    <div class="user-agreement">
+                        <input type="checkbox" id="js_mobile_chk" checked="checked" />
+                        <label for="js-mail_chk">同意<a href="http://www.activity-line.com/about/94.html">《活动在线用户服务协议》</a></label>
+                    </div>
+                    <div class="bottom">
+                        <button type="submit" id="js_mobile_btn" class="button btn-green">立即注册</button>
+                    </div>
+                    <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                        <p>
+                            已有账号<a href="/mobile/account/login" style="color: #0099FF;">立即登录</a>
+                        </p>
+                    </div>
+                </form>
+                <form class="reg-form" id="js-form-mail" method="post" action="#">
+                    <div class="cell">
+                        <input type="text" name="UserName" onblur="VerifyInfo(this, 'UserName'); " value="@Model.User.UserName" id="js_email_name" placeholder="账户名称" class="text" maxlength="20" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                        <input type="hidden" name="UserType" value="1" />
+                    </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPassword" id="js-mail_pwd_ipt" placeholder="账户密码" class="text" />
+
+                    </div>
+                    <div class="cell">
+                        <input type="password" name="EncryptedPassword" id="js-email_pwd_ipt_Re" placeholder="重复密码" class="text" />
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Email" onblur="VerifyInfo(this, 'Email'); " value="@Model.User.Email" placeholder="企业邮箱" id="js_mail_email" class="text" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <input type="text" name="Cellphone" onblur="VerifyInfo(this, 'Cellphone'); " value="@Model.User.Cellphone" id="js_email_ipt" placeholder="认证手机号码" class="text" maxlength="11" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    @*<div class="cell vcode">
+                            <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
+                            <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt'); " class="button">免费获取验证码</a>
+                        </div>*@
+                    <div class="cell">
+                        <input type="text" name="UCard" onblur="VerifyInfo(this, 'UCard'); " value="@Model.User.UCard" id="js_email_card" placeholder="企业名称" class="text usercard" />
+                        <div class="verifyblock">
+                            <img src="~/Content/images/load.gif" />
+                        </div>
+                    </div>
+                    <div class="cell" style="height: auto; font-size: 12px;display: none;">
+                        <span>营业执照:</span>
+                        <div class="inputdiv">
+                            <input type="file" title="点击上传图片" id="js_email_IdentiyImg" name="IdentiyImg" />
+                        </div>
+                    </div>
+                    <div class="user-agreement">
+                        <input type="checkbox" id="js-mail_chk" checked="checked" />
+                        <label for="js-mail_chk">同意<a href="http://www.activity-line.com/about/94.html">《活动在线用户服务协议》</a></label>
+                    </div>
+                    <div class="bottom">
+                        <button type="submit" id="js_mail_btn" class="button btn-green">立即注册</button>
+                    </div>
+                    <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
+                        <p>
+                            已有账号<a href="/mobile/account/login" style="color: #0099FF;">立即登录</a>
+                        </p>
+                    </div>
+                </form>
+        }
+    </div>
+</div>
+<div class="clear"></div>
+<input type="hidden" id="errormsg" value="@Model.ErrorMsg" />
+@section FooterJS
+{
+    <script src="/Content/js/reg.js"></script>
+    <script type="text/javascript">
+        if (!('placeholder' in document.createElement('input'))) {
+
+            $('input[placeholder],textarea[placeholder]').each(function () {
+                var that = $(this),
+                    text = that.attr('placeholder');
+                if (that.val() === "") {
+                    that.val(text).addClass('placeholder');
+                }
+                that.focus(function () {
+                    if (that.val() === text) {
+                        that.val("").removeClass('placeholder');
+                    }
+                })
+                    .blur(function () {
+                        if (that.val() === "") {
+                            that.val(text).addClass('placeholder');
+                        }
+                    })
+                    .closest('form').submit(function () {
+                        if (that.val() === text) {
+                            that.val('');
+                        }
+                    });
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#js_mobile_btn").click(function () {
+                if ($("#js-form-mobile").find(".haserror").length > 0) {
+                    alert("信息输入有误！");
+                    return false;
+                }
+                $("#js-form-mobile").validate({
+                    submitHandler: function (form) {
+                        form.submit();
+                    }
+                });
+            });
+            $("#js_mail_btn").click(function () {
+                if ($("#js-form-mail").find(".haserror").length > 0) {
+                    alert("信息输入有误！");
+                    return false;
+                }
+                $("#js-form-mail").validate({
+                    submitHandler: function (form) {
+                        if ($("#js-form-mail").find(".showverifyblock").length > 0) {
+                            alert("信息输入有误！");
+                            return;
+                        } else {
+                            form.submit();
+                        }
+                    }
+                });
+            });
+            if ($("#errormsg").val() != "") {
+                var msg = $("#errormsg").val();
+                if (msg == "SUCCESS") {
+                    if (confirm("恭喜您成功注册会员账号！")) {
+                        window.location = "/mobile/user/index";
+                    }
+                }
+                else {
+                    alert($("#errormsg").val());
+                }
+                $("#errormsg").val('');
+            }
+        });
+    </script>
+}

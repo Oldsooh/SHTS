@@ -1,0 +1,410 @@
+﻿@model Witbird.SHTS.Web.Areas.Mobile.Models.DemandModel
+@{
+    ViewBag.Title = "需求信息列表 中国活动在线网手机版";
+    Layout = "~/Areas/Mobile/Views/Shared/MobileLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+        /*Override bootstrap css*/
+        .btn-group-root {
+            width: 100%;
+            padding: 2px 5px;
+        }
+
+            .btn-group-root .btn-group {
+                /*width: 16.6%;*/
+                width: 33%;
+            }
+
+                .btn-group-root .btn-group button, .btn-group-root .btn-group ul, .btn-group-root .btn-group ul > li {
+                    width: 100%;
+                }
+
+        .btn {
+            padding: 2px 5px;
+        }
+
+        .navbar-brand {
+            height: 20px;
+            padding: 0px 10px;
+        }
+
+        .input-group .form-control {
+            padding: 2px 2px;
+            height: 26px;
+            border-radius: 0;
+            border-left: none;
+            padding-top: 5px;
+            font-size: 13px;
+        }
+        /*Override bootstrap css*/
+    </style>
+
+    <style type="text/css">
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+
+}
+<div id="nav">
+    <ul id="navul">
+        <li class="navli" id="space"><a href="/Mobile/resource/spacelist">活动场地</a></li>
+        <li class="navli" id="actor"><a href="/Mobile/resource/actorlist">演艺人员</a></li>
+        <li class="navli" id="equipment"><a href="/Mobile/resource/equipmentlist">活动设备</a></li>
+        <li class="navli" id="other"><a href="/Mobile/resource/otherlist">其它资源</a></li>
+        <li class="navli" id="demand"><a href="/Mobile/demand/index">需求信息</a></li>
+    </ul>
+</div>
+
+<div id="fixed-top" class="btn-group btn-group-root navbar-static-top" role="group" aria-label="...">
+    @if (Model.Areas != null && Model.Areas.Count > 0)
+    {
+        <div class="btn-group" role="group">
+
+            @{
+
+                string urlArea = "/Mobile/demand/index?page=1";
+                urlArea = string.IsNullOrEmpty(Model.LastResourceType) ? urlArea : urlArea + "&LastResourceType=" + Model.LastResourceType;
+                urlArea = string.IsNullOrEmpty(Model.ResourceType) ? urlArea : urlArea + "&ResourceType=" + Model.ResourceType;
+                urlArea = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlArea : urlArea + "&ResourceTypeId=" + Model.ResourceTypeId;
+                urlArea = string.IsNullOrEmpty(Model.StartBudget) ? urlArea : urlArea + "&startbudget=" + Model.StartBudget;
+                urlArea = string.IsNullOrEmpty(Model.EndBudget) ? urlArea : urlArea + "&endbudget=" + Model.EndBudget;
+                urlArea = string.IsNullOrEmpty(Model.StartTime) ? urlArea : urlArea + "&starttime=" + Model.StartTime;
+                urlArea = string.IsNullOrEmpty(Model.EndTime) ? urlArea : urlArea + "&endtime=" + Model.EndTime;
+
+                var areaName = "区域位置";
+                var firstArea = Model.Areas.FirstOrDefault(x => x.Id.ToString().Equals(Model.Area));
+                if (firstArea != null)
+                {
+                    areaName = firstArea.Name;
+                }
+
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @areaName
+                    <span class="caret"></span>
+                </button>
+            }
+            <ul class="dropdown-menu">
+                <li>
+                    @if (string.IsNullOrEmpty(Model.Area))
+                    {
+                        <a href="@urlArea" class="no">不限区域</a>
+                    }
+                    else
+                    {
+                        <a href="@urlArea">不限区域</a>
+                    }
+                </li>
+                @foreach (var item in Model.Areas)
+                {
+                    <li>
+                        @if (!string.IsNullOrEmpty(Model.Area) && Model.Area == item.Id)
+                        {
+                            <a class="no" href="@urlArea&area=@item.Id">@item.Name</a>
+                        }
+                        else
+                        {
+                            <a href="@urlArea&area=@item.Id">@item.Name</a>
+                        }
+                    </li>
+                }
+
+            </ul>
+        </div>
+                }
+    <div class="btn-group" role="group">
+        @{
+            var name = "不限类别";
+
+            var first = Html.ResourceList().FirstOrDefault(x => x.Value.Equals(Model.ResourceType));
+            if (first != null)
+            {
+                name = first.Text;
+            }
+
+            string urlResourceType = "/Mobile/demand/index?page=1";
+            urlResourceType = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceType : urlResourceType + "&LastResourceType=" + Model.LastResourceType;
+            urlResourceType = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlResourceType : urlResourceType + "&ResourceTypeId=" + Model.ResourceTypeId;
+            urlResourceType = string.IsNullOrEmpty(Model.Area) ? urlResourceType : urlResourceType + "&area=" + Model.Area;
+            urlResourceType = string.IsNullOrEmpty(Model.StartBudget) ? urlResourceType : urlResourceType + "&startbudget=" + Model.StartBudget;
+            urlResourceType = string.IsNullOrEmpty(Model.EndBudget) ? urlResourceType : urlResourceType + "&endbudget=" + Model.EndBudget;
+            urlResourceType = string.IsNullOrEmpty(Model.StartTime) ? urlResourceType : urlResourceType + "&starttime=" + Model.StartTime;
+            urlResourceType = string.IsNullOrEmpty(Model.EndTime) ? urlResourceType : urlResourceType + "&endtime=" + Model.EndTime;
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+        }
+        <ul class="dropdown-menu">
+            <li>
+                @if (string.IsNullOrEmpty(Model.ResourceType))
+                {
+                    <a class="no" href="@urlResourceType">不限类别</a>
+                }
+                else
+                {
+                    <a href="@urlResourceType">不限类别</a>
+                }
+            </li>
+            @{
+                foreach (var item in Html.ResourceList())
+                {
+                    if (item.Value.Equals(Model.ResourceType))
+                    {
+                        <li><a class="no" href="@urlResourceType&ResourceType=@item.Value">@item.Text</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@urlResourceType&ResourceType=@item.Value">@item.Text</a></li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+
+    @*<div class="btn-group" role="group">
+
+        @{
+            string urlBudget = "/Mobile/demand/index?page=1";
+            urlBudget = string.IsNullOrEmpty(Model.ResourceType) ? urlBudget : urlBudget + "&ResourceType=" + Model.ResourceType;
+            urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
+            urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
+            urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
+
+            var amountName = "预算";
+            if (Model.StartBudget.Equals("1"))
+            {
+                amountName = "¥1-¥1000";
+            }
+            else if (Model.StartBudget.Equals("1001"))
+            {
+                amountName = "¥1001-¥5000";
+            }
+            else if (Model.StartBudget.Equals("5001"))
+            {
+                amountName = "¥5001-¥10000";
+            }
+            else if (Model.StartBudget.Equals("10001"))
+            {
+                amountName = "¥1万-¥5万";
+            }
+            else if (Model.StartBudget.Equals("50001"))
+            {
+                amountName = "¥5万以上";
+            }
+            else
+            {
+                //nothing
+            }
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @amountName
+                <span class="caret"></span>
+            </button>
+        }
+        <ul class="dropdown-menu">
+            <li><a id="budgetid" href="@urlBudget">不限</a></li>
+            <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">¥1-¥1000</a></li>
+            <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=5000">¥1001-¥5000</a></li>
+            <li><a id="budgetid5001" href="@urlBudget&startbudget=5001&endbudget=10000">¥5001-¥10000</a></li>
+            <li><a id="budgetid10001" href="@urlBudget&startbudget=10001&endbudget=50000">¥1万-¥5万</a></li>
+            <li><a id="budgetid50001" href="@urlBudget&startbudget=50001&endbudget=1000000">¥5万以上</a></li>
+        </ul>
+        <script type="text/javascript">
+                    @{ string budgetid = "budgetid" + Model.StartBudget;}
+            document.getElementById("@budgetid").setAttribute("class", "no");
+        </script>
+    </div>*@
+    @if (!string.IsNullOrEmpty(Model.ResourceType))
+    {  
+        string urlResourceTypeId = "/Mobile/demand/index?page=1";
+        urlResourceTypeId = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceTypeId : urlResourceTypeId + "&LastResourceType=" + Model.LastResourceType;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.ResourceType) ? urlResourceTypeId : urlResourceTypeId + "&ResourceType=" + Model.ResourceType;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.Area) ? urlResourceTypeId : urlResourceTypeId + "&area=" + Model.Area;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.StartBudget) ? urlResourceTypeId : urlResourceTypeId + "&startbudget=" + Model.StartBudget;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.EndBudget) ? urlResourceTypeId : urlResourceTypeId + "&endbudget=" + Model.EndBudget;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.StartTime) ? urlResourceTypeId : urlResourceTypeId + "&starttime=" + Model.StartTime;
+        urlResourceTypeId = string.IsNullOrEmpty(Model.EndTime) ? urlResourceTypeId : urlResourceTypeId + "&endtime=" + Model.EndTime;
+
+        var resourceSubTypeList = new List<SelectListItem>();
+        var resourceType = Convert.ToInt32(Model.ResourceType);
+
+        switch (resourceType)
+        {
+            case 1:
+                resourceSubTypeList = Html.SpaceTypeList();
+                break;
+            case 2:
+                resourceSubTypeList = Html.ActorTypeList();
+                break;
+            case 3:
+                resourceSubTypeList = Html.EquipTypeList();
+                break;
+            case 4:
+                resourceSubTypeList = Html.OtherTypeList();
+                break;
+            default:
+                break;
+        }
+
+        var subTypeName = "不限类型";
+        var firstMatch = resourceSubTypeList.FirstOrDefault(x => x.Value.Equals(Model.ResourceTypeId));
+        if (firstMatch != null)
+        {
+            subTypeName = firstMatch.Text;
+        }
+        <style>
+            .btn-group-root .btn-group {
+                width: 25%;
+            }
+        </style>
+        <div class="btn-group" role="group">
+
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @subTypeName
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (string.IsNullOrEmpty(Model.ResourceTypeId))
+                    {
+                        <a class="no" href="@urlResourceTypeId">不限类型</a>
+                    }
+                    else
+                    {
+                        <a href="@urlResourceTypeId">不限类型</a>
+                    }
+                </li>
+
+                @foreach (var item in resourceSubTypeList)
+                {
+                    if (item.Value.Equals(Model.ResourceTypeId))
+                    {
+                        <li><a class="no" href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@urlResourceTypeId&ResourceTypeId=@item.Value">@item.Text</a></li>
+                    }
+                }
+            </ul>
+        </div>
+
+    }
+    else
+    {
+        <style>
+            .btn-group-root .btn-group {
+                width: 33%;
+            }
+        </style>
+    }
+
+
+    <div class="input-group">
+        @{
+            string urlTime = "/Mobile/demand/index?page=1";
+
+            urlTime = string.IsNullOrEmpty(Model.LastResourceType) ? urlTime : urlTime + "&LastResourceType=" + Model.LastResourceType;
+            urlTime = string.IsNullOrEmpty(Model.ResourceType) ? urlTime : urlTime + "&ResourceType=" + Model.ResourceType;
+            urlTime = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlTime : urlTime + "&ResourceTypeId=" + Model.ResourceTypeId;
+            urlTime = string.IsNullOrEmpty(Model.Area) ? urlTime : urlTime + "&area=" + Model.Area;
+            urlTime = string.IsNullOrEmpty(Model.StartBudget) ? urlTime : urlTime + "&startbudget=" + Model.StartBudget;
+            urlTime = string.IsNullOrEmpty(Model.EndBudget) ? urlTime : urlTime + "&endbudget=" + Model.EndBudget;
+
+        }
+        <input id="starttime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" onchange="timeRedirect();"
+               readonly="readonly" value="@Model.StartTime" url="@urlTime" placeholder="需求时间" style="background:#fff;text-align:center;color:#333;font-size:14px;font-weight:400;">
+        @*<input id="endtime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
+               readonly="readonly" value="@Model.EndTime" placeholder="结束日期" style="background:#fff; width:55px;">
+        <span class="input-group-btn">
+            <button onclick="timeRedirect(this)" id="@urlTime" class="btn btn-default" type="button">确定</button>
+        </span>*@
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<div id="main">
+    @if (Model.Demands != null && Model.Demands.Count > 0)
+    {
+        foreach (var item in Model.Demands)
+        {
+            <ul class="commonlist">
+                <li class="atitle">
+                    <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
+                    <a href="/Mobile/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
+                        <lable style="color: #FD9102;">[@item.StatusValueString]</lable>@item.Title
+                    </a>
+                </li>
+                <li>需求类别：<span class="yellow">@item.ResourceTypeName</span></li>
+                <li>需求类型：<span class="yellow">@Html.GetResourceSubTypeNameById(item.ResourceType, item.ResourceTypeId)</span></li>
+                <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
+                <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
+                @*<li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>*@
+                @*<li>
+                    预算金额：
+                    @if (item.Budget == 0)
+                    {
+                        <span class="yellow">面议</span>
+                    }
+                    else
+                    {
+                        <span class="yellow">@item.Budget</span>
+                    }
+                </li>*@
+            </ul>
+        }
+    }
+
+    else
+    {
+        <div>没有找到相关需求.</div>
+    }
+
+    <div style="clear: both; height: 10px;"></div>
+
+    @Html.Partial("PagingPartial", Model)
+</div>
+@section FooterJS
+{
+    <script src="/content/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function timeRedirect() {
+            var startTime = $('#starttime');
+            var url = startTime.attr('url');
+
+            //var starttime = document.getElementById('starttime').value;
+            //var endtime = document.getElementById('endtime').value;
+            if (startTime != "") {
+                url = url + "&starttime=" + startTime.val();
+            }
+            //if (endtime != "") {
+            //    url = url + "&endtime=" + endtime;
+            //}
+            window.location.href = url;
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var ie6 = /msie 6/i.test(navigator.userAgent)
+            , dv = $('#fixed-top'), st;
+            dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
+            $(window).scroll(function () {
+                st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+                if (st >= parseInt(dv.attr('otop'))) {
+                    if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
+                        dv.css({ position: 'absolute', top: st });
+                    }
+                    else if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', top: 0 });
+                } else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+            });
+        });
+    </script>
+}
