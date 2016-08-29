@@ -12,6 +12,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile
             }
         }
 
+
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(

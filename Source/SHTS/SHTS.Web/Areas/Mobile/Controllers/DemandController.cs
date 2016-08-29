@@ -128,7 +128,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                     demand.Description = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Description, CommonService.ReplacementForContactInfo);
                     demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
 
-                    if (!IsVip)
+                    if (demand.UserId != (CurrentUser ?.UserId) && !IsVip)
                     {
                         demand.Phone = "VIP会员可见";
                         demand.QQWeixin = "VIP会员可见";
