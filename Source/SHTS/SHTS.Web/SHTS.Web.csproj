@@ -1471,7 +1471,6 @@
     <Content Include="Views\Resource\EquipInfoPartial.cshtml" />
     <Content Include="Views\Resource\OtherInfoPartial.cshtml" />
     <Content Include="IndexData\segments.gen" />
-    <Content Include="IndexData\segments_2" />
     <Content Include="IndexData\_0.cfs" />
     <Content Include="Content\upload\uploadimageformobile.ashx" />
     <None Include="Properties\PublishProfiles\line.pubxml" />

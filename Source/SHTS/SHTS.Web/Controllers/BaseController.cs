@@ -172,5 +172,73 @@ namespace Witbird.SHTS.Web.Controllers
                 return amount;
             }
         }
+
+        /// <summary>
+        /// 更新默认城市地址
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <returns></returns>
+        public virtual bool UpdateDefaultCity(string cityId)
+        {
+            bool isSuccessful = false;
+
+            if (CurrentUser.IsNotNull())
+            {
+                try
+                {
+                    var city = ConvertToCityObject(cityId);
+                    if (city.IsNotNull())
+                    {
+                        UserService userService = new UserService();
+                        CurrentUser.LocationId = city.ParentId + "," + city.Id + ",";
+
+                        isSuccessful = userService.UserUpdate(CurrentUser);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    LogService.Log("UpdateDefaultCity", ex.ToString());
+                }
+            }
+
+            return isSuccessful;
+        }
+
+        public virtual void SetDefaultCityToSession()
+        {
+            if (Session["CityId"] == null && CurrentUser.IsNotNull())
+            {
+                try
+                {
+                    var city = ConvertToCityObject(CurrentUser.City);
+                    if (city.IsNotNull())
+                    {
+                        Session["CityId"] = city.Id;
+                        Session["CityName"] = city.Name;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogService.Log("UpdateDefaultCity", ex.ToString());
+                }
+            }
+        }
+
+        public City ConvertToCityObject(string cityId)
+        {
+            var allCities = Witbird.SHTS.Web.Public.StaticUtility.AllCities;
+            if (allCities != null && allCities.Count > 0)
+            {
+                foreach (var item in allCities)
+                {
+                    if (item.EntityType == 2 && item.Id.Equals(cityId, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return allCities.FirstOrDefault();
+        }
     }
 }

@@ -37,6 +37,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     {
                         Session["CityId"] = item.Id;
                         Session["CityName"] = item.Name;
+
+                        UpdateDefaultCity(item.Id);
+
+                        break;
                     }
                 }
             }
@@ -109,6 +113,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             Session["CityId"] = item.Id;
                             Session["CityName"] = item.Name;
                             result = item.Name;
+
+                            UpdateDefaultCity(item.Id);
+
                             break;
                         }
                     }

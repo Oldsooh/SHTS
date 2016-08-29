@@ -9,7 +9,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class CityController : Controller
+    public class CityController : BaseController
     {
         CityService cityService = new CityService();
 
@@ -35,6 +35,9 @@ namespace Witbird.SHTS.Web.Controllers
                     {
                         Session["CityId"] = item.Id;
                         Session["CityName"] = item.Name;
+
+                        UpdateDefaultCity(item.Id);
+                        break;
                     }
                 }
             }
@@ -110,6 +113,9 @@ namespace Witbird.SHTS.Web.Controllers
                                 Session["CityId"] = item.Id;
                                 Session["CityName"] = item.Name;
                                 result = item.Name;
+
+                                UpdateDefaultCity(item.Id);
+
                                 break;
                             }
                         }

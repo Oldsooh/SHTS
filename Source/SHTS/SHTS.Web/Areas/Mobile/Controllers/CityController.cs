@@ -37,6 +37,10 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                     {
                         Session["CityId"] = item.Id;
                         Session["CityName"] = item.Name;
+
+                        UpdateDefaultCity(item.Id);
+
+                        break;
                     }
                 }
             }
@@ -45,6 +49,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             {
                 returnUrl = RedirectUrl;
             }
+
 
             return Redirect(returnUrl);
         }
@@ -109,6 +114,9 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                             Session["CityId"] = item.Id;
                             Session["CityName"] = item.Name;
                             result = item.Name;
+
+                            UpdateDefaultCity(item.Id);
+
                             break;
                         }
                     }

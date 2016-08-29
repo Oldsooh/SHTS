@@ -23,8 +23,8 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
         /// <param name="filterContext"></param>
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuting(filterContext);
-            
+            SetDefaultCityToSession();
+            base.OnActionExecuting(filterContext);            
         }
         
         protected override void OnException(ExceptionContext filterContext)

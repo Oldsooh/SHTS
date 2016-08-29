@@ -66,6 +66,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
+            SetDefaultCityToSession();
 
             try
             {
@@ -113,7 +114,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 filterContext.Result = GetWechatAuthFailedResult();
             }
         }
-
 
         protected override void OnException(ExceptionContext filterContext)
         {

@@ -26,7 +26,18 @@ namespace Witbird.SHTS.Model
                         geos = new string[1] { string.Empty };
                     }
                 }
-                return geos[0];
+
+                var province = geos[0];
+
+                if (province.Equals("shanghaishi", StringComparison.CurrentCultureIgnoreCase) ||
+                    province.Equals("beijingshi", StringComparison.CurrentCultureIgnoreCase) ||
+                    province.Equals("tianjinshi", StringComparison.CurrentCultureIgnoreCase) ||
+                    province.Equals("chongqingshi", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    province = "zhixiashi";
+                }
+
+                return province;
             }
         }
 
