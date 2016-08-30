@@ -10,7 +10,7 @@ using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public abstract class BaseController : Controller
+    public class BaseController : Controller
     {
         protected const string USERINFO = "userinfo";
 
@@ -75,65 +75,35 @@ namespace Witbird.SHTS.Web.Controllers
         {
             get
             {
-                bool isIdentified = false;
-                if (CurrentUser == null)
+                if (IsUserLogin)
                 {
-                    isIdentified = false;
+                    return CurrentUser.IsIdentified;
                 }
                 else
                 {
-                    try
-                    {
-                        UserService userService = new UserService();
-                        User user = userService.GetUserById(UserInfo.UserId);
-                        if (user != null)
-                        {
-                            isIdentified = (user.Vip.Value == (int)VipState.Identified || user.Vip.Value == (int)VipState.VIP);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
+                    return false;
                 }
-
-                return isIdentified;
             }
-        }
-
-        public virtual bool IsUserLogin
-        {
-            get { return CurrentUser != null; }
         }
 
         public virtual bool IsVip
         {
             get
             {
-                bool isVip = false;
-
-                if (CurrentUser == null)
+                if (IsUserLogin)
                 {
-                    return false;
+                    return CurrentUser.IsVip;
                 }
                 else
                 {
-                    try
-                    {
-                        UserService userService = new UserService();
-                        User user = userService.GetUserById(UserInfo.UserId);
-                        if (user != null)
-                        {
-                            isVip = (user.Vip.Value == (int)VipState.VIP);
-                        }
-                    }
-                    catch
-                    {
-
-                    }
+                    return false;
                 }
-                return isVip;
             }
+        }
+
+        public virtual bool IsUserLogin
+        {
+            get { return CurrentUser != null; }
         }
 
         public string GetUrl(string subUrl)

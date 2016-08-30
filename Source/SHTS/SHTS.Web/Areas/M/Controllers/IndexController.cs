@@ -11,7 +11,7 @@ using Witbird.SHTS.Web.Areas.M.Models;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
-    public class IndexController : Controller
+    public class IndexController : MobileBaseController
     {
         SinglePageService singlePageService = new SinglePageService();
         DemandService demandService = new DemandService();

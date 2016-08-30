@@ -54,11 +54,11 @@
 }
 <div id="nav">
     <ul id="navul">
-        <li class="navli" id="space"><a href="/Mobile/resource/spacelist">活动场地</a></li>
-        <li class="navli" id="actor"><a href="/Mobile/resource/actorlist">演艺人员</a></li>
-        <li class="navli" id="equipment"><a href="/Mobile/resource/equipmentlist">活动设备</a></li>
-        <li class="navli" id="other"><a href="/Mobile/resource/otherlist">其它资源</a></li>
-        <li class="navli" id="demand"><a href="/Mobile/demand/index">需求信息</a></li>
+        <li class="navli" id="space"><a href="/mobile/resource/spacelist">活动场地</a></li>
+        <li class="navli" id="actor"><a href="/mobile/resource/actorlist">演艺人员</a></li>
+        <li class="navli" id="equipment"><a href="/mobile/resource/equipmentlist">活动设备</a></li>
+        <li class="navli" id="other"><a href="/mobile/resource/otherlist">其它资源</a></li>
+        <li class="navli" id="demand"><a href="/mobile/demand/index">需求信息</a></li>
     </ul>
 </div>
 
@@ -69,7 +69,7 @@
 
             @{
 
-                string urlArea = "/Mobile/demand/index?page=1";
+                string urlArea = "/mobile/demand/index?page=1";
                 urlArea = string.IsNullOrEmpty(Model.LastResourceType) ? urlArea : urlArea + "&LastResourceType=" + Model.LastResourceType;
                 urlArea = string.IsNullOrEmpty(Model.ResourceType) ? urlArea : urlArea + "&ResourceType=" + Model.ResourceType;
                 urlArea = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlArea : urlArea + "&ResourceTypeId=" + Model.ResourceTypeId;
@@ -128,7 +128,7 @@
                 name = first.Text;
             }
 
-            string urlResourceType = "/Mobile/demand/index?page=1";
+            string urlResourceType = "/mobile/demand/index?page=1";
             urlResourceType = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceType : urlResourceType + "&LastResourceType=" + Model.LastResourceType;
             urlResourceType = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlResourceType : urlResourceType + "&ResourceTypeId=" + Model.ResourceTypeId;
             urlResourceType = string.IsNullOrEmpty(Model.Area) ? urlResourceType : urlResourceType + "&area=" + Model.Area;
@@ -172,7 +172,7 @@
     @*<div class="btn-group" role="group">
 
         @{
-            string urlBudget = "/Mobile/demand/index?page=1";
+            string urlBudget = "/mobile/demand/index?page=1";
             urlBudget = string.IsNullOrEmpty(Model.ResourceType) ? urlBudget : urlBudget + "&ResourceType=" + Model.ResourceType;
             urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
             urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
@@ -224,7 +224,7 @@
     </div>*@
     @if (!string.IsNullOrEmpty(Model.ResourceType))
     {  
-        string urlResourceTypeId = "/Mobile/demand/index?page=1";
+        string urlResourceTypeId = "/mobile/demand/index?page=1";
         urlResourceTypeId = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceTypeId : urlResourceTypeId + "&LastResourceType=" + Model.LastResourceType;
         urlResourceTypeId = string.IsNullOrEmpty(Model.ResourceType) ? urlResourceTypeId : urlResourceTypeId + "&ResourceType=" + Model.ResourceType;
         urlResourceTypeId = string.IsNullOrEmpty(Model.Area) ? urlResourceTypeId : urlResourceTypeId + "&area=" + Model.Area;
@@ -310,7 +310,7 @@
 
     <div class="input-group">
         @{
-            string urlTime = "/Mobile/demand/index?page=1";
+            string urlTime = "/mobile/demand/index?page=1";
 
             urlTime = string.IsNullOrEmpty(Model.LastResourceType) ? urlTime : urlTime + "&LastResourceType=" + Model.LastResourceType;
             urlTime = string.IsNullOrEmpty(Model.ResourceType) ? urlTime : urlTime + "&ResourceType=" + Model.ResourceType;
@@ -339,7 +339,7 @@
             <ul class="commonlist">
                 <li class="atitle">
                     <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
-                    <a href="/Mobile/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
+                    <a href="/mobile/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
                         <lable style="color: #FD9102;">[@item.StatusValueString]</lable>@item.Title
                     </a>
                 </li>

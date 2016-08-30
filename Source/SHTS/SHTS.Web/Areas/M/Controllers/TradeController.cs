@@ -8,7 +8,7 @@ using Witbird.SHTS.Web.Areas.M.Models;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
-    public class TradeController : Controller
+    public class TradeController : MobileBaseController
     {
         //
         // GET: /M/Trade/

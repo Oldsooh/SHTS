@@ -42,7 +42,7 @@
                         <span class="yellow" style="color:#ff0000;">[图]</span>
                     }
                     <span class="state blue">@item.InsertTime.Value.ToString("MM-dd")</span>
-                    <a href="/Mobile/news/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                    <a href="/mobile/news/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
                 </li>
             </ul>
         }
@@ -59,12 +59,12 @@
                 //上一页
                 if (Model.PageIndex > 1)
                 {
-                    <span><a href="/Mobile/news/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                    <span><a href="/mobile/news/index/@(Model.PageIndex - 1)" class="prv">上一页</a></span>
                 }
                 //首页
                 if (Model.PageStep < Model.PageIndex)
                 {
-                    <span><a href="/Mobile/news/index/1" class="prv">1</a></span><span>.</span>
+                    <span><a href="/mobile/news/index/1" class="prv">1</a></span><span>.</span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -73,23 +73,23 @@
                     {
                         if (i == Model.PageIndex)
                         {
-                            <span><a href="/Mobile/news/index/@i" class="no">@i</a></span>
+                            <span><a href="/mobile/news/index/@i" class="no">@i</a></span>
                         }
                         else
                         {
-                            <span><a href="/Mobile/news/index/@i">@i</a></span>
+                            <span><a href="/mobile/news/index/@i">@i</a></span>
                         }
                     }
                 }
                 //末页
                 if (step + Model.PageStep <= Model.PageCount)
                 {
-                    <span>.</span><span><a href="/Mobile/news/index/@(Model.PageCount)" class="prv">@(Model.PageCount)</a></span>
+                    <span>.</span><span><a href="/mobile/news/index/@(Model.PageCount)" class="prv">@(Model.PageCount)</a></span>
                 }
                 //下一页
                 if (Model.PageIndex < Model.PageCount)
                 {
-                    <span><a href="/Mobile/news/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                    <span><a href="/mobile/news/index/@(Model.PageIndex + 1)" class="next">下一页</a></span>
                 }
             }
         }

@@ -134,7 +134,7 @@
         }
 </style>
 <div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
-    <form id="search" action="/Mobile/index/search" method="get">
+    <form id="search" action="/mobile/index/search" method="get">
         <div class="nav-right">
             <input type="text" id="keyWords" name="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
             <button type="submit" class="searchbtn">
@@ -145,11 +145,11 @@
 </div>
 <div id="nav">
     <ul id="navul">
-        <li class="navli" id="space"><a href="/Mobile/resource/spacelist">活动场地</a></li>
-        <li class="navli" id="actor"><a href="/Mobile/resource/actorlist">演艺人员</a></li>
-        <li class="navli" id="equipment"><a href="/Mobile/resource/equipmentlist">活动设备</a></li>
-        <li class="navli" id="other"><a href="/Mobile/resource/otherlist">其它资源</a></li>
-        <li class="navli" id="demand"><a href="/Mobile/demand/index">需求信息</a></li>
+        <li class="navli" id="space"><a href="/mobile/resource/spacelist">活动场地</a></li>
+        <li class="navli" id="actor"><a href="/mobile/resource/actorlist">演艺人员</a></li>
+        <li class="navli" id="equipment"><a href="/mobile/resource/equipmentlist">活动设备</a></li>
+        <li class="navli" id="other"><a href="/mobile/resource/otherlist">其它资源</a></li>
+        <li class="navli" id="demand"><a href="/mobile/demand/index">需求信息</a></li>
     </ul>
 </div>
 @Html.Partial("FilterPartial", Model.Filter)
@@ -162,7 +162,7 @@
             <ul class="commonlist">
                 <li class="atitle">
                     <span class="state blue">@item.CreateTime.ToString("MM-dd")</span>
-                    <a href="/Mobile/resource/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
+                    <a href="/mobile/resource/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
                 </li>
                 <li>发布者：<span class="yellow2">@item.UserName</span>&nbsp;&nbsp;区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
             </ul>

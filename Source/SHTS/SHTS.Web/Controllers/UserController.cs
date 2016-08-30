@@ -664,8 +664,6 @@ namespace Witbird.SHTS.Web.Controllers
         public PartialViewResult UserMenu()
         {
             RequireLogin();
-            UserInfo.IsVip = IsVip;
-            UserInfo.IsIdentified = IsIdentified;
             return PartialView(UserInfo ?? new Model.User());
         }
 

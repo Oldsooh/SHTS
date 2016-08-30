@@ -38,7 +38,7 @@
         }
 </style>
 <div style="padding-left:10px;font-size:16px; margin:0 auto;background:#FFF;">
-    <form id="search" action="/Mobile/index/search" method="get">
+    <form id="search" action="/mobile/index/search" method="get">
         <div class="nav-right">
             <input type="text" id="keyWords" name="keyWords" class="keyWords" value="" placeholder="输入会议场地、设备、艺人..." />
             <button type="submit" class="searchbtn">
@@ -71,27 +71,27 @@
             {
                 case WitBird.Com.SearchEngine.SearchResultType.Activity:
                     resultTypeName = "活动在线";
-                    relatedUrl = "/Mobile/activity/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/activity/show/" + item.ResourceId;
                     break;
                 case WitBird.Com.SearchEngine.SearchResultType.ActorResource:
                     resultTypeName = "演艺人员资源";
-                    relatedUrl = "/Mobile/resource/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/resource/show/" + item.ResourceId;
                     break;
                 case WitBird.Com.SearchEngine.SearchResultType.Demand:
                     resultTypeName = "需求信息";
-                    relatedUrl = "/Mobile/demand/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/demand/show/" + item.ResourceId;
                     break;
                 case WitBird.Com.SearchEngine.SearchResultType.EquipmentResource:
                     resultTypeName = "活动设备资源";
-                    relatedUrl = "/Mobile/resource/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/resource/show/" + item.ResourceId;
                     break;
                 case WitBird.Com.SearchEngine.SearchResultType.OtherResource:
                     resultTypeName = "其他资源";
-                    relatedUrl = "/Mobile/resource/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/resource/show/" + item.ResourceId;
                     break;
                 case WitBird.Com.SearchEngine.SearchResultType.SpaceResource:
                     resultTypeName = "活动场地资源";
-                    relatedUrl = "/Mobile/resource/show/" + item.ResourceId;
+                    relatedUrl = "/mobile/resource/show/" + item.ResourceId;
                     break;
                 default:
                     resultTypeName = "未知类型";
@@ -137,12 +137,12 @@
                     //上一页
                     if (Model.PageIndex > 1)
                     {
-                        <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
                     }
                     //首页
                     if (Model.PageStep < Model.PageIndex)
                     {
-                        <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=1">1</a></span>
+                        <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=1">1</a></span>
                     }
                     //分页
                     for (int i = step; i < step + Model.PageStep; i++)
@@ -151,23 +151,23 @@
                         {
                             if (i == Model.PageIndex)
                             {
-                                <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=@i" class="no">@i</a></span>
+                                <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=@i" class="no">@i</a></span>
                             }
                             else
                             {
-                                <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=@i">@i</a></span>
+                                <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=@i">@i</a></span>
                             }
                         }
                     }
                     //末页
                     if (step + Model.PageStep <= Model.PageCount)
                     {
-                        <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=@Model.PageCount">@Model.PageCount</a></span>
+                        <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=@Model.PageCount">@Model.PageCount</a></span>
                     }
                     //下一页
                     if (Model.PageIndex < Model.PageCount)
                     {
-                        <span><a href="/Mobile/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        <span><a href="/mobile/index/search?keyWords=@Model.Keywords&page=@(Model.PageIndex + 1)" class="next">下一页</a></span>
                     }
                 }
             }

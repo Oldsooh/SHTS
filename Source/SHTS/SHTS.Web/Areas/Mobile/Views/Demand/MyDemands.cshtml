@@ -22,7 +22,7 @@
             <ul class="commonlist">
                 <li class="atitle">
                     <span class="state blue">@item.InsertTime.ToString("MM-dd")</span>
-                    <a href="/Mobile/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
+                    <a href="/mobile/demand/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
                         <lable style="color: #FD9102;">[@item.StatusValueString]</lable>@item.Title
                     </a>
                 </li>
@@ -50,10 +50,10 @@
                     }
                     else
                     {
-                        <a href="/Mobile/demand/UpdateDemandStatusAsComplete/@item.Id" style="margin-right: 10px;">
+                        <a href="/mobile/demand/UpdateDemandStatusAsComplete/@item.Id" style="margin-right: 10px;">
                             需求完成
                         </a>
-                        <a href="/Mobile/demand/Edit/@(item.Id)" style="margin-right: 10px;">
+                        <a href="/mobile/demand/Edit/@(item.Id)" style="margin-right: 10px;">
                             编辑需求
                         </a>
                     }

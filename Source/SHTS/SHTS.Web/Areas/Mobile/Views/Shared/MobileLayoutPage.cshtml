@@ -7,7 +7,7 @@
     <title>@ViewBag.Title</title>
     <meta name="keywords" content="@ViewBag.Keywords" />
     <meta name="description" content="@ViewBag.Description" />
-    <link href="/content/Mobile/css/common4.css" rel="stylesheet" />
+    <link href="/content/mobile/css/common4.css" rel="stylesheet" />
     <style>
         .location { margin-top: 5px; margin-bottom: 5px; padding-left: 10px; font-size: 14px; }
         #nav { margin-top: 10px; height: auto; }
@@ -31,7 +31,7 @@
                 localprovince = remote_ip_info["province"];
                 localcity = remote_ip_info["city"];
                 var nowTime = new Date().getTime();
-                var url = encodeURI("/Mobile/city/setlocalcity?cityName=" + localcity + "&time=" + nowTime);
+                var url = encodeURI("/mobile/city/setlocalcity?cityName=" + localcity + "&time=" + nowTime);
                 $.get(url, function (data, status) {
                     if (status == "success") {
                         if (data != "" && data != "no") {
@@ -58,7 +58,7 @@
                 <a href="javascript:history.go(-1);" style="font-size: 18px;">返回</a>
             </div>
             <div id="logo">
-                <a href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect">
+                <a href="/mobile/index">
                     <img src="/content/images/logo.png" alt="logo" />
                 </a>
             </div>
@@ -68,7 +68,7 @@
                     if (Session["CityName"] != null)
                     {
 
-                        <span id="currentCityName" onclick="window.location = '/Mobile/city/index'" style="font-size: 18px;">@Session["CityName"].ToString()</span>
+                        <span id="currentCityName" onclick="window.location = '/mobile/city/index'" style="font-size: 18px;">@Session["CityName"].ToString()</span>
                 <span style="font-size: 18px;">▼</span>
                     }
                     else
@@ -78,7 +78,7 @@
                 }
             </div>
             <div id="usercenter">
-                    <a href="~/Mobile/user/index" class="username">会员中心</a>
+                    <a href="~/mobile/user/index" class="username">会员中心</a>
             </div>
         </div>
 

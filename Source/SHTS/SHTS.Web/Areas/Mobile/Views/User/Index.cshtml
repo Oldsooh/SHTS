@@ -18,41 +18,64 @@
 </head>
 <body>
     <div id="_centent">
-
-        <div class="head">
-            <div class="head-img">
-                <img src="@Model.Photo">
+        @if (Model != null)
+        {
+            <div class="head">
+                <div class="head-img">
+                    <img src="@Model.Photo">
+                </div>
+                <div class="head-dsb">
+                    <p class="dsb-name">欢迎您，@Model.UserName</p>
+                    <p class="dsb-id"></p>
+                </div>
             </div>
-            <div class="head-dsb">
-                <p class="dsb-name">欢迎您，@Model.UserName</p>
-                <p class="dsb-id"></p>
-            </div>
-        </div>
 
-        <section class="mt-1">
-            <div class="ps-lt">
-                @{
+            <section class="mt-1">
+                <div class="ps-lt">
                     <div class="lt-dsb">
-                        <a href="~/Mobile/user/ViewUser">
+                        <a href="~/mobile/user/ViewUser">
                             <p>修改会员信息</p>
                             <i class="arr-right"></i>
                         </a>
                     </div>
                     <div class="lt-dsb">
-                        <a href="~/Mobile/user/Identify">
+                        <a href="~/mobile/user/Identify">
                             <p>会员认证</p>
                             <i class="arr-right"></i>
                         </a>
                     </div>
-                }
+                </div>
+            </section>
+        }
+        else
+        {
+            <div class="head">
+                <div class="head-img">
+                    <img src="@System.Configuration.ConfigurationManager.AppSettings["DefaultPhoto"]">
+                </div>
+                <div class="head-dsb">
+                    <p class="dsb-name">欢迎您，请先登录</p>
+                    <p class="dsb-id"></p>
+                </div>
             </div>
-        </section>
+
+            <section class="mt-1">
+                <div class="ps-lt">
+                    <div class="lt-dsb">
+                        <a href="~/mobile/account/login">
+                            <p style="color:red;">立即登录</p>
+                            <i class="arr-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        }
 
         <section class="mt-3">
 
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/resource/spacelist">
+                    <a href="~/mobile/resource/spacelist">
                         <p>最新活动场地资源</p>
                         <i class="arr-right"></i>
                     </a>
@@ -60,7 +83,7 @@
             </div>
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/resource/actorlist">
+                    <a href="~/mobile/resource/actorlist">
                         <p>最新演艺人员资源</p>
                         <i class="arr-right"></i>
                     </a>
@@ -68,7 +91,7 @@
             </div>
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/resource/equipmentlist">
+                    <a href="~/mobile/resource/equipmentlist">
                         <p>最新活动设备资源</p>
                         <i class="arr-right"></i>
                     </a>
@@ -76,7 +99,7 @@
             </div>
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/resource/otherlist">
+                    <a href="~/mobile/resource/otherlist">
                         <p>最新其它种类资源</p>
                         <i class="arr-right"></i>
                     </a>
@@ -87,7 +110,7 @@
         <section class="mt-3">
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/demand/index">
+                    <a href="~/mobile/demand/index">
                         <p>最新需求信息</p>
                         <i class="arr-right"></i>
                     </a>
@@ -95,7 +118,7 @@
             </div>
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/demand/add">
+                    <a href="~/mobile/demand/add">
                         <p>发布需求信息</p>
                         <i class="arr-right"></i>
                     </a>
@@ -104,7 +127,7 @@
 
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/demand/mydemands">
+                    <a href="~/mobile/demand/mydemands">
                         <p>我发布的需求信息</p>
                         <i class="arr-right"></i>
                     </a>
@@ -115,7 +138,7 @@
         <section class="mt-3">
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/activity/ShareActivity">
+                    <a href="~/mobile/activity/ShareActivity">
                         <p>发布活动在线</p>
                         <i class="arr-right"></i>
                     </a>
@@ -124,7 +147,7 @@
 
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/activity/index">
+                    <a href="~/mobile/activity/index">
                         <p>最新活动在线信息</p>
                         <i class="arr-right"></i>
                     </a>
@@ -135,7 +158,7 @@
         <section class="mt-3">
             <div class="ps-lt">
                 <div class="lt-dsb">
-                    <a href="~/Mobile/news/index">
+                    <a href="~/mobile/news/index">
                         <p>最新网站新闻公告</p>
                         <i class="arr-right"></i>
                     </a>
@@ -151,16 +174,19 @@
             </div>
         </section>
 
-        <section class="mt-3">
-            <div class="ps-lt">
-                <div class="lt-dsb">
-                    <a onclick="return confirm('您确定要登出吗？');" href="~/Mobile/account/logout">
-                        <p style="color:red;">立即登出</p>
-                        <i class="arr-right"></i>
-                    </a>
+        @if (Model != null)
+        {
+            <section class="mt-3">
+                <div class="ps-lt">
+                    <div class="lt-dsb">
+                        <a onclick="return confirm('您确定要登出吗？');" href="/mobile/account/logout">
+                            <p style="color:red;">退出登录</p>
+                            <i class="arr-right"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        }
         <div class="jg"></div>
     </div>
 

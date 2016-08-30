@@ -19,5 +19,11 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             }
             return false;
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            filterContext.Result = Redirect("/mobile");
+        }
     }
 }

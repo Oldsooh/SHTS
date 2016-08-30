@@ -179,7 +179,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             {
                 LogService.Log("LogOut-失败", ex.ToString());
             }
-            return Redirect("/mobile/account/login");
+            return Redirect("/mobile/user/index");
         }
         #endregion 退出登录
     }

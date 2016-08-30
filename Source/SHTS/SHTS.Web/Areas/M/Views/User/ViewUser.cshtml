@@ -257,6 +257,7 @@
         function addact() {
             if ($("#Adress").val() == "" || $("#ddlArea").val() == "") {
                 alert("地址不能为空");
+                return;
             }
             $("#js-form-mobile").submit();
         }

@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <button type="submit" style="width: 100%;" onclick=" addact(); " id="updatepasswordbtn" href="javascript:;" class="button btn-green">更新信息</button>
+                <button type="submit" style="width: 100%;" onclick="addact(); " id="updatepasswordbtn" href="javascript:;" class="button btn-green">更新信息</button>
             </div>
         </form>
         <div style="opacity: 0;">
@@ -259,6 +259,7 @@
         function addact() {
             if ($("#Adress").val() == "" || $("#ddlArea").val() == "") {
                 alert("地址不能为空");
+                return;
             }
             $("#js-form-mobile").submit();
         }

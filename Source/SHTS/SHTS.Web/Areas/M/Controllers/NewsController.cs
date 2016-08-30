@@ -10,7 +10,7 @@ using Witbird.SHTS.Web.Areas.M.Models;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : MobileBaseController
     {
         protected const string USERINFO = "userinfo";
 

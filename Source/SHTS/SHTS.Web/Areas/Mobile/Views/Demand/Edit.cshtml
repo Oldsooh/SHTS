@@ -96,13 +96,13 @@
                 if (Phone != "") {
                     if (ContentText != "") {
                         $.ajax({
-                            url: '/Mobile/demand/edit',
+                            url: '/mobile/demand/edit',
                             data: $("#editForm").serialize(),
                             type: 'POST',
                             success: function (msg) {
                                 if (msg == "success") {
                                     alert("更新成功");
-                                    window.location = "/Mobile/demand/mydemands";
+                                    window.location = "/mobile/demand/mydemands";
                                 }
                                 else {
                                     alert(msg);
@@ -165,7 +165,7 @@
 
 <div class="wrap" style="width: 100%; ">
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
-        <form action="/Mobile/demand/edit" id="editForm" class="reg-form" method="post">
+        <form action="/mobile/demand/edit" id="editForm" class="reg-form" method="post">
             <input type="hidden" id="id" name="id" value="@Model.Demand.Id" />
             @{ 
                 var hideSpaceTypeClass = "hd";

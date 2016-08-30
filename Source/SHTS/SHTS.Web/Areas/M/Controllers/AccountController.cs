@@ -17,7 +17,7 @@ using ShortMessage = Witbird.SHTS.Model.ShortMessage;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : MobileBaseController
     {
         #region 字符串
 

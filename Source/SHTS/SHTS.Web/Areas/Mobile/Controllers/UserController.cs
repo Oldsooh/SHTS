@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -28,11 +29,6 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
         }
         public ActionResult Index()
         {
-            if (!IsUserLogin)
-            {
-                return Redirect("/mobile/account/login");
-            }
-
             return View(CurrentUser);
         }
 

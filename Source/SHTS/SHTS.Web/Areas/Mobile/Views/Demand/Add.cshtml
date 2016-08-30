@@ -96,13 +96,13 @@
                 if (Phone != "") {
                     if (ContentText != "") {
                         $.ajax({
-                            url: '/Mobile/demand/add',
+                            url: '/mobile/demand/add',
                             data: $("#addForm").serialize(),
                             type: 'POST',
                             success: function (msg) {
                                 if (msg == "success") {
                                     alert("发布成功");
-                                    window.location.href = "/Mobile/demand/mydemands";
+                                    window.location.href = "/mobile/demand/mydemands";
                                 }
                                 else {
                                     alert(msg);
@@ -165,7 +165,7 @@
 
 <div class="wrap" style="width: 100%; ">
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
-        <form action="/Mobile/demand/add" id="addForm" class="reg-form" method="post">
+        <form action="/mobile/demand/add" id="addForm" class="reg-form" method="post">
             <div class="cell" style="padding-top:10px;">
                 <select name="ResourceType" class="text" id="ResourceType" onchange="demandCategoryChange()" style="width:160px">
                     <option value="-1">请选择需求类别</option>

@@ -1,5 +1,10 @@
 ﻿@using Witbird.SHTS.Model
 @model Witbird.SHTS.DAL.New.Resource
+@{
+    var currentUser = Session["userinfo"] as Witbird.SHTS.Model.User;
+    var isIdentified = currentUser != null && currentUser.IsIdentified;
+}
+
 <li>
     联&nbsp;&nbsp;系&nbsp;&nbsp;人: <span class="yellow2">
         @(new HtmlString(Model.Contract))
@@ -8,14 +13,26 @@
 
 <li>
     座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-        <a href="tel:@Model.Telephone">@Model.Telephone</a>
+        @if (isIdentified)
+        {
+            <a href="tel:@Model.Telephone">@Model.Telephone</a>
+        }
+        else
+        {
+            @(new HtmlString(Model.Telephone))
+        }
     </span>
 </li>
 <li>
     手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-
-        <a href="tel:@Model.Mobile">@Model.Mobile</a>
-
+        @if (isIdentified)
+        {
+            <a href="tel:@Model.Mobile">@Model.Mobile</a>
+        }
+        else
+        {
+            @(new HtmlString(Model.Mobile))
+        }
     </span>
 </li>
 <li>
@@ -25,9 +42,14 @@
 </li>
 <li>
     邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱: <span class="yellow2">
-
-        <a href="mailto:@(Model.Email)">@Model.Email</a>
-
+        @if (isIdentified)
+        {
+            <a href="mailto:@(Model.Email)">@Model.Email</a>
+        }
+        else
+        {
+            @(new HtmlString(Model.Email))
+        }
     </span>
 </li>
 <li>

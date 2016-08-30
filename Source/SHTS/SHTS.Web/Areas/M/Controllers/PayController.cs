@@ -13,7 +13,7 @@ using WitBird.Com.Pay;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {
-    public class PayController : BaseController
+    public class PayController : MobileBaseController
     {
         //
         // GET: /Pay/

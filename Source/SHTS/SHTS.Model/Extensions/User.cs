@@ -78,14 +78,31 @@ namespace Witbird.SHTS.Model
                 return geos.Length >= 3 ? geos[2] : string.Empty;
             }
         }
+        
+        /// <summary>
+        /// 是否是认证会员
+        /// </summary>
+        public bool IsIdentified
+        {
+            get
+            {
+                return (this != null && 
+                    this.Vip.HasValue &&
+                    (this.Vip.Value == (int)VipState.Identified || this.Vip.Value == (int)VipState.VIP));
+            }
+        }
 
         /// <summary>
-        /// 不要用，用前先手动复制.Richard
+        /// 是否是VIP会员
         /// </summary>
-        public bool IsVip { get; set; }
-        /// <summary>
-        /// 不要用，用前先手动复制.Richard
-        /// </summary>
-        public bool IsIdentified { get; set; }
+        public bool IsVip
+        {
+            get
+            {
+                return (this != null && 
+                    this.Vip.HasValue && 
+                    (this.Vip.Value == (int)VipState.VIP));
+            }
+        }
     }
 }
