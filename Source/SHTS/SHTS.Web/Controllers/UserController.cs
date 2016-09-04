@@ -17,7 +17,7 @@ using Witbird.SHTS.Web.MvcExtension;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class UserController : BaseController
+    public class UserController : PCBaseController
     {
         OrderService orderService;
         public UserController()

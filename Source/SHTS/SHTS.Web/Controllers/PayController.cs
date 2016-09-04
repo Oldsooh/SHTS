@@ -12,7 +12,7 @@ using WitBird.Com.Pay;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class PayController : BaseController
+    public class PayController : PCBaseController
     {
         //
         // GET: /Pay/

@@ -14,7 +14,7 @@ using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : PCBaseController
     {
         #region 字符串
 

@@ -11,7 +11,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : PCBaseController
     {
         SinglePageService singlePageService = new SinglePageService();
         DemandService demandService = new DemandService();

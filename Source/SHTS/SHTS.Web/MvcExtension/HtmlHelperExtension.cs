@@ -351,6 +351,11 @@ namespace System.Web.Mvc
 
         public static string GetResourceSubTypeNameById(this HtmlHelper helper, int resourceTypeId, int? resourceSubTypeId)
         {
+            return GetResourceSubTypeNameById(resourceTypeId, resourceSubTypeId);
+        }
+
+        public static string GetResourceSubTypeNameById(int resourceTypeId, int? resourceSubTypeId)
+        {
             string typeName = string.Empty;
             var subTypeId = resourceSubTypeId ?? -1;
 

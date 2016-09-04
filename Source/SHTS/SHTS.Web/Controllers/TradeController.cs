@@ -14,7 +14,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class TradeController : BaseController
+    public class TradeController : PCBaseController
     {
         TradeService tradeService;
         OrderService orderService;

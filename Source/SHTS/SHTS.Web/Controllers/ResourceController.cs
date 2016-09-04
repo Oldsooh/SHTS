@@ -14,7 +14,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class ResourceController : BaseController
+    public class ResourceController : PCBaseController
     {
         ResourceManager resourceManager = new ResourceManager();
         ResourceService resourceService = new ResourceService();

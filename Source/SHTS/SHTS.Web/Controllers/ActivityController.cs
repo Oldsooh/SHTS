@@ -11,7 +11,7 @@ using Witbird.SHTS.Web.Models.ActivityModel;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class ActivityController : BaseController
+    public class ActivityController : PCBaseController
     {
         //
         // GET: /Activity/

@@ -10,7 +10,7 @@ using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         protected const string USERINFO = "userinfo";
 

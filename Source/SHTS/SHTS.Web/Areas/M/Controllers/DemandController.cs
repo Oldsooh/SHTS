@@ -153,6 +153,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                     if (demandManager.AddDemand(demand))
                     {
                         result = "success";
+                        Subscription.WorkingThread.Instance.SendDemandByEmail(demand.Id);
                     }
                 }
                 else

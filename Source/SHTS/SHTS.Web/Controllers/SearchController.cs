@@ -9,7 +9,7 @@ using WitBird.Com.SearchEngine;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class SearchController : Controller
+    public class SearchController : PCBaseController
     {
         #region 搜索
 

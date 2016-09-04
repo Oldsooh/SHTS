@@ -9,7 +9,7 @@ using Witbird.SHTS.Web.Models.User;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class CommonController : BaseController
+    public class CommonController : PCBaseController
     {
         //
         // GET: /Common/

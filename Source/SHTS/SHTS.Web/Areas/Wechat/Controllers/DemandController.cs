@@ -285,6 +285,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     if (demandManager.AddDemand(demand))
                     {
                         result = "success";
+
+                        Subscription.WorkingThread.Instance.SendDemandByEmail(demand.Id);
                     }
                 }
                 else

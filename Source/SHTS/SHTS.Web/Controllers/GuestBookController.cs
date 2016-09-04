@@ -7,7 +7,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class GuestBookController : Controller
+    public class GuestBookController : PCBaseController
     {
         public ActionResult Index()
         {

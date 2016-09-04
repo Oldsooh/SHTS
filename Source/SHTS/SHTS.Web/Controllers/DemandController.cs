@@ -12,7 +12,7 @@ using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class DemandController : BaseController
+    public class DemandController : PCBaseController
     {
         DemandManager demandManager = new DemandManager();
         DemandService demandService = new DemandService();
@@ -187,6 +187,8 @@ namespace Witbird.SHTS.Web.Controllers
                     if (demandManager.AddDemand(demand))
                     {
                         result = "success";
+
+                        Subscription.WorkingThread.Instance.SendDemandByEmail(demand.Id);
                     }
                 }
                 else

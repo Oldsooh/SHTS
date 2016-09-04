@@ -9,7 +9,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class CityController : BaseController
+    public class CityController : PCBaseController
     {
         CityService cityService = new CityService();
 

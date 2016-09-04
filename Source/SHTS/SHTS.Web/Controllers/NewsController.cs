@@ -11,7 +11,7 @@ using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : PCBaseController
     {
         SinglePageManager singlePageManager = new SinglePageManager();
         SinglePageService singlePageService = new SinglePageService();

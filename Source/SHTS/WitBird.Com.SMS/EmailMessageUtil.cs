@@ -77,10 +77,10 @@ namespace WitBird.Com.SMS
         ///<param name="port">发送邮件所用的端口号（htmp协议默认为25）</param>
         ///<param name="sslEnable">true表示对邮件内容进行socket层加密传输，false表示不加密</param>
         ///<param name="pwdCheckEnable">true表示对发件人邮箱进行密码验证，false表示不对发件人邮箱进行密码验证</param>
-        public MailMessage CreateMailMessage(List<string> toMails, string dislpayName, string subject, string emailBody)
+        public MailMessage CreateMailMessage(List<string> toMails, string displayName, string subject, string emailBody)
         {
             MailMessage mMailMessage = new MailMessage();
-            mMailMessage.From = new MailAddress(this.mSenderUser);
+            mMailMessage.From = new MailAddress(this.mSenderUser, displayName);
             mMailMessage.Subject = subject;
             mMailMessage.Body = emailBody;
             mMailMessage.IsBodyHtml = true;
@@ -91,7 +91,7 @@ namespace WitBird.Com.SMS
             {
                 foreach (string item in toMails)
                 {
-                    MailAddress mail = new MailAddress(item, dislpayName);
+                    MailAddress mail = new MailAddress(item, displayName);
                     mMailMessage.To.Add(mail);
                 }
             }

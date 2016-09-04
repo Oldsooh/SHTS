@@ -1,14 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Senparc.Weixin.MP.Agent;
-using Senparc.Weixin.Context;
-using Senparc.Weixin.MP.Entities;
-using Senparc.Weixin.MP.Helpers;
-using Senparc.Weixin.MP.MessageHandlers;
-using WitBird.SHTS.Areas.WeChatAuth.Utilities;
+﻿using Senparc.Weixin.MP.Entities;
+using System;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
@@ -389,7 +380,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
                 #region 获取订阅内容
                 case "GetSubscribedDemands":
-                    Witbird.SHTS.Web.Areas.Wechat.Subscription.WorkingThread.Instance.SendSubscribedDemandManually(openId);
+                    Witbird.SHTS.Web.Subscription.WorkingThread.Instance.SendSubscribedDemandManually(openId);
                     break;
                 #endregion
 
