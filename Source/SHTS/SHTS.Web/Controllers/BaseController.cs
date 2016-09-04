@@ -10,7 +10,7 @@ using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.Web.Controllers
 {
-    public abstract class BaseController : Controller
+    public class BaseController : Controller
     {
         protected const string USERINFO = "userinfo";
 
@@ -209,6 +209,18 @@ namespace Witbird.SHTS.Web.Controllers
             }
 
             return allCities.FirstOrDefault();
+        }
+
+
+        [HttpGet]
+        public ActionResult VerifyCode()
+        {
+            //显示验证码
+            string validataCode = null;
+            ValidateCode_Style1 codeImg = new ValidateCode_Style1();
+            byte[] bytes = codeImg.CreateImage(out validataCode);
+            Session["validataCode"] = validataCode;
+            return File(bytes, @"image/jpeg");
         }
     }
 }

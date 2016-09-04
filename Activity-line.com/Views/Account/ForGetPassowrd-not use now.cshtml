@@ -39,7 +39,7 @@
             </div>
             <div class="cell vcode nextshow">
                 <input type="text" name="VCode" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6" />
-                <img src="./VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src='./VerifyCode?date='+(new Date()).getTime();" />
+                <img src="/base/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src='/base/verifycode?date='+(new Date()).getTime();" />
             </div>
             <div class="bottom nextshow" id="mobile_btn">
                 <button type="submit" id="js-mobile_btn" href="javascript:;" class="button btn-green">确认修改</button>

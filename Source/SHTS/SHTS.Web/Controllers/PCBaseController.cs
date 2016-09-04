@@ -30,15 +30,34 @@ namespace Witbird.SHTS.Web.Controllers
         private string GetMobileUrlString(ActionExecutingContext filterContext)
         {
             var originalUrl = filterContext.HttpContext.Request.Url.OriginalString;
-            var domain = filterContext.HttpContext.Request.Url.Host;
+            var host = filterContext.HttpContext.Request.Url.Host;
+            var port = filterContext.HttpContext.Request.Url.Port;
+            var mobileDomain = string.Empty;
+            var pcDomain = string.Empty;
 
-            if (originalUrl.IndexOf(":80") != -1)
+            if (port == 80)
             {
-                originalUrl = originalUrl.Remove(originalUrl.IndexOf(":80"), ":80".Length);
+                mobileDomain = host + "/mobile";
+                pcDomain = host;
+            }
+            else
+            {
+                mobileDomain = host + ":" + port + "/mobile";
+                pcDomain = host + ":" + port;
             }
 
-            var mobileDomain = domain + "/mobile";
-            return originalUrl.Replace(domain, mobileDomain);
+            if (port == 80)
+            {
+                string portInUrl = ":80";
+                int portIndex = originalUrl.IndexOf(portInUrl);
+
+                if (portIndex != -1)
+                {
+                    originalUrl = originalUrl.Remove(portIndex, portInUrl.Length);
+                }
+            }
+
+            return originalUrl.Replace(pcDomain, mobileDomain);
         }
     }
 }

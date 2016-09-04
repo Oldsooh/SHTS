@@ -426,18 +426,7 @@ namespace Witbird.SHTS.Web.Controllers
         }
 
         #endregion
-
-        [HttpGet]
-        public ActionResult VerifyCode()
-        {
-            //显示验证码
-            string validataCode = null;
-            ValidateCode_Style1 codeImg = new ValidateCode_Style1();
-            byte[] bytes = codeImg.CreateImage(out validataCode);
-            Session["validataCode"] = validataCode;
-            return File(bytes, @"image/jpeg");
-        }
-
+        
         [HttpPost]
         public JsonResult VerifyBeforeVcode(string vcode)
         {

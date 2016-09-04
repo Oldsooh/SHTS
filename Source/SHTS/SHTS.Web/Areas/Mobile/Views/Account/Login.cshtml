@@ -40,7 +40,7 @@
             <div class="cell vcode">
                 <input type="hidden" id="IsAutoLogin" name="IsAutoLogin" value="0" />
                 <input type="text" name="code" id="js-mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6" />
-                <img src="~/account/VerifyCode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src = '/account/VerifyCode?date=' + (new Date()).getTime(); " />
+                <img src="~/base/verifycode" id="js-get_mobile_vcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
             </div>
 
             <div class="bottom">
