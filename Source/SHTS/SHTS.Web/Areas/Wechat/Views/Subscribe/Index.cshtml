@@ -10,6 +10,7 @@
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
     <script src="~/Content/js/city.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/validate.js"></script>
     <style type="text/css">
         .reg-form .cell label {
             position: absolute;
@@ -563,6 +564,9 @@
                 else if (subscribedAreas.length == 0) {
                     alert('请选择需求类型所属的区域位置！');
                 }
+                else if (!isEmailValid($('#emailAddress').val())){
+                    alert('请输入正确的邮箱地址！');
+                }
                 else {
                     subscriptionForm.submit();
                 }
@@ -650,13 +654,9 @@
 
                     <input type="checkbox" id="enableSubscription" @checkedString onchange="enableSubscribed();" style="width: 25px; height: 25px;">
                 }
-                <label for="enableSubscription" id="es">启用需求订阅</label>
+                <label for="enableSubscription" id="es">启用需求订阅功能</label>
             </div>
-            <div class="cell" style="color:#ACA899;height:auto;">
-                注：
-                <br /> 1. 启用后，我们将会根据您的订阅内容给您主动推送最新需求信息，方便您及时查看。
-                <br /> 2. 选择好需求类别与类型、区域位置、关键字之后，记得点击对应的添加按钮才能生效哦！
-            </div>
+            <br />
             <div class="subscribeDetails">
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置需求类型：</h3>
@@ -842,6 +842,19 @@
 
                     <div class="">
                         <a href="javascript:void(0);" title="添加关键字" class="candisabled" onclick="addKeyword();">添加关键字</a>
+                    </div>
+                </div>
+            </div>
+            <div class="subscribeDetails">
+
+                <div class="subscribe">
+                    <h3 class="" style="font-size:14px; padding: 5px;">开启邮箱推送（可选）：</h3>
+
+                    <div class="cell" style="color:#ACA899;height:auto;">
+                        因为微信具有推送消息限制，如果填写了邮箱地址，您将不会错过任何一条您订阅需求信息。
+                    </div>
+                    <div class="cell">
+                        <input type="email" id="emailAddress" name="emailAddress" placeholder="请输入您微信号绑定的邮箱或常用邮箱地址" class="text candisabled" value="@Model.EmailAddress">
                     </div>
                 </div>
             </div>

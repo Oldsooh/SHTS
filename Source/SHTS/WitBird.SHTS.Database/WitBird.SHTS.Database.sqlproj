@@ -242,7 +242,7 @@
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
     <None Include="WitBird.SHTS.Database.sqlproj.user" />
-    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastPushTime" />
+    <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastPushTime.sql" />
     <Build Include="StoredProcedure\User\sp_UpdateWeChatUserLastRequestTime.sql" />
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,5 @@ namespace Witbird.SHTS.Model
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<System.DateTime> LastUpdatedTime { get; set; }
         public Nullable<int> State { get; set; }
-        public Nullable<bool> IsEnableEmailSubscription { get; set; }
     }
 }

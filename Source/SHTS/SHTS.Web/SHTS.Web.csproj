@@ -694,6 +694,7 @@
     <Content Include="Areas\Wechat\Content\images\arr-left.png" />
     <Content Include="Areas\Wechat\Content\images\arr-right.png" />
     <Content Include="Areas\Wechat\Content\images\bg.png" />
+    <Content Include="Areas\Wechat\Content\scipts\validate.js" />
     <Content Include="Content\images\button_grey_close.png" />
     <Content Include="Areas\Wechat\Content\images\projection.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\button_bg.gif" />

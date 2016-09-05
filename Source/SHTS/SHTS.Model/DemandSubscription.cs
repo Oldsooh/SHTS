@@ -20,5 +20,7 @@ namespace Witbird.SHTS.Model
         public Nullable<System.DateTime> LastPushTimestamp { get; set; }
         public System.DateTime InsertedTimestamp { get; set; }
         public System.DateTime LastUpdatedTimestamp { get; set; }
+        public Nullable<bool> IsEnableEmailSubscription { get; set; }
+        public string EmailAddress { get; set; }
     }
 }

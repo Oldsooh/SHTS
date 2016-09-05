@@ -232,7 +232,9 @@ namespace Witbird.SHTS.BLL.Services
                         IsSubscribed = true,
                         LastPushTimestamp = currentTime,
                         LastUpdatedTimestamp = currentTime,
-                        WeChatUserId = userId
+                        WeChatUserId = userId,
+                        IsEnableEmailSubscription = false,
+                        EmailAddress = string.Empty
                     };
 
                     subscription = subscriptionDao.InsertOrUpdateSubscription(conn, subscription);

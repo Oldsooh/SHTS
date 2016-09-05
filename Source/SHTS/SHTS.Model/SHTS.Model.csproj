@@ -177,6 +177,9 @@
     <Compile Include="SinglePage.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SmsRecord.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Space.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>

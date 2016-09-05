@@ -211,7 +211,10 @@ namespace Witbird.SHTS.Web.Controllers
             return allCities.FirstOrDefault();
         }
 
-
+        /// <summary>
+        /// 返回验证码图片，全站通用
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult VerifyCode()
         {
@@ -222,5 +225,43 @@ namespace Witbird.SHTS.Web.Controllers
             Session["validataCode"] = validataCode;
             return File(bytes, @"image/jpeg");
         }
+
+        /// <summary>
+        /// 判断是否是来自微信端的请求
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public bool IsAccessFromWechatDevice(HttpRequestBase request)
+        {
+            var userAgent = request.UserAgent.ToLower();
+            
+            if (userAgent.IndexOf("micromessenger") != -1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 判断是否是来自移动端的请求
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public bool IsAccessFromMobileDevice(HttpRequestBase request)
+        {
+            return request.Browser.IsMobileDevice;
+        }
+
+        /// <summary>
+        /// 判断是否是来自PC端的请求
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public bool IsAccessFromPCDevice(HttpRequestBase request)
+        {
+            return !request.Browser.IsMobileDevice;
+        }
+
     }
 }

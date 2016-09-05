@@ -11,9 +11,16 @@ namespace Witbird.SHTS.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.Request.Browser.IsMobileDevice)
+            if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
             {
-                var mobileUrl = GetMobileUrlString(filterContext);
+                var mobileUrl = GetWechatUrlString(filterContext.HttpContext.Request);
+                LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
+                LogService.Log("WechatUrl", mobileUrl);
+                filterContext.Result = new RedirectResult(mobileUrl);
+            }
+            else if (IsAccessFromMobileDevice(filterContext.HttpContext.Request))
+            {
+                var mobileUrl = GetMobileUrlString(filterContext.HttpContext.Request);
                 LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
                 LogService.Log("MobileUrl", mobileUrl);
                 filterContext.Result = new RedirectResult(mobileUrl);
@@ -27,11 +34,11 @@ namespace Witbird.SHTS.Web.Controllers
         /// </summary>
         /// <param name="filterContext"></param>
         /// <returns></returns>
-        private string GetMobileUrlString(ActionExecutingContext filterContext)
+        private string GetMobileUrlString(HttpRequestBase request)
         {
-            var originalUrl = filterContext.HttpContext.Request.Url.OriginalString;
-            var host = filterContext.HttpContext.Request.Url.Host;
-            var port = filterContext.HttpContext.Request.Url.Port;
+            var originalUrl = request.Url.OriginalString;
+            var host = request.Url.Host;
+            var port = request.Url.Port;
             var mobileDomain = string.Empty;
             var pcDomain = string.Empty;
 
@@ -58,6 +65,44 @@ namespace Witbird.SHTS.Web.Controllers
             }
 
             return originalUrl.Replace(pcDomain, mobileDomain);
+        }
+
+        /// <summary>
+        /// 如果是微信端访问，跳转到微信端页面
+        /// </summary>
+        /// <param name="filterContext"></param>
+        /// <returns></returns>
+        private string GetWechatUrlString(HttpRequestBase request)
+        {
+            var originalUrl = request.Url.OriginalString;
+            var host = request.Url.Host;
+            var port = request.Url.Port;
+            var wechatDomain = string.Empty;
+            var pcDomain = string.Empty;
+
+            if (port == 80)
+            {
+                wechatDomain = host + "/wechat";
+                pcDomain = host;
+            }
+            else
+            {
+                wechatDomain = host + ":" + port + "/wechat";
+                pcDomain = host + ":" + port;
+            }
+
+            if (port == 80)
+            {
+                string portInUrl = ":80";
+                int portIndex = originalUrl.IndexOf(portInUrl);
+
+                if (portIndex != -1)
+                {
+                    originalUrl = originalUrl.Remove(portIndex, portInUrl.Length);
+                }
+            }
+
+            return originalUrl.Replace(pcDomain, wechatDomain);
         }
     }
 }

@@ -206,18 +206,17 @@ namespace Witbird.SHTS.Web.Subscription
                     {
                         foreach (var subscription in subscriptions)
                         {
-                            var isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
-
-                            if (isDemandMatchWithSubscription)
+                            if (subscription.IsEnableEmailSubscription.HasValue && subscription.IsEnableEmailSubscription.Value)
                             {
-                                // Only subscried user can recieve articles.
-                                var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
-                                if (wechatUser.IsNotNull() && wechatUser.UserId.HasValue)
+                                var isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
+
+                                if (isDemandMatchWithSubscription)
                                 {
-                                    User user = userService.GetUserById(wechatUser.UserId.Value);
-                                    if (user != null)
+                                    // Only subscried user can recieve articles.
+                                    var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
+                                    if (wechatUser.IsNotNull() && wechatUser.UserId.HasValue)
                                     {
-                                        var mailAddress = user.Email;
+                                        var mailAddress = subscription.EmailAddress;
                                         var displayName = "活动在线网";
                                         var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
                                         var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
@@ -225,11 +224,11 @@ namespace Witbird.SHTS.Web.Subscription
                                         var response = StaticUtility.EmailManager.Send(mailEntity);
                                         if (response.IsSuccess)
                                         {
-                                            LogService.LogWexin("邮箱推送需求成功", "用户ID: " + user.UserId + ", 用户名: " + user.UserName + ", 用户邮箱：" + user.Email);
+                                            LogService.LogWexin("邮箱推送需求成功", "微信用户ID: " + wechatUser.Id + ", 用户名: " + wechatUser.NickName + ", 用户邮箱：" + subscription.EmailAddress);
                                         }
                                         else
                                         {
-                                            LogService.LogWexin("邮箱推送需求失败", "用户ID: " + user.UserId + ", 用户名: " + user.UserName + ", 用户邮箱：" + user.Email + "\r\n" + response.InnerException.ToString());
+                                            LogService.LogWexin("邮箱推送需求失败", "微信用户ID: " + wechatUser.Id + ", 用户名: " + wechatUser.NickName + ", 用户邮箱：" + subscription.EmailAddress + "\r\n" + response.InnerException.ToString());
                                         }
                                     }
                                 }
@@ -260,10 +259,10 @@ namespace Witbird.SHTS.Web.Subscription
             string peopleCount = !string.IsNullOrEmpty(demand.PeopleNumber) ? demand.PeopleNumber : "不确定";
 
             string location = StaticUtility.GetProvinceAndCityNameById(demand.Province, demand.City, demand.Area) + " " + demand.Address;
-            string titleLink = @"<a href='http://" + StaticUtility.Config.Domain + "/demand/show/" 
-                + demand.Id + "' target='_blank' style='color:#000;font-weight:bold;text-decoration:none;' title='" 
+            string titleLink = @"<a href='http://" + StaticUtility.Config.Domain + "/demand/show/"
+                + demand.Id + "' target='_blank' style='color:#000;font-weight:bold;text-decoration:none;' title='"
                 + demand.Title + "'>" + demand.Title + "</a>";
-            string viewLink = @"<a href='http://" + StaticUtility.Config.Domain + "/demand/show/" 
+            string viewLink = @"<a href='http://" + StaticUtility.Config.Domain + "/demand/show/"
                 + demand.Id + "' target='_blank' title='立即查看' style='color:#FF9900;font-weight:bold;text-decoration:none;'>立即查看</a>";
 
             return string.Format(emailSubscriptionContentFormat, titleLink, viewLink, demand.ResourceTypeName, resourceSubTypeName, buget, peopleCount,

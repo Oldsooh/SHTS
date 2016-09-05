@@ -857,7 +857,6 @@ namespace Witbird.SHTS.DAL.Daos
             user.UserType = reader["UserType"].DBToInt32();
             user.Vip = reader["Vip"].DBToInt32();
             user.Photo = reader["Photo"].DBToString();
-            user.IsEnableEmailSubscription = reader["IsEnableEmailSubscription"].DBToBoolean(true);
             return user;
         }
 

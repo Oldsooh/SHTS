@@ -23,7 +23,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile
                 constraints: new { controller = @"About|News|Demand|Trade|Activity|Resource", id = @"[\d]{0,5}" },
                 namespaces: new string[] { "Witbird.SHTS.Web.Areas.Mobile.Controllers" }
             );
-
+            
             context.MapRoute(
                 "Mobile_default",
                 "Mobile/{controller}/{action}/{id}",

@@ -32,6 +32,8 @@ namespace Witbird.SHTS.DAL.Daos
         const string Parameter_SubscriptionDetailId = "@SubscriptionDetailId";
         const string Parameter_SubscriptionType = "@SubscriptionType";
         const string Parameter_SubscriptionValue = "@SubscriptionValue";
+        const string Parameter_IsEnableEmailSubscription = "@IsEnableEmailSubscription";
+        const string Parameter_EmailAddress = "@EmailAddress";
 
         #endregion
 
@@ -124,7 +126,9 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(Parameter_IsSubscribed, subscription.IsSubscribed),
                 new SqlParameter(Parameter_LastPushTimestamp, subscription.LastPushTimestamp ?? subscription.LastUpdatedTimestamp),
                 new SqlParameter(Parameter_LastUpdatedTimestamp, subscription.LastUpdatedTimestamp),
-                new SqlParameter(Parameter_InsertedTimestamp, subscription.LastUpdatedTimestamp)
+                new SqlParameter(Parameter_InsertedTimestamp, subscription.LastUpdatedTimestamp),
+                new SqlParameter(Parameter_IsEnableEmailSubscription, subscription.IsEnableEmailSubscription),
+                new SqlParameter(Parameter_EmailAddress, subscription.EmailAddress)
             };
 
             using (SqlDataReader reader = DBHelper.RunProcedure(conn, SP_InsertOrUpdateDemandSubscription, parameters))
@@ -193,14 +197,16 @@ namespace Witbird.SHTS.DAL.Daos
         /// <returns></returns>
         private DemandSubscription ConvertToDemandSubscription(SqlDataReader reader)
         {
-            return new DemandSubscription() 
+            return new DemandSubscription()
             {
                 InsertedTimestamp = reader["InsertedTimestamp"].DBToDateTime().Value,
                 IsSubscribed = reader["IsSubscribed"].DBToBoolean(),
                 LastPushTimestamp = reader["LastPushTimestamp"].DBToDateTime(),
                 LastUpdatedTimestamp = reader["LastUpdatedTimestamp"].DBToDateTime().Value,
                 SubscriptionId = reader["SubscriptionId"].DBToInt32(),
-                WeChatUserId = reader["WeChatUserId"].DBToInt32()
+                WeChatUserId = reader["WeChatUserId"].DBToInt32(),
+                IsEnableEmailSubscription = reader["IsEnableEmailSubscription"].DBToBoolean(false),
+                EmailAddress = reader["EmailAddress"].DBToString()
             };
         }
 

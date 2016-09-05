@@ -56,7 +56,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords)
+        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords, string emailAddress)
         {
             DemandSubscription subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
             var errorMessage = string.Empty;
@@ -152,7 +152,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 if (isValid)
                 {
                     subscription.IsSubscribed = enable;
-
+                    if (!string.IsNullOrEmpty(emailAddress))
+                    {
+                        subscription.IsEnableEmailSubscription = true;
+                    }
+                    
+                    subscription.EmailAddress = emailAddress;
                     isValid = subscriptionService.UpdateSubscription(subscription);
                 }
 
