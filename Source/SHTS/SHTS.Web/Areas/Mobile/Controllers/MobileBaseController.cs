@@ -25,20 +25,25 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
         {
             SetDefaultCityToSession();
 
-            // 如果是wechat访问，则跳转到wechat页面
-            if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
+            if (!filterContext.HttpContext.Request.Url.OriginalString.Contains("/content/") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/common/") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/city/"))
             {
-                var pcUrl = GetWechatUrlString(filterContext.HttpContext.Request);
-                LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
-                LogService.Log("WechatUrl", pcUrl);
-                filterContext.Result = new RedirectResult(pcUrl);
-            }
-            else if (IsAccessFromPCDevice(filterContext.HttpContext.Request))
-            {
-                var pcUrl = GetPCUrlString(filterContext.HttpContext.Request);
-                LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
-                LogService.Log("PCUrl", pcUrl);
-                filterContext.Result = new RedirectResult(pcUrl);
+                // 如果是wechat访问，则跳转到wechat页面
+                if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
+                {
+                    var pcUrl = GetWechatUrlString(filterContext.HttpContext.Request);
+                    LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
+                    LogService.Log("WechatUrl", pcUrl);
+                    filterContext.Result = new RedirectResult(pcUrl);
+                }
+                else if (IsAccessFromPCDevice(filterContext.HttpContext.Request))
+                {
+                    var pcUrl = GetPCUrlString(filterContext.HttpContext.Request);
+                    LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
+                    LogService.Log("PCUrl", pcUrl);
+                    filterContext.Result = new RedirectResult(pcUrl);
+                }
             }
 
             base.OnActionExecuting(filterContext);            

@@ -118,84 +118,44 @@ namespace Witbird.SHTS.Web.Controllers
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string timeLength, string peopleNumber, string budget)
         {
-            string result = "发布失败";
-            User user = null;
+            string result = string.Empty;
             if (!IsUserLogin)
             {
-                result = "请登录后再发布！";
+                result = "未登录或登录超时！请在新窗口进行登录后返回继续操作！";
             }
             else
             {
-                if (!string.IsNullOrEmpty(title) &&
-                    //!string.IsNullOrEmpty(description) &&
-                    !string.IsNullOrEmpty(contentStyle) &&
-                    !string.IsNullOrEmpty(startTime) &&
-                    !string.IsNullOrEmpty(endTime) &&
-                    !string.IsNullOrEmpty(budget) &&
-                    !string.IsNullOrEmpty(phone))
+                int resourceSubTypeId = -1;
+                switch (ResourceType)
                 {
-                    user = Session[USERINFO] as User;
-                    Demand demand = new Demand();
-                    demand.UserId = user.UserId;
-                    demand.ResourceType = ResourceType;
-
-                    switch(demand.ResourceType)
-                    {
-                        case 1:
-                            demand.ResourceTypeId = SpaceTypeId;
-                            break;
-                        case 2:
-                            demand.ResourceTypeId = ActorTypeId;
-                            break;
-                        case 3:
-                            demand.ResourceTypeId = EquipTypeId;
-                            break;
-                        case 4:
-                            demand.ResourceTypeId = OtherTypeId;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    demand.Title = title;
-                    demand.Description = string.Empty;//description;
-                    demand.ContentStyle = contentStyle;
-                    demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
-                    demand.Province = string.IsNullOrEmpty(provinceId) ? string.Empty : provinceId;
-                    demand.City = string.IsNullOrEmpty(cityId) ? string.Empty : cityId;
-                    demand.Area = string.IsNullOrEmpty(areaId) ? string.Empty : areaId;
-                    demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
-                    demand.Phone = phone;
-                    demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
-                    demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
-                    demand.StartTime = DateTime.Parse(startTime);
-                    demand.EndTime = DateTime.Parse(endTime);
-                    demand.TimeLength = string.IsNullOrEmpty(timeLength) ? string.Empty : timeLength;
-                    demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
-                    int tempBudget = 0;
-                    if (!string.IsNullOrEmpty(budget))
-                    {
-                        Int32.TryParse(budget, out tempBudget);
-                    }
-                    demand.Budget = tempBudget;
-                    demand.IsActive = true;
-                    demand.ViewCount = 0;
-                    demand.InsertTime = DateTime.Now;
-                    demand.Status = (int)DemandStatus.InProgress;
-                    demand.WeixinBuyFee = (int)BuyDemandFee;
-
-                    if (demandManager.AddDemand(demand))
-                    {
-                        result = "success";
-
-                        Subscription.WorkingThread.Instance.SendDemandByEmail(demand.Id);
-                    }
+                    case 1:
+                        resourceSubTypeId = SpaceTypeId ?? -1;
+                        break;
+                    case 2:
+                        resourceSubTypeId = ActorTypeId ?? -1;
+                        break;
+                    case 3:
+                        resourceSubTypeId = EquipTypeId ?? -1;
+                        break;
+                    case 4:
+                        resourceSubTypeId = OtherTypeId ?? -1;
+                        break;
+                    default:
+                        break;
                 }
-                else
+
+                int demandBudget = 0;
+                int.TryParse(budget, out demandBudget);
+                int demandId = -1;
+
+                if (demandManager.AddDemand(CurrentUser.UserId, ResourceType, resourceSubTypeId, title, contentStyle, provinceId,
+                    cityId, areaId, address, phone, qqweixin, email, startTime, endTime, timeLength, peopleNumber,
+                    demandBudget, (int)BuyDemandFee, out result, out demandId))
                 {
-                    result = "必填项不能为空";
+                    Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
                 }
             }
+
             return Content(result);
         }
 

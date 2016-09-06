@@ -37,12 +37,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     // Gets demands by user's subscription details.
                     var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
-                    
+
                     model.Demands = demands;
                 }
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.LogWexin("查看所有推荐出错", ex.ToString());
             }
@@ -56,7 +56,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords, string emailAddress)
+        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords, bool emailEnabled, string emailAddress)
         {
             DemandSubscription subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
             var errorMessage = string.Empty;
@@ -152,11 +152,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 if (isValid)
                 {
                     subscription.IsSubscribed = enable;
-                    if (!string.IsNullOrEmpty(emailAddress))
-                    {
-                        subscription.IsEnableEmailSubscription = true;
-                    }
-                    
+                    subscription.IsEnableEmailSubscription = emailEnabled;
+
                     subscription.EmailAddress = emailAddress;
                     isValid = subscriptionService.UpdateSubscription(subscription);
                 }
@@ -175,7 +172,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     ViewData["UpdateSubscriptionResult"] = errorMessage;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogService.LogWexin("更新订阅设置失败", ex.ToString());
                 ViewData["UpdateSubscriptionResult"] = "更新订阅设置失败！";

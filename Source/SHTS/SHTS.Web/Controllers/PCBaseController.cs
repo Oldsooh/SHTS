@@ -11,19 +11,24 @@ namespace Witbird.SHTS.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
+            if (!filterContext.HttpContext.Request.Url.OriginalString.Contains("/content/") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/common/") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/city/"))
             {
-                var mobileUrl = GetWechatUrlString(filterContext.HttpContext.Request);
-                LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
-                LogService.Log("WechatUrl", mobileUrl);
-                filterContext.Result = new RedirectResult(mobileUrl);
-            }
-            else if (IsAccessFromMobileDevice(filterContext.HttpContext.Request))
-            {
-                var mobileUrl = GetMobileUrlString(filterContext.HttpContext.Request);
-                LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
-                LogService.Log("MobileUrl", mobileUrl);
-                filterContext.Result = new RedirectResult(mobileUrl);
+                if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
+                {
+                    var mobileUrl = GetWechatUrlString(filterContext.HttpContext.Request);
+                    LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
+                    LogService.Log("WechatUrl", mobileUrl);
+                    filterContext.Result = new RedirectResult(mobileUrl);
+                }
+                else if (IsAccessFromMobileDevice(filterContext.HttpContext.Request))
+                {
+                    var mobileUrl = GetMobileUrlString(filterContext.HttpContext.Request);
+                    LogService.Log("OrginalUrl", filterContext.HttpContext.Request.Url.OriginalString);
+                    LogService.Log("MobileUrl", mobileUrl);
+                    filterContext.Result = new RedirectResult(mobileUrl);
+                }
             }
 
             base.OnActionExecuting(filterContext);

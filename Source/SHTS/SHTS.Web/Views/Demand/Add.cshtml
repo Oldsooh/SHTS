@@ -142,7 +142,7 @@
             </div>
             <div class="clearfix"></div>
 
-            <div class="ur_title lh24">地区：</div>
+            <div class="ur_title lh24">地区：<span class="red ch">*</span></div>
             <div class="ur_box">
                 <select id="ddlProvince" name="provinceId" onchange="loadCities()">
                     <option value="">省份</option>
@@ -160,7 +160,7 @@
                 <select id="ddlArea" name="areaId">
                     <option value="">县、区、商圈</option>
                 </select>
-                <span style="color: #4193ff;">&nbsp;&nbsp; 选填.</span>
+                <span style="color: #ff0000;">&nbsp;&nbsp; 必填</span>
                 <br />
                 <input class="ur_txt1" name="address" maxlength="50" />
                 <span style="color: #4193ff;">&nbsp;&nbsp; 详细地址.</span>
@@ -199,7 +199,7 @@
 
             <div class="ur_title">预算金额：<span class="red ch">*</span></div>
             <div class="ur_box">
-                <input type="number" class="ur_txt1" name="budget" maxlength="50" value="0" />
+                <input type="number" class="ur_txt1" name="budget" min="0" maxlength="50" value="0" />
                 <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;填写金额数增加供应商关注度</span>
             </div>
             <div class="clearfix"></div>
@@ -233,14 +233,12 @@
 
             @*<div class="ur_title lh24"><span class="red ch"></span>内容：</div>*@
             <div class="ur_box">
-                <div style="height: 30px; line-height: 20px; color: #ff0000; font-size: 16px;">警告：禁止 详情内容 出现联系方式，一旦发现，系统将用星号 ** 代替</div>
-                <textarea id="editorContent" name="contentStyle">
-                    寻找
-                    <text><br /><br /></text>
-                    时间：
-                    <text><br /><br /></text>
-                    地点：<text><br /><br /></text>
-                    详细需求：<text><br /><br /></text>
+                <div style="height: 30px; line-height: 20px; font-size: 16px;">
+                详细内容：
+                    <span style="color: #ff0000;">
+                        注：请不要填写电话、邮箱、微信号等联系方式！否则将会被系统自动屏蔽！
+                    </span></div>
+                <textarea id="editorContent" name="contentStyle" placeholder="..">
                 </textarea>
             </div>
             <div class="clearfix"></div>

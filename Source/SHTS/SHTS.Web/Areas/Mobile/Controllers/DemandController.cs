@@ -169,94 +169,44 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             string province, string city, string area, string address, string phone, string qqweixin, string email,
             string startTime, string endTime, string peopleNumber, string budget)
         {
-            string result = "发布失败";
+            string result = string.Empty;
             if (!IsUserLogin)
             {
-                result = "您还未登录或登录已过期，请重新登录后操作！";
+                result = "未登录或登录超时！请在新窗口进行登录后返回继续操作！";
             }
             else
             {
-                if (ResourceType < 1)
+                int resourceSubTypeId = -1;
+                switch (ResourceType)
                 {
-                    result = "请选择需求类别";
+                    case 1:
+                        resourceSubTypeId = SpaceTypeId ?? -1;
+                        break;
+                    case 2:
+                        resourceSubTypeId = ActorTypeId ?? -1;
+                        break;
+                    case 3:
+                        resourceSubTypeId = EquipTypeId ?? -1;
+                        break;
+                    case 4:
+                        resourceSubTypeId = OtherTypeId ?? -1;
+                        break;
+                    default:
+                        break;
                 }
-                else if (!string.IsNullOrEmpty(title) &&
-                    !string.IsNullOrEmpty(contentText) &&
-                    !string.IsNullOrEmpty(startTime) &&
-                    !string.IsNullOrEmpty(endTime) &&
-                    !string.IsNullOrEmpty(budget) &&
-                    !string.IsNullOrEmpty(phone))
+
+                int demandBudget = 0;
+                int.TryParse(budget, out demandBudget);
+                int demandId = -1;
+
+                if (demandManager.AddDemand(CurrentUser.UserId, ResourceType, resourceSubTypeId, title, contentText, province,
+                    city, area, address, phone, qqweixin, email, startTime, endTime, string.Empty, peopleNumber,
+                    demandBudget, (int)BuyDemandFee, out result, out demandId))
                 {
-                    User user = CurrentUser;
-                    Demand demand = new Demand();
-                    demand.UserId = user.UserId;
-                    demand.ResourceType = ResourceType;
-
-                    switch (demand.ResourceType)
-                    {
-                        case 1:
-                            demand.ResourceTypeId = SpaceTypeId;
-                            break;
-                        case 2:
-                            demand.ResourceTypeId = ActorTypeId;
-                            break;
-                        case 3:
-                            demand.ResourceTypeId = EquipTypeId;
-                            break;
-                        case 4:
-                            demand.ResourceTypeId = OtherTypeId;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    demand.Title = title;
-                    demand.ContentText = contentText;
-                    demand.ContentStyle = demand.ContentText;
-
-                    if (demand.ContentText.Length > 291)
-                    {
-                        demand.Description = demand.ContentText.Substring(0, 290);
-                    }
-                    else
-                    {
-                        demand.Description = demand.ContentText;
-                    }
-
-                    demand.Province = string.IsNullOrEmpty(province) ? string.Empty : province;
-                    demand.City = string.IsNullOrEmpty(city) ? string.Empty : city;
-                    demand.Area = string.IsNullOrEmpty(area) ? string.Empty : area;
-                    demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
-                    demand.Phone = phone;
-                    demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
-                    demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
-                    demand.StartTime = DateTime.Parse(startTime);
-                    demand.EndTime = DateTime.Parse(endTime);
-                    demand.TimeLength = string.Empty;
-                    demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
-                    int tempBudget = 0;
-                    if (!string.IsNullOrEmpty(budget))
-                    {
-                        Int32.TryParse(budget, out tempBudget);
-                    }
-                    demand.Budget = tempBudget;
-                    demand.IsActive = true;
-                    demand.ViewCount = 0;
-                    demand.InsertTime = DateTime.Now;
-                    demand.Status = (int)DemandStatus.InProgress;
-                    demand.WeixinBuyFee = (int)BuyDemandFee;
-
-                    if (demandManager.AddDemand(demand))
-                    {
-                        result = "success";
-                        Subscription.WorkingThread.Instance.SendDemandByEmail(demand.Id);
-                    }
-                }
-                else
-                {
-                    result = "请将需求信息补充完整并检查其正确性";
+                    Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
                 }
             }
+
             return Content(result);
         }
 

@@ -140,8 +140,16 @@
             left: 20px;
         }
 
+        #es1 {
+            color: #333 !important;
+            font-size: 20px;
+            font-weight: normal;
+            top: -9px;
+            left: 20px;
+        }
+
         .disabled {
-            background-color: #F5F5F5;
+            background-color: #F5F5F5 !important;
             color: #ACA899 !important;
             cursor: not-allowed;
         }
@@ -564,7 +572,7 @@
                 else if (subscribedAreas.length == 0) {
                     alert('请选择需求类型所属的区域位置！');
                 }
-                else if (!isEmailValid($('#emailAddress').val())){
+                else if (!isEmailValid($('#emailAddress').val())) {
                     alert('请输入正确的邮箱地址！');
                 }
                 else {
@@ -619,6 +627,21 @@
             }
 
             return array;
+        }
+
+        function enableEmailSubscription() {
+            if ($('#enableEmail').is(':checked')) {
+                $('#emailEnabled').val('true');
+                $('#emailText').removeClass('disabled');
+                $('#emailText').removeAttr('disabled');
+            }
+            else {
+                $('#emailEnabled').val('false');
+                $('#emailText').addClass('disabled');
+                $('#emailText').attr('disabled', 'disabled');
+            }
+
+            $('#emailAddress').val($('#emailText').val());
         }
     </script>
     <script language="javascript">
@@ -740,6 +763,7 @@
                         </div>
                         <div class="">
                             <a href="javascript:void(0);" class="candisabled" title="添加类型" onclick="addType();">添加类型</a>
+                            <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完需求类别和类型后点击添加按钮！</span>
                         </div>
                     }
                 </div>
@@ -795,6 +819,7 @@
                     </div>
                     <div class="">
                         <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();">添加区域</a>
+                        <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完区域位置后点击添加按钮！</span>
                     </div>
                 </div>
             </div>
@@ -842,21 +867,38 @@
 
                     <div class="">
                         <a href="javascript:void(0);" title="添加关键字" class="candisabled" onclick="addKeyword();">添加关键字</a>
+                        <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;输入关键词后点击添加关键字！</span>
                     </div>
                 </div>
             </div>
             <div class="subscribeDetails">
+                @{
 
-                <div class="subscribe">
-                    <h3 class="" style="font-size:14px; padding: 5px;">开启邮箱推送（可选）：</h3>
+                    var emailEnabled = "false";
+                    var emailCheckedString = "";
+                    <div class="subscribe">
+                        <div class="cell" style="height:20px;">
+                            @if (Model.IsEnableEmailSubscription.HasValue && Model.IsEnableEmailSubscription.Value)
+                            {
+                                emailEnabled = "true";
+                                emailCheckedString = "checked=checked";
+                            }
 
-                    <div class="cell" style="color:#ACA899;height:auto;">
-                        因为微信具有推送消息限制，如果填写了邮箱地址，您将不会错过任何一条您订阅需求信息。
+                            <input type="hidden" id="emailEnabled" name="emailEnabled" value="@emailEnabled">
+
+                            <input type="checkbox" id="enableEmail" @emailCheckedString onchange="enableEmailSubscription();" style="width: 25px; height: 25px;" class="candisabled">
+                            <label for="enableEmail" id="es1">开启邮箱推送</label>
+                        </div>
+
+                        <div class="cell" style="color:#ACA899;height:auto;">
+                            开启邮箱推送业务需求信息功能，即时得到客户的需求业务信息。为方便查看需求信息，请微信用户绑定QQ账号，并在微信设置里开通QQ邮箱提醒功能。
+                        </div>
+                        <div class="cell">
+                            <input type="hidden" id="emailAddress" name="emailAddress" value="@Model.EmailAddress">
+                            <input type="text" id="emailText" placeholder="请输入您微信号绑定的邮箱或常用邮箱地址" class="text candisabled" value="@Model.EmailAddress">
+                        </div>
                     </div>
-                    <div class="cell">
-                        <input type="email" id="emailAddress" name="emailAddress" placeholder="请输入您微信号绑定的邮箱或常用邮箱地址" class="text candisabled" value="@Model.EmailAddress">
-                    </div>
-                </div>
+                }
             </div>
         </form>
         <div class="bottom">
@@ -873,6 +915,7 @@
 {
     <script>
         enableSubscribed();
+        enableEmailSubscription();
         var message = $('#txtMessage').val();
         if (message != '') {
             $('#txtMessage').val('');

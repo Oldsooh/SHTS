@@ -92,38 +92,23 @@
             var Phone = document.getElementById("Phone").value;
             var ContentText = document.getElementById("ContentText").value;
 
-            if (Title != "") {
-                if (Phone != "") {
-                    if (ContentText != "") {
-                        $.ajax({
-                            url: '/mobile/demand/add',
-                            data: $("#addForm").serialize(),
-                            type: 'POST',
-                            success: function (msg) {
-                                if (msg == "success") {
-                                    alert("发布成功");
-                                    window.location.href = "/mobile/demand/mydemands";
-                                }
-                                else {
-                                    alert(msg);
-                                }
-                            },
-                            error: function (msg) {
-                                alert("网络异常，发布失败");
-                            }
-                        });
+            $.ajax({
+                url: '/mobile/demand/add',
+                data: $("#addForm").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        alert("发布成功");
+                        window.location.href = "/mobile/demand/mydemands";
                     }
                     else {
-                        alert("内容不能为空");
+                        alert(msg);
                     }
+                },
+                error: function (msg) {
+                    alert("网络异常，请检查网络连接！");
                 }
-                else {
-                    alert("电话不能为空");
-                }
-            }
-            else {
-                alert("标题不能为空");
-            }
+            });
         }
 
         function demandCategoryChange() {
@@ -204,7 +189,29 @@
                 </select>
             </div>
             <div class="cell">
-                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text" value="寻找">
+                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="寻找..." class="text">
+            </div>
+
+            <div class="cell">
+                <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
+                    <option value="">省份</option>
+                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    {
+                        foreach (var item in Model.Provinces)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+                <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
+                    <option value="">全省/市</option>
+                </select>
+                <select id="ddlArea" class="text" name="Area">
+                    <option value="">全县/区</option>
+                </select>
+            </div>
+            <div class="cell">
+                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
             </div>
             <div class="cell">
                 @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
@@ -228,27 +235,6 @@
             </div>
             <div class="cell">
                 <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text">
-            </div>
-            <div class="cell">
-                <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
-                    <option value="">省份</option>
-                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
-                    {
-                        foreach (var item in Model.Provinces)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-                    }
-                </select>
-                <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
-                    <option value="">全省/市</option>
-                </select>
-                <select id="ddlArea" class="text" name="Area">
-                    <option value="">全县/区</option>
-                </select>
-            </div>
-            <div class="cell">
-                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
             </div>
             <div class="cell" style="height: 200px;">
                 <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 200px; width: 94%;">

@@ -217,7 +217,28 @@
                 </select>
             </div>
             <div class="cell">
-                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text" value="寻找">
+                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="寻找..." class="text" >
+            </div>
+            <div class="cell">
+                <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
+                    <option value="">省份</option>
+                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    {
+                        foreach (var item in Model.Provinces)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+                <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
+                    <option value="">全省/市</option>
+                </select>
+                <select id="ddlArea" class="text" name="Area">
+                    <option value="">全县/区</option>
+                </select>
+            </div>
+            <div class="cell">
+                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
             </div>
             <div class="cell">
                 @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
@@ -242,36 +263,14 @@
             <div class="cell">
                 <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text">
             </div>
-            <div class="cell">
-                <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
-                    <option value="">省份</option>
-                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
-                    {
-                        foreach (var item in Model.Provinces)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-                    }
-                </select>
-                <select id="ddlCity" class="text" name="City" onchange=" loadAreas() ">
-                    <option value="">全省/市</option>
-                </select>
-                <select id="ddlArea" class="text" name="Area">
-                    <option value="">全县/区</option>
-                </select>
-            </div>
-            <div class="cell">
-                <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11">
-            </div>
             <div class="cell" style="height: 200px;">
-                <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 200px; width: 94%;">
-寻找
+                <textarea name="ContentText" id="ContentText" placeholder="寻找
 
 时间：
 
 地点：
 
-详细需求：
+详细需求：" class="text" style="height: 200px; width: 94%;">
                 </textarea>
             </div>
             <div class="bottom">
