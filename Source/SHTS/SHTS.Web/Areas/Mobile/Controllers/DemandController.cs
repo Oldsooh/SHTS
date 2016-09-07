@@ -31,9 +31,9 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             DemandModel model = new DemandModel();
 
             string city = string.Empty;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                city = Session["CityId"].ToString();
+                city = CurrentCityId;
             }
             int tempPage = 1;
             if (!string.IsNullOrEmpty(page))

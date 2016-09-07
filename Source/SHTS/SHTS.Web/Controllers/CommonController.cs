@@ -21,10 +21,10 @@ namespace Witbird.SHTS.Web.Controllers
 
         public ActionResult Header()
         {
-            if (Session["CityName"] == null)
+            if (CurrentCityName == null)
             {
-                Session["CityId"] = null;
-                Session["CityName"] = "全国";
+                CurrentCityId = null;
+                CurrentCityName = "全国";
             }
             UserViewModel model = new UserViewModel();
             if (UserInfo != null)

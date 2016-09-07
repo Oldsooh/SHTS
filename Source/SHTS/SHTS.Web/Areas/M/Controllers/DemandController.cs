@@ -22,9 +22,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             model.DemandCategories = demandManager.GetDemandCategories();
 
             string city = string.Empty;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                city = Session["CityId"].ToString();
+                city = CurrentCityId;
             }
 
             //页码，总数重置

@@ -107,6 +107,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         }
                     }
                 }
+
+                //if (string.IsNullOrEmpty(CurrentCityId))
+                //{
+                //    filterContext.Result = new RedirectResult("/wechat/city/index?returnUrl=" + filterContext.HttpContext.Request.Url.AbsoluteUri);
+                //}
             }
             catch (Exception ex)
             {

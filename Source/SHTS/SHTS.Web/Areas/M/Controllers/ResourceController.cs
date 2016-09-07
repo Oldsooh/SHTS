@@ -62,9 +62,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             query.PageSize = 15;
             query.State = 2;
 
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                query.CityId = Session["CityId"].ToString();
+                query.CityId = CurrentCityId;
             }
 
             var result = resourceService.GetResourceByFilter(query);
@@ -90,9 +90,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                query.CityId = Session["CityId"].ToString();
+                query.CityId = CurrentCityId;
             }
 
             var result = resourceService.GetResourceByFilter(query);
@@ -118,9 +118,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
 
             query.PageSize = 15;
             query.State = 2;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                query.CityId = Session["CityId"].ToString();
+                query.CityId = CurrentCityId;
             }
 
             var result = resourceService.GetResourceByFilter(query);
@@ -145,9 +145,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                query.CityId = Session["CityId"].ToString();
+                query.CityId = CurrentCityId;
             }
 
             var result = resourceService.GetResourceByFilter(query);

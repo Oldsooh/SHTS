@@ -24,8 +24,8 @@ namespace Witbird.SHTS.Web.Controllers
         {
             if (!string.IsNullOrEmpty(id) && id.Equals("china"))
             {
-                Session["CityId"] = null;
-                Session["CityName"] = "全国";
+                CurrentCityId = null;
+                CurrentCityName = "全国";
             }
             if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
             {
@@ -33,8 +33,8 @@ namespace Witbird.SHTS.Web.Controllers
                 {
                     if (item != null && item.Id == id)
                     {
-                        Session["CityId"] = item.Id;
-                        Session["CityName"] = item.Name;
+                        CurrentCityId = item.Id;
+                        CurrentCityName = item.Name;
 
                         UpdateDefaultCity(item.Id);
                         break;
@@ -99,7 +99,7 @@ namespace Witbird.SHTS.Web.Controllers
         {
             string result = "no";
 
-            if (!string.IsNullOrEmpty(cityName) && Session["CityId"] == null)
+            if (!string.IsNullOrEmpty(cityName) && CurrentCityId == null)
             {
                 if (Witbird.SHTS.Web.Public.StaticUtility.AllCities != null && Witbird.SHTS.Web.Public.StaticUtility.AllCities.Count > 0)
                 {
@@ -110,8 +110,8 @@ namespace Witbird.SHTS.Web.Controllers
                         {
                             if (item.EntityType == 2 && item.Name == cityName)
                             {
-                                Session["CityId"] = item.Id;
-                                Session["CityName"] = item.Name;
+                                CurrentCityId = item.Id;
+                                CurrentCityName = item.Name;
                                 result = item.Name;
 
                                 UpdateDefaultCity(item.Id);
@@ -123,8 +123,8 @@ namespace Witbird.SHTS.Web.Controllers
                         if (result == "no")
                         {
                             var firstCity = allCities.FirstOrDefault();
-                            Session["CityId"] = firstCity.Id;
-                            Session["CityName"] = firstCity.Name;
+                            CurrentCityId = firstCity.Id;
+                            CurrentCityName = firstCity.Name;
                             result = firstCity.Name;
                         }
                     }

@@ -763,7 +763,7 @@
                         </div>
                         <div class="">
                             <a href="javascript:void(0);" class="candisabled" title="添加类型" onclick="addType();">添加类型</a>
-                            <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完需求类别和类型后点击添加按钮！</span>
+                            <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完需求类别后点击添加按钮！</span>
                         </div>
                     }
                 </div>
@@ -895,7 +895,7 @@
                         </div>
                         <div class="cell">
                             <input type="hidden" id="emailAddress" name="emailAddress" value="@Model.EmailAddress">
-                            <input type="text" id="emailText" placeholder="请输入您微信号绑定的邮箱或常用邮箱地址" class="text candisabled" value="@Model.EmailAddress">
+                            <input type="text" id="emailText" placeholder="请输入您微信号绑定的QQ邮箱账号" class="text candisabled" value="@Model.EmailAddress">
                         </div>
                     </div>
                 }
@@ -918,8 +918,14 @@
         enableEmailSubscription();
         var message = $('#txtMessage').val();
         if (message != '') {
-            $('#txtMessage').val('');
-            alert(message);
+            if (message == 'success') {
+                $('#txtMessage').val('');
+                window.location = '/wechat/demand/index';
+            }
+            else {
+                $('#txtMessage').val('');
+                alert(message);
+            }
         }
     </script>
 }

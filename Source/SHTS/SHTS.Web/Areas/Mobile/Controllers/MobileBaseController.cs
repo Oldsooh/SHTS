@@ -46,6 +46,11 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                 }
             }
 
+            //if (string.IsNullOrEmpty(CurrentCityId))
+            //{
+            //    filterContext.Result = new RedirectResult("/mobile/city/index?returnUrl=" + filterContext.HttpContext.Request.Url.AbsoluteUri);
+            //}
+
             base.OnActionExecuting(filterContext);            
         }
         

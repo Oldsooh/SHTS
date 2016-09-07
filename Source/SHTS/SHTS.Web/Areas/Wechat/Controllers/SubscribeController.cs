@@ -160,7 +160,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 if (isValid)
                 {
-                    ViewData["UpdateSubscriptionResult"] = "更新订阅设置成功。";
+                    errorMessage = "success";
                 }
                 else
                 {
@@ -169,14 +169,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         errorMessage = "更新订阅设置失败！";
                     }
 
-                    ViewData["UpdateSubscriptionResult"] = errorMessage;
                 }
             }
             catch (Exception ex)
             {
                 LogService.LogWexin("更新订阅设置失败", ex.ToString());
-                ViewData["UpdateSubscriptionResult"] = "更新订阅设置失败！";
+                errorMessage = "更新订阅设置失败！";
             }
+            
+            ViewData["UpdateSubscriptionResult"] = errorMessage;
 
             return View("Index", subscription);
         }

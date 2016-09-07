@@ -176,15 +176,15 @@ namespace Witbird.SHTS.Web.Controllers
 
         public virtual void SetDefaultCityToSession()
         {
-            if (Session["CityId"] == null && CurrentUser.IsNotNull())
+            if (CurrentCityId == null && CurrentUser.IsNotNull())
             {
                 try
                 {
                     var city = ConvertToCityObject(CurrentUser.City);
                     if (city.IsNotNull())
                     {
-                        Session["CityId"] = city.Id;
-                        Session["CityName"] = city.Name;
+                        CurrentCityId = city.Id;
+                        CurrentCityName = city.Name;
                     }
                 }
                 catch (Exception ex)
@@ -263,5 +263,28 @@ namespace Witbird.SHTS.Web.Controllers
             return !request.Browser.IsMobileDevice;
         }
 
+        public string CurrentCityId
+        {
+            get
+            {
+                return Session["CityId"] as string;
+            }
+            set
+            {
+                Session["CityId"] = value;
+            }
+        }
+
+        public string CurrentCityName
+        {
+            get
+            {
+                return Session["CityName"] as string;
+            }
+            set
+            {
+                Session["CityName"] = value;
+            }
+        }
     }
 }

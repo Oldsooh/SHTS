@@ -383,13 +383,13 @@ namespace Witbird.SHTS.Web.Controllers
                     result.Paging.SelectedFilters.Add(item.Key, item.Value);
                 }
             }
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
                 if (result.Filter.SelectedFilter.ContainsKey("city"))
                 {
                     result.Filter.SelectedFilter.Remove("city");
                 }
-                result.Filter.SelectedFilter.Add("city", Session["CityId"].ToString());
+                result.Filter.SelectedFilter.Add("city", CurrentCityId);
             }
 
 
@@ -434,13 +434,13 @@ namespace Witbird.SHTS.Web.Controllers
                     result.Paging.SelectedFilters.Add(item.Key, item.Value);
                 }
             }
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
                 if (result.Filter.SelectedFilter.ContainsKey("city"))
                 {
                     result.Filter.SelectedFilter.Remove("city");
                 }
-                result.Filter.SelectedFilter.Add("city", Session["CityId"].ToString());
+                result.Filter.SelectedFilter.Add("city", CurrentCityId);
             }
 
             return View("ResourceListView", result);
@@ -484,13 +484,13 @@ namespace Witbird.SHTS.Web.Controllers
                     result.Paging.SelectedFilters.Add(item.Key, item.Value);
                 }
             }
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
                 if (result.Filter.SelectedFilter.ContainsKey("city"))
                 {
                     result.Filter.SelectedFilter.Remove("city");
                 }
-                result.Filter.SelectedFilter.Add("city", Session["CityId"].ToString());
+                result.Filter.SelectedFilter.Add("city", CurrentCityId);
             }
 
             return View("ResourceListView", result);
@@ -532,13 +532,13 @@ namespace Witbird.SHTS.Web.Controllers
                     result.Paging.SelectedFilters.Add(item.Key, item.Value);
                 }
             }
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
                 if (result.Filter.SelectedFilter.ContainsKey("city"))
                 {
                     result.Filter.SelectedFilter.Remove("city");
                 }
-                result.Filter.SelectedFilter.Add("city", Session["CityId"].ToString());
+                result.Filter.SelectedFilter.Add("city", CurrentCityId);
             }
 
             return View("ResourceListView", result);
@@ -747,9 +747,9 @@ namespace Witbird.SHTS.Web.Controllers
         private string GetCityFilter()
         {
             string city = null;
-            if (Session["CityId"] != null)
+            if (!string.IsNullOrEmpty(CurrentCityId))
             {
-                city = Session["CityId"].ToString();
+                city = CurrentCityId;
             }
             return city;
         }
