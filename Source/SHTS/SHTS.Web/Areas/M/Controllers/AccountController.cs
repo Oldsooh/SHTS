@@ -126,7 +126,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                     userService = new UserService();
                     user.LoginIdentiy = user.UserName;
                     user.Photo = ConfigurationManager.AppSettings["DefaultPhoto"];
-                    result = userService.UserRegister(user);
+                    //result = userService.UserRegister(user);
                     if (result)
                     {
                         return RedirectToAction("Login");

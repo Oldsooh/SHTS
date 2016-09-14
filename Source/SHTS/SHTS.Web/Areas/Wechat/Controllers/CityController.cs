@@ -14,27 +14,27 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         const string RedirectUrl = "/wechat/user/index";
 
-        public ActionResult Index()
-        {
-            CityModel model = new CityModel();
-            model.Provinces = cityService.GetProvinces(true);
-            model.ReturnUrl = Request.UrlReferrer.AbsoluteUri;
-            return View(model);
-        }
-
-        //public ActionResult Index(string returnUrl = "")
+        //public ActionResult Index()
         //{
         //    CityModel model = new CityModel();
         //    model.Provinces = cityService.GetProvinces(true);
-
-        //    if (string.IsNullOrEmpty(returnUrl))
-        //    {
-        //        returnUrl = "/wechat/user/index";
-        //    }
-
-        //    model.ReturnUrl = returnUrl;
+        //    model.ReturnUrl = Request.UrlReferrer.AbsoluteUri;
         //    return View(model);
         //}
+
+        public ActionResult Index(string returnUrl = "")
+        {
+            CityModel model = new CityModel();
+            model.Provinces = cityService.GetProvinces(true);
+
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                returnUrl = "/wechat/user/index";
+            }
+
+            model.ReturnUrl = returnUrl;
+            return View(model);
+        }
 
         public ActionResult Current(string id, string returnUrl)
         {

@@ -130,17 +130,13 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                 {
                     user.LoginIdentiy = user.UserName;
                     user.Photo = ConfigurationManager.AppSettings["DefaultPhoto"];
-                    result = userService.UserRegister(user);
+                    result = userService.UserRegister(user, out errorMsg);
 
                     if (result)
                     {
                         //return Redirect("/mobile/account/login");
                         errorMsg = "SUCCESS";
                         CurrentUser = user;
-                    }
-                    else
-                    {
-                        errorMsg = "注册会员账号失败";
                     }
                 }
 
@@ -182,5 +178,99 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             return Redirect("/mobile/user/index");
         }
         #endregion 退出登录
+
+        /// <summary>
+        /// 检测用户名是否已被注册。
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="cellphone"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult VerifyUserName(string field, string value)
+        {
+            AjaxResult result = new AjaxResult();
+            try
+            {
+                userService = new UserService();
+                if (!userService.VerifyUserInfo(field, value))
+                {
+                    result.ExceptionInfo = "该用户名已经被注册！";
+                    result.ErrorCode = 103;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Log("VerifyUserName", ex.ToString());
+                result.ExceptionInfo = "出错了！";
+                result.ErrorCode = 102;
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult VerifyCellphone(string cellphone)
+        {
+            AjaxResult result = new AjaxResult();
+            //try
+            //{
+            //    var vcode = GetRandom();
+            //    ISendShortMessageService smsSerive = SMSServiceFactory.Create();
+            //    var message=new ShortMessage { 
+            //        ToPhoneNumber=cellphone,
+            //        Content = vcode,
+            //        Parameters = new []{vcode,"300"}
+            //    };
+            //    var response = smsSerive.SendShortMessage(message);
+            //    if (response.IsSuccess)
+            //    {
+            //        Session["vcode"] = vcode;
+            //    }
+            //    else
+            //    {
+            //        result.ExceptionInfo = "发送验证码失败";
+            //        result.ErrorCode = 403; 
+            //    }
+            //    InnerSMSService smService = new InnerSMSService();
+            //    smService.AddSMSRecordAsync(new Witbird.SHTS.Model.ShortMessage
+            //    {
+            //        Cellphone = message.ToPhoneNumber,
+            //        State = response.IsSuccess? 0:1
+            //    });
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogService.Log("发送验证码", ex.ToString());
+            //    result.ExceptionInfo = "发送验证码失败";
+            //    result.ErrorCode = 102;
+            //}
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult VerifyBeforeVcode(string vcode)
+        {
+            AjaxResult result = new AjaxResult();
+            if (!string.Equals(vcode,
+                Session["validataCode"].ToString(),
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                result.ExceptionInfo = "error";
+            }
+            return Json(result);
+        }
+
+        private string GetRandom()
+        {
+            const string formatString = "1,2,3,4,5,6,7,8,9,0";
+            string codeString = string.Empty;
+            string[] strArray = formatString.Split(new char[] { ',' });
+            Random random = new Random();
+            for (int i = 0; i < 6; i++)
+            {
+                int index = random.Next(0x186a0) % strArray.Length;
+                codeString = codeString + strArray[index].ToString();
+            }
+            return codeString;
+        }
     }
 }

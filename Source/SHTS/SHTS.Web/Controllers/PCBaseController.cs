@@ -11,9 +11,10 @@ namespace Witbird.SHTS.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!filterContext.HttpContext.Request.Url.OriginalString.Contains("/content/") &&
-                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/common/") &&
-                !filterContext.HttpContext.Request.Url.OriginalString.Contains("/city/"))
+            if (!filterContext.HttpContext.Request.Url.OriginalString.ToLower().Contains("/content") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.ToLower().Contains("/common") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.ToLower().Contains("/city") &&
+                !filterContext.HttpContext.Request.Url.OriginalString.ToLower().Contains("/verifyusername"))
             {
                 if (IsAccessFromWechatDevice(filterContext.HttpContext.Request))
                 {

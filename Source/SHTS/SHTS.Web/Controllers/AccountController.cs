@@ -230,16 +230,13 @@ namespace Witbird.SHTS.Web.Controllers
                     user.LoginIdentiy = user.UserName;
                     //user.IdentiyImg = imgUrl;
                     user.Photo = ConfigurationManager.AppSettings["DefaultPhoto"];
-                    result = userService.UserRegister(user);
+                    result = userService.UserRegister(user, out errorMsg);
                     if (result)
                     {
                         return RedirectToAction("Login");
                     }
-                    else
-                    {
-                        errorMsg = "注册失败";
-                    }
                 }
+
                 if (!result)
                 {
                     userRegisterViewModel.ErrorMsg = errorMsg;

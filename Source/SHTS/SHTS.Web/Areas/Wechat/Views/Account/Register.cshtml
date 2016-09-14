@@ -287,28 +287,51 @@
     </script>
     <script type="text/javascript">
         $(function() {
-            $("#js_mobile_btn").click(function() {
-                if ($("#js-form-mobile").find(".haserror").length > 0) {
-                    alert("信息输入有误！");
-                    return false;
+            $("#js_mobile_btn").click(function () {
+                var errors = $("#js-form-mobile").find(".haserror");
+                if (errors.length > 0) {
+                    var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                    if (message != '') {
+                        alert(message);
+                        return false;
+                    }
                 }
                 $("#js-form-mobile").validate({
-                    submitHandler: function(form) {
-                        form.submit();
+                    submitHandler: function (form) {
+                        var errors = $("#js-form-mobile").find(".showverifyblock");
+                        if (errors.length > 0) {
+                            var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                            if (message != '') {
+                                alert(message);
+                                return false;
+                            }
+                        }
+                        else {
+                            form.submit();
+                        }
                     }
                 });
             });
-            $("#js_mail_btn").click(function() {
-                if ($("#js-form-mail").find(".haserror").length > 0) {
-                    alert("信息输入有误！");
-                    return false;
+            $("#js_mail_btn").click(function () {
+                var errors = $("#js-form-mail").find(".haserror");
+                if (errors.length > 0) {
+                    var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                    if (message != '') {
+                        alert(message);
+                        return false;
+                    }
                 }
                 $("#js-form-mail").validate({
-                    submitHandler: function(form) {
-                        if ($("#js-form-mail").find(".showverifyblock").length > 0) {
-                            alert("信息输入有误！");
-                            return;
-                        } else {
+                    submitHandler: function (form) {
+                        var errors = $("#js-form-mail").find(".showverifyblock");
+                        if (errors.length > 0) {
+                            var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                            if (message != '') {
+                                alert(message);
+                                return false;
+                            }
+                        }
+                        else {
                             form.submit();
                         }
                     }

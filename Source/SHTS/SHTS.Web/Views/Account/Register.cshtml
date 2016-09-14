@@ -48,10 +48,6 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell vcode">
-                        <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this,'js-get_mobile_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
-                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
-                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
@@ -68,12 +64,17 @@
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
                     </div>
+
+                    <div class="cell vcode">
+                        <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
+                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
+                    </div>
                     <div class="user-agreement">
                         <input type="checkbox" id="js_mobile_chk" checked="checked"/>
                         <label for="js-mail_chk">同意<a href="javascript:void(0);">《活动在线用户服务协议》见右侧</a></label>
                     </div>
                     <div class="bottom">
-                        <button type="submit" id="js_mobile_btn" class="button btn-green">立即注册</button>
+                        <button type="submit" id="js_mobile_btn" class="button btn-green " >立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                         <p>已有账号<a href="/account/login" style="color: #0099FF;">马上登录</a>
@@ -107,10 +108,6 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell vcode">
-                        <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this,'js_get_email_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
-                        <img src="/base/verifycode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
-                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt','js-email_beforevcode_ipt'); " class="button">免费获取验证码</a>
@@ -127,12 +124,17 @@
                             <input type="file" title="点击上传图片" id="js_email_IdentiyImg" name="IdentiyImg"/>
                         </div>
                     </div>
+
+                    <div class="cell vcode">
+                        <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mail_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
+                        <img src="/base/verifycode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
+                    </div>
                     <div class="user-agreement">
                         <input type="checkbox" id="js-mail_chk" checked="checked"/>
                         <label for="js-mail_chk">同意<a href="javascript:void(0);">《活动在线用户服务协议》见右侧</a></label>
                     </div>
                     <div class="bottom">
-                        <button type="submit" id="js_mail_btn" class="button btn-green">立即注册</button>
+                        <button type="submit" id="js_mail_btn" class="button btn-green ">立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                         <p>已有账号<a href="/account/login" style="color: #0099FF;">马上登录</a>
@@ -168,10 +170,6 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell vcode">
-                        <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this,'js-get_mobile_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
-                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
-                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt');" id="js-get_mobile_vcode" class="button btn-disabled">免费获取验证码</a>
@@ -188,12 +186,17 @@
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
                     </div>
+
+                    <div class="cell vcode">
+                        <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
+                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
+                    </div>
                     <div class="user-agreement">
                         <input type="checkbox" id="js_mobile_chk" checked="checked"/>
                         <label for="js-mail_chk">同意<a href="javascript:void(0);">《活动在线用户服务协议》见右侧</a></label>
                     </div>
                     <div class="bottom">
-                        <button type="submit" id="js_mobile_btn" class="button btn-green">立即注册</button>
+                        <button type="submit" id="js_mobile_btn" class="button btn-green " >立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                         <p>已有账号<a href="/account/login" style="color: #0099FF;">马上登录</a>
@@ -227,10 +230,6 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell vcode">
-                        <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this,'js_get_email_vcode')" class="text" placeholder="请先输入验证码" maxlength="6" />
-                        <img src="/base/verifycode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
-                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_email_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" id="js_get_email_vcode" onclick=" CreatePhoneCode(this, 'js_email_ipt','js-email_beforevcode_ipt'); " class="button btn-disabled">免费获取验证码</a>
@@ -247,12 +246,17 @@
                             <input type="file" title="点击上传图片" id="js_email_IdentiyImg" name="IdentiyImg"/>
                         </div>
                     </div>
+
+                    <div class="cell vcode">
+                        <input type="text" name="beforevcode" id="js-email_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mail_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
+                        <img src="/base/verifycode" id="js-get_email_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
+                    </div>
                     <div class="user-agreement">
                         <input type="checkbox" id="js-mail_chk" checked="checked"/>
                         <label for="js-mail_chk">同意<a href="javascript:void(0);">《活动在线用户服务协议》见右侧</a></label>
                     </div>
                     <div class="bottom">
-                        <button type="submit" id="js_mail_btn" class="button btn-green">立即注册</button>
+                        <button type="submit" id="js_mail_btn" class="button btn-green ">立即注册</button>
                     </div>
                     <div class="cell" style="margin-top: 20px; font-size: 16px; text-align: center;">
                         <p>已有账号<a href="/account/login" style="color: #0099FF;">马上登录</a>
@@ -305,28 +309,51 @@
     </script>
     <script type="text/javascript">
         $(function() {
-            $("#js_mobile_btn").click(function() {
-                if ($("#js-form-mobile").find(".haserror").length > 0) {
-                    alert("信息输入有误！");
-                    return false;
+            $("#js_mobile_btn").click(function () {
+                var errors = $("#js-form-mobile").find(".haserror");
+                if (errors.length > 0) {
+                    var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                    if (message != '') {
+                        alert(message);
+                        return false;
+                    }
                 }
                 $("#js-form-mobile").validate({
-                    submitHandler: function(form) {
-                        form.submit();
+                    submitHandler: function (form) {
+                        var errors = $("#js-form-mobile").find(".showverifyblock");
+                        if (errors.length > 0) {
+                            var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                            if (message != '') {
+                                alert(message);
+                                return false;
+                            }
+                        }
+                        else {
+                            form.submit();
+                        }
                     }
                 });
             });
             $("#js_mail_btn").click(function() {
-                if ($("#js-form-mail").find(".haserror").length > 0) {
-                    alert("信息输入有误！");
-                    return false;
+                var errors = $("#js-form-mail").find(".haserror");
+                if (errors.length > 0) {
+                    var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                    if (message != '') {
+                        alert(message);
+                        return false;
+                    }
                 }
                 $("#js-form-mail").validate({
                     submitHandler: function(form) {
-                        if ($("#js-form-mail").find(".showverifyblock").length > 0) {
-                            alert("信息输入有误！");
-                            return;
-                        } else {
+                        var errors = $("#js-form-mail").find(".showverifyblock");
+                        if (errors.length > 0) {
+                            var message = getValidatiionErrorMessage($(errors[0]).attr("column_name"));
+                            if (message != '') {
+                                alert(message);
+                                return false;
+                            }
+                        }
+                        else {
                             form.submit();
                         }
                     }

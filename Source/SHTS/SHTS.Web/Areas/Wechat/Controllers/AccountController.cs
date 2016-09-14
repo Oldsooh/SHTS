@@ -178,16 +178,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     user.LoginIdentiy = user.UserName;
                     user.Photo = !string.IsNullOrEmpty(CurrentWeChatUser.Photo) ? CurrentWeChatUser.Photo : ConfigurationManager.AppSettings["DefaultPhoto"];
-                    result = userService.WeChatUserRegister(user, CurrentWeChatUser.OpenId);
+                    result = userService.UserRegister(user, out errorMsg);
 
                     if (result)
                     {
                         //return Redirect("/wechat/account/login");
                         errorMsg = "SUCCESS";
-                    }
-                    else
-                    {
-                        errorMsg = "注册会员账号失败";
                     }
                 }
 

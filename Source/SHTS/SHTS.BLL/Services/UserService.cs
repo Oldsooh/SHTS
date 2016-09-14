@@ -131,29 +131,101 @@ namespace Witbird.SHTS.BLL.Services
         /// <summary>
         /// 用户注册，成功返回True
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool UserRegister(User user)
+        public bool UserRegister(User user, out string errorMessage)
         {
-            bool result = false;
             var conn = DBHelper.GetSqlConnection();
+            var result = false;
+
             try
             {
-                conn.Open();
-                user.Vip = (int)VipState.Normal;
-                user.EncryptedPassword = user.EncryptedPassword.ToMD5();
-
-                int userId;
-                result = userDao.UserRegister(conn, user, out userId);
-            }
-            catch (Exception e)
-            {
-                LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
+                int userId = -1;
+                result = UserRegister(user, out userId, out errorMessage, conn);
             }
             finally
             {
                 conn.Close();
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 用户注册，成功返回True
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private bool UserRegister(User user, out int userId, out string errorMessage, SqlConnection conn)
+        {
+            bool result = false;
+            errorMessage = "注册用户失败！请再次尝试，如频繁遇到此错误，请联系客户人员！我们会第一时间帮您解决问题！感谢您使用活动在线网！";
+            userId = -1;
+
+            try
+            {
+
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+
+                if (user == null)
+                {
+                    errorMessage = "当前网络不稳定，请稍后再试！";
+                }
+                else if (string.IsNullOrWhiteSpace(user.UserName))
+                {
+                    errorMessage = "请输入用户名！";
+                }
+                else if (string.IsNullOrWhiteSpace(user.EncryptedPassword))
+                {
+                    errorMessage = "请输入账户密码！";
+                }
+                else if (string.IsNullOrWhiteSpace(user.Email))
+                {
+                    errorMessage = "请输入注册邮箱！邮箱可用于找回密码！";
+                }
+                else if (string.IsNullOrWhiteSpace(user.Cellphone))
+                {
+                    errorMessage = "请输入手机号码！";
+                }
+                else if (string.IsNullOrWhiteSpace(user.UCard))
+                {
+                    errorMessage = "请输入认证身份证号码！";
+                }
+                else if (!userDao.VerifyUserInfo(conn, "UserName", user.UserName))
+                {
+                    errorMessage = "您当前使用的用户名已被使用，请重新输入！";
+                }
+                else if (!userDao.VerifyUserInfo(conn, "Email", user.Email))
+                {
+                    errorMessage = "您当前注册的邮箱号已被使用，请仔细确认！如您的输入无误，建议您使用邮箱找回密码功能进行密码重置！";
+                }
+                else if (!userDao.VerifyUserInfo(conn, "Cellphone", user.Cellphone))
+                {
+                    errorMessage = "您当前注册的手机号已被使用，请仔细确认！";
+                }
+                else if (!userDao.VerifyUserInfo(conn, "UCard", user.UCard))
+                {
+                    errorMessage = "您当前注册认证的身份证号已被使用，请仔细确认！";
+                }
+                else
+                {
+                    user.Vip = (int)VipState.Normal;
+                    user.EncryptedPassword = user.EncryptedPassword.ToMD5();
+
+                    result = userDao.UserRegister(conn, user, out userId);
+                }
+            }
+            catch (Exception e)
+            {
+                result = false;
+                errorMessage = "注册用户失败！请再次尝试，如频繁遇到此错误，请联系客户人员！我们会第一时间帮您解决问题！感谢您使用活动在线网！";
+                LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
+            }
+
             return result;
         }
 
@@ -365,19 +437,19 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool WeChatUserRegister(User user, string openId)
+        public bool WeChatUserRegister(User user, string openId, out string errorMessage)
         {
             bool result = false;
+            errorMessage = "";
             var conn = DBHelper.GetSqlConnection();
+
             try
             {
-                user.Vip = (int)VipState.Normal;
-                user.EncryptedPassword = user.EncryptedPassword.ToMD5();
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required))
                 {
                     conn.Open();
                     int userId;
-                    result = userDao.UserRegister(conn, user, out userId);
+                    result = UserRegister(user, out userId, out errorMessage, conn);
 
                     if (result)
                     {
@@ -386,15 +458,17 @@ namespace Witbird.SHTS.BLL.Services
 
                         result = userDao.UpdateWeChatUser(conn, wechatUser);
 
-                        if (result)
-                        {
-                            scope.Complete();
-                        }
+                    }
+
+                    if (result)
+                    {
+                        scope.Complete();
                     }
                 }
             }
             catch (Exception e)
             {
+                errorMessage = "注册用户失败！请再次尝试，如频繁遇到此错误，请联系客户人员！我们会第一时间帮您解决问题！感谢您使用活动在线网！";
                 LogService.Log("用户注册失败--" + e.Message, e.ToString().ToString());
             }
             finally

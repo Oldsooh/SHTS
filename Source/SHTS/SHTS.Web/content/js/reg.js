@@ -73,7 +73,7 @@ $(function () {
             },
             EncryptedPasswordRepter: {
                 required: "请输入确认密码",
-                equalTo: "两次输入密码不一致不一致"
+                equalTo: "两次输入密码不一致"
             },
             UCard: {
                 required: "请输入身份证号码"
@@ -89,7 +89,7 @@ $(function () {
         var length = value.length;
         var mobile = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
         return this.optional(element) || (length == 11 && mobile.test(value));
-    }, "电话号码格式不正确");
+    }, "手机号码格式不正确");
 
     $("#js-form-mail").validate({
         rules: {
@@ -136,7 +136,7 @@ $(function () {
             },
             EncryptedPasswordRepter: {
                 required: "请输入确认密码",
-                equalTo: "两次输入密码不一致不一致"
+                equalTo: "两次输入密码不一致"
             },
             UCard: {
                 required: "请输入企业名称"
@@ -215,9 +215,10 @@ function validbeforevcode(item,btnsend) {
         function (result) {
             if (result.IsSuccess) {
                 $("#" + btnsend).removeClass("btn-disabled");
+                $("#" + btnsend).removeAttr("disabled");
             }
             else {
-                alert("验证码輸入錯誤！");
+                alert("验证码输入错误！");
             }
         });
 }
@@ -267,6 +268,7 @@ function VerifyInfo(ele, column) {
     var vdiv = $(ele).parent().find(".verifyblock")[0];
     $(vdiv).addClass("showverifyblock");
     var VerifyInfoImg = $(vdiv).find("img:first");
+
     $.post("/account/VerifyUserName",
     {
         "field": column,
@@ -275,9 +277,59 @@ function VerifyInfo(ele, column) {
         if (json.IsSuccess) {
             $(VerifyInfoImg).attr("src", "/Content/images/ok.gif");
             $(vdiv).removeClass("haserror");
+            $(vdiv).removeAttr("column_name");
         } else {
             $(VerifyInfoImg).attr("src", "/Content/images/no.gif");
             $(vdiv).addClass("haserror");
+            $(vdiv).attr("column_name", column);
         }
+
+        //var errors = $("#js-form-mobile").find(".haserror");
+        //var errors2 = $("#js-form-mail").find(".haserror");
+        //if (errors.length > 0 || errors2.length > 0) {
+
+        //    if (typeof ($('#js_mobile_btn')) != undefined) {
+        //        $('#js_mobile_btn').attr('disabled', 'disabled');
+        //        $('#js_mobile_btn').addClass('btn-disabled');
+        //    }
+        //    if (typeof ($('#js_mail_btn')) != undefined) {
+        //        $('#js_mail_btn').attr('disabled', 'disabled');
+        //        $('#js_mail_btn').addClass('btn-disabled');
+        //    }
+        //}
+        //else {
+
+        //    if (typeof ($('#js_mobile_btn')) != undefined) {
+        //        $('#js_mobile_btn').removeAttr('disabled');
+        //        $('#js_mobile_btn').removeClass('btn-disabled');
+        //    }
+        //    if (typeof ($('#js_mail_btn')) != undefined) {
+        //        $('#js_mail_btn').removeAttr('disabled');
+        //        $('#js_mail_btn').removeClass('btn-disabled');
+        //    }
+        //}
     });
+}
+
+function getValidatiionErrorMessage(column_name) {
+    var msg = "";
+    switch (column_name.toLowerCase()) {
+        case "ucard":
+            msg = "您当前注册认证的身份证号已被使用，请仔细确认！";
+            break;
+        case "username":
+            msg = "您当前使用的用户名已被使用，请重新输入！";
+            break;
+        case "email":
+            msg = "您当前注册的邮箱号已被使用，请仔细确认！如您的输入无误，建议您使用邮箱找回密码功能进行密码重置！";
+            break;
+        case "cellphone":
+            msg = "您当前注册的手机号已被使用，请仔细确认！";
+            break;
+        default:
+            break;
+    }
+
+    return msg;
+
 }
