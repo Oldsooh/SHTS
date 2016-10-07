@@ -100,7 +100,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             }
                             else
                             {
-                                content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n"
+                                content = "活动在线网微信服务号是活动在线网(www.huodongzaixian.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，需注册账号成为会员。\r\n\r\n"
                                     + UserRegisterUrl;
                             }
                         }
@@ -151,12 +151,12 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
                             if (hasUserLoggedIn)
                             {
                                 var userName = !string.IsNullOrEmpty(user.UserName) ? user.UserName : (!string.IsNullOrEmpty(user.Email) ? user.Email : user.Cellphone);
-                                content = "绑定活动在线网(www.activity-line.com)会员账号，微信登录即可同步PC端会员账号数据。您当前已绑定账号为："
+                                content = "绑定活动在线网(www.huodongzaixian.com)会员账号，微信登录即可同步PC端会员账号数据。您当前已绑定账号为："
                                     + userName + "。是否需要更改绑定账号？\r\n\r\n" + UserReLoginUrl;
                             }
                             else
                             {
-                                content = "活动在线网微信服务号是活动在线网(www.activity-line.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，请立即绑定您的会员账号。\r\n\r\n"
+                                content = "活动在线网微信服务号是活动在线网(www.huodongzaixian.com)官方开发的服务号。如需更好访问电脑、手机版及服务号，请立即绑定您的会员账号。\r\n\r\n"
                                        + UserLoginUrl;
                             }
                         }

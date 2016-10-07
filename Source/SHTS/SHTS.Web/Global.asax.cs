@@ -29,10 +29,10 @@ namespace Witbird.SHTS.Web
             // Initializes online payment service interface.
             // Alipay service.
             HttpContext.Current.Cache.Insert(PaymentService.ALIPAYSERVICE, PayFactory.Create
-                (PaymentService.ALIPAYSERVICE, "2088711708147372", "2i1dmrmyty1nnebyfmu8mmy41awfezmn", "utf-8", "http://www.activity-line.com/pay/alipayresult", "http://www.activity-line.com/pay/alipaynotify"));
+                (PaymentService.ALIPAYSERVICE, "2088711708147372", "2i1dmrmyty1nnebyfmu8mmy41awfezmn", "utf-8", "http://www.huodongzaixian.com/pay/alipayresult", "http://www.huodongzaixian.com/pay/alipaynotify"));
             // Chinabank service, 取消网银在线支付.
             //HttpContext.Current.Cache.Insert(PaymentService.CHINABANKSERVICE, PayFactory.Create
-            //    (PaymentService.CHINABANKSERVICE, "23133137", "shtscs123456789", "utf-8", "http://www.activity-line.com/pay/chinabankresult", "http://www.activity-line.com/pay/chinabanknotify"));
+            //    (PaymentService.CHINABANKSERVICE, "23133137", "shtscs123456789", "utf-8", "http://www.huodongzaixian.com/pay/chinabankresult", "http://www.huodongzaixian.com/pay/chinabanknotify"));
 
             //提供微信支付信息
             var weixinPay_PartnerId = System.Configuration.ConfigurationManager.AppSettings["WeixinPay_PartnerId"];

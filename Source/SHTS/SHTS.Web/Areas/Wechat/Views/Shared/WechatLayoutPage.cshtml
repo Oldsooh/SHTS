@@ -82,9 +82,9 @@
                             currentCityName.innerHTML = data;
                             $(currentCityName).parent().append(selectIconHtml);
                             //自动定位到城市后刷新获取相应数据
-                            if (confirm('系统自动定位到' + data + '，是否立即刷新加载最新数据？')) {
-                                window.location.href = window.location.href;
-                            }
+                            //if (confirm('系统自动定位到' + data + '，是否立即刷新加载最新数据？')) {
+                            //    window.location.href = window.location.href;
+                            //}
                         }
                         else {
                             document.getElementById("currentCityName").innerHTML = "选择城市";

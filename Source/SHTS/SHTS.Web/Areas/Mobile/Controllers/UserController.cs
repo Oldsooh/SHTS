@@ -417,7 +417,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                     }
                     else if (vipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Identified)
                     {
-                        errorMsg = "认证资料已通过审核，您现在是认证会员。还可访问电脑版(www.activity-line.com)升级为VIP会员，享受更多会员特权！";
+                        errorMsg = "认证资料已通过审核，您现在是认证会员。还可访问电脑版(www.huodongzaixian.com)升级为VIP会员，享受更多会员特权！";
                     }
                     else if (vipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.VIP)
                     {
