@@ -44,33 +44,55 @@
             <ul class="comeing_picnewslist">
                 @if (Model.resultList != null && Model.resultList.Count > 0)
                 {
-                    foreach (var n in Model.resultList)
+                    foreach (var item in Model.resultList)
                     {
-                        <li class="cl on" onmouseover=" this.className = 'cl on' " onmouseout=" this.className = 'cl on' ">
-                            @if (n.ImgList != null && n.ImgList.Length > 0)
+                        var relatedUrl = "";
+
+                        switch (item.ResultType)
+                        {
+                            case WitBird.Com.SearchEngine.SearchResultType.Activity:
+                                relatedUrl = "/activity/" + item.ResourceId + ".html";
+                                break;
+                            case WitBird.Com.SearchEngine.SearchResultType.ActorResource:
+                            case WitBird.Com.SearchEngine.SearchResultType.EquipmentResource:
+                            case WitBird.Com.SearchEngine.SearchResultType.OtherResource:
+                            case WitBird.Com.SearchEngine.SearchResultType.SpaceResource:
+                                relatedUrl = "/resource/" + item.ResourceId + ".html";
+                                break;
+
+                            case WitBird.Com.SearchEngine.SearchResultType.Demand:
+                                relatedUrl = "/demand/" + item.ResourceId + ".html";
+                                break;
+                            default:
+                                relatedUrl = "javascript:void(0);";
+                                break;
+                        }
+
+                        <li class="cl on" onmouseover=" this.className = 'cl on' " onmouseout="this.className = 'cl on' ">
+                            @if (item.ImgList != null && item.ImgList.Length > 0)
                             {
-                                <a href="@n.Url" target="_blank">
-                                    <img src="@n.ImgList[0]" alt="@n.Title">
+                                <a href="@relatedUrl" target="_blank">
+                                    <img src="@item.ImgList[0]" alt="@item.Title">
                                 </a>
                             }
-                            <h3><a href="@n.Url" target="_blank" style="">
-                                    @(new HtmlString(n.Title))</a>
+                            <h3><a href="@relatedUrl" target="_blank" style="">
+                                    @(new HtmlString(item.Title))</a>
                             </h3>
                             <p class="about">
-                                @if (n.ImgList != null && n.ImgList.Length > 1)
+                                @if (item.ImgList != null && item.ImgList.Length > 1)
                                 {
                                     <p>
-                                        @for (int i = 1; i < n.ImgList.Length; i++)
+                                        @for (int i = 1; i < item.ImgList.Length; i++)
                                         {
-                                            <a href="@n.Url" target="_blank">
-                                                <img src="@n.ImgList[i]" alt="@n.Title" style="width: 50px; height: 50px;" width="50" height="50">
+                                            <a href="@relatedUrl" target="_blank">
+                                                <img src="@item.ImgList[i]" alt="@item.Title" style="width: 50px; height: 50px;" width="50" height="50">
                                             </a>
                                         }
                                     </p>
                                 }
-                                <div class="desc">@(new HtmlString(n.Content))...</div></p>
+                                <div class="desc">@(new HtmlString(item.Content))...</div></p>
                             <p class="info">
-                                <span>@n.Time</span>
+                                <span>@item.Time</span>
                             </p>
                         </li>
                     }
