@@ -153,9 +153,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 if (isValid)
                 {
                     subscription.IsSubscribed = enable;
-                    subscription.IsEnableEmailSubscription = emailEnabled;
-
+                    subscription.IsEnableEmailSubscription = emailEnabled && !string.IsNullOrWhiteSpace(emailAddress);
                     subscription.EmailAddress = emailAddress;
+
                     isValid = subscriptionService.UpdateSubscription(subscription);
                 }
 

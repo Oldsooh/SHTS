@@ -214,7 +214,7 @@ namespace Witbird.SHTS.Web.Subscription
                                 {
                                     // Only subscried user can recieve articles.
                                     var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
-                                    if (wechatUser.IsNotNull() && wechatUser.UserId.HasValue)
+                                    if (wechatUser.IsNotNull())
                                     {
                                         var mailAddress = subscription.EmailAddress;
                                         var displayName = "活动在线网";
