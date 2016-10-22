@@ -404,6 +404,10 @@
             return $('#enableSubscription').is(':checked');
         }
 
+        function isEmailSubscriptionEnabled() {
+            return $('#enableEmail').is(':checked');
+        }
+
         function getAllSubscriedTypes() {
             var subscribedTypes = $('#subscriedTypes').val();
 
@@ -560,6 +564,25 @@
             }
         }
 
+        function isEmailAddressValid() {
+            if (isEmailSubscriptionEnabled()){
+                var inputEmail = $('#emailAddress').val();
+                if (inputEmail == ''){
+                    return false;
+                }
+                else{
+                    return isEmailValid(inputEmail);
+                }
+            }
+            else{
+                return true;
+            }
+        }
+
+        function doEmailTextOnChange() {
+            $('#emailAddress').val($('#emailText').val());
+        }
+
         function submit() {
             var subscriptionForm = $('#subscriptionForm');
             if (isEnableSubscription()) {
@@ -572,7 +595,7 @@
                 else if (subscribedAreas.length == 0) {
                     alert('请选择需求类型所属的区域位置！');
                 }
-                else if (!isEmailValid($('#emailAddress').val())) {
+                else if (!isEmailAddressValid()) {
                     alert('请输入正确的邮箱地址！');
                 }
                 else {
@@ -630,10 +653,13 @@
         }
 
         function enableEmailSubscription() {
-            if ($('#enableEmail').is(':checked')) {
+            if (isEmailSubscriptionEnabled()) {
                 $('#emailEnabled').val('true');
-                $('#emailText').removeClass('disabled');
-                $('#emailText').removeAttr('disabled');
+
+                if (isEnableSubscription()) {
+                    $('#emailText').removeClass('disabled');
+                    $('#emailText').removeAttr('disabled');
+                }
             }
             else {
                 $('#emailEnabled').val('false');
@@ -895,7 +921,7 @@
                         </div>
                         <div class="cell">
                             <input type="hidden" id="emailAddress" name="emailAddress" value="@Model.EmailAddress">
-                            <input type="text" id="emailText" placeholder="请输入您微信号绑定的QQ邮箱账号" class="text candisabled" value="@Model.EmailAddress">
+                            <input type="text" id="emailText" placeholder="请输入您微信号绑定的QQ邮箱账号" onchange="doEmailTextOnChange();" class="text candisabled" value="@Model.EmailAddress">
                         </div>
                     </div>
                 }
@@ -914,8 +940,8 @@
 @section FooterJS
 {
     <script>
-        enableEmailSubscription();
         enableSubscribed();
+        enableEmailSubscription();
         var message = $('#txtMessage').val();
         if (message != '') {
             if (message == 'success') {

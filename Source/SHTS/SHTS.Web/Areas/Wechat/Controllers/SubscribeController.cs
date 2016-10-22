@@ -67,6 +67,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 subscriedTypes = subscriedTypes ?? string.Empty;
                 subscribedAreas = subscribedAreas ?? string.Empty;
                 subscribedKeywords = subscribedKeywords ?? string.Empty;
+                emailAddress = emailAddress ?? string.Empty;
 
                 // Clear old subscription details from cache.
                 subscription.SubscriptionDetails.Clear();
