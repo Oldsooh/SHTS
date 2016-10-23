@@ -36,7 +36,9 @@
         </li>
         <li>
             <span class="yellow2" style="font-size:14px;">@((Model.Activity.StartTime ?? DateTime.Now).ToString("yyyy年MM月dd日")) &nbsp;</span>
-            <span class="" style="color:#337ab7;">活动在线网&nbsp;</span>
+            <span class="" style="color:#337ab7;">
+                <a style="color:#337ab7;" href="http://www.huodongzaixian.com/mobile">活动在线网</a>
+            &nbsp;</span>
             <span class="" style="color:#337ab7;font-size:14px;">发布:&nbsp; @Model.Activity.UserName</span>
         </li>
         @*<li>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签:<span class="yellow2">@Model.Activity.Keywords</span></li>*@
@@ -62,5 +64,8 @@
                 }
             }
         }
+
+        <div style="clear: both; height: 10px;"></div>
+        <div>阅读 @(Model.Activity.ViewCount?? 1000)</div>
     </div>
 </div>
