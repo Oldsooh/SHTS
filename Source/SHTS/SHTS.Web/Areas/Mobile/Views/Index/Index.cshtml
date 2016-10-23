@@ -32,7 +32,7 @@
             {
                 foreach (var item in Model.Demands)
                 {
-                    if (item.InsertTime.Day == DateTime.Now.Day)
+                    if (item.InsertTime..Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/demand/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
@@ -57,7 +57,7 @@
             {
                 foreach (var item in Model.ActivityList)
                 {
-                    if (item.CreatedTime.Value.Day == DateTime.Now.Day)
+                    if (item.CreatedTime.Value..Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/activity/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
@@ -98,7 +98,7 @@
             {
                 foreach (var item in Model.Right.Spaces)
                 {
-                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    if (item.CreateTime.Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
@@ -123,7 +123,7 @@
             {
                 foreach (var item in Model.Right.Actors)
                 {
-                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    if (item.CreateTime..Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
@@ -148,7 +148,7 @@
             {
                 foreach (var item in Model.Right.Equipments)
                 {
-                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    if (item.CreateTime..Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>
@@ -173,7 +173,7 @@
             {
                 foreach (var item in Model.Right.Others)
                 {
-                    if (item.CreateTime.Day == DateTime.Now.Day)
+                    if (item.CreateTime..Date == DateTime.Today)
                     {
                 <li class="commonLi"><a href="/mobile/resource/show/@item.Id">@item.Title</a> <em class="p_newslist_ico"><i
                     class="p_newslist_ico_num p_newslist_ico_num_yellow">今天</i></em> </li>

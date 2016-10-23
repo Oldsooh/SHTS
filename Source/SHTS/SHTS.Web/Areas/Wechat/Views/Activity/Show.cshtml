@@ -34,21 +34,21 @@
         <li class="dtitle" style="font-size:20px;">
             @Model.Activity.Title
         </li>
-        <li>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点:<span class="yellow2">@Model.Activity.Adress</span></li>
         <li>
-            发布时间:<span class="yellow2">@string.Format("{0:F}", Model.Activity.StartTime)</span>
+            <span class="yellow2" style="font-size:14px;">@((Model.Activity.StartTime ?? DateTime.Now).ToString("yyyy年MM月dd日")) &nbsp;</span>
+            <span class="" style="color:#337ab7;">活动在线网&nbsp;</span>
+            <span class="" style="color:#337ab7;font-size:14px;">发布:&nbsp; @Model.Activity.UserName</span>
         </li>
-        <li>活动网站:<span class="yellow2">@Model.Activity.Link</span></li>
-        <li>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签:<span class="yellow2">@Model.Activity.Keywords</span></li>
-        <li>主&nbsp;&nbsp;办&nbsp;&nbsp;方:<span class="yellow2">@Model.Activity.HoldBy</span></li>
+        @*<li>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签:<span class="yellow2">@Model.Activity.Keywords</span></li>*@
+        
     </ul>
     <div class="active_info">
-        @if (Model.Activity.IsFromMobile.Value)
+        @*@if (Model.Activity.IsFromMobile.Value)
         {
             <div class="comeing_summary">
                 <div class="showContent">@Model.Activity.Description</div>
             </div>
-        }
+        }*@
         @(new HtmlString(Model.Activity.ContentStyle))
         @if (Model.Activity.IsFromMobile.Value)
         {

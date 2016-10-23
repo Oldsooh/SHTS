@@ -18,7 +18,7 @@
     [ImageUrl] NVARCHAR(3000) NULL, 
     [Link] NVARCHAR(300) NULL, 
     [State] int NULL, 
-    [ViewCount] INT NULL, 
+    [ViewCount] INT NULL DEFAULT 0, 
     [CreatedTime] DATETIME NULL,
 	[LastUpdatedTime] DATETIME NULL, 
     [IsFromMobile] BIT NULL

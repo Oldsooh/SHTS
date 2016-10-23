@@ -86,7 +86,7 @@
     <div class="register-box" style="width: 100%;">
         <form class="reg-form" id="js-form-mobile" enctype="multipart/form-data" method="post" action="#">
             <div class="cell">
-                <select name="ActivityType" class="text">
+                <select name="ActivityType" class="text" style="width:100%;">
                     @if (Model.ActivityTypes != null && Model.ActivityTypes.Count > 0)
                     {
                         foreach (var item in Model.ActivityTypes)
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-                <span style="color: #4193ff; display: block; line-height: 10px; margin-top: 10px;">添加照片,让信息更受欢迎（最多上传12张,每张最大10M）.</span>
+                <span style="color: #4193ff; display: block; line-height: 20px; margin-top: 10px;">添加照片,让信息更受欢迎（最多上传12张,每张最大10M）.</span>
             </div>
             <span class="ur_box_radio" style="margin-left: 10px;">
                 <input name="agreerule" type="checkbox" value="in" checked="checked">

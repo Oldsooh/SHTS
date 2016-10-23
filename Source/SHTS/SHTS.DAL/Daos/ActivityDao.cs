@@ -73,7 +73,7 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@State", activity.State),
                 new SqlParameter("@Title", activity.Title),
                 new SqlParameter("@UserId", activity.UserId),
-                new SqlParameter("@ViewCount", activity.ViewCount),
+                new SqlParameter("@ViewCount", activity.ViewCount ?? 0),
                 new SqlParameter("@LocationId", activity.LocationId),
 				new SqlParameter("@CreatedTime", DateTime.Now),
 				new SqlParameter("@LastUpdatedTime", DateTime.Now),
