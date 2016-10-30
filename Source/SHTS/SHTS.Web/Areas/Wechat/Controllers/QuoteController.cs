@@ -241,6 +241,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             if (quote.IsNotNull())
             {
                 quote.Demand = demandService.GetDemandById(quote.DemandId);
+
+                // 如果是自己发布的需求，无需购买即可查看
+                var isPostedByMyself = (quote.Demand.UserId == CurrentWeChatUser.UserId);
+                quote.HasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
+
+                quote.HasWeChatUserBoughtForDemand = true;
+
+                // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {
                     history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
@@ -248,6 +256,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             return View(quote);
+        }
+
+        public ActionResult QuoteListByType()
+        {
+            return View();
         }
 
         public ActionResult UpdateQuoteStatus(int quoteId, string statusId)
@@ -268,6 +281,16 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
+                    var message = "您的报价/报名已被";
+                    if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        message += "接受！";
+                    }
+                    else
+                    {
+                        message += "拒绝！";
+                    }
+
                     //if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
                     //{
                     //    var demandQuotes = quoteService.GetAllDemandQuotesForOneDemand(quote.DemandId);
@@ -292,24 +315,21 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     //}
                     //else
                     //{
-                        quote.HandleStatus = true;
-                        quote.AcceptStatus = statusId;
+                    quote.HandleStatus = true;
+                    quote.AcceptStatus = statusId;
+                    quote.QuoteHistories.Add(new DemandQuoteHistory()
+                    {
+                        QuoteId = quote.QuoteId,
+                        Comments = message,
+                        WeChatUserId = CurrentWeChatUser.Id,
+                        Operation = Operation.Add
+                    });
 
-                        quoteService.UpdateQuoteRecord(quote);
+                    quoteService.UpdateQuoteRecord(quote);
                     //}
 
                     if (string.IsNullOrEmpty(errorMessage))
                     {
-                        var message = "您的报价/报名已被";
-                        if (statusId.Equals(DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            message += "采纳，立即点击下面链接联系客户";
-                        }
-                        else
-                        {
-                            message += "拒绝，预祝您下次报价成功！如需联系请点击下面链接";
-                        }
-
                         // Sends notification to wechat client.
                         Task.Factory.StartNew(() =>
                         {

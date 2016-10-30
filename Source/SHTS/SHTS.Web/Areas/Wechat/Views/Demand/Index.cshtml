@@ -49,6 +49,18 @@
             color: #ffffff;
             background-color: #2577e3;
         }
+
+        .btn-quote {
+            width:100%;
+            height: 25px;
+            line-height:25px;
+            border-radius: 15px;
+            padding: 0 10px;
+            background-color: #9ed04d;
+            display: inline-block;
+            color: white;
+            text-align:center;
+        }
     </style>
 
 }
@@ -171,59 +183,59 @@
 
     @*<div class="btn-group" role="group">
 
-        @{
-            string urlBudget = "/wechat/demand/index?page=1";
-            urlBudget = string.IsNullOrEmpty(Model.ResourceType) ? urlBudget : urlBudget + "&ResourceType=" + Model.ResourceType;
-            urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
-            urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
-            urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
+            @{
+                string urlBudget = "/wechat/demand/index?page=1";
+                urlBudget = string.IsNullOrEmpty(Model.ResourceType) ? urlBudget : urlBudget + "&ResourceType=" + Model.ResourceType;
+                urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
+                urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
+                urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
 
-            var amountName = "预算";
-            if (Model.StartBudget.Equals("1"))
-            {
-                amountName = "¥1-¥1000";
-            }
-            else if (Model.StartBudget.Equals("1001"))
-            {
-                amountName = "¥1001-¥5000";
-            }
-            else if (Model.StartBudget.Equals("5001"))
-            {
-                amountName = "¥5001-¥10000";
-            }
-            else if (Model.StartBudget.Equals("10001"))
-            {
-                amountName = "¥1万-¥5万";
-            }
-            else if (Model.StartBudget.Equals("50001"))
-            {
-                amountName = "¥5万以上";
-            }
-            else
-            {
-                //nothing
-            }
+                var amountName = "预算";
+                if (Model.StartBudget.Equals("1"))
+                {
+                    amountName = "¥1-¥1000";
+                }
+                else if (Model.StartBudget.Equals("1001"))
+                {
+                    amountName = "¥1001-¥5000";
+                }
+                else if (Model.StartBudget.Equals("5001"))
+                {
+                    amountName = "¥5001-¥10000";
+                }
+                else if (Model.StartBudget.Equals("10001"))
+                {
+                    amountName = "¥1万-¥5万";
+                }
+                else if (Model.StartBudget.Equals("50001"))
+                {
+                    amountName = "¥5万以上";
+                }
+                else
+                {
+                    //nothing
+                }
 
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @amountName
-                <span class="caret"></span>
-            </button>
-        }
-        <ul class="dropdown-menu">
-            <li><a id="budgetid" href="@urlBudget">不限</a></li>
-            <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">¥1-¥1000</a></li>
-            <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=5000">¥1001-¥5000</a></li>
-            <li><a id="budgetid5001" href="@urlBudget&startbudget=5001&endbudget=10000">¥5001-¥10000</a></li>
-            <li><a id="budgetid10001" href="@urlBudget&startbudget=10001&endbudget=50000">¥1万-¥5万</a></li>
-            <li><a id="budgetid50001" href="@urlBudget&startbudget=50001&endbudget=1000000">¥5万以上</a></li>
-        </ul>
-        <script type="text/javascript">
-                    @{ string budgetid = "budgetid" + Model.StartBudget;}
-            document.getElementById("@budgetid").setAttribute("class", "no");
-        </script>
-    </div>*@
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @amountName
+                    <span class="caret"></span>
+                </button>
+            }
+            <ul class="dropdown-menu">
+                <li><a id="budgetid" href="@urlBudget">不限</a></li>
+                <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">¥1-¥1000</a></li>
+                <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=5000">¥1001-¥5000</a></li>
+                <li><a id="budgetid5001" href="@urlBudget&startbudget=5001&endbudget=10000">¥5001-¥10000</a></li>
+                <li><a id="budgetid10001" href="@urlBudget&startbudget=10001&endbudget=50000">¥1万-¥5万</a></li>
+                <li><a id="budgetid50001" href="@urlBudget&startbudget=50001&endbudget=1000000">¥5万以上</a></li>
+            </ul>
+            <script type="text/javascript">
+                        @{ string budgetid = "budgetid" + Model.StartBudget;}
+                document.getElementById("@budgetid").setAttribute("class", "no");
+            </script>
+        </div>*@
     @if (!string.IsNullOrEmpty(Model.ResourceType))
-    {  
+    {
         string urlResourceTypeId = "/wechat/demand/index?page=1";
         urlResourceTypeId = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceTypeId : urlResourceTypeId + "&LastResourceType=" + Model.LastResourceType;
         urlResourceTypeId = string.IsNullOrEmpty(Model.ResourceType) ? urlResourceTypeId : urlResourceTypeId + "&ResourceType=" + Model.ResourceType;
@@ -323,10 +335,10 @@
         <input id="starttime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" onchange="timeRedirect();"
                readonly="readonly" value="@Model.StartTime" url="@urlTime" placeholder="需求时间" style="background:#fff;text-align:center;color:#333;font-size:14px;font-weight:400;">
         @*<input id="endtime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yy-MM-dd' })"
-               readonly="readonly" value="@Model.EndTime" placeholder="结束日期" style="background:#fff; width:55px;">
-        <span class="input-group-btn">
-            <button onclick="timeRedirect(this)" id="@urlTime" class="btn btn-default" type="button">确定</button>
-        </span>*@
+                   readonly="readonly" value="@Model.EndTime" placeholder="结束日期" style="background:#fff; width:55px;">
+            <span class="input-group-btn">
+                <button onclick="timeRedirect(this)" id="@urlTime" class="btn btn-default" type="button">确定</button>
+            </span>*@
     </div>
     <div style="clear: both;"></div>
 </div>
@@ -343,22 +355,26 @@
                         <lable style="color: #FD9102;">[@item.StatusValueString]</lable>@item.Title
                     </a>
                 </li>
-                <li>需求类别：<span class="yellow">@item.ResourceTypeName</span></li>
-                <li>需求类型：<span class="yellow">@Html.GetResourceSubTypeNameById(item.ResourceType, item.ResourceTypeId)</span></li>
+                <li>类别类型：<span class="yellow">@item.ResourceTypeName &nbsp;@Html.GetResourceSubTypeNameById(item.ResourceType, item.ResourceTypeId)</span></li>
                 <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)</span></li>
                 <li>起止时间：<span class="yellow">@item.StartTime.Value.ToString("yyyy/MM/dd") - @item.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
                 @*<li>参与人数：<span class="yellow">@item.PeopleNumber</span></li>*@
                 @*<li>
-                    预算金额：
-                    @if (item.Budget == 0)
-                    {
-                        <span class="yellow">面议</span>
-                    }
-                    else
-                    {
-                        <span class="yellow">@item.Budget</span>
-                    }
-                </li>*@
+                        预算金额：
+                        @if (item.Budget == 0)
+                        {
+                            <span class="yellow">面议</span>
+                        }
+                        else
+                        {
+                            <span class="yellow">@item.Budget</span>
+                        }
+                    </li>*@
+
+                @if (item.Status.HasValue && item.Status.Value == (int)Witbird.SHTS.Model.DemandStatus.InProgress)
+                {
+                    <li class="btn-quote" onclick="window.location = '/wechat/demand/show/@(item.Id)?showwxpaytitle=1'">报价/报名</li>
+                }
             </ul>
         }
     }

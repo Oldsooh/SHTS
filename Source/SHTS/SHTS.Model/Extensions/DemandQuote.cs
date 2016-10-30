@@ -38,5 +38,14 @@ namespace Witbird.SHTS.Model
                 return this.quoteHistories.Count(x => x != null && !x.HasRead);
             }
         }
+
+        /// <summary>
+        /// 报价的用户是否已经购买了需求的联系方式
+        /// </summary>
+        public bool HasWeChatUserBoughtForDemand
+        {
+            get;
+            set;
+        }
     }
 }

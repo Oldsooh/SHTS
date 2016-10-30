@@ -62,7 +62,7 @@
     <script>
         function addQuote() {
             var contactName = $('#js-mobile_ipt').val();
-            var contactPhone = $('#contactPhone').val();
+            //var contactPhone = $('#contactPhone').val();
             var quotePrice = $('#quotePrice').val();
             var quoteDetail = $('#quoteDetail').val();
 
@@ -70,12 +70,12 @@
                 alert('请输入您的姓名！');
                 return;
             }
-            if (contactPhone == '') {
-                alert('请输入您的联系方式！');
-                return;
-            }
-            if (quotePrice == '' || quotePrice < 0) {
-                alert("请输入正确的报价金额");
+            //if (contactPhone == '') {
+            //    alert('请输入您的联系方式！');
+            //    return;
+            //}
+            if (quotePrice == '') {
+                alert("请输入报价金额或报名人数信息");
                 return;
             }
 
@@ -147,7 +147,7 @@
                         </li>
                     </ul>
                     <div class="bottom" style="padding-left: 5px;padding-right: 5px;margin:0 auto;">
-                        <button id="js-mobile_btn" type="button" class="button btn-green" onclick="window.location.href='/wechat/quote/detail?quoteId=@(quoteId)'">查看报价</button>
+                        <button id="js-mobile_btn" type="button" class="button btn-green" onclick="window.location.href='/wechat/quote/detail?quoteId=@(quoteId)'">查看您的报价</button>
                     </div>
                 }
                 else
@@ -165,7 +165,7 @@
                             <input type="text" id="contactPhone" name="contactPhone" placeholder="请输入您的电话" class="text">
                         </div>*@
                         <div class="cell">
-                            <input type="number" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额或报名人数" class="text" min="0">
+                            <input type="text" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额或报名人数" class="text">
                         </div>
                         <div class="cell" style="height: 160px;">
                             <textarea id="quoteDetail" name="quoteDetail" placeholder="请输入您的简介留言，填写电话或将被屏蔽" class="text" style="height: 150px; width: 95%;"></textarea>

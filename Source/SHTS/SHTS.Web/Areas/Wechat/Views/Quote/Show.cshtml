@@ -7,6 +7,11 @@
 {
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
     <style type="text/css">
         .reg-form .cell label {
             position: absolute;
@@ -108,7 +113,7 @@
                 </li>
                 <li>
                     位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Province, Model.City, Model.Area)</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预算：
+                    @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预算：
                     @if (Model.Budget == 0)
                     {
                         <span class="yellow">面议</span>
@@ -116,52 +121,125 @@
                     else
                     {
                         <span class="yellow">@Model.Budget</span>
-                    }
+                    }*@
                 </li>
                 <li>时间：<span class="yellow">@Model.StartTime.Value.ToString("yyyy/MM/dd") - @Model.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
 
             </ul>
             <br />
+
+
+
             if (Model.TotalQuoteCount > 0)
             {
-                <ul class="commonlist" style="">
+                var notHandledQuotes = Model.QuoteEntities.Where(x => x != null && x.AcceptStatus == "Wait");
+                var acceptQuotes = Model.QuoteEntities.Where(x => x != null && x.AcceptStatus == "Accept");
+                var deniedQuotes = Model.QuoteEntities.Where(x => x != null && x.AcceptStatus == "Denied");
 
-                    <li>
+                //var quote = Model.QuoteEntities[i];
+                //var status = string.Empty;
+                //var bgColor = string.Empty;
+                //switch (quote.AcceptStatus)
+                //{
+                //    case "Accept":
+                //        status = "[已接受]";
+                //        bgColor = "green";
+                //        break;
+                //    case "Denied":
+                //        status = "[已拒绝]";
+                //        bgColor = "blue";
+                //        break;
+                //    case "Wait":
+                //        status = "[未处理]";
+                //        bgColor = "red";
+                //        break;
+                //    default:
+                //        break;
+                //}
 
-                        <lable class="yellow" style="font-size:17px;">共有(@Model.TotalQuoteCount)条报价，其中(@Model.TotalNotHandledQuoteCount)条未处理！</lable>
-
-                    </li>
-                    @for (int i = 0; i < Model.QuoteEntities.Count; i++)
-                    {
-                        var quote = Model.QuoteEntities[i];
-                        var status = string.Empty;
-                        var bgColor = string.Empty;
-                        switch (quote.AcceptStatus)
-                        {
-                            case "Accept":
-                                status = "[已同意]";
-                                bgColor = "green";
-                                break;
-                            case "Denied":
-                                status = "[已驳回]";
-                                bgColor = "blue";
-                                break;
-                            case "Wait":
-                                status = "[未处理]";
-                                bgColor = "red";
-                                break;
-                            default:
-                                break;
-                        }
-                        <li class="atitle">
-                            <span class="state @bgColor">@status</span>
-                            @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
-                            <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
-                                @(quote.ContactName)报价@(quote.QuotePrice)元
-                            </a>
-                        </li>
-                    }
+                <ul class="nav nav-pills" role="tablist">
+                    <li role="presentation" class="active"><a href="#notHandledPanel" data-toggle="tab">暂未处理(@notHandledQuotes.Count())</a></li>
+                    <li role="presentation" ><a href="#acceptPanel" data-toggle="tab">已接受(@acceptQuotes.Count())</a></li>
+                    <li role="presentation"><a href="#deniedPanel" data-toggle="tab">已拒绝(@deniedQuotes.Count())</a></li>
                 </ul>
+                <br />
+                <div class="tab-content">
+                    <div id="notHandledPanel" class="tab-pane active">
+                        <ul class="commonlist" style="">
+                            @if (notHandledQuotes.Count() != 0)
+                            {
+                                foreach (var quote in notHandledQuotes)
+                                {
+                                    var status = "[未处理]";
+                                    var bgColor = "red";
+                                    <li class="atitle">
+                                        <span class="state @bgColor">@status</span>
+                                        @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
+                                        <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
+                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="atitle">
+                                    没有未处理的报价。
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div id="acceptPanel" class="tab-pane">
+                        <ul class="commonlist" style="">
+                            @if (acceptQuotes.Count() != 0)
+                            {
+                                foreach (var quote in acceptQuotes)
+                                {
+                                    var status = "[已接受]";
+                                    var bgColor = "green";
+                                    <li class="atitle">
+                                        <span class="state @bgColor">@status</span>
+                                        @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
+                                        <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
+                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="atitle">
+                                    没有已接受的报价。
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div id="deniedPanel" class="tab-pane">
+                        <ul class="commonlist" style="">
+                            @if (deniedQuotes.Count() != 0)
+                            {
+                                foreach (var quote in deniedQuotes)
+                                {
+                                    var status = "[已拒绝]";
+                                    var bgColor = "blue";
+                                    <li class="atitle">
+                                        <span class="state @bgColor">@status</span>
+                                        @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
+                                        <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
+                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="atitle">
+                                    没有已拒绝的报价。
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             }
             else
             {

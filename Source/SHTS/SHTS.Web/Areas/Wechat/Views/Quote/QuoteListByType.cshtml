@@ -1,0 +1,29 @@
+﻿<span style="font-size:14px;">
+    <!-- Nav tabs --><br>
+    <ul class="nav nav-tabs" role="tablist" id="maintab">
+        <br>
+        <li class="active"><a href="#tab1" onclick='showPage("tab1","tab1.php")'>tab1</a></li>
+        <br>
+        <li><a href="#tab2" onclick='showPage("tab2","tab2.php")'>tab2</a></li>
+        <br>
+        <li><a href="#tab3" onclick='showPage("tab3","tab3.php")'>tab3</a></li>
+        <br>
+        <li><a href="#tab4" onclick='showPage("tab4","tab4.php")'>tab4</a></li>
+        <br>
+    </ul><br><br><!-- Tab panes --><br>
+    <div class="tab-content">
+        <br>
+        <div class="tab-pane active" id="tab1"></div><br>
+        <div class="tab-pane" id="tab2"></div><br>
+        <div class="tab-pane" id="tab3"></div><br>
+        <div class="tab-pane" id="tab4"></div><br>
+    </div><br>
+</span>
+
+<script language="javascript">
+    var loadimg = "./img/load2.gif"; // 加载时的loading图片<br><br> 
+    function showPage(tabId, url){     $('#maintab a[href="#'+tabId+'"]').tab('show'); // 显示点击的tab页面<br>      
+        if($('#'+tabId).html().length<20){ // 当tab页面内容小于20个字节时ajax加载新页面<br>         
+            $('#'+tabId).html('<br>'+loadimg+' 页面加载中，请稍后...'); // 设置页面加载时的loading图片<br>           
+            $('#'+tabId).load(url); // ajax加载页面<br>     }<br>   }<br><br><
+    /script>

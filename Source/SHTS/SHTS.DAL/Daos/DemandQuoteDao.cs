@@ -168,19 +168,19 @@ namespace Witbird.SHTS.DAL.Daos
 
             using (var reader = DBHelper.RunProcedure(conn, SP_SelectDemandQuotesByDemandId, parameters))
             {
-                //while (reader.Read())
-                //{
-                //    //totalCount = reader["TotalCount"].DBToInt32();
-                //}
+                while (reader.Read())
+                {
+                    //totalCount = reader["TotalCount"].DBToInt32();
+                }
 
-                //if (reader.NextResult())
-                //{
+                if (reader.NextResult())
+                {
                     while (reader.Read())
                     {
                         var quote = ConvertToDemandQuote(reader);
                         quotes.Add(quote);
                     }
-                //}
+                }
 
                 if (reader.NextResult())
                 {
