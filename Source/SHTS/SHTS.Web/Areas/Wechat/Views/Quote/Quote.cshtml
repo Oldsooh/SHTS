@@ -141,14 +141,18 @@
 
                 if (hasAlreadyQuoted)
                 {
-                    <ul class="commonlist" style="">
+                    <script>
+                        var quoteDetailUrl = '/wechat/quote/detail?quoteId=@(quoteId)';
+                        window.location.href = quoteDetailUrl;
+                    </script>
+                    @*<ul class="commonlist" style="">
                         <li class="atitle">
                             <lable style="color: #FD9102;font-size:16px;">该需求您已提供报价！</lable>
                         </li>
                     </ul>
                     <div class="bottom" style="padding-left: 5px;padding-right: 5px;margin:0 auto;">
                         <button id="js-mobile_btn" type="button" class="button btn-green" onclick="window.location.href='/wechat/quote/detail?quoteId=@(quoteId)'">查看您的报价</button>
-                    </div>
+                    </div>*@
                 }
                 else
                 {
