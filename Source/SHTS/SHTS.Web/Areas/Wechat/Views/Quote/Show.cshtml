@@ -158,7 +158,7 @@
                 //}
 
                 <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="active"><a href="#notHandledPanel" data-toggle="tab">暂未处理(@notHandledQuotes.Count())</a></li>
+                    <li role="presentation" class="active"><a href="#notHandledPanel" data-toggle="tab">未处理(@notHandledQuotes.Count())</a></li>
                     <li role="presentation" ><a href="#acceptPanel" data-toggle="tab">已接受(@acceptQuotes.Count())</a></li>
                     <li role="presentation"><a href="#deniedPanel" data-toggle="tab">已拒绝(@deniedQuotes.Count())</a></li>
                 </ul>
@@ -176,7 +176,7 @@
                                         <span class="state @bgColor">@status</span>
                                         @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
                                         <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
-                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                            @(quote.ContactName)报价(报名)：@(quote.QuotePrice)元(人)
                                         </a>
                                     </li>
                                 }
@@ -184,7 +184,7 @@
                             else
                             {
                                 <li class="atitle">
-                                    没有未处理的报价。
+                                    没有未处理的报价/报名。
                                 </li>
                             }
                         </ul>
@@ -201,7 +201,7 @@
                                         <span class="state @bgColor">@status</span>
                                         @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
                                         <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
-                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                            @(quote.ContactName)报价(报名)：@(quote.QuotePrice)元(人)
                                         </a>
                                     </li>
                                 }
@@ -209,7 +209,7 @@
                             else
                             {
                                 <li class="atitle">
-                                    没有已接受的报价。
+                                    没有已接受的报价/报名。
                                 </li>
                             }
                         </ul>
@@ -226,7 +226,7 @@
                                         <span class="state @bgColor">@status</span>
                                         @*<span style="font-weight:bold;">@(quote.ContactName)报价@(quote.QuotePrice)元</span>*@
                                         <a href="/wechat/quote/detail?quoteId=@(quote.QuoteId)" style="margin-right: 10px;">
-                                            @(quote.ContactName)报价@(quote.QuotePrice)元
+                                            @(quote.ContactName)报价(报名)：@(quote.QuotePrice)元(人)
                                         </a>
                                     </li>
                                 }
@@ -234,7 +234,7 @@
                             else
                             {
                                 <li class="atitle">
-                                    没有已拒绝的报价。
+                                    没有已拒绝的报价/报名。
                                 </li>
                             }
                         </ul>

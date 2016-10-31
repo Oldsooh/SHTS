@@ -446,19 +446,34 @@
             <div id="container">
                 <lable style="font-size:16px;color:#898989;">报价/报名详情及回复：</lable>
                 <ul id="chatHistory" class="content">
+
+                    @{ 
+                        var rightPhotoUrl = currentWeChatUser.Photo;
+                        var leftPhotoUrl = "";
+
+                        if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
+                        {
+                            leftPhotoUrl = "/content/wechat/images/quoteUserPhoto.png";
+                        }
+                        else
+                        {
+                            leftPhotoUrl = "/content/wechat/images/demandUserPhoto.png";
+                        }
+                    }
+
                     @if (Model.WeChatUserId == currentWeChatUser.Id)
                     {
                         <li class="time"><span class="spanright">@quoteTime</span></li>
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactName</span></li>
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@contactPhone</span></li>
-                        <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@quotePrice</span></li>
+                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactName</span></li>
+                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>
+                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@quotePrice</span></li>
                     }
                     else
                     {
                         <li class="time"><span class="spanleft">@quoteTime</span></li>
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactName</span></li>
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@contactPhone</span></li>
-                        <li><img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@quotePrice</span></li>
+                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactName</span></li>
+                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>
+                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@quotePrice</span></li>
                     }
 
                     @foreach (var history in Model.QuoteHistories)
@@ -470,13 +485,13 @@
                             if (history.WeChatUserId == currentWeChatUser.Id)
                             {
                                 <li class="time"><span class="spanright">@timestring</span></li>
-                                <li><img src="@currentWeChatUser.Photo" class="imgright"><span class="spanright">@history.Comments</span></li>
+                                <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@history.Comments</span></li>
                             }
                             else
                             {
                                 <li class="time"><span class="spanleft">@timestring</span></li>
                                 <li>
-                                    <img src="~/content/wechat/images/demandUserPhoto.png" class="imgleft"><span class="spanleft">@history.Comments</span>
+                                    <img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@history.Comments</span>
                                 </li>
                             }
                         }

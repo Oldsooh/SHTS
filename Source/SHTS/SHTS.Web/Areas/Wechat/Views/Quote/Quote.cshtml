@@ -75,7 +75,7 @@
             //    return;
             //}
             if (quotePrice == '') {
-                alert("请输入报价金额或报名人数信息");
+                alert("请输入正确的报价金额或报名人数信息！");
                 return;
             }
 
@@ -169,7 +169,7 @@
                             <input type="text" id="contactPhone" name="contactPhone" placeholder="请输入您的电话" class="text">
                         </div>*@
                         <div class="cell">
-                            <input type="text" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额或报名人数" class="text">
+                            <input type="number" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额或报名人数" class="text" min="0">
                         </div>
                         <div class="cell" style="height: 160px;">
                             <textarea id="quoteDetail" name="quoteDetail" placeholder="请输入您的简介留言，填写电话或将被屏蔽" class="text" style="height: 150px; width: 95%;"></textarea>
