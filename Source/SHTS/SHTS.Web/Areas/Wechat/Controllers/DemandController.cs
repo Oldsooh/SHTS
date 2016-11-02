@@ -110,7 +110,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 model.PageIndex = tempPage;//当前页数
                 model.PageSize = 10;//每页显示多少条
-                model.PageStep = 10;//每页显示多少页码
+                model.PageStep = 5;//每页显示多少页码
                 model.AllCount = allCount;//总条数
                 if (model.AllCount % model.PageSize == 0)
                 {

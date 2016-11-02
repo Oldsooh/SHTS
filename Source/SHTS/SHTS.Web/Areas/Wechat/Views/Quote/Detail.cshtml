@@ -287,8 +287,8 @@
         @if (Model != null)
         {
             var contactName = "联系人：" + Model.ContactName;
-            var contactPhone = "电话：" + Model.ContactPhoneNumber;
-            var quotePrice = "报价：" + Model.QuotePrice + "元";
+            //var contactPhone = "电话：" + Model.ContactPhoneNumber;
+            var quotePrice = "报价/报名：" + Model.QuotePrice + "元/人";
             var quoteTime = Model.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
 
             <input type="hidden" id="quoteId" value="@Model.QuoteId" />
@@ -465,14 +465,14 @@
                     {
                         <li class="time"><span class="spanright">@quoteTime</span></li>
                         <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactName</span></li>
-                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>
+                        @*<li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>*@
                         <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@quotePrice</span></li>
                     }
                     else
                     {
                         <li class="time"><span class="spanleft">@quoteTime</span></li>
                         <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactName</span></li>
-                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>
+                        @*<li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>*@
                         <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@quotePrice</span></li>
                     }
 

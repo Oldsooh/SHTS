@@ -1063,6 +1063,7 @@
     <Content Include="Areas\Mobile\Views\User\VipOrder.cshtml" />
     <Content Include="Areas\Mobile\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\Quote\QuoteListByType.cshtml" />
+    <Content Include="Areas\Wechat\Views\Shared\BottomMenuBarPartial.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

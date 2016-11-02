@@ -92,7 +92,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         quoteId = quote.QuoteId;
 
                         // Sends notification to wechat client.
-                        var message = quote.ContactName + "报价/报名" + (int)quote.QuotePrice + "元/人";
+                        //var message = quote.ContactName + "报价/报名" + (int)quote.QuotePrice + "元/人";
+                        var message = string.Empty;
                         Task.Factory.StartNew(() =>
                         {
                             var toWeChatUser = userService.GetWeChatUser(demand.UserId);

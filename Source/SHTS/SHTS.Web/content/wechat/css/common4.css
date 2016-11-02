@@ -368,11 +368,8 @@ body {
     }
 
         .fenye span a {
-            width: auto !important;
-            width: 14px;
+            width: 30px;
             min-width: 14px;
-            padding-left: 7px;
-            padding- right: 7px;
             height: 28px;
             line-height: 28px;
             border: #d9d9d9 1px solid;
@@ -383,7 +380,7 @@ body {
         }
 
     .fenye a.prv {
-        min-width: 40px;
+        min-width: 60px;
         background-image: url(../images/pay/ico_pre.gif);
         background-repeat: no- repeat;
         background-position: 10px center;
@@ -391,7 +388,7 @@ body {
     }
 
     .fenye a.next {
-        min-width: 40px;
+        min-width: 60px;
         background-image: url(../images/pay/ico_next.gif);
         background-repeat: no-repeat;
         background-position: 70px center;

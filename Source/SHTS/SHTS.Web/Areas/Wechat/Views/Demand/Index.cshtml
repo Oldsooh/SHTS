@@ -51,15 +51,15 @@
         }
 
         .btn-quote {
-            width:100%;
+            width: 100%;
             height: 25px;
-            line-height:25px;
+            line-height: 25px;
             border-radius: 15px;
             padding: 0 10px;
             background-color: #9ed04d;
             display: inline-block;
             color: white;
-            text-align:center;
+            text-align: center;
         }
     </style>
 
@@ -372,7 +372,7 @@
                     </li>*@
 
                 @if (item.Status.HasValue && item.Status.Value == (int)Witbird.SHTS.Model.DemandStatus.InProgress)
-                {
+                    {
                     <li class="btn-quote" onclick="window.location = '/wechat/demand/show/@(item.Id)?showwxpaytitle=1'">报价/报名</li>
                 }
             </ul>
@@ -384,10 +384,13 @@
         <div>没有找到相关需求.</div>
     }
 
-    <div style="clear: both; height: 10px;"></div>
+    <div style="clear: both;"></div>
 
     @Html.Partial("PagingPartial", Model)
 </div>
+
+@Html.Partial("BottomMenuBarPartial")
+
 @section FooterJS
 {
     <script src="/content/My97DatePicker/WdatePicker.js"></script>
