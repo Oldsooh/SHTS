@@ -455,4 +455,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ResourceType" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="3b6f75e4-0cf2-4db0-8619-86197b4e1367" ChangeDateTime="11/06/2016 07:09:50">
+    <Property Name="ElementName" Value="[dbo].[ActivityVotes].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ActivityVotes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="VoteId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="283e7627-9c8b-4a31-8dd8-3248e3cb503b" ChangeDateTime="11/06/2016 07:17:09">
+    <Property Name="ElementName" Value="[dbo].[ActivityVotes].[WechatUserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ActivityVotes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WechatUserOpenId" />
+  </Operation>
 </Operations>

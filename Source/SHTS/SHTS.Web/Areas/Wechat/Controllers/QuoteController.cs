@@ -420,6 +420,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 var viewUrl = "您收到了新的报价/报名提醒:{0}\r\n <a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
             "/wechat/quote/detail?quoteId={1}\">点击这里，立即查看</a>";
 
+                message = FilterHelper.Filter(FilterLevel.PhoneAndEmail, message, CommonService.ReplacementForContactInfo);
+
                 WeChatClient.Sender.SendText(openId, string.Format(viewUrl, message, quoteId));
             }
             catch (Exception ex)

@@ -47,5 +47,9 @@ namespace Witbird.SHTS.Web.Models.ActivityModel
             }
             return typeName;
         }
+
+        public int ActivityVoteTotalCount { get; set; }
+
+        public bool IsCurrentUserVoted { get; set; }
     }
 }

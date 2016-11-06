@@ -238,6 +238,11 @@
     <Build Include="StoredProcedure\DemandQuote\sp_UpdateAllQuotesStatus.sql" />
     <Build Include="StoredProcedure\DemandQuote\sp_SelectRecievedQuotes.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByWeChatUserId.sql" />
+    <Build Include="Table\Activity\ActivityVote.sql" />
+    <Build Include="StoredProcedure\Activity\sp_InsertOrUpdateActivityVote.sql" />
+    <Build Include="StoredProcedure\Activity\sp_SelectActivityVoteByUserId.sql" />
+    <Build Include="StoredProcedure\Activity\sp_SelectActivityVoteByWechatUserOpenId.sql" />
+    <Build Include="StoredProcedure\Activity\sp_SelectActivityTotalVotesCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

@@ -66,6 +66,18 @@
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="ActivityVote">
+          <Key>
+            <PropertyRef Name="VoteId" />
+          </Key>
+          <Property Name="VoteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="WechatUserOpenId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ActivityId" Type="int" Nullable="false" />
+          <Property Name="IsVoted" Type="bit" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Actor">
           <Key>
             <PropertyRef Name="Id" />
@@ -646,6 +658,7 @@
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityVote" EntityType="Self.ActivityVote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorFrom" EntityType="Self.ActorFrom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorSex" EntityType="Self.ActorSex" Schema="dbo" store:Type="Tables" />
@@ -740,6 +753,7 @@
           <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
           <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
+          <EntitySet Name="ActivityVote" EntityType="shtsModel.ActivityVote" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -1376,6 +1390,18 @@
           <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ActivityVote">
+          <Key>
+            <PropertyRef Name="VoteId" />
+          </Key>
+          <Property Name="VoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="WechatUserOpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityId" Type="Int32" Nullable="false" />
+          <Property Name="IsVoted" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2062,6 +2088,19 @@
                 <ScalarProperty Name="Userid" ColumnName="Userid" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityVote">
+            <EntityTypeMapping TypeName="shtsModel.ActivityVote">
+              <MappingFragment StoreEntitySet="ActivityVote">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="IsVoted" ColumnName="IsVoted" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="WechatUserOpenId" ColumnName="WechatUserOpenId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="VoteId" ColumnName="VoteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

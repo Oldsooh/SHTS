@@ -6,6 +6,7 @@
 
 @section head
 {
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         #link img {
             max-width: 100%;
@@ -76,10 +77,50 @@
         .active_info img {
             width: 100% !important;
         }
+
+        .glyphicon-thumbs-up {
+            cursor: pointer;
+        }
+
+            .glyphicon-thumbs-up.active {
+                color: #bc2328;
+            }
     </style>
-    <link href="~/Areas/Wechat/Content/styles/shouwei/active.css" rel="stylesheet" />
+    <script>
+        function updateVoteStatus(activityId) {
+            var voteCount = Number($('#voteCountHidden').val());
+            var isVoted = $('#voteIcon').hasClass('active');
+            if (isVoted) {
+                voteCount = (voteCount - 1) < 0 ? 0 : (voteCount - 1);
+                
+                $('#voteIcon').removeClass('active');
+                $('#voteCount').html('&nbsp;' + voteCount);
+            }
+            else {
+                voteCount = voteCount + 1;
+
+                $('#voteIcon').addClass('active');
+                $('#voteCount').html('&nbsp;' + voteCount);
+            }
+
+            $('#voteCountHidden').val(voteCount);
+
+            $.post("/wechat/activity/UpdateVoteStatus", {
+                activityId: activityId,
+                isVoted: !isVoted
+            }, function (data) {
+                if (data.IsSuccessFul) {
+                    // nothing
+                }
+                else {
+                    // nothing
+                }
+            });
+        }
+    </script>
 }
 <div class="main">
+
     <ul class="details">
         <li class="dtitle" style="font-size:20px;">
             @Model.Activity.Title
@@ -122,6 +163,19 @@
             <img src="~/content/images/wechat_qrcode_bg.png" alt="微信公众号二维码" width="80%" />
         </div>
 
-        <div>阅读 @(Model.Activity.ViewCount ?? 1000)</div>
+        <div>
+            阅读&nbsp;@(Model.Activity.ViewCount ?? 1) &nbsp;&nbsp;
+            <input type="hidden" id="voteCountHidden" value="@Model.ActivityVoteTotalCount" />
+            @if (Model.IsCurrentUserVoted)
+            {
+                <span id="voteIcon" onclick="updateVoteStatus(@Model.Activity.Id);" class="glyphicon glyphicon-thumbs-up active"></span>
+                <span id="voteCount">&nbsp;@Model.ActivityVoteTotalCount</span>
+            }
+            else
+            {
+                <span id="voteIcon" onclick="updateVoteStatus(@Model.Activity.Id);" class="glyphicon glyphicon-thumbs-up"></span>
+                <span id="voteCount">&nbsp;@Model.ActivityVoteTotalCount</span>
+            }
+        </div>
     </div>
 </div>

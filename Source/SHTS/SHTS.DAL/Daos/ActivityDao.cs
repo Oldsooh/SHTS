@@ -143,9 +143,124 @@ namespace Witbird.SHTS.DAL.Daos
             return DBHelper.RunNonQueryProcedure(conn, sp_UpdateActivityStatu, parameters) > 0;
         }
 
+        public bool InsertOrUpdateActivityVote(SqlConnection conn, ActivityVote vote)
+        {
+            SqlParameter[] parameters = 
+            {
+                new SqlParameter("@VoteId", vote.VoteId),
+                new SqlParameter("@UserId", vote.UserId),
+                new SqlParameter("@WechatUserOpenId", vote.WechatUserOpenId),
+                new SqlParameter("@ActivityId", vote.ActivityId),
+                new SqlParameter("@IsVoted", vote.IsVoted),
+                new SqlParameter("@InsertedTimestamp", vote.InsertedTimestamp),
+                new SqlParameter("@LastUpdatedTimestamp", vote.LastUpdatedTimestamp)
+            };
+
+            DBHelper.CheckSqlSpParameter(parameters);
+
+            return DBHelper.RunNonQueryProcedure(conn, "sp_InsertOrUpdateActivityVote", parameters) > 0;
+        }
+
+        public ActivityVote SelectActivityVoteByUserId(SqlConnection conn, int activityId, int userId)
+        {
+            ActivityVote vote = null;
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@ActivityId", activityId)
+            };
+
+            using (var reader = DBHelper.RunProcedure(conn, "sp_SelectActivityVoteByUserId", parameters))
+            {
+                while (reader.Read())
+                {
+                    vote = ConvertToActivityVotesObject(reader);
+                }
+
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        vote.ActivityTotalVoteCount = reader[0].DBToInt32();
+                    }
+                }
+            }
+
+            return vote ?? new ActivityVote();
+        }
+
+        public ActivityVote SelectActivityVoteByWechatUserOpenId(SqlConnection conn, int activityId, string wechatUserOpenId)
+        {
+            ActivityVote vote = null;
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@WechatUserOpenId", wechatUserOpenId),
+                new SqlParameter("@ActivityId", activityId)
+            };
+
+            using (var reader = DBHelper.RunProcedure(conn, "sp_SelectActivityVoteByWechatUserOpenId", parameters))
+            {
+                while (reader.Read())
+                {
+                    vote = ConvertToActivityVotesObject(reader);
+                }
+
+                if (vote == null)
+                {
+                    throw new ArgumentNullException("vote");
+                }
+
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        vote.ActivityTotalVoteCount = reader[0].DBToInt32();
+                    }
+                }
+            }
+
+            return vote ?? new ActivityVote();
+        }
+
+        public int SelectActivityTotalVotesCount(SqlConnection conn, int activityId)
+        {
+            int totalCount = 0;
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@ActivityId", activityId)
+            };
+
+            using (var reader = DBHelper.RunProcedure(conn, "sp_SelectActivityTotalVotesCount", parameters))
+            {
+                while (reader.Read())
+                {
+                    totalCount = reader[0].DBToInt32();
+                }
+            }
+
+            return totalCount;
+        }
+
         #endregion
 
         #region common
+
+        private ActivityVote ConvertToActivityVotesObject(SqlDataReader reader)
+        {
+            return new ActivityVote()
+            {
+                VoteId = reader["VoteId"].DBToInt32(),
+                UserId = reader["UserId"].DBToInt32(),
+                WechatUserOpenId = reader["WechatUserOpenId"].DBToString(),
+                ActivityId = reader["ActivityId"].DBToInt32(),
+                IsVoted = reader["IsVoted"].DBToBoolean(),
+                InsertedTimestamp = reader["InsertedTimestamp"].DBToDateTime(DateTime.Now),
+                LastUpdatedTimestamp = reader["LastUpdatedTimestamp"].DBToDateTime(DateTime.Now)
+            };
+        }
 
         public Activity ConvertToActivityObject(SqlDataReader reader)
         {

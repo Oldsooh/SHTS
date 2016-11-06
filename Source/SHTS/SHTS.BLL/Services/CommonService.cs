@@ -44,7 +44,7 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
-        public const string ReplacementForContactInfo = "***";
+        public const string ReplacementForContactInfo = "[屏蔽]";
         public const string ReplacementForSensitiveWords = "***";
 
         private static List<string> sensitivewords = new List<string>();

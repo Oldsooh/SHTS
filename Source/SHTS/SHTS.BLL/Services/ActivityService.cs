@@ -131,5 +131,68 @@ namespace Witbird.SHTS.BLL.Services
             return result;
         }
 
+        public bool AddOrUpdateActivityVoteRecord(ActivityVote vote)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                result = activityDao.InsertOrUpdateActivityVote(conn, vote);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("AddOrUpdateActivityVoteRecord--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        public ActivityVote SelectActivityVote(int activityId, int userId)
+        {
+            ActivityVote vote = null;
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                vote = activityDao.SelectActivityVoteByUserId(conn, activityId, userId);
+            }
+            catch(Exception e)
+            {
+                LogService.Log("SelectActivityVote--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return vote ?? new ActivityVote();
+        }
+
+        public ActivityVote SelectActivityVote(int activityId, string wechatUserOpenId)
+        {
+            ActivityVote vote = null;
+            var conn = DBHelper.GetSqlConnection();
+
+            try
+            {
+                conn.Open();
+                vote = activityDao.SelectActivityVoteByWechatUserOpenId(conn, activityId, wechatUserOpenId);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("SelectActivityVote--" + e.Message, e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return vote ?? new ActivityVote();
+        }
     }
 }

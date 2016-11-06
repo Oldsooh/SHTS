@@ -61,6 +61,9 @@
     <Compile Include="ActivityType.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ActivityVote.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Actor.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
@@ -118,6 +121,7 @@
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Activity.cs" />
+    <Compile Include="Extensions\ActivityVote.cs" />
     <Compile Include="Extensions\Demand.cs" />
     <Compile Include="Extensions\DemandQuote.cs" />
     <Compile Include="Extensions\DemandQuoteHistory.cs" />

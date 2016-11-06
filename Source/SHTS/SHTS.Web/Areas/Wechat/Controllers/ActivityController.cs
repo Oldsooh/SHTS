@@ -20,12 +20,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         //
         // GET: /M/Activity/
 
+
+        ActivityService service = new ActivityService();
+
         public ActionResult Index(int page = 1)
         {
             ActivitysViewModel model = new ActivitysViewModel();
             try
             {
-                ActivityService service = new ActivityService();
                 QueryActivityCriteria queryActivityCriteria = new QueryActivityCriteria
                 {
                     PageSize = 10,
@@ -57,10 +59,21 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             ShowActivityViewModel model = new ShowActivityViewModel();
             try
             {
-                ActivityService service = new ActivityService();
-                model.Activity = service.GetActivityById(id);
-                
+                var activity = service.GetActivityById(id);
+
+                model.Activity = activity;
                 model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
+
+                if (activity.IsNotNull())
+                {
+                    ActivityVote vote = service.SelectActivityVote(activity.Id, CurrentWeChatUser.OpenId);
+
+                    if (vote.IsNotNull())
+                    {
+                        model.ActivityVoteTotalCount = vote.ActivityTotalVoteCount;
+                        model.IsCurrentUserVoted = vote.IsVoted;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -108,7 +121,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     }
                     else
                     {
-                        ActivityService service = new ActivityService();
                         activity.UserId = UserInfo.UserId;
                         activity.LocationId = Request.Form["LocationId[]"];
                         activity.State = 3;
@@ -129,6 +141,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             model.Activity = activity;
             return View(model);
+        }
+
+        public ActionResult UpdateVoteStatus(int activityId, bool isVoted)
+        {
+            var vote = new ActivityVote()
+            {
+                ActivityId = activityId,
+                InsertedTimestamp = DateTime.Now,
+                IsVoted = isVoted,
+                LastUpdatedTimestamp = DateTime.Now,
+                UserId = CurrentWeChatUser.UserId,
+                WechatUserOpenId = CurrentWeChatUser.OpenId
+            };
+            var result = service.AddOrUpdateActivityVoteRecord(vote);
+            var data = new
+            {
+                IsSuccessFul = result
+            };
+            return Json(data);
         }
     }
 }
