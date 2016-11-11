@@ -66,6 +66,7 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="MarkForDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Comment" Member="Comments">
@@ -84,7 +85,6 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="MarkForDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Member="DisplayOrder" Type="System.Int32" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.ActorSex" Member="ActorSexes">

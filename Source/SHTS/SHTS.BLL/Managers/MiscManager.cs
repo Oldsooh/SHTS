@@ -36,7 +36,7 @@ namespace Witbird.SHTS.BLL.Managers
         }
         public List<ActorType> GetActorTypeList()
         {
-            return context.ActorTypes.ToList();
+            return context.ActorTypes.OrderBy(x => x.DisplayOrder).ToList();
         }
         public List<ActorFrom> GetActorFromList()
         {

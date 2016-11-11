@@ -1243,6 +1243,8 @@ namespace Witbird.SHTS.DAL.New
 		
 		private bool _MarkForDelete;
 		
+		private int _DisplayOrder;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1255,6 +1257,8 @@ namespace Witbird.SHTS.DAL.New
     partial void OnDescriptionChanged();
     partial void OnMarkForDeleteChanging(bool value);
     partial void OnMarkForDeleteChanged();
+    partial void OnDisplayOrderChanging(int value);
+    partial void OnDisplayOrderChanged();
     #endregion
 		
 		public ActorType()
@@ -1338,6 +1342,26 @@ namespace Witbird.SHTS.DAL.New
 					this._MarkForDelete = value;
 					this.SendPropertyChanged("MarkForDelete");
 					this.OnMarkForDeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
 				}
 			}
 		}
@@ -1559,8 +1583,6 @@ namespace Witbird.SHTS.DAL.New
 		
 		private bool _MarkForDelete;
 		
-		private int _DisplayOrder;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1573,8 +1595,6 @@ namespace Witbird.SHTS.DAL.New
     partial void OnDescriptionChanged();
     partial void OnMarkForDeleteChanging(bool value);
     partial void OnMarkForDeleteChanged();
-    partial void OnDisplayOrderChanging(int value);
-    partial void OnDisplayOrderChanged();
     #endregion
 		
 		public ActorFrom()
@@ -1658,26 +1678,6 @@ namespace Witbird.SHTS.DAL.New
 					this._MarkForDelete = value;
 					this.SendPropertyChanged("MarkForDelete");
 					this.OnMarkForDeleteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder")]
-		public int DisplayOrder
-		{
-			get
-			{
-				return this._DisplayOrder;
-			}
-			set
-			{
-				if ((this._DisplayOrder != value))
-				{
-					this.OnDisplayOrderChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayOrder = value;
-					this.SendPropertyChanged("DisplayOrder");
-					this.OnDisplayOrderChanged();
 				}
 			}
 		}
