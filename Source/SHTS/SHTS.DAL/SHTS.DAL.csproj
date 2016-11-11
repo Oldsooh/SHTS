@@ -61,6 +61,9 @@
     <Compile Include="Daos\OrderDao.cs" />
     <Compile Include="Daos\PublicConfigDao.cs" />
     <Compile Include="Daos\ResourceDaos.cs" />
+    <Compile Include="New\LinqToShts.cs">
+      <DependentUpon>LinqToShts.dbml</DependentUpon>
+    </Compile>
     <Compile Include="New\LinqToShts.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

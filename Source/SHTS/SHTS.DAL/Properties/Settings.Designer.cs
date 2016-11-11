@@ -26,11 +26,22 @@ namespace Witbird.SHTS.DAL.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=123.56.100.55;Initial Catalog=shts;User ID=sa;Password=ABC" +
-            "123_")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=123.56.100.55;Initial Catalog=shts;Persist Security Info=True;User ID" +
+            "=sa;Password=ABC123_")]
         public string shtsConnectionString {
             get {
                 return ((string)(this["shtsConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=123.56.100.55;Initial Catalog=shts;Persist Security Info=True;User ID" +
+            "=sa;Password=ABC123_")]
+        public string shtsConnectionString2 {
+            get {
+                return ((string)(this["shtsConnectionString2"]));
             }
         }
     }
