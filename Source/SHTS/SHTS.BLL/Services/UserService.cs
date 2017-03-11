@@ -107,7 +107,7 @@ namespace Witbird.SHTS.BLL.Services
         /// <param name="conn"></param>
         /// <param name="column"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns>True: 不存在， False: 存在</returns>
         public bool VerifyUserInfo(string column, string value)
         {
             bool result = false;
@@ -160,7 +160,7 @@ namespace Witbird.SHTS.BLL.Services
         private bool UserRegister(User user, out int userId, out string errorMessage, SqlConnection conn)
         {
             bool result = false;
-            errorMessage = "注册用户失败！请再次尝试，如频繁遇到此错误，请联系客户人员！我们会第一时间帮您解决问题！感谢您使用活动在线网！";
+            errorMessage = string.Empty;
             userId = -1;
 
             try
@@ -187,14 +187,6 @@ namespace Witbird.SHTS.BLL.Services
                 {
                     errorMessage = "请输入注册邮箱！邮箱可用于找回密码！";
                 }
-                else if (string.IsNullOrWhiteSpace(user.Cellphone))
-                {
-                    errorMessage = "请输入手机号码！";
-                }
-                else if (string.IsNullOrWhiteSpace(user.UCard))
-                {
-                    errorMessage = "请输入认证身份证号码！";
-                }
                 else if (!userDao.VerifyUserInfo(conn, "UserName", user.UserName))
                 {
                     errorMessage = "您当前使用的用户名已被使用，请重新输入！";
@@ -203,15 +195,32 @@ namespace Witbird.SHTS.BLL.Services
                 {
                     errorMessage = "您当前注册的邮箱号已被使用，请仔细确认！如您的输入无误，建议您使用邮箱找回密码功能进行密码重置！";
                 }
-                else if (!userDao.VerifyUserInfo(conn, "Cellphone", user.Cellphone))
+                // Only for merchant user account register.
+                else if (user.UserType != 0)
                 {
-                    errorMessage = "您当前注册的手机号已被使用，请仔细确认！";
-                }
-                else if (!userDao.VerifyUserInfo(conn, "UCard", user.UCard))
-                {
-                    errorMessage = "您当前注册认证的身份证号已被使用，请仔细确认！";
+                    if (string.IsNullOrWhiteSpace(user.Cellphone))
+                    {
+                        errorMessage = "请输入手机号码！";
+                    }
+                    else if (!userDao.VerifyUserInfo(conn, "Cellphone", user.Cellphone))
+                    {
+                        errorMessage = "您当前注册的手机号已被使用，请仔细确认！";
+                    }
+                    else if (string.IsNullOrWhiteSpace(user.UCard))
+                    {
+                        errorMessage = "请输入认证身份证号码！";
+                    }
+                    else if (!userDao.VerifyUserInfo(conn, "UCard", user.UCard))
+                    {
+                        errorMessage = "您当前注册认证的身份证号已被使用，请仔细确认！";
+                    }
                 }
                 else
+                {
+                    // nothing to do.
+                }
+                
+                if (string.IsNullOrWhiteSpace(errorMessage))
                 {
                     user.Vip = (int)VipState.Normal;
                     user.EncryptedPassword = user.EncryptedPassword.ToMD5();

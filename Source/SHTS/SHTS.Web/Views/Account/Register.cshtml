@@ -42,28 +42,28 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell">
+                    @*<div class="cell">
                         <input type="text" name="Cellphone" onblur=" VerifyInfo(this, 'Cellphone'); " value="@Model.User.Cellphone" id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>
+                    </div>*@
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
                     </div>*@
-                    <div class="cell">
+                    @*<div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " value="@Model.User.UCard"  id="js_mobile_card" placeholder="认证身份证号" class="text usercard"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>
-                    <div class="cell" style="height: auto; font-size: 12px; display: none;">
+                    </div>*@
+                    @*<div class="cell" style="height: auto; font-size: 12px; display: none;">
                         <span>身份证照片:</span>
                         <div class="inputdiv">
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
-                    </div>
+                    </div>*@
 
                     <div class="cell vcode">
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
@@ -164,28 +164,28 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    <div class="cell">
+                    @*<div class="cell">
                         <input type="text" name="Cellphone" onblur=" VerifyInfo(this, 'Cellphone'); " id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>
+                    </div>*@
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt');" id="js-get_mobile_vcode" class="button btn-disabled">免费获取验证码</a>
                     </div>*@
-                    <div class="cell">
+                    @*<div class="cell">
                         <input type="text" name="UCard" onblur=" VerifyInfo(this, 'UCard'); " id="js_mobile_card" placeholder="认证身份证号" class="text usercard"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>
-                    <div class="cell" style="height: auto; font-size: 12px;display: none;">
+                    </div>*@
+                    @*<div class="cell" style="height: auto; font-size: 12px;display: none;">
                         <span>身份证照片:</span>
                         <div class="inputdiv">
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
-                    </div>
+                    </div>*@
 
                     <div class="cell vcode">
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />

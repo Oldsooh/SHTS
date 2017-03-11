@@ -81,9 +81,10 @@
         .webuploader-element-invisible {
             position: inherit !important;
         }
+
         .hd {
-        display: none;
-    }
+            display: none;
+        }
     </style>
 
     <script type="text/javascript">
@@ -95,6 +96,10 @@
             if (Title != "") {
                 if (Phone != "") {
                     if (ContentText != "") {
+                        if (Title.indexOf('寻找') == -1){
+                            Title = '寻找' + Title;
+                            $('#Title').val(Title);
+                        }
                         $.ajax({
                             url: '/wechat/demand/add',
                             data: $("#addForm").serialize(),
@@ -217,7 +222,8 @@
                 </select>
             </div>
             <div class="cell">
-                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="寻找..." class="text" value="寻找">
+                <span style="display:inline-block;margin-top: 8px;margin-left: 11px;">寻找</span>
+                <input type="text" id="Title" name="Title" style="padding-left:44px;width:264px;" placeholder="需求标题" class="text" value="">
             </div>
             <div class="cell">
                 <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
@@ -264,14 +270,7 @@
                 <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text">
             </div>
             <div class="cell" style="height: 200px;">
-                <textarea name="ContentText" id="ContentText" placeholder="寻找
-
-时间：
-
-地点：
-
-详细需求：" class="text" style="height: 200px; width: 94%;">
-                </textarea>
+                <textarea name="ContentText" id="ContentText" placeholder="请描述时间、地点及其他具体需求内容" class="text" style="height: 200px; width: 94%;"></textarea>
             </div>
             <div class="bottom">
                 <button type="button" id="js-mobile_btn" class="button btn-green" onclick="addDemand()">发布需求</button>

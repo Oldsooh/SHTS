@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace WitBird.Common
 {
     /// <summary>
-    /// Provides a set of method which to filter specified sensitive words, such as phone number, tel number, 
+    /// Provides a set of methods which to filter specified sensitive words, such as phone number, tel number, 
     /// email address, illegal characters.
     /// </summary>
     public static class FilterHelper

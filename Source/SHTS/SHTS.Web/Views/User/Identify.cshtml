@@ -1,7 +1,8 @@
 ﻿@model Witbird.SHTS.Web.Models.User.UserViewModel
 @{
-    ViewBag.Title = "用户中心-升级为Vip | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    ViewBag.Title = "用户中心-会员认证 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+    var isUserIdentified = !string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) && Model.VipInfo.State.Value != (int)Witbird.SHTS.Model.VipState.Invalid;
 }
 @section head
 {
@@ -16,8 +17,7 @@
 
 <div class="main w1000">
     <div class="location">
-        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a
-            href="/user/" class="blue">用户中心</a><span class="ch">&nbsp;&gt;&nbsp;会员认证</span>
+        您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span><a href="/user/" class="blue">用户中心</a><span class="ch">&nbsp;&gt;&nbsp;会员认证</span>
     </div>
     @Html.Action("UserMenu", "User")
     <div class="user_right">
@@ -25,7 +25,7 @@
             <p class="n1">会员认证</p>
         </div>
         <div style="width: 48%; float: right; margin-top: 20px;">
-            @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
+            @if (!isUserIdentified)
             {
                 <div class="ur_title" style="margin-top: 0px;">
                     <span class="red ch"></span>
@@ -41,25 +41,44 @@
 
         <form action="#" enctype="multipart/form-data" method="POST">
             <div style="width: 48%; float: left;">
-                <div class="ur_title" style="width: auto; margin-top: 20px;">
-                    <span class="red ch"></span>
-                    @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
-                    {
-                        <span>@(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")</span>
-                    }
-                </div>
+                @*<div class="ur_title" style="width: auto; margin-top: 20px;">
+                        <span class="red ch"></span>
+                        @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                        {
+                            <span>@(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")</span>
+                        }
+                    </div>*@
+                @if (Model.UserEntity.UserType == 0)
+                {
+                    var readonlyAttr = isUserIdentified ? "readonly='readonly'" : string.Empty;
+                    var disabledAttr = isUserIdentified ? "disabled='disabled'" : string.Empty;
+                    var phoneNumber = isUserIdentified ? Model.UserEntity.Cellphone : ViewData["PhoneNumber"].ToString();
+                    var ucard = isUserIdentified ? Model.UserEntity.UCard : ViewData["UCard"].ToString();
+
+                    <div class="ur_box">
+                        <span style="font-size:14px;">手机号码：&nbsp;&nbsp;&nbsp;<span class="red ch">*</span></span>
+                        <input name="phone" id="txtPhone" type="text" style="width: 270px;" placeholder="请输入认证手机号码"
+                               class="ur_txt1" value="@phoneNumber" @readonlyAttr @disabledAttr />
+                    </div>
+                    <div class="ur_box">
+                        <span style="font-size:14px;">身份证号码：<span class="red ch">*</span></span>
+                        <input name="ucard" id="txtUCard" type="text" style="width: 270px;" placeholder="请输入认证身份证号码"
+                               class="ur_txt1" value="@ucard"  @readonlyAttr @disabledAttr />
+                    </div>
+                }
                 <div class="ur_box">
                     @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
                     {
+                        var placeHolder = Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见";
                         <div>
                             <input name="IdentiyImgFile" id="IdentiyImgFile" type="text" style="width: 255px;"
-                                class="ur_txt1" />
+                                   class="ur_txt1" placeholder="@placeHolder" />
                             <input name="IdentiyImg" id="IdentiyImg" type="file" style="opacity: 0; display: none;" />
                             <input type="button" id="IdentiyImgBtn" class="ll_btn" value="选择文件…" />
                         </div>
                     }
                     <div style="margin-top: 5px;">
-                        <img id="preview" src="@Model.VipInfo.IdentifyImg" width="370" height="300"/>
+                        <img id="preview" src="@Model.VipInfo.IdentifyImg" width="370" height="300" />
                     </div>
                     <div>
                         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
@@ -72,16 +91,16 @@
             <div class="clearfix"></div>
             <div class="ur_tj" style="width: 670px;">
                 @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
-                {
+            {
                     <div class="user_right_bt">
                     </div>
-                    <input name="" type="submit" class="tjzl_btn userbtn" value="上传照片" />
+                    <input name="" type="submit" class="tjzl_btn userbtn" value="提交认证资料" />
                 }
                 else if (Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
                 {
                     <div class="user_right_bt">
                     </div>
-                    <input name="" type="submit" class="tjzl_btn userbtn" value="重新上传" />
+                    <input name="" type="submit" class="tjzl_btn userbtn" value="提交认证资料" />
                 }
                 else
                 {

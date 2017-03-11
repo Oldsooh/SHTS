@@ -14,6 +14,7 @@ using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Models.ActivityModel;
 using Witbird.SHTS.Web.Models.User;
 using Witbird.SHTS.Web.MvcExtension;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Controllers
 {
@@ -210,6 +211,9 @@ namespace Witbird.SHTS.Web.Controllers
                 {
                     LogService.Log("Identify 出错了！", e.ToString());
                 }
+
+                ViewData["PhoneNumber"] = CurrentUser.Cellphone;
+                ViewData["UCard"] = CurrentUser.UCard;
                 model.ErrorMsg = GetErrorMessage(model.VipInfo);
             }
             return View(model);
@@ -227,17 +231,71 @@ namespace Witbird.SHTS.Web.Controllers
 
                 string errorMsg = string.Empty;
                 string imgUrl = string.Empty;
-                try
-                {
-                    HttpPostedFileBase postFile = this.HttpContext.Request.Files["IdentiyImg"];
-                    using (System.Drawing.Image img = System.Drawing.Image.FromStream(postFile.InputStream))
-                    {
-                    }
 
-                }
-                catch
+                // validate phone number
+                var phoneNumber = form["phone"];
+                var ucard = form["ucard"];
+
+                ViewData["PhoneNumber"] = phoneNumber;
+                ViewData["UCard"] = ucard;
+
+                // For Personal member only
+                if (CurrentUser.UserType == 0)
                 {
-                    errorMsg = "图片格式错误，请重新选择";
+                    if (string.IsNullOrWhiteSpace(phoneNumber))
+                    {
+                        errorMsg = "请输入认证手机号码";
+                    }
+                    else if (!RegexHelper.IsValidPhoneNumber(phoneNumber))
+                    {
+                        errorMsg = "手机号码格式不正确";
+                    }
+                    else if (!service.VerifyUserInfo("Cellphone", phoneNumber) && 
+                        !string.Equals(phoneNumber, CurrentUser.Cellphone))
+                    {
+                        errorMsg = "该手机号码已被其他用户使用";
+                    }
+                    else if (string.IsNullOrWhiteSpace(ucard))
+                    {
+                        errorMsg = "请输入身份证号码";
+                    }
+                    else if (!RegexHelper.IsValidUserIdentifiedCardNo(ucard))
+                    {
+                        errorMsg = "身份证号码格式不正确";
+                    }
+                    else if (!service.VerifyUserInfo("UCard", ucard)
+                        && !string.Equals(ucard, CurrentUser.UCard))
+                    {
+                        errorMsg = "该身份证号码已被其他用户使用";
+                    }
+                    else
+                    {
+                        // do nothing
+                    }
+                }
+
+                // validate identify image.
+                if (string.IsNullOrEmpty(errorMsg))
+                {
+                    var identifiedPhoto = this.HttpContext.Request.Files["IdentiyImg"];
+                    if (identifiedPhoto.ContentLength == 0)
+                    {
+                        errorMsg = "请选择认证图片";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            using (System.Drawing.Image img = System.Drawing.Image.FromStream(identifiedPhoto.InputStream))
+                            {
+                            }
+
+                        }
+                        catch
+                        {
+                            errorMsg = "图片格式错误，请重新选择";
+                        }
+                    }
                 }
 
                 if (string.IsNullOrEmpty(errorMsg))
@@ -245,12 +303,15 @@ namespace Witbird.SHTS.Web.Controllers
                     errorMsg = FileUploadHelper.SaveFile(this.HttpContext, "IdentiyImg", out imgUrl);
                     if (string.IsNullOrEmpty(errorMsg))
                     {
-                        UserInfo.IdentiyImg = imgUrl;
-                        UserInfo.Vip = (int)VipState.Normal;
-                        if (service.UserUpdate(UserInfo) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, imgUrl,
+                        CurrentUser.Cellphone = phoneNumber;
+                        CurrentUser.UCard = ucard;
+                        CurrentUser.IdentiyImg = imgUrl;
+                        CurrentUser.Vip = (int)VipState.Normal;
+
+                        if (service.UserUpdate(CurrentUser) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, imgUrl,
                             DateTime.Now, DateTime.Now, vipInfo.Duration, vipInfo.Amount, VipState.Normal))
                         {
-                            errorMsg = "图片上传成功，等待管理员审核";
+                            errorMsg = "认证图片上传成功，等待管理员审核";
                         }
                     }
                 }
