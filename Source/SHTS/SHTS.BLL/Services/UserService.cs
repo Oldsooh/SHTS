@@ -195,18 +195,18 @@ namespace Witbird.SHTS.BLL.Services
                 {
                     errorMessage = "您当前注册的邮箱号已被使用，请仔细确认！如您的输入无误，建议您使用邮箱找回密码功能进行密码重置！";
                 }
+                else if (string.IsNullOrWhiteSpace(user.Cellphone))
+                {
+                    errorMessage = "请输入手机号码！";
+                }
+                else if (!userDao.VerifyUserInfo(conn, "Cellphone", user.Cellphone))
+                {
+                    errorMessage = "您当前注册的手机号已被使用，请仔细确认！";
+                }
                 // Only for merchant user account register.
                 else if (user.UserType != 0)
                 {
-                    if (string.IsNullOrWhiteSpace(user.Cellphone))
-                    {
-                        errorMessage = "请输入手机号码！";
-                    }
-                    else if (!userDao.VerifyUserInfo(conn, "Cellphone", user.Cellphone))
-                    {
-                        errorMessage = "您当前注册的手机号已被使用，请仔细确认！";
-                    }
-                    else if (string.IsNullOrWhiteSpace(user.UCard))
+                    if (string.IsNullOrWhiteSpace(user.UCard))
                     {
                         errorMessage = "请输入认证身份证号码！";
                     }

@@ -250,7 +250,8 @@ namespace Witbird.SHTS.Web.Controllers
         /// <returns></returns>
         public bool IsAccessFromMobileDevice(HttpRequestBase request)
         {
-            return request.Browser.IsMobileDevice;
+            //return request.Browser.IsMobileDevice;
+            return false;
         }
 
         /// <summary>

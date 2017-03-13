@@ -42,12 +42,12 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    @*<div class="cell">
+                    <div class="cell">
                         <input type="text" name="Cellphone" onblur=" VerifyInfo(this, 'Cellphone'); " value="@Model.User.Cellphone" id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>*@
+                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt'); " id="js-get_mobile_vcode" class="button">免费获取验证码</a>
@@ -58,12 +58,12 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>*@
-                    @*<div class="cell" style="height: auto; font-size: 12px; display: none;">
+                    <div class="cell" style="height: auto; font-size: 12px; display: none;">
                         <span>身份证照片:</span>
                         <div class="inputdiv">
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
-                    </div>*@
+                    </div>
 
                     <div class="cell vcode">
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
@@ -164,12 +164,12 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>
-                    @*<div class="cell">
+                    <div class="cell">
                         <input type="text" name="Cellphone" onblur=" VerifyInfo(this, 'Cellphone'); " id="js_mobile_ipt" placeholder="认证手机号码" class="text" maxlength="11"/>
                         <div class="verifyblock">
                             <img src="~/Content/images/load.gif"/>
                         </div>
-                    </div>*@
+                    </div>
                     @*<div class="cell vcode">
                         <input type="text" name="code" id="js_mobile_vcode_ipt" class="text" placeholder="输入验证码" maxlength="6"/>
                         <a href="javascript:;" onclick=" CreatePhoneCode(this, 'js_mobile_ipt','js-mobile_beforevcode_ipt');" id="js-get_mobile_vcode" class="button btn-disabled">免费获取验证码</a>
@@ -180,16 +180,16 @@
                             <img src="~/Content/images/load.gif"/>
                         </div>
                     </div>*@
-                    @*<div class="cell" style="height: auto; font-size: 12px;display: none;">
+                    <div class="cell" style="height: auto; font-size: 12px;display: none;">
                         <span>身份证照片:</span>
                         <div class="inputdiv">
                             <input type="file" id="js_mobile_IdentiyImg" name="IdentiyImg"/>
                         </div>
-                    </div>*@
+                    </div>
 
                     <div class="cell vcode">
                         <input type="text" name="beforevcode" id="js-mobile_beforevcode_ipt" onblur="validbeforevcode(this, 'js_mobile_btn')" class="text" placeholder="请先输入验证码" maxlength="6" />
-                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick=" this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
+                        <img src="/base/verifycode" id="js-get_mobile_beforevcode" class="button" title="看不清，换一张" alt="看不清，换一张" onclick="this.src = '/base/verifycode?date=' + (new Date()).getTime(); " />
                     </div>
                     <div class="user-agreement">
                         <input type="checkbox" id="js_mobile_chk" checked="checked"/>

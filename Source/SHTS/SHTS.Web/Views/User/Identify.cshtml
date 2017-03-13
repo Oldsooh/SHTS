@@ -52,14 +52,14 @@
                 {
                     var readonlyAttr = isUserIdentified ? "readonly='readonly'" : string.Empty;
                     var disabledAttr = isUserIdentified ? "disabled='disabled'" : string.Empty;
-                    var phoneNumber = isUserIdentified ? Model.UserEntity.Cellphone : ViewData["PhoneNumber"].ToString();
+                    //var phoneNumber = isUserIdentified ? Model.UserEntity.Cellphone : ViewData["PhoneNumber"].ToString();
                     var ucard = isUserIdentified ? Model.UserEntity.UCard : ViewData["UCard"].ToString();
 
-                    <div class="ur_box">
+                    @*<div class="ur_box">
                         <span style="font-size:14px;">手机号码：&nbsp;&nbsp;&nbsp;<span class="red ch">*</span></span>
                         <input name="phone" id="txtPhone" type="text" style="width: 270px;" placeholder="请输入认证手机号码"
                                class="ur_txt1" value="@phoneNumber" @readonlyAttr @disabledAttr />
-                    </div>
+                    </div>*@
                     <div class="ur_box">
                         <span style="font-size:14px;">身份证号码：<span class="red ch">*</span></span>
                         <input name="ucard" id="txtUCard" type="text" style="width: 270px;" placeholder="请输入认证身份证号码"
@@ -91,7 +91,7 @@
             <div class="clearfix"></div>
             <div class="ur_tj" style="width: 670px;">
                 @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
-            {
+                {
                     <div class="user_right_bt">
                     </div>
                     <input name="" type="submit" class="tjzl_btn userbtn" value="提交认证资料" />

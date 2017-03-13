@@ -33,10 +33,10 @@ $(function () {
             UserName: {
                 required: true
             },
-            //Cellphone: {
-            //    required: true,
-            //    isMobile: true
-            //},
+            Cellphone: {
+                required: true,
+                isMobile: true
+            },
             Email: {
                 required: true,
                 email: true
@@ -60,9 +60,9 @@ $(function () {
             UserName: {
                 required: "请输入账户名称"
             },
-            //Cellphone: {
-            //    required: "请输入电话号码"
-            //},
+            Cellphone: {
+                required: "请输入电话号码"
+            },
             Email: {
                 required: "请输入邮箱",
                 email: "邮箱格式不正确"

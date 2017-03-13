@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "会员认证";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+    var isUserIdentified = !string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) && Model.VipInfo.State.Value != (int)Witbird.SHTS.Model.VipState.Invalid;
 }
 
 @section head
@@ -41,18 +42,21 @@
 
 <div class="wrap" style="width: 100%">
     <div class="register-box" style="height: auto; width: 100%;">
-        @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
-        {
-            <div class="cell" style="margin-left:10px;font-size:16px;">
-                <span style="color: #ff6a00;">
-                    @(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")
+        
+        <form id="js-form-mobile" action="Identify" class="reg-form" method="POST" style="width:90%;margin-left:20px;">
+            @if (Model.UserEntity.UserType == 0)
+            {
+                var readonlyAttr = isUserIdentified ? "readonly='readonly'" : string.Empty;
+                var disabledAttr = isUserIdentified ? "disabled='disabled'" : string.Empty;
+                //var phoneNumber = isUserIdentified ? Model.UserEntity.Cellphone : ViewData["PhoneNumber"].ToString();
+                var ucard = isUserIdentified ? Model.UserEntity.UCard : ViewData["UCard"].ToString();
 
-                    <br />
-                    <br />
-                </span>
-            </div>
-        }
-        <form action="Identify" class="reg-form" method="POST" id="multipart/form-data">
+                <span style="font-size:14px;">身份证号码：<span style="color:red;">*</span></span>
+                <div class="cell">
+                    <input name="ucard" id="txtUCard" type="text" style="width: 85%;" placeholder="请输入认证身份证号码"
+                           class="ur_txt1" value="@ucard" @readonlyAttr @disabledAttr />
+                </div>
+            }
             <div class="cell" style="height: auto;">
                 <div id="uploader-demo">
                     <input type="hidden" name="returnUrl" value='@(ViewData["returnUrl"])' />
@@ -60,15 +64,28 @@
                     <!--用来存放item-->
                     <div id="fileList" class="uploader-list">
                         <div class="file-item thumbnail upload-state-done">
+                            @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                            {
+                                <img src="~/Content/images/user/IdentiyImg.jpg" />
+                            }
+                            else
+                            {
                             <img src="@Model.VipInfo.IdentifyImg">
+                            }
                         </div>
                     </div>
                     @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg) || Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
                     {
                         <div id="filePicker" class="webuploader-container">
                             <div class="webuploader-pick">选择照片</div>
+                            @if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
+                            {
+                                <span style="color: #ff6a00;">
+                                    @(Model.UserEntity.UserType == 0 ? "请上传身份证照片，并确认清晰可见" : "请上传营业执照，并确认清晰可见")
+                                </span>
+                            }
                             <div class="upbtn" id="upbtn" style="cursor: pointer;">
-                            </div>
+                            </div> 
                         </div>
                     }
                 </div>
@@ -78,11 +95,11 @@
                 {
                     if (string.IsNullOrEmpty(Model.VipInfo.IdentifyImg))
                     {
-                        <button type="submit" onclick=" addact(); " id="updatepasswordbtn" href="javascript:void(0);" class="button btn-green" style="width:100%;">确认上传</button>
+                        <button type="button" onclick="addact(); " id="updatepasswordbtn" href="javascript:void(0);" class="button btn-green" style="width:100%;">提交认证资料</button>
                     }
                     else if (Model.VipInfo.State.Value == (int)Witbird.SHTS.Model.VipState.Invalid)
                     {
-                        <button type="submit" onclick=" addact(); " id="updatepasswordbtn" href="javascript:void(0);" class="button btn-green" style="width:100%;">重新上传</button>
+                        <button type="button" onclick="addact(); " id="updatepasswordbtn" href="javascript:void(0);" class="button btn-green" style="width:100%;">提交认证资料</button>
                     }
                     else
                     {
@@ -138,8 +155,13 @@
     <script>
 
         function addact() {
-            if ($("#ImgUrls").val() == "") {
+            if ($("#txtUCard").val() == "") {
+                alert("请输入认证身份证号码");
+                return;
+            }
+            else if ($("#ImageUrls").val() == "") {
                 alert("请选择认证图片");
+                return;
             }
             else {
 

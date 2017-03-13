@@ -212,7 +212,7 @@ namespace Witbird.SHTS.Web.Controllers
                     LogService.Log("Identify 出错了！", e.ToString());
                 }
 
-                ViewData["PhoneNumber"] = CurrentUser.Cellphone;
+                //ViewData["PhoneNumber"] = CurrentUser.Cellphone;
                 ViewData["UCard"] = CurrentUser.UCard;
                 model.ErrorMsg = GetErrorMessage(model.VipInfo);
             }
@@ -233,29 +233,30 @@ namespace Witbird.SHTS.Web.Controllers
                 string imgUrl = string.Empty;
 
                 // validate phone number
-                var phoneNumber = form["phone"];
+                //var phoneNumber = form["phone"];
                 var ucard = form["ucard"];
 
-                ViewData["PhoneNumber"] = phoneNumber;
+                //ViewData["PhoneNumber"] = phoneNumber;
                 ViewData["UCard"] = ucard;
 
                 // For Personal member only
                 if (CurrentUser.UserType == 0)
                 {
-                    if (string.IsNullOrWhiteSpace(phoneNumber))
-                    {
-                        errorMsg = "请输入认证手机号码";
-                    }
-                    else if (!RegexHelper.IsValidPhoneNumber(phoneNumber))
-                    {
-                        errorMsg = "手机号码格式不正确";
-                    }
-                    else if (!service.VerifyUserInfo("Cellphone", phoneNumber) && 
-                        !string.Equals(phoneNumber, CurrentUser.Cellphone))
-                    {
-                        errorMsg = "该手机号码已被其他用户使用";
-                    }
-                    else if (string.IsNullOrWhiteSpace(ucard))
+                    //if (string.IsNullOrWhiteSpace(phoneNumber))
+                    //{
+                    //    errorMsg = "请输入认证手机号码";
+                    //}
+                    //else if (!RegexHelper.IsValidPhoneNumber(phoneNumber))
+                    //{
+                    //    errorMsg = "手机号码格式不正确";
+                    //}
+                    //else if (!service.VerifyUserInfo("Cellphone", phoneNumber) && 
+                    //    !string.Equals(phoneNumber, CurrentUser.Cellphone))
+                    //{
+                    //    errorMsg = "该手机号码已被其他用户使用";
+                    //}
+                    //else 
+                    if (string.IsNullOrWhiteSpace(ucard))
                     {
                         errorMsg = "请输入身份证号码";
                     }
@@ -303,7 +304,7 @@ namespace Witbird.SHTS.Web.Controllers
                     errorMsg = FileUploadHelper.SaveFile(this.HttpContext, "IdentiyImg", out imgUrl);
                     if (string.IsNullOrEmpty(errorMsg))
                     {
-                        CurrentUser.Cellphone = phoneNumber;
+                        //CurrentUser.Cellphone = phoneNumber;
                         CurrentUser.UCard = ucard;
                         CurrentUser.IdentiyImg = imgUrl;
                         CurrentUser.Vip = (int)VipState.Normal;

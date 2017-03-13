@@ -11,6 +11,7 @@ using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Admin.Controllers;
 using Witbird.SHTS.Web.Models.User;
 using Witbird.SHTS.Web.MvcExtension;
+using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -192,47 +193,96 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             model.ErrorMsg = GetErrorMessage(model.VipInfo);
 
+            //ViewData["PhoneNumber"] = CurrentUser.Cellphone;
+            ViewData["UCard"] = CurrentUser.UCard;
             ViewData["returnUrl"] = returnUrl;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Identify(string identifyImgUrl, string returnUrl = null)
+        public ActionResult Identify(string ucard, string identifyImgUrl, string returnUrl = null)
         {
+            if (!CurrentWeChatUser.IsUserLoggedIn)
+            {
+                return Redirect("/wechat/account/login");
+            }
+
+            UserService service = new UserService();
             WeChatUserViewModel model = new WeChatUserViewModel { UserEntity = UserInfo };
+            model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
 
-            if (!string.IsNullOrWhiteSpace(identifyImgUrl))
+            ViewData["UCard"] = ucard;
+
+            // For Personal member only
+            if (CurrentUser.UserType == 0)
             {
-                UserService service = new UserService();
-                try
+                //if (string.IsNullOrWhiteSpace(phoneNumber))
+                //{
+                //    errorMsg = "请输入认证手机号码";
+                //}
+                //else if (!RegexHelper.IsValidPhoneNumber(phoneNumber))
+                //{
+                //    errorMsg = "手机号码格式不正确";
+                //}
+                //else if (!service.VerifyUserInfo("Cellphone", phoneNumber) && 
+                //    !string.Equals(phoneNumber, CurrentUser.Cellphone))
+                //{
+                //    errorMsg = "该手机号码已被其他用户使用";
+                //}
+                //else 
+                if (string.IsNullOrWhiteSpace(ucard))
                 {
-                    UserVip vipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
-
-                    CurrentUser.IdentiyImg = identifyImgUrl;
-                    CurrentUser.Vip = (int)VipState.Normal;
-                    if (service.UserUpdate(CurrentUser) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, identifyImgUrl,
-                        DateTime.Now, DateTime.Now, vipInfo.Duration, vipInfo.Amount, VipState.Normal))
-                    {
-                        model.ErrorMsg = "照片上传成功，等待管理员审核";
-                    }
-
-                    // get it again
-                    model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
-                    if (string.IsNullOrEmpty(model.ErrorMsg))
-                    {
-                        model.ErrorMsg = GetErrorMessage(model.VipInfo);
-                    }
+                    model.ErrorMsg = "请输入身份证号码";
                 }
-                catch (Exception e)
+                else if (!RegexHelper.IsValidUserIdentifiedCardNo(ucard))
                 {
-                    LogService.Log("Identify 出错了！", e.ToString());
-                    model.ErrorMsg = "认证照片上传失败！";
+                    model.ErrorMsg = "身份证号码格式不正确";
+                }
+                else if (!service.VerifyUserInfo("UCard", ucard)
+                    && !string.Equals(ucard, CurrentUser.UCard))
+                {
+                    model.ErrorMsg = "该身份证号码已被其他用户使用";
+                }
+                else
+                {
+                    // do nothing
                 }
             }
-            else
-            {
-                model.ErrorMsg = "请选择认证照片！";
-            }
+
+            // validate identify image.
+            if (string.IsNullOrEmpty(model.ErrorMsg))
+                if (!string.IsNullOrWhiteSpace(identifyImgUrl))
+                {
+                    try
+                    {
+                        UserVip vipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+
+                        CurrentUser.IdentiyImg = identifyImgUrl;
+                        CurrentUser.UCard = ucard;
+                        CurrentUser.Vip = (int)VipState.Normal;
+                        if (service.UserUpdate(CurrentUser) && service.UpdateUserVipInfo(vipInfo.Id, vipInfo.OrderId, identifyImgUrl,
+                            DateTime.Now, DateTime.Now, vipInfo.Duration, vipInfo.Amount, VipState.Normal))
+                        {
+                            model.ErrorMsg = "认证资料上传成功，等待管理员审核";
+                        }
+
+                        // get it again
+                        model.VipInfo = service.GetUserVipInfoByUserId(UserInfo.UserId);
+                        if (string.IsNullOrEmpty(model.ErrorMsg))
+                        {
+                            model.ErrorMsg = GetErrorMessage(model.VipInfo);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.Log("Identify 出错了！", e.ToString());
+                        model.ErrorMsg = "认证资料上传失败！";
+                    }
+                }
+                else
+                {
+                    model.ErrorMsg = "请选择认证身份证照片！";
+                }
 
             if (!string.IsNullOrWhiteSpace(returnUrl))
             {

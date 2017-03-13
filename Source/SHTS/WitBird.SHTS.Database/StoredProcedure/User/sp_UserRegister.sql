@@ -19,7 +19,7 @@
  AS 
 BEGIN
 	IF exists 
-	(Select UserId from [User] Where (UserName=@UserName OR Email=@Email) AND [state] = 0) -- deleted
+	(Select UserId from [User] Where (UserName=@UserName OR Email=@Email OR Cellphone=@Cellphone) AND [state] = 0) -- deleted
 	BEGIN
 
 	   RAISERROR(50103, 16, 1, 'User identity is conflicted.');
@@ -28,10 +28,10 @@ BEGIN
 	ELSE
 	BEGIN
 	IF exists(Select UserId from [User] 
-    Where (UserName=@UserName OR Email=@Email) AND [state] = 1) -- deleted
+    Where (UserName=@UserName OR Email=@Email OR Cellphone=@Cellphone) AND [state] = 1) -- deleted
 	BEGIN
 	SET @UserId = (Select UserId from [User] 
-    Where (UserName=@UserName OR Email=@Email) AND [state] = 1) 
+    Where (UserName=@UserName OR Email=@Email OR Cellphone=@Cellphone) AND [state] = 1) 
 
 	UPDATE [User] SET UserName = @UserName, EncryptedPassword = @EncryptedPassword, UserType = @UserType, Adress = @Adress,
 	LocationId = @LocationId, Cellphone = @Cellphone, Email = @Email, QQ=@QQ, UCard = @UCard, SiteUrl = @SiteUrl,
