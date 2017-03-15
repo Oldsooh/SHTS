@@ -33,10 +33,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             public const string RequestTimeExceedMessage = @"亲爱的需求订阅用户，由于微信服务号消息限制，48小时内如无主动交互我们将无法向您推送您订阅的最新需求信息。为了保证您的正常使用，你可以:
 
 1. 点击底部菜单
-需求信息 -> 获取订阅
+查找业务 -> 获取订阅
 
 2. 点击底部菜单 
-需求信息 -> 更新订阅";
+查找业务 -> 更新订阅";
 
             /// <summary>
             /// 当前没有可推荐的需求订阅信息

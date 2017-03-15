@@ -14,6 +14,7 @@ using System.Configuration;
 using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Public;
 using System.Web.Mvc;
+using System.Text;
 
 namespace Witbird.SHTS.Web.Subscription
 {
@@ -202,6 +203,9 @@ namespace Witbird.SHTS.Web.Subscription
                     // {0}:取消订阅链接， {1}：需求标题，{2}：需求类型，{3}：需求类别，{4}：需求预算，{5}：需求开始时间和结束时间，{6}：区域位置，{7}：需求详情，{8}：查看需求链接
                     var emailSubscriptionContentFormat = configService.GetConfigValue("EmailSubscriptionContentFormat").ConfigValue;
 
+                    // 等待被推送的用户, key: wechatuserid, value: email address
+                    var emailAddresses = new Dictionary<int, string>();
+
                     if (subscriptions.HasItem() && subscribedWeChatUsers.HasItem())
                     {
                         foreach (var subscription in subscriptions)
@@ -214,31 +218,45 @@ namespace Witbird.SHTS.Web.Subscription
                                 {
                                     // Only subscried user can recieve articles.
                                     var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
-                                    if (wechatUser.IsNotNull())
+
+                                    // Make sure user has continue subscribed our wechat account.
+                                    if (wechatUser.IsNotNull() && !string.IsNullOrEmpty(subscription.EmailAddress))
                                     {
-                                        var mailAddress = subscription.EmailAddress;
-                                        var displayName = "活动在线网";
-                                        var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
-                                        var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
-                                        var mailEntity = StaticUtility.EmailManager.CreateMailMessage(mailAddress, displayName, mailSubject, mailBody);
-                                        var response = StaticUtility.EmailManager.Send(mailEntity);
-                                        if (response.IsSuccess)
-                                        {
-                                            LogService.LogWexin("邮箱推送需求成功", "微信用户ID: " + wechatUser.Id + ", 用户名: " + wechatUser.NickName + ", 用户邮箱：" + subscription.EmailAddress);
-                                        }
-                                        else
-                                        {
-                                            LogService.LogWexin("邮箱推送需求失败", "微信用户ID: " + wechatUser.Id + ", 用户名: " + wechatUser.NickName + ", 用户邮箱：" + subscription.EmailAddress + "\r\n" + response.InnerException.ToString());
-                                        }
+                                        emailAddresses.Add(wechatUser.Id, subscription.EmailAddress);
                                     }
                                 }
+                            }
+                        }
+
+                        if (emailAddresses.Count > 0)
+                        {
+                            var displayName = "活动在线网";
+                            var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
+                            var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
+                            var mailEntity = StaticUtility.EmailManager.CreateMailMessage(emailAddresses.Values.ToList(), displayName, mailSubject, mailBody);
+                            var response = StaticUtility.EmailManager.Send(mailEntity);
+
+                            StringBuilder logBuilder = new StringBuilder();
+                            foreach (var item in emailAddresses)
+                            {
+                                logBuilder.Append("微信用户ID: ").Append(item.Key).Append(", 邮箱帐号: ").Append(item.Value).Append("\r\n");
+                            }
+
+                            if (response.IsSuccess)
+                            {
+                                LogService.LogWexin("邮箱推送需求成功", logBuilder.ToString());
+                            }
+                            else
+                            {
+                                logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString()).Append("\r\n");
+                                LogService.LogWexin("邮箱推送需求失败", logBuilder.ToString());
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogService.LogWexin("SendDemandByEmail", ex.ToString());
+                    LogService.LogWexin("邮箱推送需求失败", ex.ToString());
                 }
             });
         }
