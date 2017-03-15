@@ -55,7 +55,8 @@ BEGIN
 		Sex,
 		HasSubscribed,
 		HasAuthorized,
-		UserId
+		UserId,
+		LastRequestTimestamp
 	)
 	VALUES
 	(
@@ -72,7 +73,8 @@ BEGIN
 		@Sex,
 		@HasSubscribed,
 		@HasAuthorized,
-		@UserId
+		@UserId,
+		GETDATE()
 	)
 
 	SET @Id = @@IDENTITY
