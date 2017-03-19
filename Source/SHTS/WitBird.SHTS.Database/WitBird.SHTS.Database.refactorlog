@@ -469,4 +469,53 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="WechatUserOpenId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="02e7fa41-5ed4-4b6c-b669-39db6dffbd27" ChangeDateTime="03/19/2017 06:40:07">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrderId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a9b8ea40-5cf0-4a56-8ed4-9f6fb4c6be3c" ChangeDateTime="03/19/2017 06:40:47">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[Subject]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e8173bf5-d9a5-4dd8-a42e-3d63fdc5716b" ChangeDateTime="03/19/2017 06:40:50">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[Body]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Detail" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="64164234-3098-480b-a4a4-2a90cca5090b" ChangeDateTime="03/19/2017 06:44:12">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[Status]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrderStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="583ff8ba-99f4-4599-9b0f-1409592d3f2f" ChangeDateTime="03/19/2017 06:45:22">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[OrderType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Type" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9c310481-6d7f-4b8b-afb1-6a1a8c157b9a" ChangeDateTime="03/19/2017 06:45:25">
+    <Property Name="ElementName" Value="[dbo].[FinanceOrder].[OrderStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceOrder]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Status" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="44993a83-3944-48ca-9013-976d787046cd" ChangeDateTime="03/19/2017 06:50:58">
+    <Property Name="ElementName" Value="[dbo].[FinanceBalance].[Balance]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FinanceBalance]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AvailableBalance" />
+  </Operation>
 </Operations>

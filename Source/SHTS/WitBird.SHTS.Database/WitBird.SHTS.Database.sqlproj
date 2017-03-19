@@ -90,6 +90,7 @@
     <Folder Include="StoredProcedure\DemandSubscription" />
     <Folder Include="StoredProcedure\DemandQuote" />
     <Folder Include="StoredProcedure\Resource" />
+    <Folder Include="Table\Finance" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedure\Calc.sql" />
@@ -243,6 +244,10 @@
     <Build Include="StoredProcedure\Activity\sp_SelectActivityVoteByUserId.sql" />
     <Build Include="StoredProcedure\Activity\sp_SelectActivityVoteByWechatUserOpenId.sql" />
     <Build Include="StoredProcedure\Activity\sp_SelectActivityTotalVotesCount.sql" />
+    <Build Include="Table\Finance\FinanceBalance.sql" />
+    <Build Include="Table\Finance\FinanceOrder.sql" />
+    <Build Include="Table\Finance\FinanceRecord.sql" />
+    <Build Include="Table\Finance\FinanceWithdrawRecord.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
