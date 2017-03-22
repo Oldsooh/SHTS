@@ -112,7 +112,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
-          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" />
         </EntityType>
         <EntityType Name="AdminRole">
           <Key>
@@ -295,6 +295,56 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinanceBalance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AvailableBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="FrozenBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinanceOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Detail" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinanceRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FinanceType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinanceWithdrawRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WithdrawStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BankInfo" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="GuestBook">
           <Key>
@@ -678,6 +728,10 @@
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FinanceBalance" EntityType="Self.FinanceBalance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FinanceOrder" EntityType="Self.FinanceOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FinanceRecord" EntityType="Self.FinanceRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FinanceWithdrawRecord" EntityType="Self.FinanceWithdrawRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GuestBook" EntityType="Self.GuestBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
@@ -755,6 +809,10 @@
           <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
           <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
           <EntitySet Name="ActivityVote" EntityType="shtsModel.ActivityVote" />
+          <EntitySet Name="FinanceBalance" EntityType="shtsModel.FinanceBalance" />
+          <EntitySet Name="FinanceOrder" EntityType="shtsModel.FinanceOrder" />
+          <EntitySet Name="FinanceRecord" EntityType="shtsModel.FinanceRecord" />
+          <EntitySet Name="FinanceWithdrawRecord" EntityType="shtsModel.FinanceWithdrawRecord" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -827,7 +885,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int32" />
         </EntityType>
         <EntityType Name="AdminRole">
           <Key>
@@ -1402,6 +1460,56 @@
           <Property Name="WechatUserOpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ActivityId" Type="Int32" Nullable="false" />
           <Property Name="IsVoted" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FinanceBalance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AvailableBalance" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="FrozenBalance" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FinanceOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Detail" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FinanceRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FinanceType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="FinanceWithdrawRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="WithdrawStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BankInfo" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
@@ -2104,6 +2212,60 @@
                 <ScalarProperty Name="WechatUserOpenId" ColumnName="WechatUserOpenId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="VoteId" ColumnName="VoteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FinanceBalance">
+            <EntityTypeMapping TypeName="shtsModel.FinanceBalance">
+              <MappingFragment StoreEntitySet="FinanceBalance">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="FrozenBalance" ColumnName="FrozenBalance" />
+                <ScalarProperty Name="AvailableBalance" ColumnName="AvailableBalance" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FinanceOrder">
+            <EntityTypeMapping TypeName="shtsModel.FinanceOrder">
+              <MappingFragment StoreEntitySet="FinanceOrder">
+                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FinanceRecord">
+            <EntityTypeMapping TypeName="shtsModel.FinanceRecord">
+              <MappingFragment StoreEntitySet="FinanceRecord">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="FinanceType" ColumnName="FinanceType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FinanceWithdrawRecord">
+            <EntityTypeMapping TypeName="shtsModel.FinanceWithdrawRecord">
+              <MappingFragment StoreEntitySet="FinanceWithdrawRecord">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="BankInfo" ColumnName="BankInfo" />
+                <ScalarProperty Name="WithdrawStatus" ColumnName="WithdrawStatus" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
