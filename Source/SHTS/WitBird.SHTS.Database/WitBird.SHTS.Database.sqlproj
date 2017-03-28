@@ -91,6 +91,7 @@
     <Folder Include="StoredProcedure\DemandQuote" />
     <Folder Include="StoredProcedure\Resource" />
     <Folder Include="Table\Finance" />
+    <Folder Include="StoredProcedure\Finance" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedure\Calc.sql" />
@@ -248,6 +249,16 @@
     <Build Include="Table\Finance\FinanceOrder.sql" />
     <Build Include="Table\Finance\FinanceRecord.sql" />
     <Build Include="Table\Finance\FinanceWithdrawRecord.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceBalanceSelectByUserId.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceBalanceInsert.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceRecordSelectByUserId.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordSelectByUserId.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordSelectByRecordId.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordSelectByNewAndConfirmedStatus.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordInsert.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordUpdateStatus.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceBalanceUpdate.sql" />
+    <Build Include="StoredProcedure\Finance\sp_FinanceRecordInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

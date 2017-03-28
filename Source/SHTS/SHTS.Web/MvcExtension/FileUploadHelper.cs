@@ -67,25 +67,26 @@ namespace Witbird.SHTS.Web.MvcExtension
                         }
                         catch
                         {
-                            message = "上传失败";
+                            message = "上传图片失败";
                         }
 
                     }
                     else
                     {
-                        message = "图片大小不能超过2MB";
+                        message = "上传图片大小不能超过2MB";
                     }
                 }
                 else
                 {
-                    message = "请选择文件";
+                    message = "请选择图片文件";
                 }
             }
             catch (Exception e)
             {
                 LogService.Log("上传图片", e.ToString());
-                message = "出错了！";
+                message = "上传图片失败";
             }
+
             return message;
         }
     }

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Com.Messaging", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WitBird.Common", "SensitiveWordsHelper\WitBird.Common.csproj", "{F61BCF00-6EE5-4520-AD1E-D65DBE91452D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHTS.Finance", "SHTS.Finance\SHTS.Finance.csproj", "{BFE9CF95-B1BA-45B0-8A7A-678FD848E2B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{F61BCF00-6EE5-4520-AD1E-D65DBE91452D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F61BCF00-6EE5-4520-AD1E-D65DBE91452D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F61BCF00-6EE5-4520-AD1E-D65DBE91452D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFE9CF95-B1BA-45B0-8A7A-678FD848E2B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFE9CF95-B1BA-45B0-8A7A-678FD848E2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFE9CF95-B1BA-45B0-8A7A-678FD848E2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFE9CF95-B1BA-45B0-8A7A-678FD848E2B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

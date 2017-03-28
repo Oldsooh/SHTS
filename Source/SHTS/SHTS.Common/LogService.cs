@@ -25,8 +25,8 @@ namespace Witbird.SHTS.Common
 
                     string newPath = paths[0] + "." + paths[1];
 
-                    WitBirdLog loger = new WitBirdLog(newPath);
-                    loger.SaveLog(name, message);
+                    WitBirdLog logger = new WitBirdLog(newPath);
+                    logger.SaveLog(name, message);
                 }
             }
             catch
@@ -46,8 +46,8 @@ namespace Witbird.SHTS.Common
 
                     string newPath = paths[0] + "." + paths[1];
 
-                    WitBirdLog loger = new WitBirdLog(newPath);
-                    loger.SaveLog(name, message);
+                    WitBirdLog logger = new WitBirdLog(newPath);
+                    logger.SaveLog(name, message);
                 }
             }
             catch
@@ -57,11 +57,11 @@ namespace Witbird.SHTS.Common
         }
     }
 
-    public class WitBirdLog
+    internal class WitBirdLog
     {
         private static string _filePath;
 
-        public WitBirdLog(string filePath)
+        internal WitBirdLog(string filePath)
         {
             _filePath = filePath;
         }
@@ -72,7 +72,7 @@ namespace Witbird.SHTS.Common
         /// <param name="name">日志名称</param>
         /// <param name="message">日志内容</param>
         /// <returns>如果成功返回“success”，失败刚返回错误信息</returns>
-        public string SaveLog(string name, string message)
+        internal string SaveLog(string name, string message)
         {
             string result = "failure";
 

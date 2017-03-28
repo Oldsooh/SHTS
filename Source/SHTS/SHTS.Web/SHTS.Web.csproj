@@ -231,10 +231,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\Wechat\Models\DemandQuoteModel.cs" />
+    <Compile Include="Areas\Wechat\Models\FinanceModel.cs" />
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PCBaseController.cs" />
+    <Compile Include="Models\FinanceModel.cs" />
     <Compile Include="Subscription\WorkingThread.cs" />
     <Compile Include="Areas\Wechat\WechatAreaRegistration.cs" />
     <Compile Include="Content\upload\uploadimage300200.ashx.cs">
@@ -1486,6 +1489,10 @@
     <Content Include="Views\Common\Error.cshtml" />
     <Content Include="Views\Resource\Edit.cshtml" />
     <Content Include="Views\Account\ResetAccountPassword.cshtml" />
+    <Content Include="Views\Finance\MyBalance.cshtml" />
+    <Content Include="Views\Finance\Withdraw.cshtml" />
+    <Content Include="Views\Finance\History.cshtml" />
+    <Content Include="Views\Finance\WithdrawRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\WeChatAuth\Models\" />
@@ -1517,6 +1524,10 @@
       <Project>{beda0d03-ad98-4598-8f7d-5a501c58ee11}</Project>
       <Name>SHTS.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SHTS.Finance\SHTS.Finance.csproj">
+      <Project>{bfe9cf95-b1ba-45b0-8a7a-678fd848e2b9}</Project>
+      <Name>SHTS.Finance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SHTS.Model\SHTS.Model.csproj">
       <Project>{9db3c7cc-fbcf-44bc-a839-f1ab320156e9}</Project>
       <Name>SHTS.Model</Name>
@@ -1535,7 +1546,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Web.config" />
+    <Content Include="Areas\Admin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\WebLayoutPage.cshtml" />

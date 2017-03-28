@@ -23,6 +23,19 @@ namespace Witbird.SHTS.Common
         }
 
         /// <summary>
+        /// Checks object
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public static void Check(object parameter)
+        {
+            if (parameter == null)
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        /// <summary>
         /// Checks string
         /// </summary>
         /// <param name="parameter"></param>

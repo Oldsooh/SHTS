@@ -65,7 +65,7 @@ namespace Witbird.SHTS.Web
         protected void Application_Error(object sender, EventArgs e)
         {
             Exception ex = Server.GetLastError();
-            LogService.Log("程序发生了未知异常", ex.ToString());
+            //LogService.Log("程序发生了未知异常", ex.ToString());
             HttpException error = ex as HttpException;
             if (error != null)
             {

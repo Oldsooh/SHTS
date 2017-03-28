@@ -127,6 +127,7 @@
     <Compile Include="Extensions\DemandQuoteHistory.cs" />
     <Compile Include="Extensions\DemandSubscription.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\FinanceWithdrawRecord.cs" />
     <Compile Include="Extensions\MailConfig.cs" />
     <Compile Include="Extensions\Resource\Paging.cs" />
     <Compile Include="Extensions\Resource\QueryResource.cs" />

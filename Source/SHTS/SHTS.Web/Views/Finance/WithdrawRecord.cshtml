@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "我的提现记录 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
+    Layout = "~/Views/Shared/WebLayoutPage.cshtml";
+}
+
+@section head
+{
+<link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
+    <style type="text/css">
+        .usertable tr:hover {
+            background: #f5f8fa;
+        }
+    </style>
+}
+@model Witbird.SHTS.Web.Models.FinanceModel
+
+<div class="main w1000">
+    <div class="location">
+        您当前所处的位置：
+        <a href="/" class="blue">首页</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        <a href="/user" class="blue">用户中心</a>
+        <span class="ch c1">&nbsp;&gt;&nbsp;</span>
+        提现记录
+    </div>
+    @Html.Action("UserMenu", "User")
+    <div class="user_right">
+        <div class="user_right_bt">
+            <p class="n1">提现记录</p>
+            <p class="n1" style="float: right;">
+            </p>
+        </div>
+        <table class="usertable">
+            <tr style="background: #f5f8fa;">
+                <td style="width: 100px;"><strong>记录序号</strong></td>
+                <td style="width: 100px;"><strong>用户昵称</strong></td>
+                <td style="width: 100px;"><strong>提现金额</strong></td>
+                <td style="width: 100px;"><strong>提现状态</strong></td>
+                <td style="width: 100px;"><strong>提现时间</strong></td>
+                <td style="width: 100px;"><strong>操作</strong></td>
+            </tr>
+            @if (Model != null && Model.WithdrawRecords != null && Model.WithdrawRecords.Count > 0)
+            {
+                for (int i = 0; i < Model.WithdrawRecords.Count; i++)
+                {
+                    var record = Model.WithdrawRecords[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@Model.CurrentUser.UserName</td>
+                        <td>@record.Amount.ToString("F2")<span>元</span></td>
+                        <td>
+                            @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
+                            {
+                                <span>申请提现</span>
+                            }
+                            else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Confirmed.ToString())
+                            {
+                                <span>正在处理</span>
+                            }
+                            else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Complete.ToString())
+                            {
+                                <span>提现完成</span>
+                            }
+                            else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Cancelled.ToString())
+                            {
+                                <span>提现取消</span>
+                            }
+                            else
+                            {
+                                <span>---</span>
+                            }
+
+                        </td>
+                        <td>@record.InsertedTimestamp.ToString("yyyy-MM-dd hh:mm:ss")</td>
+                        <td>
+                            @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
+                            {
+                                <a href="javascript:void(0);" title="取消提现" onclick="cancelWithdraw(this);" record="@record.Id">取消提现</a>
+                            }
+                            else
+                            {
+                                <span>---</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+    <div style="clear: both; height: 30px;"></div>
+</div>
+@section FooterJS
+{
+    <script type="text/javascript">
+        function cancelWithdraw(obj) {
+            if (confirm('你确认取消该提现申请吗？') == false)
+                return false;
+
+            $(obj).attr("disabled", "disabled");
+            $.post('/finance/cancelwithdraw',
+            {
+                id: $(obj).attr('record')
+            },
+            function (data, status) {
+                if (data != null) {
+                    if (data == 'success') {
+                        alert('取消成功');
+                        window.location.href = '/finance/encashment';
+                    }
+                    else {
+                        alert(data);
+                    }
+                }
+            });
+        }
+    </script>
+}
