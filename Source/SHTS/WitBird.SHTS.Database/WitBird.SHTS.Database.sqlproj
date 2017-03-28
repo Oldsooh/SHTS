@@ -265,6 +265,7 @@
     <None Include="WitBird.SHTS.Database.sqlproj.user" />
     <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastPushTime.sql" />
     <Build Include="StoredProcedure\User\sp_UpdateWeChatUserLastRequestTime.sql" />
+    <None Include="WitBird.SHTS.Database.publish_123.56.100.55.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />

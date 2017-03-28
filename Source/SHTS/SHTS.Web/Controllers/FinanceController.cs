@@ -85,7 +85,7 @@ namespace Witbird.SHTS.Web.Controllers
                         isSuccessful = false;
                         errorMessage = "提现金额输入不正确，请重新输入";
                     }
-                    else if (string.IsNullOrEmpty(wechatPayQRCodeImgUrl) || !System.IO.File.Exists(wechatPayQRCodeImgUrl))
+                    else if (string.IsNullOrEmpty(wechatPayQRCodeImgUrl))
                     {
                         isSuccessful = false;
                         errorMessage = "请上传您的微信收款二维码图片";
