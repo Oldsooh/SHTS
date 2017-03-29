@@ -1,0 +1,67 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.FinanceModel
+@{
+    ViewBag.Title = "我的提现记录";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        #demand a {
+            color: #ffffff;
+            background-color: #2577e3;
+        }
+    </style>
+}
+
+<div id="main">
+
+    @if (Model.WithdrawRecords != null && Model.WithdrawRecords.Count > 0)
+    {
+        foreach (var record in Model.WithdrawRecords)
+        {
+            <ul class="commonlist">
+                <li class="atitle">
+                    会员帐号：<a href="/wechat/user/viewuser" style="margin-right: 10px;">@Model.CurrentUser.UserName</a>
+                </li>
+                <li>提现金额：<span class="yellow">@record.Amount.ToString("F2")<span>元</span></span></li>
+                <li>提现状态：<span class="yellow">
+                    @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
+                    {
+                        <span>新申请</span>
+                    }
+                    else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Confirmed.ToString())
+                    {
+                        <span>处理中</span>
+                    }
+                    else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Complete.ToString())
+                    {
+                        <span>已完成</span>
+                    }
+                    else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Cancelled.ToString())
+                    {
+                        <span>已取消</span>
+                    }
+                    else
+                    {
+                        <span>---</span>
+                    }
+                    </span></li>
+                <li>提现时间：@record.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")</li>
+                @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
+                {
+                    <li><a href="/wechat/finance/cancelwithdraw/@record.Id" style="margin-right: 10px;">取消提现申请</a></li>
+                }
+            </ul>
+        }
+    }
+    else
+    {
+        <ul class="commonlist">
+            <li class="atitle">
+                <lable style="color: #FD9102;">没有提现记录数据！</lable>
+            </li>
+        </ul>
+
+    }
+    <div style="clear: both; height: 10px;"></div>
+</div>

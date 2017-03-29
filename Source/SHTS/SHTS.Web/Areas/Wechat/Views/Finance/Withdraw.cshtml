@@ -1,0 +1,218 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.FinanceModel
+@{
+    ViewBag.Title = "余额提现";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@section head
+{
+    <link href="~/content/css/login.css" rel="stylesheet" />
+    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
+    <style type="text/css">
+        .hide{
+            display:none;
+        }
+        .uploadify {
+            display: inline-block;
+        }
+
+        .uploadify-queue {
+            display: none;
+        }
+
+        .uploadify-button {
+            background-image: none;
+            width: 100px;
+            height: 34px;
+            background: #f5f5f5;
+            border: #dddddd 1px solid;
+            border-bottom: #eaeaea 1px solid;
+            border-right: #eaeaea 1px solid;
+            cursor: pointer;
+            border-radius: 3px;
+            color: inherit;
+            font: inherit;
+        }
+        .uploadify-button-text{
+            font-size:14px;
+        }
+    </style>
+
+    <style type="text/css">
+        .reg-form .cell h3 {
+            font-size: 14px;
+            color: black;
+            font-family: 'Microsoft YaHei';
+            width: 30%;
+            float: left;
+        }
+
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell select {
+                height: 100%;
+                width: 32%;
+            }
+
+            .reg-form .cell textarea {
+                height: 100%;
+                width: 96%;
+            }
+
+        .upbtn {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 77px;
+            height: 37px;
+            overflow: hidden;
+            bottom: auto;
+            right: auto;
+        }
+    </style>
+}
+
+<div class="wrap" style="width: 100%">
+    <div class="register-box" style="height: auto; width: 100%;">
+        <form action="withdrawForm" class="reg-form" method="POST" id="multipart/form-data">
+            <div class="cell" style="margin-bottom: 0px;">
+                会员账号：<a href="/wechat/user/viewuser" style="margin-right: 10px;">@Model.CurrentUser.UserName</a>
+            </div>
+            <div class="cell" style="margin-bottom: 0px;">
+                当前余额：<span class="yellow">@Model.UserBalance.AvailableBalance.ToString("F2")<span>元</span></span>
+            </div>
+            <div class="cell" style="margin-bottom: 0px;">
+                提现金额：
+                <input id="amount" name="amount" type="number" placeholder="请输入提现金额"
+                       class="number" min="10" max="2000" style="left:unset;top:unset;width:65%;padding:unset;padding-left:5px;" />
+            </div>
+            <div class="cell" style="height: auto;">
+                提现账户：
+                <input name="WechatBankImgFile" id="WechatBankImgFile" type="hidden" style="width: 255px;"
+                       class="ur_txt1" placeholder="请上传微信收款账二维码图片，如下图" readonly="readonly" />
+                <input name="WechatBankImg" id="WechatBankImg" type="file" style="opacity: 0; display: none;" accept="image/*" />
+                &nbsp;&nbsp;
+                <span class="red ch">
+                    <a href="/about/10.html" target="_blank" class="red" title="点击查看帮助">
+                        <img src="~/content/images/question1.png" width="30" height="30" style="top: 7px;position: absolute;" />
+                    </a>
+                </span>
+            </div>
+            <div style="margin-top: 5px;">
+                @*<img id="preview" src="~/content/images/wechat/default.jpg" width="97%" style="border:#dddddd 1px solid;padding:2px;" />*@
+                <img id="preview" src="~/content/images/wechat/default.jpg" class="hide" width="97%" style="border:#dddddd 1px solid;padding:2px;" />
+            </div>
+        </form>
+
+        <div class="bottom" style="padding: 10px;width: 328px;margin:0 auto;">
+            <button type="button" style="width: 100%;" class="button btn-green" onclick="withdraw(this);">申请提现</button>
+        </div>
+    </div>
+</div>
+@section FooterJS
+{
+    <script src="~/Content/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#WechatBankImg").uploadify({
+                width: 180,
+                height: 25,
+                'fileTypeDesc': '图片文件',
+                swf: '/Content/uploadify/uploadify.swf',
+                uploader: '/Content/upload/uploadimage.ashx',
+                removeCompleted: true,
+                multi: false,
+                buttonText: '请选择微信收款账二维码',
+                fileTypeExts: '*.png;*.jpg;*.jpeg;*.bmp;',
+                fileSizeLimit: '2MB',
+                onSelect: function (file) {
+                    if (file.size >= 2 * 1024 * 1024) {
+                        alert(file.name + '图片不能超过2M');
+                        $("#WechatBankImg").uploadify('cancel');
+                        return false;
+                    }
+                },
+                onUploadComplete: function (file) {
+                },
+                onCancel: function (file) {
+                },
+                onUploadSuccess: function (file, data, response) {
+                    var postfile = JSON.parse(data);
+                    var urls = postfile.OriginalImage;
+                    $("#preview").attr("src", urls);
+                    $("#preview").removeClass('hide');
+                    $("#WechatBankImgFile").val(urls);
+                },
+                onUploadError: function (file, errorCode, errorMsg, errorString) {
+                    alert('微信收款二维码图片上传失败，请重新上传');
+                }
+            });
+        });
+
+        function withdraw(obj) {
+            var amount = $('#amount').val();
+            var wechatBankImg = $('#WechatBankImgFile').val();
+
+            if (amount == '') {
+                $('#amount').focus();
+                alert("请输入本次提现金额");
+                return false;
+            }
+            else if (amount < 10 || amount > 2000) {
+                $('#amount').focus();
+                alert("每次提现金额不能少于10元，且不能大于2000元");
+                return false;
+            }
+            else if (wechatBankImg == '') {
+                alert("请上传微信收款二维码图片");
+                return false;
+            }
+            else {
+                if (confirm('你确认申请提现吗？') == false)
+                    return false;
+                $(obj).attr("disabled", "disabled");
+
+                $.ajax({
+                    url: '/wechat/finance/withdraw',
+                    data: { amountString: $('#amount').val(), wechatPayQRCodeImgUrl: $('#WechatBankImgFile').val() },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.IsSuccessful) {
+                            alert("提现申请成功，请耐心等待客服人员确认");
+                            window.location.href = '/wechat/finance/withdrawrecord';
+                        }
+                        else {
+                            $(obj).removeAttr("disabled");
+                            alert(data.ErrorMessage);
+                        }
+                    },
+                    error: function (msg) {
+                        $(obj).removeAttr("disabled");
+                        alert("提现申请失败，请检查您的网络是否连接");
+                    }
+                });
+            }
+        }
+    </script>
+}

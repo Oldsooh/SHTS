@@ -1,0 +1,56 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.FinanceModel
+@{
+    ViewBag.Title = "我的账户";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <style>
+        .button {
+            border-radius: 5px;
+            height: 35px !important;
+        }
+
+            .bottom .btn-primary {
+                color: #fff !important;
+                background-color: #286090 !important;
+                border-color: #204d74 !important;
+            }
+
+            .bottom .btn-success {
+                color: #fff !important;
+                background-color: #5cb85c !important;
+                border-color: #4cae4c !important;
+            }
+
+            .bottom .btn-info {
+                color: #fff !important;
+                background-color: #31b0d5 !important;
+                border-color: #269abc !important;
+            }
+    </style>
+}
+
+<div id="main">
+    @if (Model != null && Model.UserBalance != null)
+    {
+        var balance = Model.UserBalance;
+        <ul class="commonlist">
+            <li class="atitle">
+                会员帐号：<a href="/wechat/user/viewuser" style="margin-right: 10px;">@Model.CurrentUser.UserName</a>
+            </li>
+            <li>可用余额：<span class="yellow">@balance.AvailableBalance.ToString("F2")<span>元</span></span></li>
+            <li>冻结金额：<span class="yellow">@balance.FrozenBalance.ToString("F2")<span>元</span></span></li>
+            <li>创建时间：@balance.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")</li>
+        </ul>
+    }
+
+    <div style="clear: both; height: 10px;"></div>
+    <div class="bottom" style="padding:10px;">
+        <button type="button" style="width: 31%;margin-right:5px;" onclick="window.location.href='/wechat/finance/withdraw'" class="button btn-primary">余额提现</button>
+        <button type="button" style="width: 31%;margin-right:5px;" onclick="window.location.href='/wechat/finance/withdrawrecord'" class="button btn-success">提现记录</button>
+        <button type="button" style="width: 31%;" onclick="window.location.href='/wechat/finance/history'" class="button btn-info">财务记录</button>
+    </div>
+
+</div>

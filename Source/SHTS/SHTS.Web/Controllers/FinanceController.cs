@@ -211,7 +211,14 @@ namespace Witbird.SHTS.Web.Controllers
 
         public ActionResult History()
         {
-            return View();
+            FinanceModel model = new FinanceModel();
+            if (!RequireLogin())
+            {
+                model.FinanceRecords = financeManager.GetFinanceRecords(CurrentUser.UserId);
+                model.CurrentUser = CurrentUser;
+            }
+
+            return View(model);
         }
 
 

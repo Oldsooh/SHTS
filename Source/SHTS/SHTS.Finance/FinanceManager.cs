@@ -313,17 +313,17 @@ namespace SHTS.Finance
                                                 record.WithdrawStatus = WithdrawStatus.Cancelled.ToString();
                                                 record.LastUpdatedTimestamp = DateTime.Now;
 
-                                                FinanceRecord fr = new FinanceRecord();
-                                                fr.UserId = record.UserId;
-                                                fr.Amount = record.Amount;
-                                                fr.Balance = balance.AvailableBalance;
-                                                fr.Description = "用户取消提现操作";
-                                                fr.FinanceType = FinanceType.Withdraw.ToString();
-                                                fr.InsertedTimestamp = DateTime.Now;
-                                                fr.LastUpdatedTimestamp = DateTime.Now;
+                                                //FinanceRecord fr = new FinanceRecord();
+                                                //fr.UserId = record.UserId;
+                                                //fr.Amount = record.Amount;
+                                                //fr.Balance = balance.AvailableBalance;
+                                                //fr.Description = "用户取消提现操作";
+                                                //fr.FinanceType = FinanceType.Withdraw.ToString();
+                                                //fr.InsertedTimestamp = DateTime.Now;
+                                                //fr.LastUpdatedTimestamp = DateTime.Now;
 
                                                 isSuccessful = withdrawDao.UpdateFinanceWithdrawRecordStatus(conn, record);
-                                                isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
+                                                //isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
                                             }
 
                                             break;

@@ -51,17 +51,23 @@
                     {
                         <div class="lt-dsb">
                             <a href="~/Wechat/user/ViewUser">
-                                <p>修改会员信息</p>
+                                <p>会员信息</p>
                                 <i class="arr-right"></i>
                             </a>
                         </div>
                         <div class="lt-dsb">
                             <a href="~/Wechat/user/Identify">
-                                <p>会员等级认证</p>
+                                <p>会员认证</p>
                                 <i class="arr-right"></i>
                             </a>
                         </div>
-                        @*<p>修改个人资料</p>*@
+
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/finance/mybalance">
+                                <p>我的账户</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        </div>
                     }
                 }
             </div>
@@ -175,6 +181,7 @@
             </div>
 
         </section>
+
         <section class="mt-3">
             <div class="ps-lt">
                 <div class="lt-dsb">
@@ -244,7 +251,9 @@
 
     <script>
         function showLogInMessage() {
-            alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
+            if (confirm("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。是否立即前往绑定会员帐号？")) {
+                window.location.href = "/wechat/account/login";
+            }
         }
 
         (function (doc, win) {

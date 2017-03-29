@@ -218,6 +218,7 @@
     <Compile Include="Areas\Wechat\Controllers\CityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ErrorController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\FinanceController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QuoteController.cs" />
@@ -1067,6 +1068,10 @@
     <Content Include="Areas\Mobile\Views\Web.config" />
     <Content Include="Areas\Wechat\Views\Quote\QuoteListByType.cshtml" />
     <Content Include="Areas\Wechat\Views\Shared\BottomMenuBarPartial.cshtml" />
+    <Content Include="Areas\Wechat\Views\Finance\MyBalance.cshtml" />
+    <Content Include="Areas\Wechat\Views\Finance\Withdraw.cshtml" />
+    <Content Include="Areas\Wechat\Views\Finance\WithdrawRecord.cshtml" />
+    <Content Include="Areas\Wechat\Views\Finance\History.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

@@ -5,7 +5,7 @@
 
 @section head
 {
-<link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
+    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
     <style type="text/css">
         .usertable tr:hover {
             background: #f5f8fa;
@@ -18,24 +18,26 @@
             border: none;
         }
 
-        .uploadify{
-            display:inline-block;
+        .uploadify {
+            display: inline-block;
         }
-        .uploadify-queue{
-            display:none;
+
+        .uploadify-queue {
+            display: none;
         }
-        .uploadify-button{
-            background-image:none;
-                   width: 100px;
-    height: 34px;
-    background: #f5f5f5;
-    border: #dddddd 1px solid;
-    border-bottom: #eaeaea 1px solid;
-    border-right: #eaeaea 1px solid;
-    cursor: pointer;
-    border-radius: 3px;
-    color:inherit;
-    font:inherit;
+
+        .uploadify-button {
+            background-image: none;
+            width: 100px;
+            height: 34px;
+            background: #f5f5f5;
+            border: #dddddd 1px solid;
+            border-bottom: #eaeaea 1px solid;
+            border-right: #eaeaea 1px solid;
+            cursor: pointer;
+            border-radius: 3px;
+            color: inherit;
+            font: inherit;
         }
     </style>
 }
@@ -80,7 +82,7 @@
                         &nbsp;&nbsp;<span class="red ch"><a href="/about/10.html" target="_blank" class="red">点击此查看帮助</a></span>
                     </div>
                     <div style="margin-top: 5px;">
-                        <img id="preview" src="~/content/images/wechat/default.jpg" width="370" style="border:#dddddd 1px solid;padding:2px;"/>
+                        <img id="preview" src="~/content/images/wechat/default.jpg" width="370" style="border:#dddddd 1px solid;padding:2px;" />
                     </div>
                 </div>
 
@@ -92,90 +94,6 @@
             <input type="button" class="tjzl_btn" value="申请提现" onclick="withdraw(this);" />
         </div>
         <div class="clearfix"></div>
-
-
-        @if (Model != null && Model.WithdrawRecords != null && Model.WithdrawRecords.Count > 0)
-        {
-            <div class="user_right_bt">
-                <p class="n1">等待处理提现记录</p>
-            </div>
-            <table class="orderTable" border="0" cellspacing="1" cellpadding="0" style="margin-top:10px;">
-                <tbody>
-                    <tr>
-                        <td class="orderTh" style="width: 50px;">
-                            <div class="dtext2">序号</div>
-                        </td>
-                        <td class="orderTh" style="width: 150px;">
-                            <div class="dtext2">用户名</div>
-                        </td>
-                        <td class="orderTh" style="width: 150px;">
-                            <div class="dtext2">提现金额</div>
-                        </td>
-                        <td class="orderTh" style="width: 100px;">
-                            <div class="dtext2">申请状态</div>
-                        </td>
-                        <td class="orderTh" style="width: 300px;">
-                            <div class="dtext2">申请时间</div>
-                        </td>
-                        <td class="orderTh" style="width: 150px;">
-                            <div class="dtext2">操作</div>
-                        </td>
-                    </tr>
-                    @for (int i = 0; i < Model.WithdrawRecords.Count; i++)
-                {
-                    var record = Model.WithdrawRecords[i];
-
-                        <tr>
-                            <td class="orderTd" style="width: 230px; overflow: hidden;">
-                                <div class="dtext3">
-                                    @(i + 1)
-                                </div>
-                            </td>
-                            <td class="orderTd">
-                                <div class="dtext3">
-                                    @Model.CurrentUser.UserName
-                                </div>
-                            </td>
-                            <td class="orderTd">
-                                <div class="dtext3">
-                                    @record.Amount.ToString("F2")<span>元</span>
-                                </div>
-                            </td>
-                            <td class="orderTd">
-                                <div class="dtext3">
-                                    @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
-                                    {
-                                        <span>申请提现</span>
-                                    }
-                                    else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Confirmed.ToString())
-                                    {
-                                        <span>正在处理</span>
-                                    }
-
-                                </div>
-                            </td>
-                            <td class="orderTd">
-                                <div class="dtext3">
-                                    @record.InsertedTimestamp.ToString("yyyy-MM-dd hh:mm:ss")
-                                </div>
-                            </td>
-                            <td class="orderTd">
-                                <div class="dtext3">
-                                    @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
-                                    {
-                                        <a href="javascript:void(0);" title="取消申请" onclick="cancelwithdraw(this);" record="@record.Id">取消申请</a>
-                                    }
-                                    else
-                                    {
-                                        <span>---</span>
-                                    }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
     </div>
 
     <div style="clear: both; height: 30px;"></div>
@@ -215,6 +133,9 @@
                     var urls = postfile.OriginalImage;
                     $("#preview").attr("src", urls);
                     $("#WechatBankImgFile").val(urls);
+                },
+                onUploadError: function (file, errorCode, errorMsg, errorString) {
+                    alert('微信收款二维码图片上传失败，请重新上传');
                 }
             });
         });
@@ -236,7 +157,7 @@
                 return false;
             }
             else {
-                if (confirm('请仔细确认银行信息！你确认申请提现吗？') == false)
+                if (confirm('你确认申请提现吗？') == false)
                     return false;
                 $(obj).attr("disabled", "disabled");
 
@@ -247,39 +168,19 @@
                     success: function (data) {
                         if (data.IsSuccessful) {
                             alert("提现申请成功，请耐心等待客服人员确认");
-                            window.location = window.location;
+                            window.location.href = '/finance/withdrawrecord';
                         }
                         else {
+                            $(obj).removeAttr("disabled");
                             alert(data.ErrorMessage);
                         }
                     },
                     error: function (msg) {
+                        $(obj).removeAttr("disabled");
                         alert("提现申请失败，请检查您的网络是否连接");
                     }
                 });
             }
-        }
-
-        function cancelEncashment(obj) {
-            if (confirm('你确认取消该提现申请吗？') == false)
-                return false;
-
-            $(obj).attr("disabled", "disabled");
-            $.post('/finance/cancelwithdraw',
-            {
-                id: $(obj).attr('record')
-            },
-            function (data, status) {
-                if (data != null) {
-                    if (data == 'success') {
-                        alert('取消成功');
-                        window.location.href = '/finance/encashment';
-                    }
-                    else {
-                        alert(data);
-                    }
-                }
-            });
         }
     </script>
 }

@@ -1,0 +1,64 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.FinanceModel
+@{
+    ViewBag.Title = "我的财务记录";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+}
+
+<div id="main">
+
+    @if (Model.FinanceRecords != null && Model.FinanceRecords.Count > 0)
+    {
+        foreach (var record in Model.FinanceRecords)
+        {
+            <ul class="commonlist">
+                <li class="atitle">
+                    会员帐号：<a href="/wechat/user/viewuser" style="margin-right: 10px;">@Model.CurrentUser.UserName</a>
+                </li>
+                <li>支出金额：<span class="yellow">
+                    @if (record.FinanceType == SHTS.Finance.FinanceType.Withdraw.ToString())
+                    {
+                        <span>-</span><span>@record.Amount.ToString("F2")<span>元</span></span>
+                    }
+                    else if (record.FinanceType == SHTS.Finance.FinanceType.Recharge.ToString())
+                    {
+                        <span>@record.Amount.ToString("F2")<span>元</span></span>
+                    }
+                    else
+                    {
+                        <span>---</span>
+                    }
+                    <span>元</span></span></li>
+                <li>当前余额：<span class="yellow">@record.Balance.ToString("F2")<span>元</span></span></li>
+                <li>支出类型：<span class="yellow">
+                    @if (record.FinanceType == SHTS.Finance.FinanceType.Withdraw.ToString())
+                    {
+                        <span>余额提现</span>
+                    }
+                    else if (record.FinanceType == SHTS.Finance.FinanceType.Recharge.ToString())
+                    {
+                        <span>需求付费</span>
+                    }
+                    else
+                    {
+                        <span>---</span>
+                    }
+                    </span></li>
+                <li>支出详情：<span class="yellow">@record.Description</span></li>
+                <li>操作时间：@record.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")</li>
+            </ul>
+        }
+    }
+    else
+    {
+        <ul class="commonlist">
+            <li class="atitle">
+                <lable style="color: #FD9102;">没有财务记录数据！</lable>
+            </li>
+        </ul>
+
+    }
+    <div style="clear: both; height: 10px;"></div>
+</div>

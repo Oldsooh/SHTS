@@ -51,19 +51,19 @@
                         <td>
                             @if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.New.ToString())
                             {
-                                <span>申请提现</span>
+                                <span>新申请</span>
                             }
                             else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Confirmed.ToString())
                             {
-                                <span>正在处理</span>
+                                <span>处理中</span>
                             }
                             else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Complete.ToString())
                             {
-                                <span>提现完成</span>
+                                <span>已完成</span>
                             }
                             else if (record.WithdrawStatus == SHTS.Finance.WithdrawStatus.Cancelled.ToString())
                             {
-                                <span>提现取消</span>
+                                <span>已取消</span>
                             }
                             else
                             {
