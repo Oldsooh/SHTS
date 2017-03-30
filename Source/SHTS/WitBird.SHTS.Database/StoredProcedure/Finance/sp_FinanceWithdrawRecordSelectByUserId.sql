@@ -3,5 +3,5 @@
 AS
 	SELECT * FROM FinanceWithdrawRecord 
 	WHERE UserId = @UserId
-	ORDER BY InsertedTimestamp DESC
+	ORDER BY LastUpdatedTimestamp DESC
 GO
