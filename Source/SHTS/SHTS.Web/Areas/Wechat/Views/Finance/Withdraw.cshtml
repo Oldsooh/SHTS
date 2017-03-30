@@ -7,38 +7,33 @@
 @section head
 {
     <link href="~/content/css/login.css" rel="stylesheet" />
-    <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" />
+    <link href="~/Content/uploadifive/uploadifive.css" rel="stylesheet" />
     <style type="text/css">
         .hide{
             display:none;
         }
-        .uploadify {
+        .uploadifive {
             display: inline-block;
         }
 
-        .uploadify-queue {
+        .uploadifive-queue {
             display: none;
         }
 
-        .uploadify-button {
-            background-image: none;
-            width: 100px;
-            height: 34px;
-            background: #f5f5f5;
-            border: #dddddd 1px solid;
-            border-bottom: #eaeaea 1px solid;
-            border-right: #eaeaea 1px solid;
-            cursor: pointer;
-            border-radius: 3px;
-            color: inherit;
-            font: inherit;
+        .uploadifive-button {
+            display: inline-block;
+            overflow:unset!important;
+            border-radius:15px!important;
         }
-        .uploadify-button-text{
-            font-size:14px;
-        }
-    </style>
 
-    <style type="text/css">
+        .uploadifive-button input{
+            width:100%!important;
+            height:100%!important;
+            font-size:15px;
+            border:none;
+            outline:none;
+        }
+
         .reg-form .cell h3 {
             font-size: 14px;
             color: black;
@@ -111,17 +106,17 @@
                 提现账户：
                 <input name="WechatBankImgFile" id="WechatBankImgFile" type="hidden" style="width: 255px;"
                        class="ur_txt1" placeholder="请上传微信收款账二维码图片，如下图" readonly="readonly" />
-                <input name="WechatBankImg" id="WechatBankImg" type="file" style="opacity: 0; display: none;" accept="image/*" />
+                <input name="WechatBankImg" id="WechatBankImg" type="file" style="display:none;opacity:0;" accept="image/*" />
                 &nbsp;&nbsp;
                 <span class="red ch">
                     <a href="/about/10.html" target="_blank" class="red" title="点击查看帮助">
-                        <img src="~/content/images/question1.png" width="30" height="30" style="top: 7px;position: absolute;" />
+                        <img src="~/content/images/question1.png" width="30" height="30" style="position: absolute;" />
                     </a>
                 </span>
             </div>
             <div style="margin-top: 5px;">
                 @*<img id="preview" src="~/content/images/wechat/default.jpg" width="97%" style="border:#dddddd 1px solid;padding:2px;" />*@
-                <img id="preview" src="~/content/images/wechat/default.jpg" class="hide" width="97%" style="border:#dddddd 1px solid;padding:2px;" />
+                <img id="preview" src="" class="hide" width="97%" style="border:#dddddd 1px solid;padding:2px;" />
             </div>
         </form>
 
@@ -132,41 +127,53 @@
 </div>
 @section FooterJS
 {
-    <script src="~/Content/uploadify/jquery.uploadify.js"></script>
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("#WechatBankImg").uploadify({
-                width: 180,
-                height: 25,
-                'fileTypeDesc': '图片文件',
-                swf: '/Content/uploadify/uploadify.swf',
-                uploader: '/Content/upload/uploadimage.ashx',
-                removeCompleted: true,
-                multi: false,
-                buttonText: '请选择微信收款账二维码',
-                fileTypeExts: '*.png;*.jpg;*.jpeg;*.bmp;',
-                fileSizeLimit: '2MB',
-                onSelect: function (file) {
+            $('#WechatBankImg').uploadifive({
+                'width': 200,
+                'height': 25,
+                'auto': true,
+                'uploadScript': '/Content/upload/uploadimage.ashx',
+                'buttonText': '请选择微信收款账二维码',
+                'fileType': 'image/*',
+                'multi': false,
+                'fileSizeLimit': 2 * 1024 * 1024,
+                'onSelect': function (file) {
                     if (file.size >= 2 * 1024 * 1024) {
                         alert(file.name + '图片不能超过2M');
                         $("#WechatBankImg").uploadify('cancel');
+                        $("#preview").addClass('hide');
+                        $("#preview").attr("src", '');
                         return false;
                     }
                 },
-                onUploadComplete: function (file) {
-                },
-                onCancel: function (file) {
-                },
-                onUploadSuccess: function (file, data, response) {
+                'onUploadComplete': function (file, data) {
                     var postfile = JSON.parse(data);
                     var urls = postfile.OriginalImage;
                     $("#preview").attr("src", urls);
                     $("#preview").removeClass('hide');
                     $("#WechatBankImgFile").val(urls);
+
+                    //document.getElementById("submit").disabled = false;//当开始上传文件，要防止上传未完成而表单被提交
                 },
-                onUploadError: function (file, errorCode, errorMsg, errorString) {
-                    alert('微信收款二维码图片上传失败，请重新上传');
-                }
+                'onCancel': function (file) {
+                    /* 注意：取消后应重新设置uploadLimit */
+                    $data = $(this).data('uploadifive'),
+                    settings = $data.settings;
+                    settings.uploadLimit++;
+                    $("#preview").addClass('hide');
+                    $("#preview").attr("src", '');
+                },
+                'onFallback': function () {
+                    alert("该浏览器无法使用!");
+                },
+                'onUpload': function (file) {
+                    $("#preview").removeClass('hide');
+                    $("#preview").attr("src", '/Content/images/load.gif');
+                    //document.getElementById("submit").disabled = true;//当开始上传文件，要防止上传未完成而表单被提交
+                },
             });
         });
 

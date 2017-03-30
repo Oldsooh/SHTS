@@ -15,6 +15,23 @@
     border-radius: 4px;
     border: none;
         }
+         .btn-primary {
+                color: #fff !important;
+                background-color: #286090 !important;
+                border-color: #204d74 !important;
+            }
+
+             .btn-success {
+                color: #fff !important;
+                background-color: #5cb85c !important;
+                border-color: #4cae4c !important;
+            }
+
+             .btn-info {
+                color: #fff !important;
+                background-color: #31b0d5 !important;
+                border-color: #269abc !important;
+            }
     </style>
     <script type="text/javascript" src="/content/js/payment.js"></script>
 }
@@ -54,8 +71,9 @@
             }
         </table>
         <div class="fr ur_tj">
-            <input name="" type="button" class="tjzl_btn userbtn" value="财务记录" onclick="window.location.href='/finance/history'" />&nbsp;&nbsp;&nbsp;
-            <input name="" type="button" class="tjzl_btn" value="余额提现" onclick="window.location.href='/finance/withdraw'" />
+            <input name="" type="button" class="tjzl_btn btn-green" value="财务记录" onclick="window.location.href='/finance/history'" />&nbsp;&nbsp;&nbsp;
+            <input name="" type="button" class="tjzl_btn btn-success" value="提现记录" onclick="window.location.href='/finance/withdrawrecord'" />&nbsp;&nbsp;&nbsp;
+            <input name="" type="button" class="tjzl_btn btn-info" value="余额提现" onclick="window.location.href='/finance/withdraw'" />
         </div>
     </div>
     <div style="clear: both; height: 30px;"></div>
