@@ -292,7 +292,7 @@ namespace SHTS.Finance
                                                 fr.UserId = record.UserId;
                                                 fr.Amount = -record.Amount;
                                                 fr.Balance = balance.AvailableBalance;
-                                                fr.Description = "用户申请提现完成，提现金额为 " + record.Amount + "元，已完成";
+                                                fr.Description = "余额提现，已完成";
                                                 fr.FinanceType = FinanceType.Withdraw.ToString();
                                                 fr.InsertedTimestamp = DateTime.Now;
                                                 fr.LastUpdatedTimestamp = DateTime.Now;
@@ -353,15 +353,15 @@ namespace SHTS.Finance
         /// <summary>
         /// Recharges user balance.
         /// </summary>
-        /// <param name="order"></param>
+        /// <param name="rechargeOrder"></param>
         /// <returns></returns>
-        public bool RechargeUserBalance(FinanceOrder order)
+        public bool RechargeUserBalance(FinanceOrder rechargeOrder)
         {
             var isSuccessful = false;
 
             try
             {
-                ParameterChecker.Check(order);
+                ParameterChecker.Check(rechargeOrder);
 
                 // 事务处理
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, TimeSpan.FromSeconds(20)))
@@ -370,27 +370,38 @@ namespace SHTS.Finance
                     {
                         conn.Open();
 
-                        var userBalance = balanceDao.SelectFinanceBalance(conn, order.UserId);
-
-                        if (userBalance.IsNotNull())
+                        lock (FinanceHelper.GetUserBalanceLockObject(rechargeOrder.UserId))
                         {
-                            lock (FinanceHelper.GetUserBalanceLockObject(order.UserId))
+                            var userBalance = balanceDao.SelectFinanceBalance(conn, rechargeOrder.UserId);
+
+                            if (userBalance == null)
                             {
-                                userBalance.AvailableBalance += order.Amount;
-                                userBalance.LastUpdatedTimestamp = DateTime.Now;
+                                userBalance = new FinanceBalance()
+                                {
+                                    UserId = rechargeOrder.UserId,
+                                    AvailableBalance = 0,
+                                    FrozenBalance = 0,
+                                    InsertedTimestamp = DateTime.Now,
+                                    LastUpdatedTimestamp = DateTime.Now
+                                };
 
-                                FinanceRecord fr = new FinanceRecord();
-                                fr.UserId = order.UserId;
-                                fr.Amount = order.Amount;
-                                fr.Balance = userBalance.AvailableBalance;
-                                fr.Description = order.Detail;
-                                fr.FinanceType = FinanceType.Recharge.ToString();
-                                fr.InsertedTimestamp = DateTime.Now;
-                                fr.LastUpdatedTimestamp = DateTime.Now;
-
-                                isSuccessful = balanceDao.UpdateFinanceBalance(conn, userBalance);
-                                isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
+                                userBalance.Id = balanceDao.InsertFinanceBalance(conn, userBalance);
                             }
+
+                            userBalance.AvailableBalance += rechargeOrder.Amount;
+                            userBalance.LastUpdatedTimestamp = DateTime.Now;
+
+                            FinanceRecord fr = new FinanceRecord();
+                            fr.UserId = rechargeOrder.UserId;
+                            fr.Amount = rechargeOrder.Amount;
+                            fr.Balance = userBalance.AvailableBalance;
+                            fr.Description = rechargeOrder.Detail;
+                            fr.FinanceType = FinanceType.Recharge.ToString();
+                            fr.InsertedTimestamp = DateTime.Now;
+                            fr.LastUpdatedTimestamp = DateTime.Now;
+
+                            isSuccessful = balanceDao.UpdateFinanceBalance(conn, userBalance);
+                            isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
                         }
 
                         if (isSuccessful)

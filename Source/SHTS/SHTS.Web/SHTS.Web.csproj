@@ -154,6 +154,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FinanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\Admin\Controllers\ConfigController.cs" />
     <Compile Include="Areas\Admin\Controllers\DemandController.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Areas\Admin\Models\BaseModel.cs" />
     <Compile Include="Areas\Admin\Models\CityModel.cs" />
     <Compile Include="Areas\Admin\Models\DemandModel.cs" />
+    <Compile Include="Areas\Admin\Models\FinanceModel.cs" />
     <Compile Include="Areas\Admin\Models\MemberViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Resource\AjaxResponse.cs" />
     <Compile Include="Areas\Admin\Models\SinglePageModel.cs" />
@@ -1072,6 +1074,7 @@
     <Content Include="Areas\Wechat\Views\Finance\Withdraw.cshtml" />
     <Content Include="Areas\Wechat\Views\Finance\WithdrawRecord.cshtml" />
     <Content Include="Areas\Wechat\Views\Finance\History.cshtml" />
+    <Content Include="Areas\Admin\Views\Finance\WithdrawRecord.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

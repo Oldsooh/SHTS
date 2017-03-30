@@ -1,0 +1,160 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.FinanceModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户余额提现申请</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Admin/Content/css/select.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">会员管理</a></li>
+            <li><a href="#">余额提现</a></li>
+        </ul>
+    </div>
+    <div class="rightinfo">
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>编号<i class="sort"><img src="/areas/admin/content/images/px.gif" /></i></th>
+                    <th>会员帐号</th>
+                    <th>提现金额</th>
+                    <th>可用余额</th>
+                    <th>收款二维码</th>
+                    <th>提现状态</th>
+                    <th>申请时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.WithdrawRecords != null && Model.WithdrawRecords.Count > 0)
+                {
+                    for (int i = 0; i < Model.WithdrawRecords.Count; i++)
+                    {
+                        var record = Model.WithdrawRecords[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td><a href="/admin/member/edituser/@(record.UserId)" title="点击查看用户详情">@record.UserName</a></td>
+                            <td style="color:red;font-weight:bold;">@record.Amount.ToString("F2")<span>元</span></td>
+                            <td style="color:green;font-weight:bold;">@record.UserAvailableBalance.ToString("F2")<span>元</span></td>
+                            <td>
+                                <a href="@record.BankInfo" target="_blank" title="点击查看原图">
+                                    <img src="@record.BankInfo" width="40" height="40" alt="收款二维码" />
+                                </a>
+                            </td>
+                            <td>
+                                @switch (record.WithdrawStatus)
+                                {
+                                    case "New":
+                                        if (record.Amount > record.UserAvailableBalance)
+                                        {
+                                            <span>新申请(<span style="color:red;font-weight:bold;">余额不足</span>)</span>
+                                        }
+                                        else
+                                        {
+                                            <span>新申请(<span style="color:green;font-weight:bold;">余额充足</span>)</span>
+                                        }
+                                        break;
+                                    case "Confirmed":
+                                        <span>已确认，付款中</span>
+                                        break;
+                                    case "Complete":
+                                        <span>提现完成</span>
+                                        break;
+                                    case "Cancelled":
+                                        <span>提现取消</span>
+                                        break;
+                                    default:
+                                        <span>---</span>
+                                        break;
+                                }
+                            </td>
+                            <td>@record.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>
+                                @switch (record.WithdrawStatus)
+                                {
+                                    case "New":
+                                        <a href="javascript:void(0);" onclick="ConfirmWithdraw(@record.Id);">确认付款</a><span>&nbsp;&nbsp;</span>
+                                        <a href="javascript:void(0);" onclick="CancelWithdraw(@record.Id);">删除</a>
+                                        break;
+                                    case "Confirmed":
+                                        <a href="javascript:void(0);" onclick="CompleteWithdraw(@record.Id);">付款完成</a>
+                                        break;
+                                    case "Complete":
+                                    case "Cancelled":
+                                    default:
+                                        <span>---</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8">没有待处理的余额提现记录</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $('.tablelist tbody tr:odd').addClass('odd');
+
+        function ConfirmWithdraw(recordId) {
+            if (!confirm("确认该提现记录有效，并对其进行付款吗？")) {
+                return;
+            }
+            $.post("/admin/finance/ConfirmWithdraw", { "id": recordId }, function (data) {
+                if (data.IsSuccessful) {
+                    alert('确认提现成功。请通过微信收款二维码对其进行付款。付款完成后请点击"付款完成"按钮！');
+                    window.location.reload();
+
+                } else {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+        function CancelWithdraw(recordId) {
+            if (!confirm("确认删除该提现记录吗？")) {
+                return;
+            }
+            $.post("/admin/finance/CancelWithdraw", { "id": recordId }, function (data) {
+                if (data.IsSuccessful) {
+                    alert('提现记录删除成功');
+                    window.location.reload();
+
+                } else {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+
+        function CompleteWithdraw(recordId) {
+            if (!confirm("确认对方已收到提现款项吗？ 如果是，请点击‘确定’按钮继续！")) {
+                return;
+            }
+            $.post("/admin/finance/CompleteWithdraw", { "id": recordId }, function (data) {
+                if (data.IsSuccessful) {
+                    alert('该提现记录已处理完毕，对方已收到提现款项');
+                    window.location.reload();
+
+                } else {
+                    alert(data.ErrorMessage);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
