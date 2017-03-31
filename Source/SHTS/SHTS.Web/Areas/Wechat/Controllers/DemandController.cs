@@ -289,12 +289,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             string subject = string.IsNullOrWhiteSpace(demand.Title) ? "微信用户购买需求联系方式永久权限" : demand.Title;
                             string body = "微信用户" + CurrentWeChatUser.NickName + "购买需求（" + demand.Title + "）联系方式的永久查看权限";
                             string username = CurrentWeChatUser.OpenId;
-
-                            int state = (int)OrderState.New;
+                            
                             string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;
 
                             TradeOrder order = orderService.AddNewOrder(
-                                orderId, subject, body, demand.WeixinBuyFee ?? BuyDemandFee, state, username, resourceUrl, (int)OrderType.WeChatDemand, id);
+                                orderId, subject, body, demand.WeixinBuyFee ?? BuyDemandFee, OrderState.New, username, resourceUrl, OrderType.WeChatDemand, id);
 
                             if (order != null)
                             {

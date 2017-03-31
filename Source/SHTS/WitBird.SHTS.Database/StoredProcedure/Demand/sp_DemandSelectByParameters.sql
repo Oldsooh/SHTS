@@ -23,7 +23,7 @@ BEGIN
 	and (@StartTime is null or StartTime >= @StartTime) 
 	and (@EndTime is null or EndTime <= @EndTime)   
 	
-	select tempDemand.*,[User].UserName from
+	select tempDemand.*,[User].UserName, tOrder.Amount as DemandBonus from
 		(select * from 
 		(
 			select *, ROW_NUMBER() over(order by Id desc) as RowNumber 
@@ -39,7 +39,9 @@ BEGIN
 			and (@EndTime is null or EndTime <= @EndTime) 
 		 ) as temp 
 		where temp.RowNumber>(@PageIndex-1)*@PageCount and temp.RowNumber<=@PageIndex*@PageCount
-		) as tempDemand left join [User] on tempDemand.UserId = [User].UserId
+		) as tempDemand 
+		left join [User] on tempDemand.UserId = [User].UserId
+		left join TradeOrder tOrder on tOrder.ResourceId = tempDemand.Id and tOrder.OrderType = 3 -- 需求鼓励金信息
 		
 END
 GO

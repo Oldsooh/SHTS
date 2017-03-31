@@ -53,6 +53,32 @@ namespace Witbird.SHTS.BLL.Services
             }
             return order;
         }
+        
+        /// <summary>
+         /// Gets order details by order id.
+         /// </summary>
+         /// <param name="orderId"></param>
+         /// <returns></returns>
+        public bool CheckOrderForDemandBonusByDemandId(int demandId)
+        {
+            var isExist = false;
+
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                isExist = orderDao.CheckOrderForDemandBonusByDemandId(conn, demandId);
+            }
+            catch (Exception e)
+            {
+                LogService.Log("CheckOrderForDemandBonusByDemandId--" + e.Message, e.ToString().ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isExist;
+        }
 
         public bool DeleteOrderByOpenIdAndDemandIdForWeChatClient(string openId, int demandId)
         {
@@ -83,7 +109,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <returns></returns>
         public TradeOrder AddNewOrder(string orderId, string subject, string body, decimal amount,
-            int state, string username, string resourceUrl, int orderType, int resourceId)
+            OrderState orderState, string username, string resourceUrl, OrderType orderType, int resourceId)
         {
             bool result = false;
             TradeOrder order = null;
@@ -94,12 +120,7 @@ namespace Witbird.SHTS.BLL.Services
                 orderId.CheckEmptyString("Order ID");
                 subject.CheckEmptyString("Order Subject");
                 body.CheckEmptyString("Order Body");
-
-                if (state != (int)OrderState.New)
-                {
-                    throw new ArgumentException("Parameter Error");
-                }
-
+                
                 order = new TradeOrder();
                 order.OrderId = orderId;
                 order.Amount = amount;
@@ -108,9 +129,9 @@ namespace Witbird.SHTS.BLL.Services
                 order.UserName = username;
                 order.CreatedTime = DateTime.Now;
                 order.LastUpdatedTime = DateTime.Now;
-                order.State = state;
+                order.State = (int)orderState;
                 order.ResourceUrl = resourceUrl;
-                order.OrderType = orderType;
+                order.OrderType = (int)orderType;
                 order.ResourceId = resourceId;
 
                 conn.Open();
@@ -118,6 +139,7 @@ namespace Witbird.SHTS.BLL.Services
             }
             catch (Exception e)
             {
+                order = null;
                 LogService.Log("添加订单信息失败--" + e.Message, e.ToString().ToString());
             }
             finally

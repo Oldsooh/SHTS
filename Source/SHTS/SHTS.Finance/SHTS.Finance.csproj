@@ -47,12 +47,15 @@
     <Compile Include="Constants.cs" />
     <Compile Include="FinanceHelper.cs" />
     <Compile Include="FinanceManager.cs" />
-    <Compile Include="OrderDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordDao.cs" />
     <Compile Include="WithdrawDao.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SHTS.BLL\SHTS.BLL.csproj">
+      <Project>{992E7895-E47B-437F-AFB1-48323CB28969}</Project>
+      <Name>SHTS.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SHTS.Common\SHTS.Common.csproj">
       <Project>{ACCEA7FD-72E4-4BC9-A72A-6ADB56FAC272}</Project>
       <Name>SHTS.Common</Name>

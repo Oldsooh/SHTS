@@ -9,7 +9,7 @@ using Witbird.SHTS.Web.Areas.Admin.Authorize;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 {
-    public class ConfigController : Controller
+    public class ConfigController : AdminBaseController
     {
         //
         // GET: /Admin/Config/

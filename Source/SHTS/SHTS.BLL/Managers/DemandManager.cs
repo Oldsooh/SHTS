@@ -23,13 +23,13 @@ namespace Witbird.SHTS.BLL.Managers
             demandCategoryRepository = new DemandCategoryRepository();
         }
 
-        public Demand GetDemandById(int id)
+        public Demand GetDemandById(int id, bool isFilterSensitivewords = true)
         {
             Demand result = null;
             try
             {
                 result = demandRepository.FindOne(o => o.Id == id);
-                if (result != null)
+                if (result != null && isFilterSensitivewords)
                 {
                     result.Title = FilterHelper.Filter(result.Title, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
                     result.ContentStyle = FilterHelper.Filter(result.ContentStyle, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);

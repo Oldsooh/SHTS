@@ -111,7 +111,7 @@ namespace Witbird.SHTS.Model
     }
 
     /// <summary>
-    /// 订单类型，中介交易订单,升级为VIP订单, 微信购买需求联系方式订单
+    /// 订单类型，中介交易订单,升级为VIP订单, 微信购买需求联系方式订单，需求发布鼓励金订单
     /// </summary>
     public enum OrderType
     {
@@ -126,7 +126,11 @@ namespace Witbird.SHTS.Model
         /// <summary>
         /// 微信用户购买查看需求联系方式的永久权限
         /// </summary>
-        WeChatDemand
+        WeChatDemand,
+        /// <summary>
+        /// 需求发布鼓励金
+        /// </summary>
+        RechargeByDemandBonus
     }
 
     /// <summary>

@@ -415,7 +415,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
                     if (isValid)
                     {
-                        isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.AdminId, UserInfo.UserName, true, trade.State, DateTime.Now);
+                        isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.AdminId, UserInfo.UserName, true, (TradeState)trade.State, DateTime.Now);
                     }
 
                     if (isValid)

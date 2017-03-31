@@ -9,9 +9,9 @@ namespace SHTS.Finance
     public enum FinanceType
     {
         /// <summary>
-        /// Recharge
+        /// 需求鼓励金
         /// </summary>
-        Recharge,
+        RechargeByDemandBonus,
         /// <summary>
         /// Withdraw
         /// </summary>

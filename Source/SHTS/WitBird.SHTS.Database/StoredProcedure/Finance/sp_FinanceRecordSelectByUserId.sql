@@ -2,6 +2,6 @@
 	@UserId int
 AS
 	SELECT * FROM FinanceRecord WHERE UserId = @UserId
-	ORDER BY LastUpdatedTimestamp DESC
+	ORDER BY InsertedTimestamp DESC
 
 GO

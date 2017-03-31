@@ -167,5 +167,25 @@ namespace Witbird.SHTS.DAL.Daos
 
             return paidDemands;
         }
+
+        public bool CheckOrderForDemandBonusByDemandId(SqlConnection conn, int demandId)
+        {
+            var isExist = false;
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@DemandId", demandId)
+            };
+
+            using (var reader = DBHelper.RunProcedure(conn, "sp_CheckOrderForDemandBonusByDemandId", parameters))
+            {
+                while (reader.Read())
+                {
+                    isExist = reader[0].DBToBoolean();
+                }
+            }
+
+            return isExist;
+        }
     }
 }

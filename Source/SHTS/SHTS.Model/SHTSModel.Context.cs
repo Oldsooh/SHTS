@@ -73,7 +73,6 @@ namespace Witbird.SHTS.Model
         public DbSet<SmsRecord> SmsRecord { get; set; }
         public DbSet<ActivityVote> ActivityVote { get; set; }
         public DbSet<FinanceBalance> FinanceBalance { get; set; }
-        public DbSet<FinanceOrder> FinanceOrder { get; set; }
         public DbSet<FinanceRecord> FinanceRecord { get; set; }
         public DbSet<FinanceWithdrawRecord> FinanceWithdrawRecord { get; set; }
     }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL;
+using Witbird.SHTS.DAL.Daos;
 using Witbird.SHTS.Model;
 
 namespace SHTS.Finance
@@ -13,14 +15,12 @@ namespace SHTS.Finance
     public class FinanceManager
     {
         private BalanceDao balanceDao;
-        private OrderDao orderDao;
         private RecordDao recordDao;
         private WithdrawDao withdrawDao;
 
         public FinanceManager()
         {
             balanceDao = new BalanceDao();
-            orderDao = new OrderDao();
             recordDao = new RecordDao();
             withdrawDao = new WithdrawDao();
         }
@@ -355,14 +355,14 @@ namespace SHTS.Finance
         /// </summary>
         /// <param name="rechargeOrder"></param>
         /// <returns></returns>
-        public bool RechargeUserBalance(FinanceOrder rechargeOrder)
+        public bool RechargeUserBalance(int demandId, int demandUserId, string userName, decimal amount, string subject, string detail)
         {
             var isSuccessful = false;
 
             try
             {
-                ParameterChecker.Check(rechargeOrder);
-
+                var orderDao = new OrderDao();
+                var orderManager = new OrderService();
                 // 事务处理
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, TimeSpan.FromSeconds(20)))
                 {
@@ -370,15 +370,15 @@ namespace SHTS.Finance
                     {
                         conn.Open();
 
-                        lock (FinanceHelper.GetUserBalanceLockObject(rechargeOrder.UserId))
+                        lock (FinanceHelper.GetUserBalanceLockObject(demandUserId))
                         {
-                            var userBalance = balanceDao.SelectFinanceBalance(conn, rechargeOrder.UserId);
+                            var userBalance = balanceDao.SelectFinanceBalance(conn, demandUserId);
 
                             if (userBalance == null)
                             {
                                 userBalance = new FinanceBalance()
                                 {
-                                    UserId = rechargeOrder.UserId,
+                                    UserId = demandUserId,
                                     AvailableBalance = 0,
                                     FrozenBalance = 0,
                                     InsertedTimestamp = DateTime.Now,
@@ -388,20 +388,44 @@ namespace SHTS.Finance
                                 userBalance.Id = balanceDao.InsertFinanceBalance(conn, userBalance);
                             }
 
-                            userBalance.AvailableBalance += rechargeOrder.Amount;
-                            userBalance.LastUpdatedTimestamp = DateTime.Now;
+                            var orderId = orderManager.GenerateNewOrderNumber();
 
-                            FinanceRecord fr = new FinanceRecord();
-                            fr.UserId = rechargeOrder.UserId;
-                            fr.Amount = rechargeOrder.Amount;
-                            fr.Balance = userBalance.AvailableBalance;
-                            fr.Description = rechargeOrder.Detail;
-                            fr.FinanceType = FinanceType.Recharge.ToString();
-                            fr.InsertedTimestamp = DateTime.Now;
-                            fr.LastUpdatedTimestamp = DateTime.Now;
+                            var rechargeOrder = new TradeOrder();
+                            rechargeOrder.OrderId = orderId;
+                            rechargeOrder.Amount = amount;
+                            rechargeOrder.Subject = subject;
+                            rechargeOrder.Body = subject;
+                            rechargeOrder.UserName = userName;
+                            rechargeOrder.CreatedTime = DateTime.Now;
+                            rechargeOrder.LastUpdatedTime = DateTime.Now;
+                            rechargeOrder.State = (int)OrderState.Succeed;
+                            rechargeOrder.ResourceUrl = string.Empty;
+                            rechargeOrder.OrderType = (int)OrderType.RechargeByDemandBonus;
+                            rechargeOrder.ResourceId = demandId;
+                            
+                            isSuccessful = orderDao.AddNewOrder(conn, rechargeOrder);
 
-                            isSuccessful = balanceDao.UpdateFinanceBalance(conn, userBalance);
-                            isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
+                            if (isSuccessful)
+                            {
+                                userBalance.AvailableBalance += amount;
+                                userBalance.LastUpdatedTimestamp = DateTime.Now;
+
+                                FinanceRecord fr = new FinanceRecord();
+                                fr.UserId = demandUserId;
+                                fr.Amount = amount;
+                                fr.Balance = userBalance.AvailableBalance;
+                                fr.Description = subject;
+                                fr.FinanceType = FinanceType.RechargeByDemandBonus.ToString();
+                                fr.InsertedTimestamp = DateTime.Now;
+                                fr.LastUpdatedTimestamp = DateTime.Now;
+
+                                isSuccessful = balanceDao.UpdateFinanceBalance(conn, userBalance);
+                                isSuccessful = isSuccessful && recordDao.InsertFinanceRecord(conn, fr);
+                            }
+                            else
+                            {
+                                isSuccessful = false;
+                            }
                         }
 
                         if (isSuccessful)

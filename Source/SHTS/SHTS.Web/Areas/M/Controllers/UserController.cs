@@ -327,10 +327,9 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
                                 int userId = UserInfo.UserId;
                                 string username = UserInfo.UserName;
                                 decimal amount = totalAmount;
-                                int state = (int)OrderState.New;
                                 string resourceUrl = url;
 
-                                order = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.ToVip, userId);
+                                order = orderService.AddNewOrder(orderId, subject, body, amount, OrderState.New, username, resourceUrl, OrderType.ToVip, userId);
                                 bool success = userService.UpdateUserVipInfo(vipInfo.Id, orderId, vipInfo.IdentifyImg, vipInfo.StartTime, vipInfo.EndTime, duration, totalAmount, VipState.Identified);
 
                                 if (success && order != null)

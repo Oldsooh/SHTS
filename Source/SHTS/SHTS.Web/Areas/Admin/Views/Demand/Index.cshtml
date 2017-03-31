@@ -17,6 +17,17 @@
 
     <script type="text/javascript">
         $(document).ready(function (e) {
+            $(".tiptop a").click(function () {
+                $(".tip").fadeOut(200);
+            });
+
+            $(".sure").click(function () {
+                $(".tip").fadeOut(100);
+            });
+
+            $(".cancel").click(function () {
+                $(".tip").fadeOut(100);
+            });
             $(".select1").uedSelect({
                 width: 345
             });
@@ -27,6 +38,28 @@
                 width: 100
             });
         });
+
+        function showDemandBonusPanel() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else {
+                $("#demandBonusPanel").fadeIn(200);
+            }
+        }
+
+        function showWechatBuyDemandFeePanel() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else {
+                $("#wechatBuyDemandFeePanel").fadeIn(200);
+            }
+        }
 
         var hasAllDemandsSelected = false;
 
@@ -74,12 +107,12 @@
             //allSelectedIds.forEach(function (item) {
             //    alert(item);
             //});
-
+            var fee = $('#txtWeChatBuyDemandFee').val();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
             }
-            else if (checkValidFee()) {
+            else if (checkValidFee(fee)) {
                 if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗?')) {
                     // Invoke service
                     var demandIds = '';
@@ -92,7 +125,7 @@
                         '/admin/demand/UpdateDemandWeixinBuyFee',
                         {
                             demandIds: demandIds,
-                            weixinBuyFee: $('#txtWeChatBuyDemandFee').val()
+                            weixinBuyFee: fee
                         },
                         function (data) {
                             if (data.IsSuccessFul) {
@@ -115,10 +148,9 @@
             }
         }
 
-        function checkValidFee() {
-            var fee = $('#txtWeChatBuyDemandFee').val();
-            if (fee <= 0) {
-                alert('请输入正确的购买金额');
+        function checkValidFee(fee) {
+            if (fee == '' || fee <= 0) {
+                alert('请输入正确的金额');
                 return false;
             }
 
@@ -134,8 +166,152 @@
                 $(input).val(value.replace(/\D/g, ''));
             }
         }
+
+        function rechargeUserBalance() {
+            var amount = $('#amountString').val();
+            var allSelectedIds = getAllSelectedDemandsID();
+
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else if (checkValidFee(amount)) {
+                if (confirm('您确认要奖励' + amount + '元给' + allSelectedIds.length + '条需求信息的发布者吗?')) {
+                    // Invoke service
+                    var demandIds = '';
+
+                    allSelectedIds.forEach(function (e) {
+                        demandIds += e + ',';
+                    });
+
+                    $.post(
+                        '/admin/finance/recharge',
+                        {
+                            demandIdString: demandIds,
+                            amountString: amount
+                        },
+                        function (data) {
+                            var isSuccessful = data.IsSuccessful;
+                            var errorMessage = data.ErrorMessage;
+                            var failedDemands = data.FailedDemands;
+                            var successDemands = data.SuccessDemands;
+
+                            if (isSuccessful) {
+                                if (successDemands.length > 0 && failedDemands.length > 0) {
+                                    alert('奖励金成功发放给' + successDemands.length + '位需求发布用户, 有' + failedDemands.length + '位用户发放未成功。请刷新页面后再试。');
+                                }
+                                else {
+                                    alert('奖励金成功发放给' + successDemands.length + '位需求发布用户');
+                                }
+
+                                $('.cbxDemand').each(function () {
+                                    $(this).removeAttr('checked');
+                                });
+                                $('#cbxSelectAll').removeAttr("checked");
+                                hasAllDemandsSelected = false;
+                                window.location.href = window.location.href;
+                            }
+                        });
+                }
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        function UpdateDemandStatusAsComplete() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else {
+                if (confirm('您确认所选择的需求都已经找到资源提供商了吗？该操作不可恢复！')) {
+                    // Invoke service
+                    var demandIds = '';
+
+                    allSelectedIds.forEach(function (e) {
+                        demandIds += e + ',';
+                    });
+
+                    $.post(
+                        '/admin/demand/UpdateDemandStatusAsComplete',
+                        {
+                            demandIdString: demandIds,
+                        },
+                        function (data) {
+                            var isSuccessful = data.IsSuccessful;
+
+                            if (isSuccessful) {
+                                alert('标记需求为已完成状态成功');
+
+                                $('.cbxDemand').each(function () {
+                                    $(this).removeAttr('checked');
+                                });
+                                $('#cbxSelectAll').removeAttr("checked");
+                                hasAllDemandsSelected = false;
+                                window.location.href = window.location.href;
+                            }
+                            else {
+                                if (errorMessage == '') {
+                                    alert('标记需求为已完成状态失败，请刷新页面后重试');
+                                }
+                                else {
+                                    alert(errorMessage);
+                                }
+                            }
+                        });
+                }
+            }
+        }
+
+        function deleteDemand() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要设置的需求信息！');
+                return false;
+            }
+            else {
+                if (confirm('您确认所选择的需求吗？该操作不可恢复！')) {
+                    // Invoke service
+                    var demandIds = '';
+
+                    allSelectedIds.forEach(function (e) {
+                        demandIds += e + ',';
+                    });
+
+                    $.post(
+                        '/admin/demand/Delete',
+                        {
+                            demandIdString: demandIds,
+                        },
+                        function (data) {
+                            var isSuccessful = data.IsSuccessful;
+
+                            if (isSuccessful) {
+                                alert('需求删除成功');
+
+                                $('.cbxDemand').each(function () {
+                                    $(this).removeAttr('checked');
+                                });
+                                $('#cbxSelectAll').removeAttr("checked");
+                                hasAllDemandsSelected = false;
+                                window.location.href = window.location.href;
+                            }
+                            else {
+                                alert('需求删除失败，请刷新页面后重试');
+                            }
+                        });
+                }
+            }
+        }
+
     </script>
     <style>
+        .tablelist td {
+            max-width: 300px !important;
+        }
+
         .weixinpart {
             float: right;
             font-weight: bold;
@@ -180,161 +356,145 @@
         </ul>
     </div>
 
-    <div class="formbody">
+    <div class="rightinfo">
 
+        <div class="tools">
 
-        <div id="usual1" class="usual">
+            <ul class="toolbar">
+                <li onclick="showDemandBonusPanel();" title="设置需求鼓励金给发布用户">
+                    <span>
+                        <img src="/areas/admin/content/images/t01.png" />
+                    </span>需求奖励
+                </li>
+                <li onclick="showWechatBuyDemandFeePanel();" title="设置微信购买联系方式金额">
+                    <span>
+                        <img src="/areas/admin/content/images/t05.png" />
+                    </span>微信金额
+                </li>
+                <li onclick="UpdateDemandStatusAsComplete();" title="更新需求信息为已完成状态">
+                    <span>
+                        <img src="/areas/admin/content/images/t02.png" />
+                    </span>需求完成
+                </li>
+                <li onclick="deleteDemand();" title="删除需求记录">
+                    <span>
+                        <img src="/areas/admin/content/images/t03.png" />
+                    </span>删除需求
+                </li>
+            </ul>
+        </div>
 
-            <div class="itab">
-                <ul>
-                    <li><a href="#tab1" class="selected">需求列表</a></li>
-                    <content class="weixinpart">
-                        <span>统一为选择的需求设置微信服务号购买联系方式金额</span>
-                        <input type="text" id="txtWeChatBuyDemandFee" onkeyup="validateInput(this)" onafterpaste="validateInput(this)" placeholder="请输入购买金额（单位：元）" />
-                        <button id="btnSetWeChatBuyDemandFee" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();">确定</button>
-                    </content>
-                </ul>
-            </div>
-
-            <div id="tab1" class="tabson">
-
-
-                <table class="tablelist">
-                    <thead>
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>
+                        <input id="cbxSelectAll" onclick="selectAllDemands(this);" type="checkbox" value="" />
+                    </th>
+                    <th>序号</th>
+                    <th>需求类型</th>
+                    <th>需求状态</th>
+                    <th style="min-width:250px;">标题</th>
+                    <th>发布者</th>
+                    <th>地区</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>微信金额</th>
+                    <th>鼓励金额</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Demands != null && Model.Demands.Count > 0)
+                {
+                    foreach (var item in Model.Demands)
+                    {
                         <tr>
-                            <th>
-                                <input id="cbxSelectAll" onclick="selectAllDemands(this);" type="checkbox" value="" />
-                            </th>
-                            <th>序号</th>
-                            <th>需求类型</th>
-                            <th style="min-width:250px;">标题</th>
-                            <th>发布者</th>
-                            <th>地区</th>
-                            <th>微信金额</th>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            @*<th>发布时间</th>*@
-                            <th>需求状态</th>
-                            <th>操作</th>
+                            <td>
+                                <input onchange="onCbxDemandSelectChanged(this);" class="cbxDemand" type="checkbox" value="@item.Id" />
+                            </td>
+                            <td>
+                                <span>@item.RowNumber</span>
+                            </td>
+                            <td>
+                                <span>@item.ResourceTypeName</span>
+                            </td>
+                            <td>
+                                <span>
+                                    @item.StatusValueString
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                            </td>
+                            <td>@item.UserName</td>
+                            <td>
+                                @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
+                            </td>
+                            <td>
+                                <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
+                            </td>
+                            <td>
+                                <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
+                            </td>
+                            <td>
+                                @item.WeixinBuyFee 元
+                            </td>
+                            <td>@item.DemandBonus 元</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Demands != null && Model.Demands.Count > 0)
-                        {
-                            foreach (var item in Model.Demands)
-                            {
-                                <tr>
-                                    <td>
-                                        <input onchange="onCbxDemandSelectChanged(this);" class="cbxDemand" type="checkbox" value="@item.Id" />
-                                    </td>
-                                    <td>
-                                        <span>@item.RowNumber</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.ResourceTypeName</span>
-                                    </td>
-                                    <td>
-                                        <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
-                                    </td>
-                                    <td>@item.UserName</td>
-                                    <td>
-                                        @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
-                                    </td>
-                                    <td>
-                                        @item.WeixinBuyFee 元
-                                    </td>
-                                    <td>
-                                        <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
-                                    </td>
-                                    @*<td>
-                                            <span>@item.InsertTime.ToString("yyyy-MM-dd HH:mm")</span>
-                                        </td>*@
-                                    @if (item.InProgress)
-                                    {
-                                        <td>
-                                            <span>
-                                                @item.StatusValueString &nbsp;
-                                                <a href="/admin/demand/UpdateDemandStatusAsComplete/@item.Id" title="将需求标记为已完成状态" style="color: #3858FA;" onclick="if(confirm('请确认该需要已找到资源提供商？')==false)return false;">已完成</a>
-                                            </span>
-                                        </td>
-                                    }
-                                    else if (item.IsCompleted)
-                                    {
-                                        <td>
-                                            <span>
-                                                @item.StatusValueString
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td><span>---</span></td>
-                                    }
+                    }
+                }
+            </tbody>
+        </table>
 
-                                    <td>
-                                        <a href="/admin/demand/delete?id=@item.Id" class="tablelink" style="color:#ff0000;" onclick="if(confirm('亲，你确认要删除吗？')==false)return false;">删除</a>
-                                    </td>
-                                </tr>
+        <div style="height:30px;"></div>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                            <span><a href="/admin/demand/index?id=@(Model.PageIndex - 1)&resourceType=@Model.ResourceType" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                            <span><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                                    <span><a href="/admin/demand/index?id=@i&&resourceType=@Model.ResourceType" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                                    <span><a href="/admin/demand/index?id=@i&resourceType=@Model.ResourceType">@i</a></span>
+                                }
                             }
                         }
-                    </tbody>
-                </table>
-
-                <div style="height:30px;"></div>
-
-                <!--分页开始-->
-                <div class="fenye" style="margin: 0 auto;">
-                    @if (Model.PageCount > 1)
-                    {
-                        for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
                         {
-                            if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
-                            {
-                                //上一页
-                                if (Model.PageIndex > 1)
-                                {
-                                    <span><a href="/admin/demand/index?id=@(Model.PageIndex - 1)&resourceType=@Model.ResourceType" class="prv">上一页</a></span>
-                                }
-                                //首页
-                                if (Model.PageStep < Model.PageIndex)
-                                {
-                                    <span><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">首页</a></span>
-                                }
-                                //分页
-                                for (int i = step; i < step + Model.PageStep; i++)
-                                {
-                                    if (i <= Model.PageCount)
-                                    {
-                                        if (i == Model.PageIndex)
-                                        {
-                                            <span><a href="/admin/demand/index?id=@i&&resourceType=@Model.ResourceType" class="no">@i</a></span>
-                                        }
-                                        else
-                                        {
-                                            <span><a href="/admin/demand/index?id=@i&resourceType=@Model.ResourceType">@i</a></span>
-                                        }
-                                    }
-                                }
-                                //末页
-                                if (step + Model.PageStep <= Model.PageCount)
-                                {
-                                    <span><a href="/admin/demand/index?id=@(Model.PageCount)&resourceType=@Model.ResourceType">末页</a></span>
-                                }
-                                //下一页
-                                if (Model.PageIndex < Model.PageCount)
-                                {
-                                    <span><a href="/admin/demand/index?id=@(Model.PageIndex + 1)&resourceType=@Model.ResourceType" class="next">下一页</a></span>
-                                }
-                            }
+                            <span><a href="/admin/demand/index?id=@(Model.PageCount)&resourceType=@Model.ResourceType">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                            <span><a href="/admin/demand/index?id=@(Model.PageIndex + 1)&resourceType=@Model.ResourceType" class="next">下一页</a></span>
                         }
                     }
-                </div>
-                <!--分页结束-->
-
-            </div>
+                }
+            }
         </div>
+        <!--分页结束-->
 
         <script type="text/javascript">
             $("#usual1 ul").idTabs();
@@ -346,6 +506,49 @@
 
     </div>
 
+    <div class="tip" id="demandBonusPanel">
+        <div class="tiptop">
+            <span>设置需求发布鼓励金</span><a></a>
+        </div>
+        <div class="tipinfo">
+            <div class="tipright">
+                <ul class="forminfo">
+                    <li>
+                        <label>鼓励金额<b>*</b></label>
+                        <input id="amountString" name="amountString" type="number" min="0" class="scinput" placeholder="请输入鼓励金额" />
+                    </li>
+                    <li>
+                        <label><b></b></label>
+                        <b>奖励金额一旦发出，将不能退回</b>
+                    </li>
+                    <li>
+                        <label>&nbsp;</label>
+                        <input type="button" class="btn submitbtn" value="立即发放" onclick="rechargeUserBalance();" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tip" id="wechatBuyDemandFeePanel">
+        <div class="tiptop">
+            <span>设置微信购买需求联系方式金额</span><a></a>
+        </div>
+        <div class="tipinfo">
+            <div class="tipright">
+                <ul class="forminfo">
+                    <li>
+                        <label>购买金额<b>*</b></label>
+                        <input id="txtWeChatBuyDemandFee" name="txtWeChatBuyDemandFee" type="number" min="0" 
+                               class="scinput" placeholder="请输入购买金额" onkeyup="validateInput(this)" onafterpaste="validateInput(this)" />
+                    </li>
+                    <li>
+                        <label>&nbsp;</label>
+                        <input type="button" class="btn submitbtn" value="立即设置" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </body>
 

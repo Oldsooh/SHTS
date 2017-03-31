@@ -246,7 +246,6 @@
     <Build Include="StoredProcedure\Activity\sp_SelectActivityVoteByWechatUserOpenId.sql" />
     <Build Include="StoredProcedure\Activity\sp_SelectActivityTotalVotesCount.sql" />
     <Build Include="Table\Finance\FinanceBalance.sql" />
-    <Build Include="Table\Finance\FinanceOrder.sql" />
     <Build Include="Table\Finance\FinanceRecord.sql" />
     <Build Include="Table\Finance\FinanceWithdrawRecord.sql" />
     <Build Include="StoredProcedure\Finance\sp_FinanceBalanceSelectByUserId.sql" />
@@ -259,6 +258,7 @@
     <Build Include="StoredProcedure\Finance\sp_FinanceWithdrawRecordUpdateStatus.sql" />
     <Build Include="StoredProcedure\Finance\sp_FinanceBalanceUpdate.sql" />
     <Build Include="StoredProcedure\Finance\sp_FinanceRecordInsert.sql" />
+    <Build Include="StoredProcedure\Order\sp_CheckOrderForDemandBonusByDemandId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />

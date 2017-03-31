@@ -166,7 +166,7 @@ namespace Witbird.SHTS.BLL.Services
         /// <param name="history"></param>
         /// <returns></returns>
         public bool ReplyTradeWithOperation(string historySubject, string historyBody, int tradeId,
-            int userId, string username, bool isAdminUpdate, int tradeState, DateTime createdTime)
+            int userId, string username, bool isAdminUpdate, TradeState tradeState, DateTime createdTime)
         {
             var conn = DBHelper.GetSqlConnection();
             bool result = false;
@@ -181,7 +181,7 @@ namespace Witbird.SHTS.BLL.Services
                     UserId = userId,
                     UserName = username,
                     IsAdminUpdate = isAdminUpdate,
-                    TradeState = tradeState,
+                    TradeState = (int)tradeState,
                     CreatedTime = createdTime
                 };
 
@@ -189,7 +189,7 @@ namespace Witbird.SHTS.BLL.Services
                 {
                     conn.Open();
                     result = tradeDao.ReplyTradeWithOperation(history, conn) &&
-                        tradeDao.UpdateTradeState(tradeId, tradeState, conn);
+                        tradeDao.UpdateTradeState(tradeId, (int)tradeState, conn);
 
                     scope.Complete();
                 }

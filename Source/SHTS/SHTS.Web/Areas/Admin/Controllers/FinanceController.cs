@@ -16,6 +16,8 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
     public class FinanceController : AdminBaseController
     {
         FinanceManager _financeManager = null;
+        OrderService _orderManager = null;
+
         private FinanceManager financeManager
         {
             get
@@ -26,6 +28,19 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 }
 
                 return _financeManager;
+            }
+        }
+
+        private OrderService orderManager
+        {
+            get
+            {
+                if (_orderManager == null)
+                {
+                    _orderManager = new OrderService();
+                }
+
+                return _orderManager;
             }
         }
 
@@ -198,45 +213,75 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         [Permission(EnumRole.Editer)]
         public ActionResult Recharge(string demandIdString, string amountString)
         {
-            var demandId = 0;
-            var amount = decimal.MinusOne;
             var isSuccessful = false;
             var errorMessage = string.Empty;
+            var successDemands = new List<int>();
+            var failedDemands = new List<int>();
 
-            if (int.TryParse(demandIdString, out demandId) && decimal.TryParse(amountString, out amount))
+            try
             {
-                var demand = new DemandManager().GetDemandById(demandId);
-                if (demand == null)
+                var amount = decimal.MinusOne;
+                var tempDemandId = 0;
+                var demandIdArray = (demandIdString ?? string.Empty).Split(',');
+                var demandIdList = new List<int>();
+
+                foreach (var idString in demandIdArray)
+                {
+                    if (int.TryParse(idString, out tempDemandId))
+                    {
+                        demandIdList.Add(tempDemandId);
+                    }
+                }
+
+                if (demandIdList.Count == 0 || !decimal.TryParse(amountString, out amount))
                 {
                     isSuccessful = false;
-                    errorMessage = "需求记录不存在或已被删除";
+                    errorMessage = "参数错误，请刷新页面后重试";
                 }
                 else
                 {
-                    var rechargeOrder = new FinanceOrder()
+                    foreach (var demandId in demandIdList)
                     {
-                        UserId = demand.UserId,
-                        Amount = amount,
-                        Detail = "需求鼓励金，需求ID: " + demand.Id
-                    };
-
-                    isSuccessful = financeManager.RechargeUserBalance(rechargeOrder);
-                    if (!isSuccessful)
-                    {
-                        errorMessage = "支付需求鼓励金失败，请稍后再试";
+                        try
+                        {
+                            var demand = new DemandManager().GetDemandById(demandId, false);
+                            if (demand == null || orderManager.CheckOrderForDemandBonusByDemandId(demandId))
+                            {
+                                failedDemands.Add(demandId);
+                            }
+                            else
+                            {
+                                var subject = "需求发布鼓励金";
+                                var detail = "管理员(" + UserInfo.UserName + ")给用户(" + demand.UserId + ")发放需求鼓励金";
+                                isSuccessful = financeManager.RechargeUserBalance(demandId,
+                                    demand.UserId, UserInfo.UserName, amount, subject, detail);
+                                if (isSuccessful)
+                                {
+                                    successDemands.Add(demandId);
+                                }
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            LogService.Log("需求鼓励金发放", ex.ToString());
+                            failedDemands.Add(demandId);
+                        }
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
                 isSuccessful = false;
-                errorMessage = "参数错误，请刷新页面后重试";
+                errorMessage = "发放需求鼓励金遇到错误，请稍后再试";
+                LogService.Log("发放需求鼓励金", ex.ToString());
             }
 
             var jsonData = new
             {
-                IsSuccessful = isSuccessful,
-                ErrorMessage = errorMessage
+                IsSuccessful = true,
+                ErrorMessage = errorMessage,
+                FailedDemands = failedDemands.ToArray(),
+                SuccessDemands = successDemands.ToArray()
             };
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);

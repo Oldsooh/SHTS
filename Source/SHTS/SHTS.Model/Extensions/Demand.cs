@@ -118,5 +118,25 @@ namespace Witbird.SHTS.Model
                 return this.quoteEntities.Count(x => x != null && !x.HandleStatus);
             }
         }
+
+        /// <summary>
+        /// 是否已发放需求奖励金
+        /// </summary>
+        public bool IsGotDemandBonus
+        {
+            get
+            {
+                return DemandBonus > 0;
+            }
+        }
+
+        /// <summary>
+        /// 需求鼓励金
+        /// </summary>
+        public decimal DemandBonus
+        {
+            get;
+            set;
+        }
     }
 }

@@ -425,10 +425,9 @@ namespace Witbird.SHTS.Web.Controllers
                                     //int userId = UserInfo.UserId;
                                     string username = UserInfo.UserName;
                                     decimal amount = trade.BuyerPay;
-                                    int state = (int)OrderState.New;
                                     string resourceUrl = url;
 
-                                    order = orderService.AddNewOrder(orderId, subject, body, amount, state, username, resourceUrl, (int)OrderType.Trade, trade.TradeId);
+                                    order = orderService.AddNewOrder(orderId, subject, body, amount, OrderState.New, username, resourceUrl, (int)OrderType.Trade, trade.TradeId);
                                     bool success = tradeService.UpdateTradeOrderId(trade.TradeId, orderId, trade.IsBuyerPaid); ;
 
                                     if (success && order != null)
@@ -521,7 +520,7 @@ namespace Witbird.SHTS.Web.Controllers
                             " 改变为 " + TradeService.ConvertStateToDisplayMode(tradeState);
                     }
 
-                    isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, tradeState, DateTime.Now);
+                    isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)tradeState, DateTime.Now);
                     
                     if (isValid)
                     {

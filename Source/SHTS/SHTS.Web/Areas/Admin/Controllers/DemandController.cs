@@ -15,13 +15,13 @@ using Witbird.SHTS.Web.Areas.Admin.Models;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 {
-    public class DemandController : Controller
+    public class DemandController : AdminBaseController
     {
         protected const string USERINFO = "userinfo";
         DemandManager demandManager = new DemandManager();
         DemandService demandService = new DemandService();
 
-        [Permission(EnumRole.Editer)]
+        [Permission(EnumRole.Normal)]
         public ActionResult Index(string id, string resourceType)
         {
             DemandModel model = new DemandModel();
@@ -167,11 +167,23 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         }
 
         [Permission(EnumRole.Editer)]
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string demandIdString)
         {
-            if (!string.IsNullOrEmpty(id))
+            var demandIdArray = (demandIdString ?? string.Empty).Split(',');
+            var demandIdList = new List<int>();
+            var tempDemandId = -1;
+
+            foreach (var idString in demandIdArray)
             {
-                Demand demand = demandService.GetDemandById(Int32.Parse(id));
+                if (int.TryParse(idString, out tempDemandId))
+                {
+                    demandIdList.Add(tempDemandId);
+                }
+            }
+
+            foreach (var demandId in demandIdList)
+            {
+                Demand demand = demandService.GetDemandById(demandId);
                 if (demand != null)
                 {
                     demand.IsActive = false;
@@ -183,7 +195,12 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 }
             }
 
-            return Redirect(Request.UrlReferrer.LocalPath);
+            var jsonData = new
+            {
+                IsSuccessful = true
+            };
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
         [Permission(EnumRole.Editer)]
@@ -211,14 +228,31 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateDemandStatusAsComplete(int id)
+        public ActionResult UpdateDemandStatusAsComplete(string demandIdString)
         {
-            if (id > -1)
+            var demandIdArray = (demandIdString ?? string.Empty).Split(',');
+            var demandIdList = new List<int>();
+            var tempDemandId = -1;
+
+            foreach (var idString in demandIdArray)
             {
-                demandService.UpdateDemandStatus(id, DemandStatus.Complete);
+                if (int.TryParse(idString, out tempDemandId))
+                {
+                    demandIdList.Add(tempDemandId);
+                }
             }
 
-            return Redirect(Request.UrlReferrer.LocalPath);
+            foreach (var demandId in demandIdList)
+            {
+                demandService.UpdateDemandStatus(demandId, DemandStatus.Complete);
+            }
+
+            var jsonData = new
+            {
+                IsSuccessful = true
+            };
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
     }
 }

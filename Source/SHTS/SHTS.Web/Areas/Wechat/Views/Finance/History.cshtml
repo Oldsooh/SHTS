@@ -22,7 +22,7 @@
                     {
                         <span>@record.Amount.ToString("F2")<span>元</span></span>
                     }
-                    else if (record.FinanceType == SHTS.Finance.FinanceType.Recharge.ToString())
+                    else if (record.FinanceType == SHTS.Finance.FinanceType.RechargeByDemandBonus.ToString())
                     {
                         <span>@record.Amount.ToString("F2")<span>元</span></span>
                     }
@@ -36,7 +36,7 @@
                     {
                         <span>余额提现</span>
                     }
-                    else if (record.FinanceType == SHTS.Finance.FinanceType.Recharge.ToString())
+                    else if (record.FinanceType == SHTS.Finance.FinanceType.RechargeByDemandBonus.ToString())
                     {
                         <span>需求付费</span>
                     }
