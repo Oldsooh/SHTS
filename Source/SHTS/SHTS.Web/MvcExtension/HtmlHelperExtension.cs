@@ -443,6 +443,9 @@ namespace System.Web.Mvc
             return new MvcHtmlString(builder.ToString());
         }
 
+
+
+
         /// <summary>
         /// 场地特点复选框组
         /// </summary>
@@ -461,7 +464,7 @@ namespace System.Web.Mvc
 
             builder.Append("<div>");
 
-            foreach (var item in miscManager.GetSpaceFeatureList())
+            foreach (var item in SpaceFeatureListProperty)
             {
                 if (checkeditems.Contains(item.Id))
                 {

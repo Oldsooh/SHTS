@@ -1,0 +1,384 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatResourceViewModel
+@{
+    ViewBag.Title = "提交资源信息";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="~/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <link href="~/Content/webuploader/demo.css" rel="stylesheet" />
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+            width: 49%;
+        }
+
+            .inline > .title {
+                font-size: 13px;
+                color: #666;
+            }
+
+            .inline select {
+                width: 100%;
+                height: 100%;
+            }
+
+            .inline>.detail{
+                border: 1px solid #CECECF;
+                box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+                padding:10px;
+                padding-top:0;
+            }
+            .inline > .detail > div {
+                display: inline-block;
+                margin-top:10px;
+            }
+
+            .inline > .detail > div {
+                margin-right: 10px;
+            }
+
+                .inline > .detail > div input[type=checkbox] {
+                    width: 18px;
+                    height: 18px;
+                    position: initial;
+                    vertical-align: middle;
+                    margin-top: -3px;
+                }
+
+        .hd {
+            display: none;
+        }
+
+        .reg-form .cell input[type=text] {
+            width: 92%;
+        }
+
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        #uploader-demo label {
+            position: inherit;
+            font-size: 10px;
+            color: transparent;
+            top: 0px;
+            padding-left: 0px;
+            width: 80% !important;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            width: unset !important;
+        }
+
+        .upbtn {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 77px;
+            height: 37px;
+            overflow: hidden;
+            bottom: auto;
+            right: auto;
+        }
+
+        #fileform {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        #fileheer {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .webuploader-element-invisible {
+            position: inherit !important;
+        }
+    </style>
+}
+
+<!-- content -->
+<div class="wrap" style="width: 100%">
+    <div class="register-box" style="width: 100%;">
+        <form id="js-form-mobile" action="#" class="reg-form" enctype="multipart/form-data" method="post">
+            <div class="cell">
+                <input type="text" name="Title" placeholder="请输入资源标题" class="text" />
+            </div>
+            <div class="cell">
+                <!-- Resource type list -->
+                <div class="inline">
+                    <div class="title">
+                        资源类别：
+                    </div>
+                    <select id="ResType" name="ResType" class="text" onchange="changeResType(this);">
+                        @foreach (var item in Html.ResourceList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <!--space type list-->
+                <div class="sp inline">
+                    <div class="title">
+                        场地类型：
+                    </div>
+                    <select name="SpaceTypeId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.SpaceTypeList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <!--space size list-->
+                <div class="sp inline">
+                    <br />
+                    <div class="title">
+                        场地面积：
+                    </div>
+                    <select name="SpaceSizeId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.SpaceSizeList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <!--space people list-->
+                <div class="sp inline">
+                    <br />
+                    <div class="title">
+                        容纳人数：
+                    </div>
+                    <select name="SpacePeopleId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.SpacePeopleList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="sp inline feature" style="width:100%;">
+                    <br />
+                    <div class="title">
+                        场地特点：
+                    </div>
+                    <div class="detail">
+                        @foreach (var item in Html.SpaceFeatureList())
+                        {
+                            <div>
+                                <input type="checkbox" value="@item.Value" />
+                                @item.Text
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!--actor type list-->
+                <div class="ac inline hd">
+                    <div class="title">
+                        演员类型：
+                    </div>
+                    <select name="ActorTypeId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.ActorTypeList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <!--actor from list-->
+                <div class="ac inline hd">
+                    <br />
+                    <div class="title">
+                        所属组织：
+                    </div>
+                    <select name="ActorFromId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.ActorFromList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <!--actor sex list-->
+                <div class="ac inline hd">
+                    <br />
+                    <div class="title">
+                        演员性别：
+                    </div>
+                    <select name="ActorSex" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.ActorSexList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <!--equipment type list-->
+                <div class="eq inline hd">
+                    <div class="title">
+                        设备类型：
+                    </div>
+                    <select name="EquipTypeId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.EquipTypeList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <!--other type list-->
+                <div class="ot inline hd">
+                    <div class="title">
+                        具体类型：
+                    </div>
+                    <select name="OtherTypeId" class="text">
+                        <option value="-1">不确定</option>
+                        @foreach (var item in Html.OtherTypeList())
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- content -->
+
+@section FooterJS
+{
+    <script src="/Content/js/city.js"></script>
+    <script>
+        function changeResType(obj) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (obj.value) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        changeResType(document.getElementById('ResType'));
+
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
+
+        function addact() {
+            if ($("#title").val() == "") {
+                ds.dialog({
+                    title: '消息提示',
+                    content: "标题不能为空",
+                    icon: "/Content/dialog/images/info.png"
+                });
+                return false;
+            }
+            if ($("#Adress").val() == "" || $("#ddlArea").val() == "") {
+                ds.dialog({
+                    title: '消息提示',
+                    content: "地址不能为空",
+                    icon: "/Content/dialog/images/info.png"
+                });
+                return false;
+            }
+            $("#js-form-mobile").submit();
+        }
+        //上传图片预览
+    </script>
+    <script type="text/javascript">
+        var imgcount = 0;
+        $(function () {
+            $("#upbtn").click(function () {
+                if (imgcount > 12) {
+                    alert("最多上传12张照片！");
+                } else {
+                    //$("#fileheer").click();
+                    document.getElementById("fileheer").click();
+                }
+            });
+        });
+
+        function btnUpload() {
+            $('#fileform').ajaxSubmit({
+                dataType: 'json',
+                success: function (msg) {
+                    var postfile = msg;
+                    if (postfile.Action) {
+                        var urls = $('#ImageUrls').val();
+                        if (urls == "") {
+                            urls = postfile.OriginalImage;
+                        } else {
+                            urls = urls + "|" + postfile.OriginalImage;
+                        }
+                        $('#ImageUrls').val(urls);
+                        imgcount++;
+                        var item = template('file', postfile);
+                        $("#fileList").append(item);
+                    } else {
+                        alert(postfile.Message);
+                    }
+                }
+            });
+        }
+    </script>
+    <script id="file" type="text/html">
+        <div class="file-item thumbnail upload-state-done">
+            <img src="{{Small}}" width="110px" height="110px">
+        </div>
+    </script>
+}

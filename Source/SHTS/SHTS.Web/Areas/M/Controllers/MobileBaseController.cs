@@ -23,7 +23,7 @@ namespace Witbird.SHTS.Web.Areas.M.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            filterContext.Result = Redirect("/mobile");
+            //filterContext.Result = Redirect("/mobile");
         }
     }
 }

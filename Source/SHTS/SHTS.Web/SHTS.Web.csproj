@@ -237,6 +237,7 @@
     <Compile Include="Areas\Wechat\Models\FinanceModel.cs" />
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
+    <Compile Include="Areas\Wechat\Models\ResourceViewModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PCBaseController.cs" />
@@ -1075,6 +1076,7 @@
     <Content Include="Areas\Wechat\Views\Finance\WithdrawRecord.cshtml" />
     <Content Include="Areas\Wechat\Views\Finance\History.cshtml" />
     <Content Include="Areas\Admin\Views\Finance\WithdrawRecord.cshtml" />
+    <Content Include="Areas\Wechat\Views\Resource\Create.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

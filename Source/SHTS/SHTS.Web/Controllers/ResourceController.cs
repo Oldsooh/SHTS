@@ -25,7 +25,7 @@ namespace Witbird.SHTS.Web.Controllers
         {
             if (!IsIdentified)
             {
-                return Redirect("/account/login");
+                return Redirect("/user/identify");
             }
             else
             {

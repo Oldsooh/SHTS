@@ -37,6 +37,10 @@
         {
             <li><a href="/resource/create">发布资源</a></li>
         }
+        else
+        {
+            <li><a href="javascript:void(0);" onclick="gotoIdentify();">发布资源</a></li>
+        }
         <li><a href="/resource/my">资源列表</a></li>
     </ul>
     <p class="bt">我的中介</p>
@@ -53,3 +57,10 @@
         <li><a href="/user/Activitys">活动列表</a></li>
     </ul>
 </div>
+<script>
+    function gotoIdentify() {
+        if (confirm('发布资源信息需要进行会员认证。是否立即前往认证？点击"确定"按钮，将前往会员认证页面')){
+            window.location.href = '/user/identify';
+        }
+    }
+</script>

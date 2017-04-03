@@ -6,6 +6,7 @@ using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 
@@ -267,6 +268,19 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         #endregion
 
+        [ActionName("create")]
+        public ActionResult Create()
+        {
+            if (!IsIdentified)
+            {
+                return Redirect("/wechat/user/identify");
+            }
+            else
+            {
+                WeChatResourceViewModel model = new WeChatResourceViewModel();
+                return View("Create", model);
+            }
+        }
 
         #region Process Filters
         private string GetFilterValue(Dictionary<string, string> filterDict, string filterName)

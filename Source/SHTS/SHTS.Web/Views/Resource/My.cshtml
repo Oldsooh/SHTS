@@ -18,20 +18,21 @@
             <p class="n1" style="float: right;">总共 <span style="color: #ff9a15;">@Model.TotalCount</span> 条</p>
         </div>
 
-        @if (Model.Items != null && Model.Items.Count > 0)
-        {
-            <table class="usertable">
-                <tr>
-                    <td style="width: 60px;"><strong>编号</strong></td>
-                    <td style="text-align: left;"><strong>标题</strong></td>
-                    <td style="width: 60px;"><strong>类型</strong></td>
-                    <td style="width: 110px;"><strong>地区</strong></td>
-                    <td style="width: 110px;"><strong>发布时间</strong></td>
-                    <td style="width: 70px;"><strong>置顶</strong></td>
-                    <td style="width: 70px;"><strong>编辑</strong></td>
-                    <td style="width: 70px;"><strong>删除</strong></td>
-                </tr>
-                @foreach (var item in Model.Items)
+        <table class="usertable">
+            <tr>
+                <td style="width: 60px;"><strong>编号</strong></td>
+                <td style="text-align: left;"><strong>标题</strong></td>
+                <td style="width: 60px;"><strong>类型</strong></td>
+                <td style="width: 110px;"><strong>地区</strong></td>
+                <td style="width: 110px;"><strong>发布时间</strong></td>
+                <td style="width: 70px;"><strong>置顶</strong></td>
+                <td style="width: 70px;"><strong>编辑</strong></td>
+                <td style="width: 70px;"><strong>删除</strong></td>
+            </tr>
+
+            @if (Model.Items != null && Model.Items.Count > 0)
+            {
+                foreach (var item in Model.Items)
                 {
                     <tr>
                         <td>@(index++)</td>
@@ -76,14 +77,17 @@
                         </td>
                     </tr>
                 }
-            </table>
-            @Html.Partial("PagingPartial", Model.Paging)
-
-        }
-        else
-        {
-            <div>还没有提交过资源</div>
-        }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">
+                        你还没有提交过资源信息
+                    </td>
+                </tr>
+            }
+        </table>
+        @Html.Partial("PagingPartial", Model.Paging)
 
     </div>
 

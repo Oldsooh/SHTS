@@ -30,10 +30,11 @@
             </tr>
             @if (Model.Demands != null && Model.Demands.Count > 0)
             {
+                var rowNumer = 1;
                 foreach (var item in Model.Demands)
                 {
                 <tr>
-                    <td>@item.RowNumber</td>
+                    <td>@(rowNumer++)</td>
                     <td style="text-align: left;">
                         <a href="/demand/@(item.Id).html" target="_blank" style="color: #3858FA;">@item.Title</a>
                     </td>
@@ -70,6 +71,12 @@
                         }
                 </tr>
                 }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9">你没有发布过需求信息。</td>
+                </tr>
             }
         </table>
 
