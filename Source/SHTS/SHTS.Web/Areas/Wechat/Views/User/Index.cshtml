@@ -22,7 +22,32 @@
     <style>
         .head {
             width: auto;
+            height:1.6rem;
         }
+
+            .head > .background {
+                height: 100%;
+                width: 100%;
+                background-image: url('../../../../Content/images/mid_banner/banner_01_repeat.png');
+                background-size: 7.5rem 2.2rem;
+                opacity: 0.5;
+            }
+
+            .head > .head-img {
+                display: inline;
+                top:0.05rem;
+                left:0.1rem;
+            }
+
+            .head > .head-dsb {
+                display: inline;
+                top:0.4rem;
+                left:2rem;
+            }
+
+            .head>.head-dsb>p{
+                /*color:#000;*/
+            }
 
         .c_center {
             margin: 0 !important;
@@ -34,12 +59,17 @@
     <div id="_centent">
 
         <div class="head">
+            <div class="background">
+
+            </div>
             <div class="head-img">
-                <img src="@Model.Photo">
+                <a href="/wechat/user/viewuser">
+                    <img src="@Model.Photo">
+                </a>
             </div>
             <div class="head-dsb">
-                <p class="dsb-name">欢迎您，@Model.NickName</p>
-                <p class="dsb-id">ID  @Model.Id.ToString()</p>
+                <p class="dsb-name">编号：@Model.Id.ToString()</p>
+                <p class="dsb-id">昵称：@Model.NickName</p>
             </div>
         </div>
 
@@ -107,8 +137,8 @@
                     {
                         <li class="border_m border_r">
                             @if (Model.IsUserIdentified)
-                            { 
-                            <a class="my_publish" href="/wechat/resource/create">提交资源</a>
+                            {
+                                <a class="my_publish" href="/wechat/resource/create">提交资源</a>
                             }
                             else
                             {

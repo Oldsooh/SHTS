@@ -408,6 +408,41 @@ namespace System.Web.Mvc
         }
 
         /// <summary>
+        /// 可配套设施
+        /// </summary>
+        /// <param name="helper"></param>
+        /// <returns></returns>
+        private static List<Witbird.SHTS.DAL.New.SpaceFacility> spaceFacilities;
+        public static List<Witbird.SHTS.DAL.New.SpaceFacility> SpaceFacilityListProperty
+        {
+            get
+            {
+                if (spaceFacilities == null)
+                {
+                    lock (lockObject)
+                    {
+                        if (spaceFacilities == null)
+                        {
+                            spaceFacilities = miscManager.GetSpaceFacilityList();
+                        }
+                    }
+                }
+                return spaceFacilities;
+            }
+        }
+        public static List<SelectListItem> SpaceFacilityList(this HtmlHelper helper)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (var feature in SpaceFacilityListProperty)
+            {
+                list.Add(new SelectListItem { Text = feature.Name, Value = feature.Id.ToString() });
+            }
+
+            return list;
+        }
+
+        /// <summary>
         /// 活动场地配套设施复选框组
         /// 后期需要修改为从数据库读取元数据
         /// </summary>
@@ -426,7 +461,7 @@ namespace System.Web.Mvc
 
             builder.Append("<div>");
 
-            foreach (var item in miscManager.GetSpaceFacilityList())
+            foreach (var item in SpaceFacilityListProperty)
             {
                 if (checkeditems.Contains(item.Id))
                 {
