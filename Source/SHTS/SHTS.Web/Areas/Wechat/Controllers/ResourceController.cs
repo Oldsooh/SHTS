@@ -17,10 +17,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         ResourceManager resourceManager = new ResourceManager();
         ResourceService resourceService = new ResourceService();
 
-        public static string UserIdentifyUrl = 
-            "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain 
+        public static string UserIdentifyUrl =
+            "<a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain
             + "/WeChat/User/Identify?returnUrl={0}\">认证会员可见</a>";
-         
+
         #region 查看资源信息列表
 
         /// <summary>
@@ -280,6 +280,99 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 WeChatResourceViewModel model = new WeChatResourceViewModel();
                 return View("Create", model);
             }
+        }
+
+        [HttpPost]
+        [ActionName("create")]
+        [ValidateInput(false)]
+        public ActionResult CreateResource(WeChatResourceViewModel model)
+        {
+            bool isSuccessful = false;
+            try
+            {
+                Witbird.SHTS.DAL.New.Resource resource = new Witbird.SHTS.DAL.New.Resource();
+
+                resource.ResourceType = int.Parse(model.ResType);
+
+                resource.UserId = UserInfo.UserId;
+
+                resource.Title = model.Title;
+                resource.CanFriendlyLink = model.CanFriendlyLink;
+                resource.ProvinceId = model.ddlProvince;
+                resource.CityId = model.ddlCity;
+                resource.AreaId = model.ddlArea;
+                resource.CreateTime = DateTime.Now;
+                resource.SpaceSizeId = string.IsNullOrEmpty(model.SpaceSizeId) ? 1 : int.Parse(model.SpaceSizeId);
+                resource.ShortDesc = model.Description == null ? null : Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(model.Description);
+                resource.Description = model.Description;
+                resource.SpacePeopleId = string.IsNullOrEmpty(model.SpacePeopleId) ? 1 : int.Parse(model.SpacePeopleId);
+                resource.SpaceTreat = int.Parse(model.SpaceTreat);
+                resource.Contract = model.Contact;
+                resource.Email = model.Email;
+                resource.DetailAddress = model.DetailAddress;
+                resource.QQ = model.QQ;
+                resource.Telephone = model.Telephone;
+                resource.Mobile = model.Mobile;
+                resource.WeChat = model.WeChat;
+                resource.Href = model.Href;
+                resource.ImageUrls = model.ImageUrls;
+                resource.LastUpdatedTime = DateTime.Now;
+                resource.State = (int)ResourceState.Created;
+                resource.ClickCount = 0;
+                resource.ClickTime = DateTime.Now;
+                resource.UserName = UserInfo.UserName;
+
+                resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 1 : int.Parse(model.ActorFromId);
+                resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 1 : int.Parse(model.ActorSex);
+
+                resource.SpaceTypeId = string.IsNullOrEmpty(model.SpaceTypeId) ? 0 : int.Parse(model.SpaceTypeId);
+                resource.ActorTypeId = string.IsNullOrEmpty(model.ActorTypeId) ? 0 : int.Parse(model.ActorTypeId);
+                resource.EquipTypeId = string.IsNullOrEmpty(model.EquipTypeId) ? 0 : int.Parse(model.EquipTypeId);
+                resource.OtherTypeId = string.IsNullOrEmpty(model.OtherTypeId) ? 0 : int.Parse(model.OtherTypeId);
+
+                if (!string.IsNullOrEmpty(model.SpaceFacilities))
+                {
+                    int facilityvalue = 0;
+                    var facilities = model.SpaceFacilities.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Distinct().Select(v => int.Parse(v)).ToList();
+                    foreach (var item in facilities)
+                    {
+                        facilityvalue |= (int)Math.Pow(2, item - 1);
+                    }
+                    resource.SpaceFacilityValue = facilityvalue;
+                }
+
+                if (!string.IsNullOrEmpty(model.SpaceFeatures))
+                {
+                    int featurevalue = 0;
+                    var features = model.SpaceFeatures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Distinct().Select(v => int.Parse(v)).ToList();
+                    foreach (var item in features)
+                    {
+                        featurevalue |= (int)Math.Pow(2, item - 1);
+                    }
+                    resource.SpaceFeatureValue = featurevalue;
+                }
+
+                if (resource.ShortDesc != null && resource.ShortDesc.Length > 150)
+                {
+                    resource.ShortDesc = resource.ShortDesc.Substring(0, 147) + "...";
+                }
+
+                resourceManager.CreateResource(resource);
+                isSuccessful = true;
+
+            }
+            catch (Exception ex)
+            {
+                isSuccessful = false;
+                LogService.LogWexin("CreateResource", ex.ToString());
+            }
+
+            var data = new
+            {
+                IsSuccessful = isSuccessful
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         #region Process Filters

@@ -41,8 +41,13 @@
                 width: 86%;
             }
 
-            .inline.wide > input[type=text] {
+            .inline.wide > input[type=text], .inline.wide>textarea {
                 width: 93%;
+            }
+
+            .inline.wide>button{
+                width:99%!important;
+                border-radius:5px;
             }
 
             .inline > select {
@@ -123,6 +128,11 @@
         .uploadifive-button {
             background-image: url('/Areas/Wechat/Content/images/btnAdd.png') !important;
             background-repeat: no-repeat!important;
+            background-size: contain;
+        }
+
+        .uploadifive-button, .uploadifive-button:hover{
+            background-color:initial!important;
         }
 
         .uploadifive-queue-item > .close {
@@ -142,18 +152,19 @@
 <!-- content -->
 <div class="wrap" style="width: 100%">
     <div class="register-box" style="width: 100%;">
-        <form id="js-form-mobile" action="/wechat/resource/create" class="reg-form" onsubmit="return beforesubmit();" enctype="multipart/form-data" method="post">
+        <form id="js-form-mobile" action="/wechat/resource/create" class="reg-form" enctype="multipart/form-data" method="post">
             <div class="inline wide" style="margin:0;">
                 <div class="title" style="color:#666;">
                     注意：加粗并标记红色<span style="color:red;">*</span>表示必填字段
                 </div>
             </div>
             <div>
+                <!--Resource title-->
                 <div class="inline wide">
                     <div class="title highlight">
                         资源标题
                     </div>
-                    <input type="text" name="Title" placeholder="请输入资源标题" class="text" />
+                    <input type="text" id="title" name="Title" placeholder="请输入资源标题" class="text" />
                 </div>
                 <!-- Resource type list -->
                 <div class="inline">
@@ -172,7 +183,7 @@
                     <div class="title highlight">
                         场地类型
                     </div>
-                    <select name="SpaceTypeId" class="text">
+                    <select id="SpaceTypeId" name="SpaceTypeId" class="text">
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpaceTypeList())
                         {
@@ -186,7 +197,7 @@
                     <div class="title highlight">
                         场地面积
                     </div>
-                    <select name="SpaceSizeId" class="text">
+                    <select id="SpaceSizeId" name="SpaceSizeId" class="text">
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpaceSizeList())
                         {
@@ -199,7 +210,7 @@
                     <div class="title highlight">
                         容纳人数
                     </div>
-                    <select name="SpacePeopleId" class="text">
+                    <select id="SpacePeopleId" name="SpacePeopleId" class="text">
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpacePeopleList())
                         {
@@ -246,7 +257,8 @@
                     </div>
                     <div class="detail">
                         <div>
-                            <input type="checkbox" name="chk_SpaceTreat" id="chk_SpaceTreat" /><text>可以提供酒宴</text>
+                            <input type="hidden" name="SpaceTreat" id="SpaceTreat" />
+                            <input type="checkbox" id="chk_SpaceTreat" name="chk_SpaceTreat" /><text>可以提供酒宴</text>
                         </div>
                     </div>
                 </div>
@@ -364,14 +376,7 @@
                     <div class="title highlight">
                         联系人姓名
                     </div>
-                    <input type="text" id="DetailAddress" name="DetailAddress" placeholder="请输入联系人姓名或称呼" class="text" />
-                </div>
-                <!--contact Telephone-->
-                <div class="inline">
-                    <div class="title">
-                        固定电话
-                    </div>
-                    <input type="text" id="Telephone" name="Telephone" placeholder="请输入固定座机号码" class="text" />
+                    <input type="text" id="Contact" name="Contact" placeholder="请输入联系人姓名或称呼" class="text" />
                 </div>
                 <!--contact cellphone-->
                 <div class="inline">
@@ -379,6 +384,13 @@
                         移动电话
                     </div>
                     <input type="text" id="Mobile" name="Mobile" placeholder="请输入移动手机号码" class="text" />
+                </div>
+                <!--contact Telephone-->
+                <div class="inline">
+                    <div class="title">
+                        固定电话
+                    </div>
+                    <input type="text" id="Telephone" name="Telephone" placeholder="请输入固定座机号码" class="text" />
                 </div>
                 <!--contact QQ-->
                 <div class="inline">
@@ -404,10 +416,20 @@
                 <!--upload image-->
                 <div class="inline wide">
                     <div class="title highlight">
-                        资源图片
+                        添加几张照片，让您的信息更受欢迎
                     </div>
                     <input id="ImageUrls" name="ImageUrls" type="hidden">
                     <input name="file_upload" id="file_upload" type="file" multiple="multiple" accept="image/*" />
+                </div>
+                <!--resource detail-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        资源详情
+                    </div>
+                    <textarea id="Description" name="Description" placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。"></textarea>
+                </div>
+                <div class="inline wide">
+                    <button type="button" onclick="createResource(this);" class="button btn-green">提交资源</button>
                 </div>
             </div>
         </form>
@@ -419,134 +441,13 @@
     <script src="~/Content/js/city.js"></script>
     <script src="~/Content/js/jquery-1.11.1.min.js"></script>
     <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
-    <script>
-        function changeResType(obj) {
-            $('.sp').addClass("hd");
-            $('.ac').addClass("hd");
-            $('.eq').addClass("hd");
-            $('.ot').addClass("hd");
-            switch (obj.value) {
-                case "1":
-                    $('.sp').removeClass("hd");
-                    break;
-                case "2":
-                    $('.ac').removeClass("hd");
-                    break;
-                case "3":
-                    $('.eq').removeClass("hd");
-                    break;
-                case "4":
-                    $('.ot').removeClass("hd");
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        changeResType(document.getElementById('ResType'));
-
-        function beforesubmit() {
-            var facilities = "";
-            var isfirst = true;
-            $('.spfc').each(function () {
-                if (this.checked) {
-                    if (isfirst) {
-                        facilities = this.value;
-                    } else {
-                        facilities = facilities + "," + this.value;
-                    }
-                    isfirst = false;
-                }
-            })
-            $('#SpaceFacilities').val(facilities);
-
-            var features = "";
-            isfirst = true;
-            $('.spft').each(function () {
-                if (this.checked) {
-                    if (isfirst) {
-                        features = this.value;
-                    } else {
-                        features = features + "," + this.value;
-                    }
-                    isfirst = false;
-                }
-            })
-            $('#SpaceFeatures').val(features);
-
-            if ($('#chk_SpaceTreat')[0].checked) {
-                $('#SpaceTreat').val("1");
-            } else {
-                $('#SpaceTreat').val("2");
-            }
-
-            var imagesUrls = "";
-            isfirst = true;
-            $('.uploadifive-queue-item').each(function () {
-                if (!isfirst) {
-                    imagesUrls += ',';
-                    isfirst = false;
-                }
-
-                var imageUrl = $(this).attr('rurl');
-
-                imagesUrls += imagesUrls;
-            });
-
-            $('#ImageUrls').val(imagesUrls);
-
-            $('#Description').val(editorContent.html());
-
-            return true;
-        }
-
-        function showMessage(msg, isSuccessfulMsg) {
-            if (msg != '') {
-                if (isSuccessfulMsg) {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/success.png"
-                    });
-                }
-                else {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/info.png"
-                    });
-                }
-            }
-        }
-
-        function addact() {
-            if ($("#title").val() == "") {
-                ds.dialog({
-                    title: '消息提示',
-                    content: "标题不能为空",
-                    icon: "/Content/dialog/images/info.png"
-                });
-                return false;
-            }
-            if ($("#Adress").val() == "" || $("#ddlArea").val() == "") {
-                ds.dialog({
-                    title: '消息提示',
-                    content: "地址不能为空",
-                    icon: "/Content/dialog/images/info.png"
-                });
-                return false;
-            }
-            $("#js-form-mobile").submit();
-        }
-        //上传图片预览
-    </script>
     <script type="text/javascript">
         var existImgCount = 0;
         $(function () {
             $('#file_upload').uploadifive({
                 'auto': true,
                 'uploadScript': '/Content/upload/uploadimage.ashx',
-                'buttonText': '选择资源照片',
+                'buttonText': '',//empty
                 'fileType': 'image/*',
                 'multi': true,
                 'queueSizeLimit': 12,
@@ -586,5 +487,204 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function changeResType(obj) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (obj.value) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        changeResType(document.getElementById('ResType'));
+
+        function isEmptyValue(value) {
+            if (value == '') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        function prepareAndValidateData() {
+            var title = $('#title').val();
+            if (isEmptyValue(title)) {
+                $('#title').focus();
+                showMessage('请输入资源信息标题', false);
+                return false;
+            }
+
+            var resType = $('#ResType').val();
+            // 活动场地
+            if (resType == 1) {
+                var facilities = "";
+                var isfirst = true;
+                
+                var features = "";
+                isfirst = true;
+                $('.spft').each(function () {
+                    if (this.checked) {
+                        if (isfirst) {
+                            features = this.value;
+                        } else {
+                            features = features + "," + this.value;
+                        }
+                        isfirst = false;
+                    }
+                })
+                if (isEmptyValue(features)) {
+                    $('#SpaceFeatures').focus();
+                    showMessage('请选择活动场地特点', false);
+                    return false;
+                }
+                $('#SpaceFeatures').val(features);
+
+                $('.spfc').each(function () {
+                    if (this.checked) {
+                        if (isfirst) {
+                            facilities = this.value;
+                        } else {
+                            facilities = facilities + "," + this.value;
+                        }
+                        isfirst = false;
+                    }
+                })
+
+                $('#SpaceFacilities').val(facilities);
+
+                //酒宴提供
+                if ($('#chk_SpaceTreat').checked) {
+                    $('#SpaceTreat').val("1");
+                }
+                else {
+                    $('#SpaceTreat').val("2");
+                }
+            }
+
+            var province = $('#ddlProvince').val();
+            if (province == -1) {
+                $('#ddlProvince').focus();
+                showMessage('请选择资源地区', false);
+                return false;
+            }
+
+            var detailAddr = $('#DetailAddress').val();
+            if (isEmptyValue(detailAddr)) {
+                $('#DetailAddress').focus();
+                showMessage('请输入资源详细地址', false);
+                return false;
+            }
+
+            var Contact = $('#Contact').val();
+            if (isEmptyValue(Contact)) {
+                $('#Contact').focus();
+                showMessage('请输入联系人姓名或称呼', false);
+                return false;
+            }
+
+            var Mobile = $('#Mobile').val();
+            if (isEmptyValue(Mobile)) {
+                $('#Mobile').focus();
+                showMessage('请输入联系人手机号码', false);
+                return false;
+            }
+
+            var imagesUrls = "";
+            isfirst = true;
+            $('.uploadifive-queue-item').each(function () {
+                if (!isfirst) {
+                    imagesUrls += ',';
+                }
+
+                isfirst = false;
+                var imageUrl = $(this).attr('rurl');
+
+                imagesUrls += imageUrl;
+            });
+
+            if (isEmptyValue(imagesUrls)) {
+                $('.uploadifive-button')[0].focus();
+                showMessage('请上传几张资源图片用于展示', false);
+                return false;
+            }
+            $('#ImageUrls').val(imagesUrls);
+
+            var Description = $('#Description').val();
+            if (isEmptyValue(Description)) {
+                $('#Description').focus();
+                showMessage('请输入资源详情', false);
+                return false;
+            }
+
+            return true;
+        }
+
+        function createResource(obj) {
+            if (prepareAndValidateData()) {
+                $(obj).attr('disabled', 'disabled');
+                $(obj).html('正在提交..');
+                $.ajax({
+                    url: '/wechat/resource/create',
+                    data: $("#js-form-mobile").serialize(),
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.IsSuccessful) {
+                            showMessage('提交资源成功，请到"我的资源"里查看。', true);
+                            window.location.href = '/wechat/resource/my';
+                        }
+                        else {
+                            showMessage('提交资源失败，请稍后再试', false);
+                        }
+
+                        $(obj).html('提交资源');
+                        $(obj).removeAttr("disabled");
+                    },
+                    error: function (msg) {
+                        $(obj).html('提交资源');
+                        $(obj).removeAttr("disabled");
+                        showMessage("资源创建失败，请检查您的网络是否连接", false);
+                    }
+                });
+            }
+            else {
+            }
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
     </script>
 }
