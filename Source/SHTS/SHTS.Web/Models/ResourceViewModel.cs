@@ -68,6 +68,38 @@ namespace Witbird.SHTS.Web.Models
         /// </summary>
         public string ImageUrls { get; set; }
 
+        private List<string> _originalImgUrls;
+        public List<string> OriginalImgUrls
+        {
+            get
+            {
+                if (_originalImgUrls == null)
+                {
+                    _originalImgUrls = new List<string>();
+                    if (!string.IsNullOrEmpty(ImageUrls))
+                    {
+                        foreach (var item in ImageUrls.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList())
+                        {
+                            var img = item.Split('.');
+                            if (img.Length >= 2)
+                            {
+                                _originalImgUrls.Add(string.Format("{0}.{1}", img[0], img[1]));
+                            }
+                            else
+                            {
+                                _originalImgUrls.Add(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _originalImgUrls.Add(string.Empty); ;
+                    }
+                }
+                return _originalImgUrls;
+            }
+        }
+
         private List<string> _SmallImgUrls;
         public List<string> SmallImgUrls
         {

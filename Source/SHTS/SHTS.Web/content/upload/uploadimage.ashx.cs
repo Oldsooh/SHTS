@@ -23,12 +23,11 @@ namespace Witbird.SHTS.Web.Content.upload
             //存放图片的根目录 
             string folderName = "/uploadfiles/";
             string mode = "H";//生成缩略图的方式:HW(指定高宽缩放),W(指定宽，高按比例),H(指定高，宽按比例),Cut(指定高宽裁减)
-
-            bool action = true;
+            
             string originalImage = "OriginalImage.jpg";
             string small = "small.jpg";
             string big = "big.jpg";
-            string message = "ok";
+            string message = string.Empty;
 
             //定义错误消息
             try
@@ -106,7 +105,7 @@ namespace Witbird.SHTS.Web.Content.upload
             }
             var ajaxfile = new AjaxFile
             {
-               Action = action,
+               Action = string.IsNullOrEmpty(message),
                OriginalImage = originalImage,
                Small = small,
                Big = big,

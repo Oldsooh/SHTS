@@ -1,6 +1,6 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatResourceViewModel
 @{
-    ViewBag.Title = "提交资源信息";
+    ViewBag.Title = "修改资源信息";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head
@@ -41,13 +41,13 @@
                 width: 86%;
             }
 
-            .inline.wide > input[type=text], .inline.wide>textarea {
+            .inline.wide > input[type=text], .inline.wide > textarea {
                 width: 93%;
             }
 
-            .inline.wide>button{
-                width:99%!important;
-                border-radius:5px;
+            .inline.wide > button {
+                width: 99% !important;
+                border-radius: 5px;
             }
 
             .inline > select {
@@ -113,7 +113,7 @@
             width: unset !important;
         }
 
-        .uploadifive-button,.uploadifive-button>input[type=file], .uploadifive-queue-item {
+        .uploadifive-button, .uploadifive-button > input[type=file], .uploadifive-queue-item {
             border-radius: 3px !important;
             margin-top: 5px !important;
             margin-right: 10px !important;
@@ -127,13 +127,13 @@
 
         .uploadifive-button {
             background-image: url('/Areas/Wechat/Content/images/btnAdd.png') !important;
-            background-repeat: no-repeat!important;
+            background-repeat: no-repeat !important;
             background-size: contain;
         }
 
-        .uploadifive-button, .uploadifive-button:hover{
-            background-color:initial!important;
-        }
+            .uploadifive-button, .uploadifive-button:hover {
+                background-color: initial !important;
+            }
 
         .uploadifive-queue-item > .close {
             width: 30px;
@@ -159,12 +159,13 @@
                 </div>
             </div>
             <div>
+                <input type="hidden" name="ResId" id="ResId" value="@Model.ResId" />
                 <!--Resource title-->
                 <div class="inline wide">
                     <div class="title highlight">
                         资源标题
                     </div>
-                    <input type="text" id="title" name="Title" placeholder="请输入资源标题" class="text" />
+                    <input type="text" id="title" name="Title" placeholder="请输入资源标题" class="text" value="@Model.Title" />
                 </div>
                 <!-- Resource type list -->
                 <div class="inline">
@@ -174,7 +175,14 @@
                     <select id="ResType" name="ResType" class="text" onchange="changeResType(this);">
                         @foreach (var item in Html.ResourceList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ResType)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -187,7 +195,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpaceTypeList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.SpaceTypeId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -201,7 +216,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpaceSizeList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.SpaceSizeId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -214,7 +236,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.SpacePeopleList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.SpacePeopleId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -227,8 +256,16 @@
                         <input type="hidden" id="SpaceFeatures" name="SpaceFeatures" />
                         @foreach (var item in Html.SpaceFeatureList())
                         {
+                            var features = Model.SpaceFeatures.Split(',');
                             <div>
-                                <input class="spft" type="checkbox" value="@item.Value" />
+                                @if (features.Contains(item.Value))
+                                {
+                                    <input class="spft" type="checkbox" value="@item.Value" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input class="spft" type="checkbox" value="@item.Value" />
+                                }
                                 @item.Text
                             </div>
                         }
@@ -243,8 +280,16 @@
                         <input id="SpaceFacilities" name="SpaceFacilities" type="hidden" />
                         @foreach (var item in Html.SpaceFacilityList())
                         {
+                            var facilities = Model.SpaceFacilities.Split(',');
                             <div>
-                                <input class="spfc" type="checkbox" value="@item.Value" />
+                                @if (facilities.Contains(item.Value))
+                                {
+                                    <input class="spfc" type="checkbox" value="@item.Value" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input class="spfc" type="checkbox" value="@item.Value" />
+                                }
                                 @item.Text
                             </div>
                         }
@@ -257,8 +302,15 @@
                     </div>
                     <div class="detail">
                         <div>
-                            <input type="hidden" name="SpaceTreat" id="SpaceTreat" />
-                            <input type="checkbox" id="chk_SpaceTreat" name="chk_SpaceTreat" /><text>可以提供酒宴</text>
+                            <input type="hidden" name="SpaceTreat" id="SpaceTreat" value="@Model.SpaceTreat" />
+                            @if (Model.SpaceTreat == "1")
+                            {
+                                <input type="checkbox" id="chk_SpaceTreat" name="chk_SpaceTreat" checked="checked" /><text>可以提供酒宴</text>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="chk_SpaceTreat" name="chk_SpaceTreat" /><text>可以提供酒宴</text>
+                            }
                         </div>
                     </div>
                 </div>
@@ -271,7 +323,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.ActorTypeList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ActorTypeId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -284,7 +343,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.ActorFromList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ActorFromId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -298,7 +364,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.ActorSexList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ActorSex)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -311,7 +384,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.EquipTypeList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.EquipTypeId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -325,7 +405,14 @@
                         <option value="-1">不确定</option>
                         @foreach (var item in Html.OtherTypeList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.OtherTypeId)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -339,21 +426,42 @@
                         <option value="-1">省份</option>
                         @foreach (var item in Html.ProviceList())
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ddlProvince)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                     <select id="ddlCity" name="ddlCity" class="text" onchange="loadAreas();">
                         <option value="-1">全省/市</option>
                         @foreach (var item in Html.CityList(Model.ddlProvince))
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ddlCity)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                     <select id="ddlArea" name="ddlArea" class="text">
                         <option value="-1">全县/区</option>
                         @foreach (var item in Html.AreaList(Model.ddlCity))
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Value == Model.ddlArea)
+                            {
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -362,56 +470,56 @@
                     <div class="title highlight">
                         详细地址
                     </div>
-                    <input type="text" id="DetailAddress" name="DetailAddress" placeholder="请输入详细地址" class="text" />
+                    <input type="text" id="DetailAddress" name="DetailAddress" placeholder="请输入详细地址" class="text" value="@Model.DetailAddress" />
                 </div>
                 <!--actor performance href-->
                 <div class="ac hd inline wide">
                     <div class="title">
                         演出视频
                     </div>
-                    <input type="text" id="Href" name="Href" placeholder="请输入演出视频在线观看地址" class="text" />
+                    <input type="text" id="Href" name="Href" placeholder="请输入演出视频在线观看地址" class="text" value="@Model.Href" />
                 </div>
                 <!--contact name-->
                 <div class="inline wide">
                     <div class="title highlight">
                         联系人姓名
                     </div>
-                    <input type="text" id="Contact" name="Contact" placeholder="请输入联系人姓名或称呼" class="text" />
+                    <input type="text" id="Contact" name="Contact" placeholder="请输入联系人姓名或称呼" class="text" value="@Model.Contact" />
                 </div>
                 <!--contact cellphone-->
                 <div class="inline">
                     <div class="title highlight">
                         移动电话
                     </div>
-                    <input type="text" id="Mobile" name="Mobile" placeholder="请输入移动手机号码" class="text" />
+                    <input type="text" id="Mobile" name="Mobile" placeholder="请输入移动手机号码" class="text" value="@Model.Mobile" />
                 </div>
                 <!--contact Telephone-->
                 <div class="inline">
                     <div class="title">
                         固定电话
                     </div>
-                    <input type="text" id="Telephone" name="Telephone" placeholder="请输入固定座机号码" class="text" />
+                    <input type="text" id="Telephone" name="Telephone" placeholder="请输入固定座机号码" class="text" value="@Model.Telephone" />
                 </div>
                 <!--contact QQ-->
                 <div class="inline">
                     <div class="title">
                         QQ帐号
                     </div>
-                    <input type="text" id="QQ" name="QQ" placeholder="请输入联系人QQ帐号" class="text" />
+                    <input type="text" id="QQ" name="QQ" placeholder="请输入联系人QQ帐号" class="text" value="@Model.QQ" />
                 </div>
                 <!--contact wechat-->
                 <div class="inline">
                     <div class="title">
                         微信帐号
                     </div>
-                    <input type="text" id="WeChat" name="WeChat" placeholder="请输入联系人微信帐号" class="text" />
+                    <input type="text" id="WeChat" name="WeChat" placeholder="请输入联系人微信帐号" class="text" value="@Model.WeChat" />
                 </div>
                 <!--contact email-->
                 <div class="inline wide">
                     <div class="title">
                         邮箱帐号
                     </div>
-                    <input type="text" id="Email" name="Email" placeholder="请输入联系人微信帐号" class="text" />
+                    <input type="text" id="Email" name="Email" placeholder="请输入联系人微信帐号" class="text" value="@Model.Email" />
                 </div>
                 <!--upload image-->
                 <div class="inline wide">
@@ -420,16 +528,34 @@
                     </div>
                     <input id="ImageUrls" name="ImageUrls" type="hidden">
                     <input name="file_upload" id="file_upload" type="file" multiple="multiple" accept="image/*" />
+                    @if (Model.OriginalImgUrls.Count > 0)
+                    {
+                        // 0: index, 1: small img url, 2: original img url, 3: index
+                        var queueItemTemplate = "<div class=\"uploadifive-queue-item complete\" id=\"uploadifive-file_upload-file-{0}\" style=\"background-image:url('{1}')\" rurl=\"{2}\"><a class=\"close\" href=\"javascript:void(0);\" onclick=\"clearItem(this);\">X</a><div><span class=\"filename\">{3}.jpg</span><span class=\"fileinfo\"> - Completed</span></div><div class=\"progress\" style=\"display: none;\"><div class=\"progress-bar\" style=\"width: 100%;\"></div></div></div>";
+                        var imgHtmls = "";
+                        <div id="uploadifive-file_upload-queue" class="uploadifive-queue">
+                            @for (int i = 0; i < Model.OriginalImgUrls.Count; i++)
+                            {
+                                var imgUrl = Model.OriginalImgUrls[i];
+                                var smallImgUrl = Model.SmallImgUrls[i];
+                                var item = string.Format(queueItemTemplate, i, smallImgUrl, imgUrl, i);
+
+                                imgHtmls += item;
+                            }
+
+                            @(new HtmlString(imgHtmls))
+                        </div>
+                    }
                 </div>
                 <!--resource detail-->
                 <div class="inline wide">
                     <div class="title highlight">
                         资源详情
                     </div>
-                    <textarea id="Description" name="Description" placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。"></textarea>
+                    <textarea id="Description" name="Description" placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。">@Model.Description</textarea>
                 </div>
                 <div class="inline wide">
-                    <button type="button" onclick="createResource(this);" class="button btn-green">提交资源</button>
+                    <button type="button" onclick="createResource(this);" class="button btn-green">修改资源</button>
                 </div>
             </div>
         </form>
@@ -465,16 +591,19 @@
                 },
                 'onUploadComplete': function (file, data) {
                     var postfile = JSON.parse(data);
-                    var originalUrl = '';
-                    var smallImage = '';
+                    var imageUrl = '';
+                    var itemid = $(file.queueItem);
                     if (postfile.Action) {
-                        originalUrl = postfile.OriginalImage;
-                        smallImage = postfile.Small;
-                        var itemid = $(file.queueItem);
-                        var imgurl = "background-image:url('" + smallImage + "')";
-                        $(itemid).attr("style", originalUrl);
+                        imageUrl = postfile.OriginalImage;
+                        var imgurl = "background-image:url('" + imageUrl + "')";
+                        $(itemid).attr("style", imgurl);
                     }
-                    $(itemid).attr("rurl", originalUrl);
+                    else {
+                        showMessage('图片'+ file[0].name + '上传失败，请重新尝试', false);
+                        $("#file_upload").uploadify('cancel');
+                        $(itemid).remove();
+                    }
+                    $(itemid).attr("rurl", imageUrl);
                 },
                 'onFallback': function () {
                     alert("该浏览器无法使用!");
@@ -483,6 +612,11 @@
                 }
             });
         });
+        function clearItem(obj) {
+            $(obj).parent().fadeOut(500, function () {
+                $(this).remove();
+            });
+        }
     </script>
 
     <script>
@@ -638,12 +772,12 @@
                 $(obj).attr('disabled', 'disabled');
                 $(obj).html('正在提交...');
                 $.ajax({
-                    url: '/wechat/resource/create',
+                    url: '/wechat/resource/edit',
                     data: $("#js-form-mobile").serialize(),
                     type: 'POST',
                     success: function (data) {
                         if (data.IsSuccessful) {
-                            alert('资源提交成功，请到我的资源页面查看');
+                            alert('资源修改成功，请到我的资源页面查看');
                             window.location.href = '/wechat/resource/my';
                         }
                         else {
@@ -655,13 +789,13 @@
                             }
                         }
 
-                        $(obj).html('提交资源');
+                        $(obj).html('修改资源');
                         $(obj).removeAttr("disabled");
                     },
                     error: function (msg) {
-                        $(obj).html('提交资源');
+                        $(obj).html('修改资源');
                         $(obj).removeAttr("disabled");
-                        showMessage("资源创建失败，请检查您的网络是否连接", false);
+                        showMessage("提交资源失败，请检查您的网络是否连接", false);
                     }
                 });
             }

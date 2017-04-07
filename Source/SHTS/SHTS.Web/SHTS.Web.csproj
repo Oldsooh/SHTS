@@ -1078,6 +1078,7 @@
     <Content Include="Areas\Wechat\Views\Finance\History.cshtml" />
     <Content Include="Areas\Admin\Views\Finance\WithdrawRecord.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\Create.cshtml" />
+    <Content Include="Areas\Wechat\Views\Resource\Edit.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
