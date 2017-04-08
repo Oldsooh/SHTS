@@ -1,0 +1,159 @@
+﻿@model Witbird.SHTS.Model.Extensions.QueryResourceResult
+
+@{
+    ViewBag.Title = "我提交的资源";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@section head
+{
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .operation a {
+    border-radius: 15px;
+    font-size: 14px;
+    padding:0;
+    padding-left:10px;
+    padding-right:10px;
+        }
+    </style>
+}
+
+<div id="main">
+    @if (Model.Items != null && Model.Items.Count > 0)
+    {
+        foreach (var item in Model.Items)
+        {
+            var typeName = string.Empty;
+
+            switch (item.ResourceType)
+            {
+                case 1:
+                    typeName = "活动场地";
+                    break;
+                case 2:
+                    typeName = "演艺人员";
+                    break;
+                case 3:
+                    typeName = "活动设备";
+                    break;
+                case 4:
+                    typeName = "其他资源";
+                    break;
+                default:
+                    break;
+            }
+
+            <ul class="commonlist">
+                <li class="atitle">
+                    <span class="state blue">@item.CreateTime.ToString("MM-dd")</span>
+                    <a href="/wechat/resource/show/@(item.Id)?showwxpaytitle=1" style="margin-right: 10px;">
+                        @if (item.ClickTime >= DateTime.Now.Date)
+                        {
+                            <label style="color: #FD9102;">[已置顶]</label>
+                        }
+                        @item.Title
+                    </a>
+                </li>
+                <li>资源类别：<span class="yellow">@typeName</span></li>
+                <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
+
+                <li class="operation">
+                    @if (item.ClickTime < DateTime.Now.Date)
+                    {
+                        <a href="/wechat/resource/click/@item.Id" style="margin-right: 10px;" class="btn btn-info">
+                            置顶显示
+                        </a>
+                    }
+                    <a href="/wechat/resource/Edit/@(item.Id)" style="margin-right: 10px;" class="btn btn-success">
+                        编辑资源
+                    </a>
+                    <a href="/wechat/resource/delete/@(item.Id)" onclick="return confirm('资源删除后将不可恢复，您确定删除该资源信息吗？');" style="margin-right: 10px;" class="btn btn-danger">
+                        删除资源
+                    </a>
+                </li>
+
+            </ul>
+        }
+    }
+    else
+    {
+        <ul class="commonlist">
+            <li class="atitle">
+                <lable style="color: #FD9102;">没有资源记录数据！</lable>
+            </li>
+        </ul>
+    }
+
+    <div style="clear: both; height: 10px;"></div>
+
+    @{
+        RouteValueDictionary dictionary = new RouteValueDictionary();
+
+        Dictionary<string, object> prv = new Dictionary<string, object>();
+        prv.Add("class", "prv");
+
+        Dictionary<string, object> no = new Dictionary<string, object>();
+        no.Add("class", "no");
+
+        Dictionary<string, object> next = new Dictionary<string, object>();
+        next.Add("class", "next");
+    }
+    <div class="fenye" style="margin: 0 auto;">
+        @if (Model.Paging.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.Paging.PageCount; step = step + Model.Paging.PageStep)
+                {
+                    if (Model.Paging.PageIndex >= step && Model.Paging.PageIndex < step + Model.Paging.PageStep)
+                    {
+                        //上一页
+                        if (Model.Paging.PageIndex > 1)
+                        {
+                            dictionary.Add("page", (Model.Paging.PageIndex - 1).ToString());
+                        <span>@Html.ActionLink("上一页", Model.Paging.ActionName, dictionary, prv) </span>
+                        dictionary.Remove("page");
+                    }
+                    //首页
+                    if (Model.Paging.PageStep < Model.Paging.PageIndex)
+                    {
+                        <span>@Html.ActionLink("1", Model.Paging.ActionName)</span><span>.</span>
+                    }
+                    //分页
+                    for (int i = step; i < step + Model.Paging.PageStep; i++)
+                    {
+                        if (i <= Model.Paging.PageCount)
+                        {
+                            if (i == Model.Paging.PageIndex)
+                            {
+                                dictionary.Add("page", i.ToString());
+                                <span> @Html.ActionLink(i.ToString(), Model.Paging.ActionName, dictionary, no)</span>
+                                dictionary.Remove("page");
+                            }
+                            else
+                            {
+                                dictionary.Add("page", i.ToString());
+                                <span> @Html.ActionLink(i.ToString(), Model.Paging.ActionName, dictionary)</span>
+                                dictionary.Remove("page");
+                            }
+                        }
+                    }
+                    //末页
+                    if (step + Model.Paging.PageStep <= Model.Paging.PageCount)
+                    {
+                        dictionary.Add("page", Model.Paging.PageCount.ToString());
+                        <span>.</span><span>@Html.ActionLink(Model.Paging.PageCount.ToString(), Model.Paging.ActionName, dictionary) </span>
+                        dictionary.Remove("page");
+                    }
+                    //下一页
+                    if (Model.Paging.PageIndex < Model.Paging.PageCount)
+                    {
+                        dictionary.Add("page", (Model.Paging.PageIndex + 1).ToString());
+                        <span> @Html.ActionLink("下一页", Model.Paging.ActionName, dictionary, next)</span>
+                        dictionary.Remove("page");
+                    }
+                }
+            }
+
+        }
+    </div>
+</div>

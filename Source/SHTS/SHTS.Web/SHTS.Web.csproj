@@ -702,6 +702,7 @@
     <Content Include="Areas\Wechat\Content\images\arr-right.png" />
     <Content Include="Areas\Wechat\Content\images\bg.png" />
     <Content Include="Areas\Wechat\Content\images\btnAdd.png" />
+    <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
     <Content Include="Areas\Wechat\Content\scipts\validate.js" />
     <Content Include="Content\images\button_grey_close.png" />
     <Content Include="Areas\Wechat\Content\images\projection.png" />
@@ -1079,6 +1080,7 @@
     <Content Include="Areas\Admin\Views\Finance\WithdrawRecord.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\Create.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\Edit.cshtml" />
+    <Content Include="Areas\Wechat\Views\Resource\My.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

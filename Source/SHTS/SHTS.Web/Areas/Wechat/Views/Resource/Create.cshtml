@@ -426,7 +426,9 @@
                     <div class="title highlight">
                         资源详情
                     </div>
-                    <textarea id="Description" name="Description" placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。"></textarea>
+                    <textarea id="Description" name="Description"
+                              style="height:auto; word-break:break-all;overflow-y:visible;"
+                              placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。"></textarea>
                 </div>
                 <div class="inline wide">
                     <button type="button" onclick="createResource(this);" class="button btn-green">提交资源</button>
@@ -687,5 +689,9 @@
                 }
             }
         }
+    </script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
+    <script>
+        autoTextarea(document.getElementById('Description'), 0, 500);
     </script>
 }

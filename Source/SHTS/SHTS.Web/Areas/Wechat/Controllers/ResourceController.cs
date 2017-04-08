@@ -6,6 +6,7 @@ using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Model.Extensions;
 using Witbird.SHTS.Web.Areas.Wechat.Models;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
@@ -463,6 +464,49 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         #endregion
 
+        public ActionResult Delete(string id)
+        {
+            if (!IsUserLogin)
+            {
+                return Redirect("/wechat/account/login");
+            }
+
+            User user = UserInfo;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                var resource = resourceManager.GetResourceById(Int32.Parse(id));
+                if (resource != null && resource.UserId == user.UserId)
+                {
+                    resourceManager.DeleteResourceById(resource.Id);
+                }
+            }
+
+            return Redirect(Request.UrlReferrer.LocalPath);
+        }
+
+        public ActionResult Click(string id)
+        {
+            if (!IsUserLogin)
+            {
+                return Redirect("/wechat/account/login");
+            }
+
+            User user = UserInfo;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                var resource = resourceManager.GetResourceById(Int32.Parse(id));
+                if (resource != null && resource.UserId == user.UserId)
+                {
+                    resourceManager.ClickResourceById(resource.Id);
+                }
+            }
+
+            return Redirect(Request.UrlReferrer.LocalPath);
+        }
+
+
         /// <summary>
         /// 我提交的资源
         /// </summary>
@@ -476,17 +520,35 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             else
             {
+                QueryResourceResult model = new QueryResourceResult();
+                model.Paging.ActionName = "My";
 
-                int page = 0;
+                //页码，总数重置
+                int pageIndex = 1;
                 if (!string.IsNullOrEmpty(Request.QueryString["page"]))
                 {
-                    int.TryParse(Request.QueryString["page"], out page);
+                    int.TryParse(Request.QueryString["page"], out pageIndex);
                 }
-                page = page < 1 ? 1 : page;
+                pageIndex = pageIndex < 1 ? 1 : pageIndex;
 
-                var result = resourceService.GetResourceByUser(UserInfo.UserId, page - 1, 15);
+                model = resourceService.GetResourceByUser(UserInfo.UserId, pageIndex - 1, 15);
 
-                return View(result);
+                //分页
+                if (model.Items != null && model.Items.Count > 0)
+                {
+                    model.Paging.PageIndex = pageIndex;//当前页数
+                    model.Paging.PageStep = 10;//每页显示多少页码
+                    if (model.TotalCount % 15 == 0)
+                    {
+                        model.Paging.PageCount = model.TotalCount / 15;
+                    }
+                    else
+                    {
+                        model.Paging.PageCount = model.TotalCount / 15 + 1;
+                    }
+                }
+
+                return View(model);
             }
         }
 
