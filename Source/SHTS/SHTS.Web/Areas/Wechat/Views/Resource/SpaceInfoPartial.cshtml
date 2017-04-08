@@ -18,15 +18,28 @@
         else
         {
             <span class="yellow2">
-                未知类型
+                不确定
             </span>
         }
     }
 </li>
 <li>
-    场地面积: <span class="yellow2">
-        @HtmlHelperExtension.SpaceSizeListProperty.Find(t => t.Id == Model.SpaceSizeId).Name
-    </span>
+    场地面积:
+    @{
+        var spaceSize = HtmlHelperExtension.SpaceSizeListProperty.Find(t => t.Id == Model.SpaceSizeId);
+        if (spaceSize != null)
+        {
+            <span class="yellow2">
+                @(new HtmlString(spaceSize.Name))
+            </span>
+        }
+        else
+        {
+            <span class="yellow2">
+                不确定
+            </span>
+        }
+    }
 </li>
 <li>
     配置设备: <span class="yellow2">
@@ -52,7 +65,21 @@
 </li>
 <li>
     容纳人数: <span class="yellow2">
-        @HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpacePeopleId).Name（人数可根据具体活动人数调整）
+              @{
+                  var spacePeople = HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpacePeopleId);
+                  if (spacePeople != null)
+                  {
+                      <span class="yellow2">
+                          @(new HtmlString(spacePeople.Name))（人数可根据具体活动人数调整）
+                      </span>
+                  }
+                  else
+                  {
+                      <span class="yellow2">
+                          不确定（人数可根据具体活动人数调整）
+                      </span>
+                  }
+              }
     </span>
 </li>
 <li>
