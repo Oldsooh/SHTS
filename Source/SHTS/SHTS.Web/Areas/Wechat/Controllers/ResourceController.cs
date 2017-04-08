@@ -590,49 +590,58 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 throw new ArgumentException("资源类别参数错误，请刷新页面后重试");
             }
 
-            if (!int.TryParse(model.SpaceTypeId, out spaceTypeId))
+            if (resourceTypeId == 1)
             {
-                throw new ArgumentException("场地类型参数错误，请刷新页面后重试");
-            }
+                if (!int.TryParse(model.SpaceTypeId, out spaceTypeId))
+                {
+                    throw new ArgumentException("场地类型参数错误，请刷新页面后重试");
+                }
 
-            if (!int.TryParse(model.SpaceSizeId, out spaceSizeId))
-            {
-                throw new ArgumentException("场地面积参数错误，请刷新页面后重试");
-            }
+                if (!int.TryParse(model.SpaceSizeId, out spaceSizeId))
+                {
+                    throw new ArgumentException("场地面积参数错误，请刷新页面后重试");
+                }
 
-            if (!int.TryParse(model.SpacePeopleId, out spacePeopleId))
-            {
-                throw new ArgumentException("场地容纳人数参数错误，请刷新页面后重试");
-            }
+                if (!int.TryParse(model.SpacePeopleId, out spacePeopleId))
+                {
+                    throw new ArgumentException("场地容纳人数参数错误，请刷新页面后重试");
+                }
 
-            if (!int.TryParse(model.SpaceTreat, out spaceTreat))
-            {
-                throw new ArgumentException("酒宴提供参数错误，请刷新页面后重试");
+                if (!int.TryParse(model.SpaceTreat, out spaceTreat))
+                {
+                    throw new ArgumentException("酒宴提供参数错误，请刷新页面后重试");
+                }
             }
-
-            if (!int.TryParse(model.ActorFromId, out actorFromId))
+            else if (resourceTypeId == 2)
             {
-                throw new ArgumentException("演员所属组织参数错误，请刷新页面后重试");
+                if (!int.TryParse(model.ActorFromId, out actorFromId))
+                {
+                    throw new ArgumentException("演员所属组织参数错误，请刷新页面后重试");
+                }
+
+                if (!int.TryParse(model.ActorTypeId, out actorTypeId))
+                {
+                    throw new ArgumentException("演员类型参数错误，请刷新页面后重试");
+                }
+
+                if (!int.TryParse(model.ActorSex, out actorSexId))
+                {
+                    throw new ArgumentException("演员性别参数错误，请刷新页面后重试");
+                }
             }
-
-            if (!int.TryParse(model.ActorTypeId, out actorTypeId))
+            else if (resourceTypeId == 3)
             {
-                throw new ArgumentException("演员类型参数错误，请刷新页面后重试");
+                if (!int.TryParse(model.EquipTypeId, out equipTypeId))
+                {
+                    throw new ArgumentException("设备类型参数错误，请刷新页面后重试");
+                }
             }
-
-            if (!int.TryParse(model.ActorSex, out actorSexId))
+            else
             {
-                throw new ArgumentException("演员性别参数错误，请刷新页面后重试");
-            }
-
-            if (!int.TryParse(model.EquipTypeId, out equipTypeId))
-            {
-                throw new ArgumentException("设备类型参数错误，请刷新页面后重试");
-            }
-
-            if (!int.TryParse(model.OtherTypeId, out otherTypeId))
-            {
-                throw new ArgumentException("资源具体类型参数错误，请刷新页面后重试");
+                if (!int.TryParse(model.OtherTypeId, out otherTypeId))
+                {
+                    throw new ArgumentException("资源具体类型参数错误，请刷新页面后重试");
+                }
             }
 
             if (string.IsNullOrEmpty(provinceId))

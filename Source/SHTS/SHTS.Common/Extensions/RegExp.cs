@@ -81,6 +81,10 @@ namespace Witbird.SHTS.Common
         /// <returns></returns>
         public static bool IsSafety(string s)
         {
+            if (string.IsNullOrEmpty(s))
+            {
+                return true;
+            }
             string text1 = s.Replace("%20", " ");
             text1 = Regex.Replace(text1, @"\s", " ");
             string text2 = "select |insert |delete from |count\\(|drop table|update |truncate |asc\\(|mid\\(|char\\(|xp_cmdshell|exec master|net localgroup administrators|:|net user|\"|\\'| or ";
@@ -95,6 +99,10 @@ namespace Witbird.SHTS.Common
 
         public static bool IsUrl(string s)
         {
+            if (string.IsNullOrEmpty(s))
+            {
+                return false;
+            }
             string text1 = @"^(http|https|ftp|rtsp|mms):(\/\/|\\\\)[A-Za-z0-9%\-_@]+\.[A-Za-z0-9%\-_@]+[A-Za-z0-9\.\/=\?%\-&_~`@:\+!;]*$";
             return Regex.IsMatch(s, text1, RegexOptions.IgnoreCase);
         }

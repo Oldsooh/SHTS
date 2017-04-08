@@ -703,6 +703,7 @@
     <Content Include="Areas\Wechat\Content\images\bg.png" />
     <Content Include="Areas\Wechat\Content\images\btnAdd.png" />
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
+    <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />
     <Content Include="Areas\Wechat\Content\scipts\validate.js" />
     <Content Include="Content\images\button_grey_close.png" />
     <Content Include="Areas\Wechat\Content\images\projection.png" />

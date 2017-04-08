@@ -356,7 +356,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 if (wechatUser.UserId.HasValue)
                 {
 
-                    User user = new UserService().GetUserById(3);//wechatUser.UserId.Value);
+                    User user = new UserService().GetUserById(wechatUser.UserId.Value);
                     if (user.IsNotNull())
                     {
                         CurrentUser = user;

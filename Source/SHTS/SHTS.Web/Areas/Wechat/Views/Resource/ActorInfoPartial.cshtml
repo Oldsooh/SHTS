@@ -4,6 +4,12 @@
     var CurrentWeChatUser = ViewData["CurrentWeChatUser"] as Witbird.SHTS.Model.WeChatUser;
 }
 
+<style>
+    *{
+        word-break:break-all;
+    }
+</style>
+
 @if (Model.ActorTypeId != 0)
 {
     <li>
@@ -75,7 +81,16 @@
 </li>
 <li>
     演出视频:
-    <span class="yellow2">@(new HtmlString(Model.Href))</span>
+    <span class="yellow2">
+    @if (Witbird.SHTS.Common.RegExp.IsUrl(Model.Href))
+    {
+    <a href="@Model.Href" target="_blank" onclick="return confirm('您即将前往外部链接，是否继续？');">@Model.Href</a>
+    }
+    else
+    {
+        @(new HtmlString(Model.Href))
+    }
+    </span>
 </li>
 <li>
     详细地址: <span class="yellow2">@(new HtmlString(Model.DetailAddress))</span>

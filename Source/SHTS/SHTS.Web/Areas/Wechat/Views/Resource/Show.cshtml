@@ -24,11 +24,18 @@
 @section head
 {
     <link href="~/Content/css/resourceview.css" rel="stylesheet" />
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <style type="text/css">
         #@(xx) a {
             color: #ffffff;
             background-color: #2577e3;
         }
+
+        .col-md-12{
+        padding:0;
+       }
     </style>
 }
 
@@ -43,24 +50,68 @@
             switch (Model.ResourceType)
             {
                 case 1:
-                    @Html.Partial("SpaceInfoPartial", Model);
+        @Html.Partial("SpaceInfoPartial", Model);
                     break;
                 case 2:
-                    @Html.Partial("ActorInfoPartial", Model);
+        @Html.Partial("ActorInfoPartial", Model);
                     break;
                 case 3:
-                    @Html.Partial("EquipInfoPartial", Model);
+        @Html.Partial("EquipInfoPartial", Model);
                     break;
                 case 4:
-                    @Html.Partial("OtherInfoPartial", Model);
+        @Html.Partial("OtherInfoPartial", Model);
                     break;
                 default:
                     break;
             }
         }
     </ul>
-    <div class="active_info">
+    <div class="active_info" style="word-break: break-all;">
         @(new HtmlString(Model.Description))
     </div>
-    <div style="clear: both; height: 10px;"></div>
+
+    @if (Model.ImgUrls.Length > 0)
+    {
+        <div style="clear: both; height: 10px;"></div>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="carousel slide" id="carousel-144040">
+                        <ol class="carousel-indicators">
+                            @for (int i = 0; i < Model.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <li class="active" data-slide-to="0" data-target="#carousel-144040">
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li data-slide-to="@i" data-target="#carousel-144040">
+                                    </li>
+                                }
+                            }
+                        </ol>
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <div class="item active">
+                                        <img alt="@Model.Title" src="@Model.ImgUrls[i]" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="item">
+                                        <img alt="@Model.Title" src="@Model.ImgUrls[i]" />
+                                    </div>
+                                }
+                            }
+                        </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
