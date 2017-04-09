@@ -1,68 +1,31 @@
-﻿/**
- * 文本框根据输入内容自适应高度
- * @param                {HTMLElement}        输入框元素
- * @param                {Number}                设置光标与输入框保持的距离(默认0)
- * @param                {Number}                设置最大高度(可选)
- */
-var autoTextarea = function (elem, extra, maxHeight) {
-    extra = extra || 0;
-    var isFirefox = !!document.getBoxObjectFor || 'mozInnerScreenX' in window,
-    isOpera = !!window.opera && !!window.opera.toString().indexOf('Opera'),
-            addEvent = function (type, callback) {
-                elem.addEventListener ?
-                        elem.addEventListener(type, callback, false) :
-                        elem.attachEvent('on' + type, callback);
-            },
-            getStyle = elem.currentStyle ? function (name) {
-                var val = elem.currentStyle[name];
+﻿var addHandler = window.addEventListener ?
+    function (elem, event, handler) { elem.addEventListener(event, handler); } :
+    function (elem, event, handler) { elem.attachEvent("on" + event, handler); };
 
-                if (name === 'height' && val.search(/px/i) !== 1) {
-                    var rect = elem.getBoundingClientRect();
-                    return rect.bottom - rect.top -
-                            parseFloat(getStyle('paddingTop')) -
-                            parseFloat(getStyle('paddingBottom')) + 'px';
-                };
+var ele = function (id) { return document.getElementById(id); }
 
-                return val;
-            } : function (name) {
-                return getComputedStyle(elem, null)[name];
-            },
-            minHeight = parseFloat(getStyle('height'));
 
-    elem.style.resize = 'none';
+function autoHeight(elemid) {
+    if (!ele("_textareacopy")) {
+        var t = document.createElement("textarea");
+        t.id = "_textareacopy";
+        t.style.position = "absolute";
+        t.style.left = "-9999px";
+        document.body.appendChild(t);
+    }
+    function change() {
+        ele("_textareacopy").value = ele(elemid).value;
+        ele(elemid).style.height = ele("_textareacopy").scrollHeight + ele("_textareacopy").style.height + "px";
+    }
+    addHandler(ele(elemid), "propertychange", change);//for IE  
+    addHandler(ele(elemid), "input", change);// for !IE  
+    ele(elemid).style.overflow = "hidden";//һأġ  
+    ele(elemid).style.resize = "none";//ȥtextareaקŴ/С߶/ȹ  
+}
 
-    var change = function () {
-        var scrollTop, height,
-                padding = 0,
-                style = elem.style;
 
-        if (elem._length === elem.value.length) return;
-        elem._length = elem.value.length;
-
-        if (!isFirefox && !isOpera) {
-            padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
-        };
-        scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-
-        elem.style.height = minHeight + 'px';
-        if (elem.scrollHeight > minHeight) {
-            if (maxHeight && elem.scrollHeight > maxHeight) {
-                height = maxHeight - padding;
-                style.overflowY = 'auto';
-            } else {
-                height = elem.scrollHeight - padding;
-                style.overflowY = 'hidden';
-            };
-            style.height = height + extra + 'px';
-            scrollTop += parseInt(style.height) - elem.currHeight;
-            document.body.scrollTop = scrollTop;
-            document.documentElement.scrollTop = scrollTop;
-            elem.currHeight = parseInt(style.height);
-        };
-    };
-
-    addEvent('propertychange', change);
-    addEvent('input', change);
-    addEvent('focus', change);
-    change();
-};
+function autoTextarea(elemId) {
+    addHandler(window, "load", function () {
+        autoHeight(elemId);
+    });
+}
