@@ -22,7 +22,7 @@
     <style>
         .head {
             width: auto;
-            height:1.6rem;
+            height: 1.6rem;
         }
 
             .head > .background {
@@ -35,19 +35,19 @@
 
             .head > .head-img {
                 display: inline;
-                top:0.05rem;
-                left:0.1rem;
+                top: 0.05rem;
+                left: 0.1rem;
             }
 
             .head > .head-dsb {
                 display: inline;
-                top:0.4rem;
-                left:2rem;
+                top: 0.4rem;
+                left: 2rem;
             }
 
-            .head>.head-dsb>p{
-                /*color:#000;*/
-            }
+                .head > .head-dsb > p {
+                    /*color:#000;*/
+                }
 
         .c_center {
             margin: 0 !important;
@@ -73,132 +73,155 @@
             </div>
         </div>
 
-        <div class="body_div" style="margin-top: 1px;">
-            <!--登录后未绑定显示-->
-            <div class="c_center">
-                <ul>
-                    @if (!Model.IsUserLoggedIn)
+
+        <section class="mt-1">
+            <div class="ps-lt">
+                @{
+                    if (!Model.IsUserLoggedIn)
                     {
-                        <li class="border_m border_r">
-                            <a class="my_employ" href="/wechat/account/register">
-                                注册会员帐号
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/account/register">
+                                <p>注册会员账号</p>
+                                <i class="arr-right"></i>
                             </a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_employ" href="/wechat/account/login">
-                                绑定已有帐号
+                        </div>
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/account/login">
+                                <p>绑定会员账号</p>
+                                <i class="arr-right"></i>
                             </a>
-                        </li>
+                        </div>
                     }
                     else
                     {
-                        <li class="border_m border_r">
-                            <a class="my_employ" href="/wechat/user/viewuser">
-                                会员信息
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/user/ViewUser">
+                                <p>会员信息</p>
+                                <i class="arr-right"></i>
                             </a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_employ" href="/wechat/user/identify">
-                                会员认证
+                        </div>
+                        <div class="lt-dsb">
+                            <a href="~/Wechat/finance/mybalance">
+                                <p>提现账户</p>
+                                <i class="arr-right"></i>
                             </a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_employ" href="/wechat/finance/mybalance">
-                                我的账户
-                            </a>
-                        </li>
+                        </div>
                     }
-                </ul>
-                <ul>
-                    <li class="border_m border_r">
-                        <a class="my_collect" href="/Wechat/resource/spacelist">搜索资源</a>
-                    </li>
-                    <li class="border_m border_r">
-                        <a class="my_collect" href="/wechat/demand/index">寻找需求</a>
-                    </li>
-                    <li class="border_m border_r">
-                        <a class="my_collect" href="/wechat/activity/index">活动在线</a>
-                    </li>
-                </ul>
-                <ul>
-                    @if (!Model.IsUserLoggedIn)
-                    {
-                        <li class="border_m border_r">
-                            <a class="my_publish" href="javascript:void(0);" onclick="showLogInMessage();">提交资源</a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_publish" href="javascript:void(0);" onclick="showLogInMessage();">发布需求</a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_publish" href="javascript:void(0);" onclick="showLogInMessage();">分享活动</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="border_m border_r">
-                            @if (Model.IsUserIdentified)
-                            {
-                                <a class="my_publish" href="/wechat/resource/create">提交资源</a>
-                            }
-                            else
-                            {
-                                <a class="my_publish" href="javascript:void(0);" onclick="gotoIdentify();">提交资源</a>
-                            }
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_publish" href="/wechat/demand/add">发布需求</a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_publish" href="/wechat/activity/ShareActivity">分享活动</a>
-                        </li>
-                    }
-                </ul>
-                <ul>
-                    @if (Model.IsUserLoggedIn)
-                    {
-                        <li class="border_m border_r">
-                            <a class="my_record" href="/wechat/resource/my">我提交的资源记录</a>
-                        </li>
-                        <li class="border_m border_r">
-                            <a class="my_record" href="/wechat/demand/mydemands">我发布的需求信息</a>
-                        </li>
-                        @*<li class="border_m border_r">
-                            <a class="my_record" href="javascript:alert('正在研发中...');">我的活动</a>
-                        </li>*@
-                    }
-                </ul>
-                <ul>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="/wechat/demand/mypaiddemand/">我购买的需求记录</a>
-                    </li>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="/wechat/subscribe/index/">我的需求订阅设置</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="/wechat/quote/recievedquotes/">我提供的需求报价</a>
-                    </li>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="/wechat/quote/recievedquotes/">我收到的需求报价</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="/Wechat/news/index">新闻公告</a>
-                    </li>
-                    <li class="border_m border_r">
-                        <a class="my_record" href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect">关于我们</a>
-                    </li>
-                    @if (Model.IsUserLoggedIn)
-                    {
-                        <li class="border_m border_r">
-                            <a class="my_record" style="color:red;" href="~/Wechat/account/logout" onclick="return confirm('您确定要解除会员账号绑定吗？');">解绑帐号</a>
-                        </li>
-                    }
-                </ul>
+                }
             </div>
-        </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/wechat/resource/my">
+                        <p>我提交的资源记录</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/wechat/demand/mydemands">
+                        <p>我发布的需求信息</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="/wechat/demand/mypaiddemand/">
+                        <p>我购买的需求记录</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="/wechat/quote/recievedquotes/">
+                        <p>我收到的需求报价</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="/wechat/quote/postedquotes/">
+                        <p>我提供的需求报价</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    @{
+                        if (!Model.IsUserLoggedIn)
+                        {
+                            <a href="javascript:showLogInMessage();">
+                                <p>分享我的案例</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="~/Wechat/activity/ShareActivity">
+                                <p>分享我的案例</p>
+                                <i class="arr-right"></i>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/activity/index">
+                        <p>查看活动在线案例</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-3">
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="~/Wechat/news/index">
+                        <p>新闻公告</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-lt">
+                <div class="lt-dsb">
+                    <a href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect">
+                        <p>关于我们</p>
+                        <i class="arr-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        @if (Model.IsUserLoggedIn)
+            {
+            <section class="mt-3">
+                <div class="ps-lt">
+                    <div class="lt-dsb">
+                        <a onclick="return confirm('您确定要解除会员账号绑定吗？');" href="~/Wechat/account/logout">
+                            <p style="color:red;">解除账号绑定</p>
+                            <i class="arr-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        }
+
         <div class="jg"></div>
     </div>
 
