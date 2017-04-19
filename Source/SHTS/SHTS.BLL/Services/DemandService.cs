@@ -246,7 +246,7 @@ namespace Witbird.SHTS.BLL.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Demand GetDemandById(int id)
+        public Demand GetDemandById(int id, bool filterSensitiveWords = true)
         {
             Demand result = null;
 
@@ -255,7 +255,7 @@ namespace Witbird.SHTS.BLL.Services
             {
                 conn.Open();
                 result = demandDao.SelectDemandById(id, conn);
-                if (result != null)
+                if (result != null && filterSensitiveWords)
                 {
                     result.ContentStyle = FilterHelper.Filter(result.ContentStyle, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
                     result.ContentText = FilterHelper.Filter(result.ContentText, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);

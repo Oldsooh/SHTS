@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "页面请求发生错误";
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.ErrorMessage
+@{
+    ViewBag.Title = Model.Title ?? "页面请求发生错误";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head
@@ -11,6 +12,7 @@
             position: initial;
             margin-bottom: 20px;
         }
+
         .commonlist {
             border: none;
             width: 95%;
@@ -24,7 +26,7 @@
 
         <ul class="commonlist" style="">
             <li class="atitle">
-                <lable style="color: #FD9102;font-size:16px;">您请求的页面发生错误，请返回原链接重新发起请求。如频繁遇到此错误，您可以通过微信留言，我们会尽快处理您的问题！感谢您使用活动在线网!</lable>
+                <lable style="color: #FD9102;font-size:16px;">@(Model.Detail ?? "您请求的页面发生错误，请返回原链接重新发起请求。如频繁遇到此错误，您可以通过微信留言，我们会尽快处理您的问题！感谢您使用活动在线网!")</lable>
             </li>
         </ul>
     </div>

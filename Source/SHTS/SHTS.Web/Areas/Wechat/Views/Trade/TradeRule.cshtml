@@ -1,0 +1,73 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.TradeParameter
+@{
+    ViewBag.Title = "中介交易须知";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+<link href="/content/css/login.css" rel="stylesheet" />
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+            word-break:break-all;
+            margin-bottom: 10px;
+        }
+
+            .inline.wide {
+                width: 100%;
+            }
+            .inline.wide>button{
+                width:99%!important;
+                border-radius:5px;
+            }
+            .inline > .title {
+                font-size: 16px;
+                text-align:center;
+                font-weight:bold;
+                /* color: #666; */
+            }
+            .inline > .detail {
+                border: 1px solid #CECECF;
+                box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+                padding-left: 10px;
+                padding-bottom: 10px;
+                width: 96%;
+            }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+    </style>
+}
+<!-- content -->
+<div class="wrap" style="width: 100%">
+    <div class="register-box" style="padding:15px;width:90%;">
+        <div class="inline wide">
+            <div class="title">
+                中介交易须知<br /><br />
+            </div>
+            <div class="detail">
+                1、根据页面提示填写完毕正确的内容后，中介标题里写上“与卖家XXX（会员名）进行中介申请”，填写完资源方的资源网址（例如：http://www.huodongzaixian.com/resource/XXX.html)然后在中介详情内容框里写上双方交易的要求，卖家的承诺及双方约定的费用及保证金等信息。
+                <br /><br />
+                2、发布好中介申请后，买家及时通知卖家来中介贴里回复确认。你可以把你发布的中介申请帖地址复制给卖家，如：在对应卖家发布的交易帖里跟帖回复，把中介申请帖地址贴在回复里，告知卖家来确认；也可以直接发手机信息给卖家。通知卖家来中介贴里回复确认。
+                <br /><br />
+                3、接下来的中介过程都这中介申请帖里进行，双方确认后，就可以打款到中介银行账号（查看中介专用银行账号），双方电汇支付相应的款项后，及时在中介贴里跟帖回复，说明打款时间？打款金额？打款银行？必要时上传打款回执单。中介管理员看到买家打款回复后，将查账到账后回复确认，卖家看到中介管理员回复确认款项到账后就可以交易合作。
+                <br /><br />
+                4、活动结束后请需求方到中介贴回复确认并点评资源方的服务质量，默认情况为7个工作日。如有问题请求中介裁决，如不服裁决请到交易地点的法律机关申请裁决！中介方以法律机关的裁决结果支付相应款项。
+                
+            </div>
+            <br />
+            <button type="button" onclick="window.location.href = '/wechat/trade/new?id=@Model.TradeResourceId&type=@Model.TradeType';" class="button btn-green">了解并继续</button>
+        </div>
+    </div>
+</div>
+<!-- content -->
+@section FooterJS
+{
+}

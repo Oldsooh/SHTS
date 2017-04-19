@@ -26,6 +26,9 @@ textarea{width:270px;height:100px;padding:5px 9px;line-height:1.7;font-size:14px
 .btn-green{height:50px;line-height:50px;background-color:#9ed04d;}
 .btn-green:hover{background-color:#76bf48;}
 .btn-green:active{background-color:#51b73d;}
+.btn-info{color: #fff; background-color: #5bc0de; border-color: #46b8da;}
+.btn-info:hover{color: #fff; background-color: #31b0d5; border-color: #269abc;}
+.btn-info:active{color: #fff;background-color: #31b0d5;border-color: #269abc;}
 .btn-disabled,.btn-disabled:hover,.btn-disabled:active{background-color:#e7e7e7;color:#A1A1A1;cursor:not-allowed;}
 button.button{height:40px;padding:0 10px;line-height:normal;}
 .banner-show{position:absolute;top:0;left:0;z-index:0;width:100%;min-width:980px;height:600px;overflow:hidden;}

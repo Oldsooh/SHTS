@@ -235,8 +235,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\Wechat\Models\DemandQuoteModel.cs" />
+    <Compile Include="Areas\Wechat\Models\ErrorMessage.cs" />
     <Compile Include="Areas\Wechat\Models\FinanceModel.cs" />
     <Compile Include="Areas\Wechat\Models\HomeModel.cs" />
+    <Compile Include="Areas\Wechat\Models\MyPaidDemand.cs" />
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\ResourceViewModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
@@ -1083,6 +1085,9 @@
     <Content Include="Areas\Wechat\Views\Resource\Create.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\Edit.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\My.cshtml" />
+    <Content Include="Areas\Wechat\Views\Trade\New.cshtml" />
+    <Content Include="Areas\Wechat\Views\Trade\TradeRule.cshtml" />
+    <Content Include="Areas\Wechat\Views\Error\Index.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
@@ -1091,6 +1096,8 @@
     <Content Include="Content\js\reg.js" />
     <Content Include="Content\js\template.js" />
     <Content Include="Content\js\totop.js" />
+    <Content Include="Content\js\trade-mobile.js" />
+    <Content Include="Content\js\trade-pc.js" />
     <Content Include="Content\js\trade.js" />
     <Content Include="Content\js\payment.js" />
     <Content Include="Content\js\User\updatep.js" />

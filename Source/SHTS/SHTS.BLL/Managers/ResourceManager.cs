@@ -159,7 +159,7 @@ namespace Witbird.SHTS.BLL.Managers
         #endregion
 
         #region 根据Id查找资源信息
-        public Resource GetResourceById(int id)
+        public Resource GetResourceById(int id, bool filterSensitiveWords = true)
         {
             var resource = context.Resources.SingleOrDefault(v => v.Id == id);
             if (resource != null)
@@ -169,14 +169,17 @@ namespace Witbird.SHTS.BLL.Managers
                 resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
                     .OrderByDescending(v => v.CreateTime).Take(20).ToList();
 
-                resource.ShortDesc = FilterHelper.Filter(resource.ShortDesc, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
-                resource.Description = FilterHelper.Filter(resource.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
-
-                if (resource.CommentList != null)
+                if (filterSensitiveWords)
                 {
-                    foreach (var item in resource.CommentList)
+                    resource.ShortDesc = FilterHelper.Filter(resource.ShortDesc, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                    resource.Description = FilterHelper.Filter(resource.Description, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+
+                    if (resource.CommentList != null)
                     {
-                        item.Content = FilterHelper.Filter(item.Content, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                        foreach (var item in resource.CommentList)
+                        {
+                            item.Content = FilterHelper.Filter(item.Content, CommonService.Sensitivewords, CommonService.ReplacementForSensitiveWords);
+                        }
                     }
                 }
             }

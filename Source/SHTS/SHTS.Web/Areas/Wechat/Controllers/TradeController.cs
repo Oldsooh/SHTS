@@ -7,6 +7,8 @@ using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Models;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
+using Witbird.SHTS.BLL.Managers;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -16,6 +18,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         OrderService orderService;
         PublicConfigService configService;
         UserService userService;
+        DemandService demandService;
+        ResourceManager resourceManager;
 
         public TradeController()
         {
@@ -23,6 +27,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             orderService = new OrderService();
             configService = new PublicConfigService();
             userService = new UserService();
+            demandService = new DemandService();
+            resourceManager = new ResourceManager();
         }
 
         //
@@ -39,7 +45,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             int pageIndex = 1;
             int allCount = 0;
             int tradeState = TranslateFilterToState(filter);
-            
+
             if (!string.IsNullOrEmpty(page))
             {
                 Int32.TryParse(page, out pageIndex);
@@ -65,25 +71,48 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return View(model);
         }
 
+        public ActionResult TradeRule(int id, string type)
+        {
+            TradeParameter parameter = null;
+            var result = ValidateTradeParameters(id, type, out parameter);
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            return View(parameter);
+        }
+
         /// <summary>
         /// New a third-part trade
         /// </summary>
         /// <returns></returns>
-        public ActionResult New()
+        [HttpGet]
+        public ActionResult New(int id, string type)
         {
-            if (!IsUserLogin)
+            TradeParameter parameter = new TradeParameter();
+            var result = ValidateTradeParameters(id, type, out parameter);
+
+            if (result != null)
             {
-                return Redirect("/wechat/account/login");
+                return result;
             }
 
             PublicConfigModel configModel = new PublicConfigModel();
-            TradeModel model = new TradeModel();
+            WeChatTradeModel model = new WeChatTradeModel();
+            model.TradeParameter = parameter;
 
             configModel.MultipleConfigs.Add("TradeReminding", configService.GetConfigValue("TradeReminding") ?? new PublicConfig());
             configModel.MultipleConfigs.Add("PayCommissionPercent", configService.GetConfigValue("PayCommissionPercent") ?? new PublicConfig());
             configModel.MultipleConfigs.Add("MinPayCommission", configService.GetConfigValue("MinPayCommission") ?? new PublicConfig());
+
+            var tradeCommissionRule = new SinglePageService().GetSingPageById("8").ContentStyle;// Id = 8 是中介手续费介绍
+            configModel.MultipleConfigs.Add("TradeCommissionRule", new PublicConfig() { ConfigName = "TradeCommissionRule", ConfigValue = tradeCommissionRule });
+
             model.TradeConfig = configModel;
             model.CurrentUser = UserInfo ?? new User();
+            model.CurrentWeChatUser = CurrentWeChatUser;
             model.BankInfos = (UserInfo == null ? new List<UserBankInfo>() : userService.GetUserBankInfos(UserInfo.UserId));
 
             if (model.BankInfos != null && model.BankInfos.Count > 0)
@@ -118,170 +147,169 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             string bankusername,
             string bankaddress,
             string address,
-            string agreerule,
             string tradesubject,
             string tradedetail,
             string resourceurl
         )
         {
+            var isSuccessful = false;
+            var errorMessage = string.Empty;
+
             if (!IsUserLogin)
             {
-                return Content("当前未登录");
+                isSuccessful = false;
+                errorMessage = "您没有绑定会员账户，不能进行中介申请操作！";
             }
-            string result = "中介申请失败";
-            bool valid = true;
-            Model.User toUser = null;
-            UserBankInfo bankInfo = null;
-            int payCommissionPercent = -1;
-            int minPayCommission = -1;
-            decimal outAmount = -1;
-            //如果用户新增的银行信息，但是后来中介申请失败，那么需要删除掉这条记录，这里不使用transaction
-            bool isNewBankInfo = false;
-            #region Checks request parameter value with get operation
-
-            try
+            else
             {
-                #region Null check
+                Model.User toUser = null;
+                UserBankInfo bankInfo = null;
+                int payCommissionPercent = -1;
+                int minPayCommission = -1;
+                decimal outAmount = -1;
+                //如果用户新增的银行信息，但是后来中介申请失败，那么需要删除掉这条记录，这里不使用transaction
+                bool isNewBankInfo = false;
+                #region Checks request parameter value with get operation
 
-                qq.CheckEmptyString("QQ");
-                phone.CheckEmptyString("联系手机");
-                email.CheckEmptyString("联系邮箱");
-                relationship.CheckEmptyString("买卖关系");
-                username.CheckEmptyString("对方用户名");
-                amount.CheckEmptyString("交易金额");
-                bankname.CheckEmptyString("银行名称");
-                bankaccount.CheckEmptyString("银行账号");
-                bankusername.CheckEmptyString("银行用户名");
-                address.CheckEmptyString("收货地址");
-                agreerule.CheckEmptyString("同意中介规则");
-                tradesubject.CheckEmptyString("交易标题");
-                tradedetail.CheckEmptyString("交易详情");
-                resourceurl.CheckEmptyString("资源链接地址");
-
-                #endregion Null check
-
-                toUser = ValidateUserWithGet(username);
-                ValidatePayerRelationship(relationship);//, payer);
-                bankInfo = ValidateBankInfoWithGet(bankid, bankname, bankaccount, bankusername, bankaddress, out isNewBankInfo);
-                payCommissionPercent = ValidatePayCommissionWithGet("PayCommissionPercent");
-                minPayCommission = ValidatePayCommissionWithGet("MinPayCommission");
-                outAmount = ValidateAmountWithGet(amount, minPayCommission);
-            }
-            catch (ArgumentNullException e)
-            {
-                result = e.ParamName + "不能为空";
-                valid = false;
-            }
-            catch (ArgumentException e)
-            {
-                result = e.Message;
-                valid = false;
-            }
-
-            #endregion Checks request parameter value with get operation
-
-            if (valid)
-            {
                 try
                 {
-                    Trade tradeEntity = new Trade();
+                    #region Null check
 
-                    #region 构造中介申请对象
+                    qq.CheckEmptyString("QQ");
+                    phone.CheckEmptyString("联系手机");
+                    email.CheckEmptyString("联系邮箱");
+                    relationship.CheckEmptyString("买卖关系");
+                    username.CheckEmptyString("对方用户名");
+                    amount.CheckEmptyString("交易金额");
+                    bankname.CheckEmptyString("银行名称");
+                    bankaccount.CheckEmptyString("银行账号");
+                    bankusername.CheckEmptyString("银行用户名");
+                    address.CheckEmptyString("收货地址");
+                    tradesubject.CheckEmptyString("交易标题");
+                    tradedetail.CheckEmptyString("交易详情");
+                    resourceurl.CheckEmptyString("资源链接地址");
 
-                    tradeEntity.UserId = UserInfo == null ? -1 : UserInfo.UserId;
-                    tradeEntity.UserQQ = qq;
-                    tradeEntity.UserCellPhone = phone;
-                    tradeEntity.UserEmail = email;
-                    tradeEntity.UserBankInfo = "银行名称：" + bankInfo.BankName + "\r\n银行账号："
-                        + bankInfo.BankAccount + "\r\n用户姓名：" + bankInfo.BankUserName + "\r\n开户行地址：" + bankInfo.BankAddress;
-                    tradeEntity.UserAddress = address;
+                    #endregion Null check
 
-                    // 我是卖家
-                    if (relationship.Equals("seller"))
-                    {
-                        tradeEntity.SellerId = tradeEntity.UserId;
-                        tradeEntity.BuyerId = toUser.UserId;
-                    }
-                    //我是买家
-                    else if (relationship.Equals("buyer"))
-                    {
-                        tradeEntity.SellerId = toUser.UserId;
-                        tradeEntity.BuyerId = tradeEntity.UserId;
-                    }
+                    toUser = ValidateUserWithGet(username);
+                    ValidatePayerRelationship(relationship);//, payer);
+                    bankInfo = ValidateBankInfoWithGet(bankid, bankname, bankaccount, bankusername, bankaddress, out isNewBankInfo);
+                    payCommissionPercent = ValidatePayCommissionWithGet("PayCommissionPercent");
+                    minPayCommission = ValidatePayCommissionWithGet("MinPayCommission");
+                    outAmount = ValidateAmountWithGet(amount, minPayCommission);
 
-                    tradeEntity.TradeAmount = outAmount;
-                    tradeEntity.TradeSubject = tradesubject;
-                    tradeEntity.TradeBody = tradedetail;
-
-                    tradeEntity.PayCommissionPercent = double.Parse(payCommissionPercent.ToString()) / 100;
-                    tradeEntity.PayCommission = tradeEntity.TradeAmount * (Convert.ToDecimal(tradeEntity.PayCommissionPercent));
-                    //Sets the min pay commission value here if it is less than the min value.
-                    if (tradeEntity.PayCommission < minPayCommission)
-                    {
-                        tradeEntity.PayCommission = minPayCommission;
-                    }
-
-                    // 中介手续费支付方
-                    #region old code
-                    //if (payer.Equals("buyer", StringComparison.CurrentCultureIgnoreCase))
-                    //{
-                    //    tradeEntity.Payer = (int)Payer.Buyer;
-                    //    tradeEntity.BuyerPay = tradeEntity.TradeAmount + tradeEntity.PayCommission;
-                    //    tradeEntity.SellerGet = tradeEntity.TradeAmount;
-                    //}
-                    //else if (payer.Equals("seller", StringComparison.CurrentCultureIgnoreCase))
-                    //{
-                    //    tradeEntity.Payer = (int)Payer.Seller;
-                    //    tradeEntity.BuyerPay = tradeEntity.TradeAmount;
-                    //    tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission;
-                    //}
-                    //else if (payer.Equals("both", StringComparison.CurrentCultureIgnoreCase))
-                    //{
-                    //    tradeEntity.Payer = (int)Payer.Both;
-                    //    tradeEntity.BuyerPay = tradeEntity.TradeAmount + tradeEntity.PayCommission / 2;
-                    //    tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission / 2;
-                    //}
-                    #endregion
-                    
-                    // 中介手续费支付方为卖方
-                    tradeEntity.Payer = (int)Payer.Seller;
-                    tradeEntity.BuyerPay = tradeEntity.TradeAmount;
-                    tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission;
-
-                    tradeEntity.CreatedTime = DateTime.Now;
-                    tradeEntity.LastUpdatedTime = DateTime.Now;
-                    tradeEntity.State = (int)TradeState.New;
-                    tradeEntity.ViewCount = 0;
-                    tradeEntity.ResourceUrl = resourceurl;
-                    tradeEntity.IsBuyerPaid = false;
-                    tradeEntity.TradeOrderId = string.Empty;
-
-                    #endregion 构造中介申请对象
-
-                    //添加中介申请记录到数据库
-                    valid = tradeService.AddNewTradeRecord(tradeEntity);
-
-                    if (valid)
-                    {
-                        result = "success";
-                    }
-                    else
-                    {
-                        if (isNewBankInfo)
-                        {
-                            userService.DeleteUserBankInfo(bankInfo.BankId);
-                        }
-                        result = "中介申请失败，请重新尝试";
-                    }
-
+                    isSuccessful = true;
                 }
-                catch (Exception e)
+                catch (ArgumentNullException e)
                 {
-                    result = "中介申请失败，请重新尝试或联系管理员";
-                    LogService.Log("中介申请发生异常", e.ToString());
+                    errorMessage = "中介参数错误：" + e.ParamName + "不能为空";
+                    isSuccessful = false;
+                }
+                catch (ArgumentException e)
+                {
+                    errorMessage = "中介参数错误：" + e.Message;
+                    isSuccessful = false;
+                }
+
+                #endregion Checks request parameter value with get operation
+
+                if (isSuccessful)
+                {
+                    try
+                    {
+                        Trade tradeEntity = new Trade();
+
+                        #region 构造中介申请对象
+
+                        tradeEntity.UserId = UserInfo == null ? -1 : UserInfo.UserId;
+                        tradeEntity.UserQQ = qq;
+                        tradeEntity.UserCellPhone = phone;
+                        tradeEntity.UserEmail = email;
+                        tradeEntity.UserBankInfo = "银行名称：" + bankInfo.BankName + "\r\n银行账号："
+                            + bankInfo.BankAccount + "\r\n用户姓名：" + bankInfo.BankUserName + "\r\n开户行地址：" + bankInfo.BankAddress;
+                        tradeEntity.UserAddress = address;
+
+                        // 我是卖家
+                        if (relationship.Equals("seller"))
+                        {
+                            tradeEntity.SellerId = tradeEntity.UserId;
+                            tradeEntity.BuyerId = toUser.UserId;
+                        }
+                        //我是买家
+                        else if (relationship.Equals("buyer"))
+                        {
+                            tradeEntity.SellerId = toUser.UserId;
+                            tradeEntity.BuyerId = tradeEntity.UserId;
+                        }
+
+                        tradeEntity.TradeAmount = outAmount;
+                        tradeEntity.TradeSubject = tradesubject;
+                        tradeEntity.TradeBody = tradedetail;
+
+                        tradeEntity.PayCommissionPercent = double.Parse(payCommissionPercent.ToString()) / 100;
+                        tradeEntity.PayCommission = tradeEntity.TradeAmount * (Convert.ToDecimal(tradeEntity.PayCommissionPercent));
+                        //Sets the min pay commission value here if it is less than the min value.
+                        if (tradeEntity.PayCommission < minPayCommission)
+                        {
+                            tradeEntity.PayCommission = minPayCommission;
+                        }
+
+                        // 中介手续费支付方
+                        #region old code
+                        //if (payer.Equals("buyer", StringComparison.CurrentCultureIgnoreCase))
+                        //{
+                        //    tradeEntity.Payer = (int)Payer.Buyer;
+                        //    tradeEntity.BuyerPay = tradeEntity.TradeAmount + tradeEntity.PayCommission;
+                        //    tradeEntity.SellerGet = tradeEntity.TradeAmount;
+                        //}
+                        //else if (payer.Equals("seller", StringComparison.CurrentCultureIgnoreCase))
+                        //{
+                        //    tradeEntity.Payer = (int)Payer.Seller;
+                        //    tradeEntity.BuyerPay = tradeEntity.TradeAmount;
+                        //    tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission;
+                        //}
+                        //else if (payer.Equals("both", StringComparison.CurrentCultureIgnoreCase))
+                        //{
+                        //    tradeEntity.Payer = (int)Payer.Both;
+                        //    tradeEntity.BuyerPay = tradeEntity.TradeAmount + tradeEntity.PayCommission / 2;
+                        //    tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission / 2;
+                        //}
+                        #endregion
+
+                        // 中介手续费支付方为卖方
+                        tradeEntity.Payer = (int)Payer.Seller;
+                        tradeEntity.BuyerPay = tradeEntity.TradeAmount;
+                        tradeEntity.SellerGet = tradeEntity.TradeAmount - tradeEntity.PayCommission;
+
+                        tradeEntity.CreatedTime = DateTime.Now;
+                        tradeEntity.LastUpdatedTime = DateTime.Now;
+                        tradeEntity.State = (int)TradeState.New;
+                        tradeEntity.ViewCount = 0;
+                        tradeEntity.ResourceUrl = resourceurl;
+                        tradeEntity.IsBuyerPaid = false;
+                        tradeEntity.TradeOrderId = string.Empty;
+
+                        #endregion 构造中介申请对象
+
+                        //添加中介申请记录到数据库
+                        isSuccessful = tradeService.AddNewTradeRecord(tradeEntity);
+
+                    }
+                    catch (Exception e)
+                    {
+                        isSuccessful = false;
+                        errorMessage = "系统异常，请重新尝试或联系管理员";
+                        LogService.Log("中介申请发生异常", e.ToString());
+                    }
                 }
             }
-            return Content(result);
+
+            var data = new
+            {
+                IsSuccessful = isSuccessful,
+                ErrorMessage = errorMessage
+            };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Show(string id)
@@ -290,7 +318,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 return Redirect("/common/ErrorAccessDenied");
             }
-            
+
             TradeModel model = new TradeModel();
 
             try
@@ -298,7 +326,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 int tradeId = -1;
                 int.TryParse(id, out tradeId);
                 model.CurrentTrade = tradeService.GetTradeByTradeId(tradeId);
-                
+
                 // The current trade does not exist.
                 if (model.CurrentTrade == null)
                 {
@@ -309,7 +337,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     return Redirect("/common/ErrorAccessDenied");
                 }
-                
+
                 model.CurrentTrade.Seller = model.CurrentTrade.Seller ?? new User();
                 model.CurrentTrade.Buyer = model.CurrentTrade.Buyer ?? new User();
                 model.CurrentTrade.CreatedUserName =
@@ -517,7 +545,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     }
 
                     isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)tradeState, DateTime.Now);
-                    
+
                     if (isValid)
                     {
                         result = "success";
@@ -543,7 +571,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         private int TranslateFilterToState(string filter)
         {
             int tradeState = -1;
-            
+
             if (!string.IsNullOrEmpty(filter))
             {
                 filter = filter.ToLower();
@@ -571,10 +599,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     tradeState = -1;
                     break;
             }
-            
+
             return tradeState;
         }
-        
+
         /// <summary>
         /// Validates user permission.
         /// </summary>
@@ -583,12 +611,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             Model.User toUser = userService.GetUserByUserName(username);
             if (toUser == null)
             {
-                throw new ArgumentException("交易另一方用户名不存在，请仔细检查");
+                throw new ArgumentException("交易另一方用户名不存在");
             }
 
             if (UserInfo == null)
             {
-                throw new ArgumentException("当前未登录，您可以在新窗口中登录后返回继续申请");
+                throw new ArgumentException("您没绑定会员账户");
             }
 
             if (UserInfo.UserId == toUser.UserId)
@@ -598,7 +626,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             return toUser;
         }
-        
+
         /// <summary>
         /// Validates payer information.
         /// </summary>
@@ -617,7 +645,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             //    throw new ArgumentException("请确认中介手续费支付方");
             //}
         }
-        
+
         /// <summary>
         /// Validates bank info with get. We need to add a new bank record to database if user select new bank info.
         /// </summary>
@@ -625,7 +653,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             UserBankInfo bankInfo = null;
             isNewBankInfo = false;
-            
+
             if (bankid.Equals("-1") && UserInfo != null)
             {
                 bankInfo = new UserBankInfo();
@@ -654,10 +682,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             bankInfo.CheckNullObject("银行信息");
-            
+
             return bankInfo;
         }
-        
+
         /// <summary>
         /// Validates pay commission configuration.
         /// </summary>
@@ -665,17 +693,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             int payCommissionValue = -1;
             PublicConfig config = tradeService.GetTradeConfig(configName);
-            
+
             if (config == null ||
                 !int.TryParse(config.ConfigValue, out payCommissionValue) ||
                 payCommissionValue < 0)
             {
                 throw new ArgumentException("中介手续费设置不正确，请联系系统管理员");
             }
-            
+
             return payCommissionValue;
         }
-        
+
         /// <summary>
         /// Validates user input amount.
         /// </summary>
@@ -718,6 +746,95 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 return "买家";
             }
+        }
+
+        private ActionResult ValidateTradeParameters(int id, string type, out TradeParameter parameter)
+        {
+            ActionResult result = null;
+            parameter = new TradeParameter();
+
+            if (!IsUserLogin)
+            {
+                result = Redirect("/wechat/account/login");
+            }
+            else
+            {
+                int toUserId = -1;
+
+                if (string.IsNullOrEmpty(type) || (!"demand".Equals(type.ToLower()) && !"resource".Equals(type.ToLower())))
+                {
+                    var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "中介申请参数错误，请返回刷新页面后重试！" };
+                    result = RedirectToAction("Index", "Error", errorMessage);
+                }
+
+                if ("demand".Equals(type.ToLower()))
+                {
+                    parameter.TradeRelationShip = "seller";
+
+                    var demand = demandService.GetDemandById(id, false);
+                    if (demand == null)
+                    {
+                        var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "中介需求不存在或已被删除，请返回刷新页面后重试！" };
+                        result = RedirectToAction("Index", "Error", errorMessage);
+                    }
+                    else if (demand.Status == (int)DemandStatus.Complete)
+                    {
+                        var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "中介需求已找到资源供应商！" };
+                        result = RedirectToAction("Index", "Error", errorMessage);
+                    }
+                    else
+                    {
+                        toUserId = demand.UserId;
+                    }
+                }
+                else if ("resource".Equals(type.ToLower()))
+                {
+                    parameter.TradeRelationShip = "buyer";
+
+                    var resource = resourceManager.GetResourceById(id, false);
+                    if (resource == null)
+                    {
+                        var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "中介资源不存在或已被删除，请返回刷新页面后重试！" };
+                        result = RedirectToAction("Index", "Error", errorMessage);
+                    }
+                    else
+                    {
+                        toUserId = resource.UserId;
+                    }
+                }
+                else
+                {
+                    // noting to do
+                }
+
+                if (toUserId != -1)
+                {
+                    if (CurrentUser.UserId == toUserId)
+                    {
+                        var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "不能对自己发布的资源或需求进行中介申请！" };
+                        result = RedirectToAction("Index", "Error", errorMessage);
+                    }
+                    else
+                    {
+                        var toUser = userService.GetUserById(toUserId);
+                        if (toUser == null)
+                        {
+                            var errorMessage = new ErrorMessage() { Title = "中介参数错误", Detail = "中介对象账户不存在或已被注销！" };
+                            result = RedirectToAction("Index", "Error", errorMessage);
+                        }
+                        else
+                        {
+                            parameter.TradeUserId = toUserId;
+                            parameter.TradeUserName = toUser.UserName;
+                        }
+                    }
+                }
+            }
+
+            parameter.TradeResourceId = id;
+            parameter.TradeType = type;
+
+            return result;
         }
     }
 }

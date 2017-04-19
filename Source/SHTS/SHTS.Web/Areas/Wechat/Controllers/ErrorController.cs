@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
@@ -11,9 +12,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         //
         // GET: /Wechat/Error/
 
-        public ActionResult Index()
+        public ActionResult Index(ErrorMessage errorMessage)
         {
-            return View();
+            return View(errorMessage);
         }
 
         public ActionResult Error_503()

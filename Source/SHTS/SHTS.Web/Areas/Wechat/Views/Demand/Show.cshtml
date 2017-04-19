@@ -119,7 +119,13 @@
             else
             {
                 <div class="buypanel">
-                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！<br />
+                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
+                    <br />
+                    您可以对该需求立即中介申请：
+                    <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
+
+                    <br />
+                    <br />
                     您可以免费提供您的报价/报名信息:
                     <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                     <br />

@@ -1,0 +1,418 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatTradeModel
+@{
+    ViewBag.TiTle = "";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+            width: 49%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+            .inline.wide {
+                width: 100%;
+            }
+
+            .inline > .title {
+                font-size: 13px;
+                /* color: #666; */
+            }
+
+                .inline > .title.highlight {
+                    font-weight: bold;
+                }
+
+
+                    .inline > .title.highlight:after {
+                        content: '*';
+                        color: red;
+                    }
+
+            .inline > input[type=text] {
+                width: 86%;
+            }
+
+
+            .inline.wide > input[type=text], .inline.wide > textarea {
+                width: 93%;
+            }
+
+            .inline.wide > button {
+                width: 99% !important;
+                border-radius: 5px;
+            }
+
+            .inline > select {
+                width: 100%;
+                height: 100%;
+            }
+
+            .inline.area > select {
+                width: 32%;
+            }
+
+            .inline label {
+                font-size: 10px;
+                color: red !important;
+                /* padding-left: 12px; */
+                /* float: right; */
+                /* text-align: center; */
+                display: block;
+                position: absolute;
+            }
+
+            .inline > .detail {
+                border: 1px solid #CECECF;
+                box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+                padding-left: 10px;
+                padding-bottom: 10px;
+                width: 96%;
+            }
+
+                .inline > .detail > div {
+                    display: inline-block;
+                    margin-top: 10px;
+                }
+
+                .inline > .detail > div {
+                    margin-right: 10px;
+                }
+
+                    .inline > .detail > div input[type=checkbox] {
+                        width: 18px;
+                        height: 18px;
+                        position: initial;
+                        vertical-align: middle;
+                        margin-top: -3px;
+                    }
+
+        .hd {
+            display: none;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            width: unset !important;
+        }
+
+        .uploadifive-button, .uploadifive-button > input[type=file], .uploadifive-queue-item {
+            border-radius: 3px !important;
+            margin-top: 5px !important;
+            margin-right: 10px !important;
+            padding: 0 !important;
+            width: 100px !important;
+            height: 100px !important;
+            float: left !important;
+            background-repeat: round !important;
+            border: 1px solid #666 !important;
+        }
+
+        .uploadifive-button {
+            background-image: url('/Areas/Wechat/Content/images/btnAdd.png') !important;
+            background-repeat: no-repeat !important;
+            background-size: contain;
+        }
+
+            .uploadifive-button, .uploadifive-button:hover {
+                background-color: initial !important;
+            }
+
+        .uploadifive-queue-item > .close {
+            width: 30px;
+            height: 30px;
+            background-image: url(../../../../Content/images/no.png);
+            background-size: contain;
+        }
+
+        .uploadifive-queue-item > div > .fileinfo, .uploadifive-queue-item > div > .filename {
+            display: none;
+            width: 0px;
+            height: 0px;
+        }
+
+        .ds_dialog, .ds_dialog_active {
+            left: 0px !important;
+        }
+    </style>
+}
+<!-- content -->
+<div class="wrap" style="width: 100%">
+    <div class="register-box" style="width: 100%;">
+        <form id="form_trade_new" action="#" class="reg-form" enctype="multipart/form-data" method="post">
+            <div class="inline wide">
+                请完善所需信息并仔细确认后提交.
+            </div>
+            <div>
+                <!--trade title-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        中介标题
+                    </div>
+                    <input type="text" name="tradesubject" placeholder="如：与卖家XXX（会员名）进行中介申请" class="text" value="@Model.TradeParameter.TradeTitle" />
+                </div>
+
+                <div class="inline wide">
+                    <div class="title highlight">
+                        中介资源链接
+                    </div>
+                    <input type="text" id="resourceurl" name="resourceurl" placeholder="请输如交易资源或需求链接" onblur="onTradeAmountLostFocusEvent();" class="text" value="@Model.TradeParameter.TradeResourceUrl" />
+                </div>
+
+                <div class="inline wide">
+                    <div class="title highlight">
+                        中介对象
+                    </div>
+                    <input type="hidden" id="userid" value="@Model.TradeParameter.TradeUserId" />
+                    <input type="text" id="username" name="username" placeholder="请输入交易对方在系统中的用户名" class="text" value="@Model.TradeParameter.TradeUserName" />
+                </div>
+
+                <div class="inline wide">
+                    <div class="title highlight">
+                        买卖关系
+                    </div>
+                    <div class="detail">
+                        @if (Model.TradeParameter.TradeRelationShip.Equals("buyer", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            <div>
+                                <input name="relationship" type="radio" value="buyer" checked="checked" />
+                                我是买方(付款方)
+                            </div>
+                            <div>
+                                <input name="relationship" type="radio" value="seller" />
+                                我是卖方(收款方)
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div>
+                                <input name="relationship" type="radio" value="buyer" />
+                                我是买方(付款方)
+                            </div>
+                            <div>
+                                <input name="relationship" type="radio" value="seller" checked="checked" />
+                                我是卖方(收款方)
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="inline wide">
+                    <div class="title highlight">
+                        交易金额（人名币，单位元）
+                    </div>
+                    <input type="text" id="tradeamount" name="amount" placeholder="请输入中介交易金额" onblur="onTradeAmountLostFocusEvent();" class="text" />
+                </div>
+                <div class="inline wide">
+                    <div class="title highlight">
+                        中介手续费（卖家支付）
+                    </div>
+                    <div class="inline wide">
+                        <input id="minpaycommission" type="hidden" value="@Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue" />
+                        <input id="paycommissionpercent" type="hidden" value="@Model.TradeConfig.MultipleConfigs["PayCommissionPercent"].ConfigValue" />
+                        <span id="sellerpay" class="red ch">￥@Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue</span>&nbsp;元
+
+                        <a href="javascript:showTradeCommissionRule();" class="red" title="点击查看帮助">
+                            &nbsp;<img src="~/content/images/question1.png" width="30" height="30" style="position: absolute;" />
+                        </a>
+                        <div id="tradeCommissionRule" class="hd">
+                            @(new HtmlString(Model.TradeConfig.MultipleConfigs["TradeCommissionRule"].ConfigValue))
+                        </div>
+
+                        @*<a href="/about/8.html" class="" target="_blank" title="查看中介手续费说明">【手续费】</a>为交易金额的 @Model.TradeConfig.MultipleConfigs["PayCommissionPercent"].ConfigValue %，
+                            <a href="/about/8.html" target="_blank" class="" title="查看中介手续费说明">【最低】</a>为 @Model.TradeConfig.MultipleConfigs["MinPayCommission"].ConfigValue 元*@
+                        @*&nbsp;&nbsp;<a href="/about/7.html" target="_blank" class="" title="点击查看中介交易金额线下付款帐号">【点击查看中介银行帐号】</a>*@
+                    </div>
+                </div>
+                <!--contact cellphone-->
+                <div class="inline">
+                    <div class="title highlight">
+                        我的联系方式
+                    </div>
+                    <input type="text" id="phone" name="phone" placeholder="请输入联系手机号码" class="text" value="@Model.CurrentUser.Cellphone" />
+                </div>
+                <!--contact QQ-->
+                <div class="inline">
+                    <input type="text" id="qq" name="qq" placeholder="请输入联系人QQ或微信" class="text" value="@Model.CurrentUser.QQ" />
+                </div>
+                <!--contact wechat-->
+                @*<div class="inline">
+                        <div class="title">
+                            微信帐号
+                        </div>
+                        <input type="text" id="WeChat" name="WeChat" placeholder="请输入联系人微信帐号" class="text" />
+                    </div>*@
+                <!--contact email-->
+                <div class="inline">
+                    <input type="text" id="email" name="email" placeholder="请输入联系邮箱" class="text" value="@Model.CurrentUser.Email" />
+                </div>
+                <!--location detail-->
+                <div class="inline">
+                    <input type="text" id="address" name="address" placeholder="请输入详细联系地址" class="text" value="@Model.CurrentUser.Adress" />
+                </div>
+                <!--space people list-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        银行帐号
+                    </div>
+                    <select id="ddlBankInfo" name="bankInfo" class="text" onchange="selectBankInfoChanged(this);">
+                        @if (Model.BankInfos != null && Model.BankInfos.Count > 0)
+                        {
+                            foreach (Witbird.SHTS.Model.UserBankInfo bankInfo in Model.BankInfos)
+                            {
+                                string bValue = bankInfo.BankName + "&" + bankInfo.BankAccount + "&" + bankInfo.BankUserName + "&" + bankInfo.BankId + "&" + bankInfo.BankAddress;
+                                string select = string.Empty;
+                                int length = bankInfo.BankAccount.Length;
+                                string displayName = string.Empty;
+                                string encryptAccount = string.Empty;
+
+                                if (length > 4)
+                                {
+                                    encryptAccount = "**********" + bankInfo.BankAccount.Substring(length - 4);
+                                }
+                                displayName = bankInfo.BankName + encryptAccount;
+                                if (bankInfo.IsDefault)
+                                {
+                                    select = "selected='selected'";
+                                }
+                                <option value="@bValue" @select>@displayName</option>
+                            }
+                        }
+                        <option value="newbank">新建银行账号</option>
+                    </select>
+                </div>
+
+                @if (Model.BankInfos != null && Model.BankInfos.Count > 0)
+                {
+                    Witbird.SHTS.Model.UserBankInfo defaultBank = Model.BankInfos.FirstOrDefault(c => c.IsDefault);
+                    if (defaultBank != null)
+                    {
+                        <input id="bankid" name="bankid" type="hidden" value="@defaultBank.BankId" />
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                开户银行
+                            </div>
+                            <input type="text" id="bankname" name="bankname" placeholder="请输入开户银行名称" class="text lbltxt" readonly="readonly" value="@defaultBank.BankName" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                账户姓名
+                            </div>
+                            <input type="text" id="bankusername" name="bankusername" placeholder="请输入银行账户姓名" class="text lbltxt" readonly="readonly" value="@defaultBank.BankUserName" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                银行账号
+                            </div>
+                            <input type="text" id="bankaccount" name="bankaccount" placeholder="请输入银行账号" class="text lbltxt" readonly="readonly" value="@defaultBank.BankAccount" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                开户行地址
+                            </div>
+                            <input type="text" id="bankaddress" name="bankaddress" placeholder="请输入开户行地址" class="text lbltxt" readonly="readonly" value="@defaultBank.BankAddress" />
+                        </div>
+                    }
+                    else
+                    {
+                        <input id="bankid" name="bankid" type="hidden" value="-1" />
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                开户银行
+                            </div>
+                            <input type="text" id="bankname" name="bankname" placeholder="请输入开户银行名称" class="text" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                账户姓名
+                            </div>
+                            <input type="text" id="bankusername" name="bankusername" placeholder="请输入银行账户姓名" class="text" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                银行账号
+                            </div>
+                            <input type="text" id="bankaccount" name="bankaccount" placeholder="请输入银行账号" class="text" />
+                        </div>
+                        <div class="bank inline wide">
+                            <div class="title highlight">
+                                开户行地址
+                            </div>
+                            <input type="text" id="bankaddress" name="bankaddress" placeholder="请输入开户行地址" class="text" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <input id="bankid" name="bankid" type="hidden" value="-1" />
+                    <div class="bank inline wide">
+                        <div class="title highlight">
+                            开户银行
+                        </div>
+                        <input type="text" id="bankname" name="bankname" placeholder="请输入开户银行名称" class="text" />
+                    </div>
+                    <div class="bank inline wide">
+                        <div class="title highlight">
+                            账户姓名
+                        </div>
+                        <input type="text" id="bankusername" name="bankusername" placeholder="请输入银行账户姓名" class="text" />
+                    </div>
+                    <div class="bank inline wide">
+                        <div class="title highlight">
+                            银行账号
+                        </div>
+                        <input type="text" id="bankaccount" name="bankaccount" placeholder="请输入银行账号" class="text" />
+                    </div>
+                    <div class="bank inline wide">
+                        <div class="title highlight">
+                            开户行地址
+                        </div>
+                        <input type="text" id="bankaddress" name="bankaddress" placeholder="请输入开户行地址" class="text" />
+                    </div>
+                }
+                <!--resource detail-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        中介详情
+                    </div>
+                    <textarea id="tradedetail" name="tradedetail"
+                              style="height:auto; word-break:break-all;overflow-y:visible;"
+                              placeholder="请输入中介交易详情。如需添加图文详情，请访问电脑版。"></textarea>
+                </div>
+                <div class="inline wide">
+                    <button id="btn_submit_new_trade" type="button" class="button btn-green">提交申请</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- content -->
+@section FooterJS
+{
+    <script src="/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="/Content/js/jquery.validate.min.js"></script>
+    <script src="~/Content/js/city.js"></script>
+    <script src="/Content/js/trade.js"></script>
+    <script src="~/Content/js/trade-mobile.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
+    <script>
+        autoTextarea('tradedetail');
+        selectBankInfoChanged($('#ddlBankInfo'));
+    </script>
+}

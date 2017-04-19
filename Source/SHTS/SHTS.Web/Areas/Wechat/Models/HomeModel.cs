@@ -20,11 +20,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
         public List<Activity> ActivityList { get; set; }
 
         /// <summary>
-        /// 首页中介列表
-        /// </summary>
-        public List<TradeModel> Trades { get; set; }
-
-        /// <summary>
         /// 右侧四大资源
         /// </summary>
         public Right Right { get; set; }

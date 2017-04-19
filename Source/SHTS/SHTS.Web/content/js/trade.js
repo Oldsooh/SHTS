@@ -55,24 +55,24 @@ $(function () {
         },
         messages: {
             qq: {
-                required: "请输入QQ号码"
+                required: "请输入QQ或微信帐号"
             },
             phone: {
                 required: "请输入电话号码"
             },
             email: {
-                required: "请输入邮箱",
-                email: "邮箱格式不正确。例：zhangsan@qq.com"
+                required: "请输入邮箱帐号",
+                email: "邮箱格式不正确。"
             },
             username: {
                 required: "请输入对方活动在线用户名"
             },
             amount: {
                 required: "请输入交易金额",
-                amount: "金额格式不正确。单位元，精确到分（两位小数）。最低交易金额不能少于最低手续费"
+                amount: "金额格式不正确。最低交易金额不能少于最低手续费"
             },
             bankname: {
-                required: "请输入开户银行名称(或支付宝)"
+                required: "请输入开户银行名称"
             },
             bankaccount: {
                 required: "请输入银行账号"
@@ -86,7 +86,7 @@ $(function () {
             }
             ,
             address: {
-                required: "请输入收获地址"
+                required: "请输如联系地址"
             }
             ,
             tradebody: {
@@ -124,7 +124,7 @@ $(function () {
     jQuery.validator.addMethod("isAmount", function (value, element) {
         var minCommission = Number($('#minpaycommission').val());
         return validateAmount(value, minCommission);
-    }, "金额格式不正确。单位元，精确到分（两位小数）。最低交易金额不能少于最低手续费");
+    }, "金额格式不正确。最低交易金额不能少于最低手续费");
 });
 
 // 银行账号信息变更
@@ -136,7 +136,7 @@ function selectBankInfoChanged(ddlBankInfo) {
     var bankusername = $('#bankusername');
     var bankaddress = $('#bankaddress');
 
-    var bankinfo = ddlBankInfo.value;
+    var bankinfo = $(ddlBankInfo).val();
     var isNewBank = true;
 
     if (bankinfo != 'newbank') {
@@ -147,27 +147,28 @@ function selectBankInfoChanged(ddlBankInfo) {
             bankname.val(infos[0]);
             bankaccount.val(infos[1]);
             bankusername.val(infos[2]);
-
-            bankname.addClass('lbltxt');
-            bankaccount.addClass('lbltxt');
-            bankusername.addClass('lbltxt');
-            bankaddress.addClass('lbltxt');
-
-            bankname.attr('readonly', 'true');
-            bankaccount.attr('readonly', 'true');
-            bankusername.attr('readonly', 'true');
-            bankaddress.attr('readonly', 'true');
-
             bankId.val(infos[3]);
             bankaddress.val(infos[4]);
+
+            bankname.addClass('lblText');
+            bankaccount.addClass('lblText');
+            bankusername.addClass('lblText');
+            bankaddress.addClass('lblText');
+
+            bankname.attr('readonly', 'readonly');
+            bankaccount.attr('readonly', 'readonly');
+            bankusername.attr('readonly', 'readonly');
+            bankaddress.attr('readonly', 'readonly');
         }
     }
 
     if (isNewBank) {
+        $('.bank').removeClass('hd');
         bankId.val('-1');
         bankname.val('');
         bankaccount.val('');
         bankusername.val('');
+        bankaddress.val('');
 
         bankname.removeClass('lbltxt');
         bankaccount.removeClass('lbltxt');
@@ -177,9 +178,12 @@ function selectBankInfoChanged(ddlBankInfo) {
         bankname.removeAttr('readonly');
         bankaccount.removeAttr('readonly');
         bankusername.removeAttr('readonly');
-        bankaddress.removeAttr('readonly', 'true');
+        bankaddress.removeAttr('readonly');
 
         bankname.focus();
+    }
+    else {
+        $('.bank').addClass('hd');
     }
 
     $('#bankname-error').remove();
@@ -204,84 +208,6 @@ function validateAmount(value, minValue) {
 
     return true;
 }
-
-var tradedetail;
-KindEditor.ready(function (K) {
-    tradedetail = K.create('#tradedetail', {
-        width: '680px',
-        height: '500px',
-        resizeType: 1,
-        allowPreviewEmoticons: false,
-        allowImageUpload: true,
-        allowFileManager: false,
-        fillDescAfterUploadImage: true,
-        uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
-        fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
-        items: [
-            'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'link', 'image', 'multiimage', 'insertfile']
-    });
-});
-
-var tradeReply;
-KindEditor.ready(function (K) {
-    tradeReply = K.create('#tradeReply', {
-        width: '730px',
-        height: '314px',
-        resizeType: 1,
-        allowPreviewEmoticons: false,
-        allowImageUpload: true,
-        allowFileManager: false,
-        fillDescAfterUploadImage: true,
-        uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
-        fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
-        items: [
-            'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'link', 'image', 'multiimage', 'insertfile']
-    });
-});
-
-$(function () {
-    $("#btn_submit_new_trade").click(function () {
-        $('#tradedetail').val(tradedetail.html());
-        var tradedetail_error = $('#tradedetail-error');
-
-        if (tradedetail_error != null) {
-            tradedetail_error.remove();
-        }
-
-        // special validation for trade detail
-        if ($('#tradedetail').val() == '' || $('#tradedetail').val().replace(' ', '') == '') {
-            var errorHtml = '<label id="tradedetail-error" style="display: block;">请输入交易详情</label>';
-            $('#tradedetail').parent().append(errorHtml);
-            return false;
-        }
-
-        if ($("#form_trade_new").validate().form()) {
-
-            $.ajax({
-                url: '/trade/new',
-                data: $("#form_trade_new").serialize(),
-                type: 'POST',
-                success: function (msg) {
-                    if (msg == "success") {
-                        alert("中介申请交易成功，请等待管理员审核");
-                        window.location.href = '/trade/mytradelist';
-                    }
-                    else {
-                        alert(msg);
-                    }
-                },
-                error: function (msg) {
-                    alert("网络异常，中介申请失败");
-                }
-            });
-        }
-
-    });
-});
 
 function onTradeAmountLostFocusEvent() {
     var minCommission = Number($('#minpaycommission').val());
