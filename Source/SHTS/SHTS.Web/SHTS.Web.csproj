@@ -1088,6 +1088,8 @@
     <Content Include="Areas\Wechat\Views\Trade\New.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\TradeRule.cshtml" />
     <Content Include="Areas\Wechat\Views\Error\Index.cshtml" />
+    <Content Include="Areas\Wechat\Views\Trade\MyTradeList.cshtml" />
+    <Content Include="Areas\Wechat\Views\Trade\show.cshtml" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />

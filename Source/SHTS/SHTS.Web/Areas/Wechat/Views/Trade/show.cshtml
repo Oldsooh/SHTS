@@ -1,0 +1,308 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatTradeModel
+@{
+    ViewBag.Title = Model.CurrentTrade.TradeSubject;
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        .reg-form .cell label {
+            position: absolute;
+            font-size: 10px;
+            color: red !important;
+            top: 30px;
+            padding-left: 12px;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .reg-form .cell select {
+                height: 100%;
+                width: 32.5%;
+            }
+
+            .reg-form .cell textarea {
+                height: 100%;
+                width: 96%;
+            }
+
+            .reg-form .cell label {
+                color: #333 !important;
+                font-size: 16px;
+                font-weight: normal;
+                position: initial;
+                padding: 0;
+            }
+
+        .commonlist {
+            border: none;
+            margin: 0 auto;
+        }
+
+            .commonlist li span {
+                font-size: 17px;
+            }
+
+        .time {
+                height: 20px;
+    margin-bottom: -5px
+        }
+
+            .time span {
+                border: none!important;
+                font-size: 11px!important;
+                color: #898989!important;
+                box-shadow: none!important;
+                background:none!important;
+            }
+
+            .time span.spanleft{
+                padding-left: 32px!important;
+            }
+
+            .time span.spanright{
+                padding-right: 32px!important;
+            }
+    </style>
+    @*for chat history*@
+    <style>
+        #container {
+            border-top: 2px solid #DDD;
+            padding-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .header {
+            background: #000;
+            height: 40px;
+            color: #fff;
+            line-height: 34px;
+            font-size: 20px;
+            padding: 0 10px;
+        }
+
+        .footer {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            background: #fff;
+        }
+
+            .footer textarea {
+                width: 79%;
+                height: 30px;
+                padding: 5px;
+                font-size: 16px;
+                border-radius: 5px;
+                outline: none;
+            }
+
+            .footer button {
+                height: 40px;
+                width: 45px;
+                border-radius: 5px;
+                position: absolute;
+                padding: 2px;
+                font-size: 15px;
+                font-weight: 900;
+                margin-left: 1px;
+            }
+
+
+        .content img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+            .content li {
+                margin-top: 10px;
+                width: 100%;
+                display: block;
+                clear: both;
+                overflow: hidden;
+            }
+
+                .content li img {
+                    float: left;
+                    border-radius: 30px;
+                    border: 1px solid #ddd;
+                }
+
+                .content li span {
+                    background: #7cfc00;
+                    padding: 5px;
+                    border-radius: 10px;
+                    float: left;
+                    margin-right: 10px;
+                    margin-left: 10px;
+                    max-width: 65%;
+                    min-width: 20px;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 0 3px #ccc;
+                    word-wrap: break-word;
+                }
+
+                .content li img.imgleft {
+                    float: left;
+                }
+
+                .content li img.imgright {
+                    float: right;
+                }
+
+                .content li span.spanleft {
+                    float: left;
+                    background: #fff;
+                }
+
+                .content li span.spanright {
+                    float: right;
+                    background: #7cfc00;
+                }
+
+        .bottom {
+            height: 30px;
+            margin-top: 15px;
+        }
+
+            .bottom button {
+                width: 48%;
+                height: 30px;
+                border-radius: 10px;
+            }
+
+        .commonlist {
+            padding: 0;
+        }
+
+        .btn-blue {
+            background-color: #337ab7;
+            width: 100%;
+            height: 30px !important;
+            border-radius: 15px;
+            outline: none;
+            font-size: 15px;
+        }
+    </style>
+    @*for chat history*@
+    <script>
+
+        window.onload = function () {
+            //scrollToButtom();
+            $('#btnSend').click(function () {
+                var arrIconSrc = '@Model.CurrentWeChatUser.Photo';
+                var text = document.getElementById('text');
+                var content = document.getElementById('chatHistory');
+                var comments = text.value;
+
+                if (comments == '') {
+                    text.focus();
+                    return;
+                } else {
+                    var liNode = document.createElement('li');
+                    liNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
+                    content.appendChild(liNode);
+                    scrollToButtom();
+                    text.value = '';
+                    // Saves to database
+                    $.post('/wechat/trade/ReplyTradeWithOperation',
+                    {
+                        id: $('#tradeId').val(),
+                        operation: "",
+                        content: comments
+                    },
+                    function (msg) {
+                        if (msg != '') {
+                            content.removeChild(liNode);
+                            text.value = comments;
+                            alert(msg);
+                        }
+                    }).error(function () {
+                        content.removeChild(liNode);
+                        text.value = comments;
+                        alert('消息发送失败！');
+                    });
+                }
+            });
+            function scrollToButtom() {
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        }
+    </script>
+}
+
+<div class="main">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+
+        @if (Model != null && Model.CurrentTrade != null)
+        {
+            var tradeState = string.Empty;
+            switch (Model.CurrentTrade.State)
+            {
+                case (int)Witbird.SHTS.Model.TradeState.Completed:
+                    tradeState = "交易完成";
+                    break;
+                case (int)Witbird.SHTS.Model.TradeState.Finished:
+                    tradeState = "交易终止";
+                    break;
+                case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                    tradeState = "交易进行";
+                    break;
+                case (int)Witbird.SHTS.Model.TradeState.New:
+                    tradeState = "等待审核";
+                    break;
+                case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                    tradeState = "违规交易";
+                    break;
+                default:
+                    break;
+            }
+
+            <input type="hidden" id="tradeId" value="@Model.CurrentTrade.TradeId" />
+            <ul class="details">
+                <li class="dtitle">
+                    [@(tradeState)]@Model.CurrentTrade.TradeSubject
+                </li>
+                </ul>
+                <div class="active_info" style="word-break: break-all;">
+                    @(new HtmlString(Model.CurrentTrade.TradeBody))
+                </div>
+
+                <div class="footer">
+                    <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
+                    <button id="btnSend" class="button btn-green">发送</button>
+                </div>
+
+                }
+                else
+                {
+                <ul class="commonlist" style="">
+                    <li class="atitle">
+                        <lable style="color: #FD9102;font-size:16px;">您所查询的报价记录不存在或已删除！</lable>
+                    </li>
+                </ul>
+                }
+</div>
+</div>
+@section FooterJS
+{
+}

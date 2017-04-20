@@ -1,0 +1,175 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatTradeModel
+
+@{
+    ViewBag.Title = "我的中介记录";
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+
+@section head
+{
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .operation a {
+            border-radius: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+}
+
+<div id="main">
+    @if (Model.TradeList != null && Model.TradeList.Count > 0)
+    {
+        foreach (var item in Model.TradeList)
+        {
+
+            <ul class="commonlist">
+                <li class="atitle">
+                    <span class="state blue">@item.CreatedTime.ToString("MM-dd")</span>
+                    <a href="/wechat/trade/show/@(item.TradeId)?showwxpaytitle=1" style="margin-right: 10px;">@item.TradeSubject</a>
+                </li>
+                <li>
+                    卖家/买家：
+                    @if (item.SellerId == Model.CurrentUser.UserId)
+                    {
+                        <span class="yellow">
+                            @(item.SellerName)(我)/@(item.BuyerName)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="yellow">
+                            @(item.SellerName)/@(item.BuyerName)(我)
+                        </span>
+                    }
+                </li>
+                <li>交易金额：<span class="yellow">@(item.TradeAmount)元</span></li>
+                <li>
+                    中介状态：
+                    @switch (item.State)
+                    {
+                        case (int)Witbird.SHTS.Model.TradeState.Completed:
+                            <span class="yellow">交易完成</span>
+                            break;
+                        case (int)Witbird.SHTS.Model.TradeState.Finished:
+                            <span class="yellow">交易终止</span>
+                            break;
+                        case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                            <span class="yellow">交易进行</span>
+                            break;
+                        case (int)Witbird.SHTS.Model.TradeState.New:
+                            <span class="yellow">等待审核</span>
+                            break;
+                        case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                            <span class="yellow">违规交易</span>
+                            break;
+                        default:
+                            break;
+                    }
+                </li>
+
+                <li class="operation">
+                    @if (item.BuyerId == Model.CurrentUser.UserId && !item.IsBuyerPaid && item.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                    {
+                        <a href="javascript:void(0);" style="margin-right: 10px;" class="btn btn-info" title="中介交易正在进行，请买家尽快支付交易款项" onclick="generateTradeOrder(@item.TradeId);">
+                            立即支付
+                        </a>
+                    }
+
+                    <a href="/wechat/trade/show/@(item.TradeId)" style="margin-right: 10px;" class="btn btn-success">
+                        查看/回复
+                    </a>
+
+                    @if (item.State == (int)Witbird.SHTS.Model.TradeState.New || item.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                    {
+                        <a href="/wechat/trade/cancelTrade/@(item.TradeId)" onclick="return confirm('您确定取消该中介交易吗？');" style="margin-right: 10px;" class="btn btn-danger">
+                            取消交易
+                        </a>
+                    }
+                </li>
+
+            </ul>
+        }
+    }
+    else
+    {
+        <ul class="commonlist">
+            <li class="atitle">
+                <lable style="color: #FD9102;">没有中介记录数据！</lable>
+            </li>
+        </ul>
+    }
+
+    <div style="clear: both; height: 10px;"></div>
+
+    @{
+        RouteValueDictionary dictionary = new RouteValueDictionary();
+
+        Dictionary<string, object> prv = new Dictionary<string, object>();
+        prv.Add("class", "prv");
+
+        Dictionary<string, object> no = new Dictionary<string, object>();
+        no.Add("class", "no");
+
+        Dictionary<string, object> next = new Dictionary<string, object>();
+        next.Add("class", "next");
+    }
+    <div class="fenye" style="margin: 0 auto;">
+        @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                            dictionary.Add("page", (Model.PageIndex - 1).ToString());
+                        <span>@Html.ActionLink("上一页", "MyTradeList", dictionary, prv) </span>
+                        dictionary.Remove("page");
+                    }
+                    //首页
+                    if (Model.PageStep < Model.PageIndex)
+                    {
+                        <span>@Html.ActionLink("1", "MyTradeList")</span><span>.</span>
+                    }
+                    //分页
+                    for (int i = step; i < step + Model.PageStep; i++)
+                    {
+                        if (i <= Model.PageCount)
+                        {
+                            if (i == Model.PageIndex)
+                            {
+                                dictionary.Add("page", i.ToString());
+                                <span> @Html.ActionLink(i.ToString(), "MyTradeList", dictionary, no)</span>
+                                dictionary.Remove("page");
+                            }
+                            else
+                            {
+                                dictionary.Add("page", i.ToString());
+                                <span> @Html.ActionLink(i.ToString(), "MyTradeList", dictionary)</span>
+                                dictionary.Remove("page");
+                            }
+                        }
+                    }
+                    //末页
+                    if (step + Model.PageStep <= Model.PageCount)
+                    {
+                        dictionary.Add("page", Model.PageCount.ToString());
+                        <span>.</span><span>@Html.ActionLink(Model.PageCount.ToString(), "MyTradeList", dictionary) </span>
+                        dictionary.Remove("page");
+                    }
+                    //下一页
+                    if (Model.PageIndex < Model.PageCount)
+                    {
+                        dictionary.Add("page", (Model.PageIndex + 1).ToString());
+                        <span> @Html.ActionLink("下一页", "MyTradeList", dictionary, next)</span>
+                        dictionary.Remove("page");
+                    }
+                }
+            }
+        }
+    </div>
+</div>

@@ -319,7 +319,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return Redirect("/common/ErrorAccessDenied");
             }
 
-            TradeModel model = new TradeModel();
+            WeChatTradeModel model = new WeChatTradeModel();
+            model.CurrentWeChatUser = CurrentWeChatUser;
 
             try
             {
@@ -355,7 +356,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult MyTradeList(string id)
         {
-            TradeModel model = new TradeModel();
+            WeChatTradeModel model = new WeChatTradeModel();
+            model.CurrentWeChatUser = CurrentWeChatUser;
+
             if (IsUserLogin)
             {
                 //页码，总数重置
