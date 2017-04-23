@@ -65,7 +65,7 @@
                 Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
             {
                 <div class="listdivitem">
-                    <input name="" type="button" class="tjzl_btn" value="取消" onclick="window.location.href = @(Model.ReturnUrl)" />&nbsp;&nbsp;&nbsp;
+                    <input name="" type="button" class="tjzl_btn" value="取消" onclick="window.location.href ='@(Model.ReturnUrl)'" />&nbsp;&nbsp;&nbsp;
                     <input name="" type="button" class="tjzl_btn userbtn" style="font-size: 16px;"
                            value="确定支付" onclick="doPayForOrderEvent();" />
                     <br />
