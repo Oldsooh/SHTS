@@ -14,8 +14,16 @@ function autoHeight(elemid) {
         document.body.appendChild(t);
     }
     function change() {
-        ele("_textareacopy").value = ele(elemid).value;
-        ele(elemid).style.height = ele("_textareacopy").scrollHeight + ele("_textareacopy").style.height + "px";
+        var text = ele(elemid).value;
+        var linesCount = text.split('\n').length;
+
+        if (linesCount > 1 || text.length > 15) {
+            ele("_textareacopy").value = ele(elemid).value;
+            ele(elemid).style.height = ele("_textareacopy").scrollHeight + ele("_textareacopy").style.height + "px";
+        }
+        else {
+            ele(elemid).style.height = "40px";
+        }
     }
     addHandler(ele(elemid), "propertychange", change);//for IE  
     addHandler(ele(elemid), "input", change);// for !IE  

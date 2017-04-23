@@ -249,60 +249,6 @@ function onTradeAmountLostFocusEvent() {
     //}
 }
 
-function doTradeReplyWithOperation(currentTradeId) {
-    var operation = 'update';
-    var content = tradeReply.html();
-
-    // Parameters checking here.
-    if (checkParameter(operation, content)) {
-        $.ajax({
-            url: '/trade/ReplyTradeWithOperation',
-            data: {
-                id: currentTradeId,
-                operation: operation,
-                content: content
-            },
-            type: 'POST',
-            success: function (msg) {
-                if (msg == "success") {
-                    alert("回复成功");
-                    window.location.href = window.location.href;
-                }
-                else {
-                    alert(msg);
-                }
-            },
-            error: function (msg) {
-                alert("网络异常，回复中介交易失败");
-            }
-        });
-    }
-}
-
-function checkParameter(operation, content) {
-    if (operation != 'update' //&&
-        //    operation != 'reviewed' &&
-        //    operation != 'delete' &&
-        //    operation != 'completed' &&
-        //    operation != 'finished' &&
-        //    operation != 'invalid' &&
-        //    operation != 'paid'
-        ) {
-        alert('操作动作错误，请重新选择');
-        return false;
-    }
-    else if (content == '' || content.replace(' ', '') == '') {
-        alert('回复内容不能为空');
-        return false;
-    }
-    else {
-        // Nothing to do.
-    }
-
-    return true;
-
-}
-
 function confirmTradeOperation() {
     var operation = $('#tradeOperation').val();
 

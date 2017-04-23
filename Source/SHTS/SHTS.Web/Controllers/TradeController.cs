@@ -495,7 +495,8 @@ namespace Witbird.SHTS.Web.Controllers
                 try
                 {
                     int tradeId = -1;
-                    int tradeState = -1;
+                    int oldTradeState = -1;
+                    int newTradeState = -1;
 
                     tradeId = int.Parse(id);
                     tradeService.CheckReplyTradeParameters(operation, content);
@@ -509,18 +510,18 @@ namespace Witbird.SHTS.Web.Controllers
                     string roleName = ValidateUserReplyTradePermission(UserInfo.UserId, trade.SellerId, trade.BuyerId);
 
                     // Checks trade state.
-                    tradeState = trade.State;
-                    trade.State = tradeService.ConvertToTradeStateFromOperation(operation, tradeState);
-                    tradeService.CheckTradeState(tradeState, trade.State);
+                    oldTradeState = trade.State;
+                    newTradeState = tradeService.ConvertToTradeStateFromOperation(operation, oldTradeState);
+                    tradeService.CheckTradeState(oldTradeState, newTradeState);
 
                     string historySubject = string.Empty;
-                    if (tradeState != trade.State)
+                    if (oldTradeState != trade.State)
                     {
-                        historySubject = roleName + UserInfo.UserName + "将交易状态从 " + TradeService.ConvertStateToDisplayMode(trade.State) +
-                            " 改变为 " + TradeService.ConvertStateToDisplayMode(tradeState);
+                        historySubject = roleName + UserInfo.UserName + "将交易状态从 " + TradeService.ConvertStateToDisplayMode(oldTradeState) +
+                            " 改变为 " + TradeService.ConvertStateToDisplayMode(newTradeState);
                     }
 
-                    isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)tradeState, DateTime.Now);
+                    isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)newTradeState, DateTime.Now);
                     
                     if (isValid)
                     {

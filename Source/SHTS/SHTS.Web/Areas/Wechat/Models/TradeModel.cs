@@ -28,7 +28,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
             {
                 if (!string.IsNullOrEmpty(TradeUserName))
                 {
-                    return "与卖家" + TradeUserName + "进行中介申请";
+                    if (this.TradeRelationShip.Equals("buyer", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return "与卖家" + TradeUserName + "进行中介申请";
+                    }
+                    else
+                    {
+                        return "与买家" + TradeUserName + "进行中介申请";
+                    }
                 }
                 else
                 {
@@ -43,7 +50,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
             {
                 if (!string.IsNullOrEmpty(TradeType))
                 {
-                    var url = Fetch.BuildBaseUrl("/wechat/" + TradeType + "/show/" + TradeResourceId.ToString());
+                    var url = Fetch.BuildBaseUrl("/" + TradeType + "/show/" + TradeResourceId.ToString());
                     return url;
                 }
                 else

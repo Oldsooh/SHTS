@@ -44,7 +44,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDiplayValue(Model.Order.State)</span>
+                                        支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -65,7 +65,7 @@
                 Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
             {
                 <div class="listdivitem">
-                    <input name="" type="button" class="tjzl_btn" value="取消" onclick=" window.location.href = '/Wechat/user/index'" />&nbsp;&nbsp;&nbsp;
+                    <input name="" type="button" class="tjzl_btn" value="取消" onclick="window.location.href = @(Model.ReturnUrl)" />&nbsp;&nbsp;&nbsp;
                     <input name="" type="button" class="tjzl_btn userbtn" style="font-size: 16px;"
                            value="确定支付" onclick="doPayForOrderEvent();" />
                     <br />
@@ -99,6 +99,10 @@
 @section FooterJS
 {
     <script>
+        function doPayForOrderEvent() {
+            $('#payform').submit();
+        }
+
         var seconds = 3;
         function countDown() {
             var isPaySucceed = $('#isPaySucceed').val();

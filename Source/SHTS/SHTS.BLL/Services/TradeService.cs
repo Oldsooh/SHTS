@@ -293,12 +293,13 @@ namespace Witbird.SHTS.BLL.Services
 
         public void CheckReplyTradeParameters(string operation, string content)
         {
-            if (operation.Equals("update", StringComparison.CurrentCultureIgnoreCase) &&
-                operation.Equals("reviewed", StringComparison.CurrentCultureIgnoreCase) &&
-                operation.Equals("delete", StringComparison.CurrentCultureIgnoreCase) &&
-                operation.Equals("completed", StringComparison.CurrentCultureIgnoreCase) &&
-                operation.Equals("finished", StringComparison.CurrentCultureIgnoreCase) &&
-                operation.Equals("invalid", StringComparison.CurrentCultureIgnoreCase))
+            if (!operation.Equals("update", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("reviewed", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("delete", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("completed", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("finished", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("invalid", StringComparison.CurrentCultureIgnoreCase) &&
+                !operation.Equals("paid", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new ArgumentException("交易操作动作不正确，请重新选择");
             }
@@ -318,13 +319,13 @@ namespace Witbird.SHTS.BLL.Services
                 originalState == (int)TradeState.Finished ||
                 originalState == (int)TradeState.Invalid)
             {
-                throw new ArgumentException("交易状态已不允许发生更改，请重新获取最新交易信息");
+                throw new ArgumentException("交易已不允许发生回复或更改!");
             }
 
             if (newState == (int)TradeState.New ||
                 newState < originalState)
             {
-                throw new ArgumentException("当前交易操作动作不正确，请重新获取最新交易信息后尝试");
+                throw new ArgumentException("当前交易操作动作不正确!");
             }
         }
 
@@ -350,7 +351,7 @@ namespace Witbird.SHTS.BLL.Services
                 case "paid":
                     break;
                 default:
-                    throw new ArgumentException("操作动作错误");
+                    throw new ArgumentException("当前交易操作动作不正确");
             }
 
             return tradeState;

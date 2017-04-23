@@ -7,6 +7,8 @@
 
 @section head
 {
+<link href="/content/css/login.css" rel="stylesheet" />
+<link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .operation a {
@@ -84,7 +86,7 @@
 
                     @if (item.State == (int)Witbird.SHTS.Model.TradeState.New || item.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
                     {
-                        <a href="/wechat/trade/cancelTrade/@(item.TradeId)" onclick="return confirm('您确定取消该中介交易吗？');" style="margin-right: 10px;" class="btn btn-danger">
+                        <a href="javascript:void(0);" onclick="cancelTrade(@item.TradeId)" style="margin-right: 10px;" class="btn btn-danger">
                             取消交易
                         </a>
                     }
@@ -173,3 +175,54 @@
         }
     </div>
 </div>
+@section FooterJS
+{
+
+<script src="~/Content/js/trade-mobile.js"></script>
+    <script>
+        function cancelTrade(tradeId) {
+            if (confirm('您确定取消该中介交易申请吗？')) {
+                $.post('/wechat/trade/ReplyTradeWithOperation',
+                    {
+                        id: tradeId,
+                        operation: 'delete',
+                        content: '@(Model.CurrentUser.UserName)主动取消了该中介申请！'
+                    },
+                    function (data) {
+                        if (!data.IsSuccessful) {
+                            if (data.ErrorMessage != '') {
+                                showMessage(data.ErrorMessage, false);
+                            }
+                            else {
+                                showMessage('中介取消失败，请重新尝试！', false);
+                            }
+                        }
+                        else {
+                            window.location.reload();
+                        }
+                    }).error(function () {
+                        showMessage('中介取消失败，请重新尝试！', false);
+                    });
+            }
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
+    </script>
+}

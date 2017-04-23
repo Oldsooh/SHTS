@@ -83,3 +83,24 @@ function showMessage(msg, isSuccessfulMsg) {
         }
     }
 }
+
+function generateTradeOrder(tradeId) {
+    $.ajax({
+        url: '/wechat/trade/pay',
+        data: {
+            id: tradeId
+        },
+        type: 'POST',
+        success: function (msg) {
+            if (msg != null && msg.indexOf('正在跳转') > -1) {
+                document.write(msg);
+            }
+            else {
+                showMessage(msg, false);
+            }
+        },
+        error: function (msg) {
+            showMessage("网络异常，支付失败", false);
+        }
+    });
+}

@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJSON, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>content\kindeditor\asp.net\bin\LitJSON.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
@@ -222,6 +226,7 @@
     <Compile Include="Areas\Wechat\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Wechat\Controllers\FinanceController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\PayController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QuoteController.cs" />
     <Compile Include="Areas\Wechat\Controllers\SubscribeController.cs" />

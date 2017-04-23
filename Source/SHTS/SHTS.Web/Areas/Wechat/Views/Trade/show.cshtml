@@ -7,7 +7,13 @@
 {
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
     <style type="text/css">
+        .dtitle {
+            font-size: 18px !important;
+        }
+
         .reg-form .cell label {
             position: absolute;
             font-size: 10px;
@@ -25,59 +31,44 @@
             margin-bottom: 20px;
         }
 
-        .reg-form {
-            height: auto;
-            padding-left: 5px;
-            padding-right: 5px;
+        .glyphicon {
+            top: 2px;
+            padding-right: 2px;
         }
 
-            .reg-form .cell select {
-                height: 100%;
-                width: 32.5%;
-            }
-
-            .reg-form .cell textarea {
-                height: 100%;
-                width: 96%;
-            }
-
-            .reg-form .cell label {
-                color: #333 !important;
-                font-size: 16px;
-                font-weight: normal;
-                position: initial;
-                padding: 0;
-            }
-
-        .commonlist {
-            border: none;
-            margin: 0 auto;
+        .panel {
+            word-break: break-word;
         }
 
-            .commonlist li span {
-                font-size: 17px;
-            }
-
-        .time {
-                height: 20px;
-    margin-bottom: -5px
+        .panel-heading {
+            padding-left: 10px !important;
         }
 
-            .time span {
-                border: none!important;
-                font-size: 11px!important;
-                color: #898989!important;
-                box-shadow: none!important;
-                background:none!important;
-            }
+        .panel-body, .table td {
+            font-size: 14px !important;
+        }
 
-            .time span.spanleft{
-                padding-left: 32px!important;
-            }
+        .table a {
+            border-radius: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
-            .time span.spanright{
-                padding-right: 32px!important;
-            }
+        .table .right {
+            text-align: right;
+        }
+
+        .table .left {
+            width: 80px;
+            text-align: left;
+            padding-right: 0;
+        }
+
+        .table .primary {
+            /*color: #FD9102;*/
+        }
     </style>
     @*for chat history*@
     <style>
@@ -104,8 +95,8 @@
         }
 
             .footer textarea {
-                width: 79%;
-                height: 30px;
+                width: 77%;
+                height: 40px;
                 padding: 5px;
                 font-size: 16px;
                 border-radius: 5px;
@@ -113,21 +104,12 @@
             }
 
             .footer button {
-                height: 40px;
-                width: 45px;
+                height: 38px;
                 border-radius: 5px;
                 position: absolute;
                 padding: 2px;
                 font-size: 15px;
-                font-weight: 900;
-                margin-left: 1px;
             }
-
-
-        .content img {
-            width: 30px;
-            height: 30px;
-        }
 
         .content {
             padding: 15px;
@@ -141,14 +123,25 @@
                 overflow: hidden;
             }
 
-                .content li img {
+
+                .content li .imgleft {
                     float: left;
+                    width: 30px;
+                    height: 30px;
                     border-radius: 30px;
                     border: 1px solid #ddd;
                 }
 
-                .content li span {
-                    background: #7cfc00;
+                .content li .imgright {
+                    float: right;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 30px;
+                    border: 1px solid #ddd;
+                }
+
+
+                .content li span.spanleft, .content li span.spanright {
                     padding: 5px;
                     border-radius: 10px;
                     float: left;
@@ -161,14 +154,6 @@
                     word-wrap: break-word;
                 }
 
-                .content li img.imgleft {
-                    float: left;
-                }
-
-                .content li img.imgright {
-                    float: right;
-                }
-
                 .content li span.spanleft {
                     float: left;
                     background: #fff;
@@ -177,6 +162,37 @@
                 .content li span.spanright {
                     float: right;
                     background: #7cfc00;
+                }
+
+                    .content li span.spanleft img, .content li span.spanright img {
+                        max-width: 80px;
+                        max-height: 80px;
+                        cursor: pointer;
+                    }
+
+                .content li.time {
+                    height: 20px;
+                    margin-bottom: -5px;
+                }
+
+                    .content li.time span {
+                        border: none !important;
+                        font-size: 11px !important;
+                        color: #898989 !important;
+                        box-shadow: none !important;
+                        background: none !important;
+                    }
+
+                        .content li.time span.spanleft {
+                            padding-left: 32px !important;
+                        }
+
+                        .content li.time span.spanright {
+                            padding-right: 32px !important;
+                        }
+
+                .content li.high-light {
+                    font-weight: bold;
                 }
 
         .bottom {
@@ -194,17 +210,474 @@
             padding: 0;
         }
 
-        .btn-blue {
-            background-color: #337ab7;
-            width: 100%;
-            height: 30px !important;
+        .btn-group, .btn-group-vertical {
+            vertical-align: initial !important;
+        }
+
+        .dropdown-menu {
+            min-width: initial !important;
+        }
+
+        .btn-Upload {
             border-radius: 15px;
-            outline: none;
-            font-size: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            cursor: pointer;
+        }
+
+            .btn-Upload input[type=file] {
+                cursor: pointer;
+            }
+
+        .ds_dialog, .ds_dialog_active {
+            left: 0 !important;
+        }
+
+        .ds_dialog_content img {
+            width: 100%;
+            max-height: 400px;
+        }
+
+        .uploadifive-queue {
+            display: none;
         }
     </style>
     @*for chat history*@
+}
+
+<div class="main">
+    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+
+        @if (Model != null && Model.CurrentTrade != null)
+        {
+            var currentTrade = Model.CurrentTrade;
+            if (Model.CurrentUser != null &&
+                            (Model.CurrentUser.UserId == currentTrade.BuyerId ||
+                            Model.CurrentUser.UserId == currentTrade.SellerId))
+            {
+                var tradeState = string.Empty;
+                var seller = currentTrade.Seller;
+                var buyer = currentTrade.Buyer;
+
+                switch (currentTrade.State)
+                {
+                    case (int)Witbird.SHTS.Model.TradeState.Completed:
+                        tradeState = "交易完成";
+                        break;
+                    case (int)Witbird.SHTS.Model.TradeState.Finished:
+                        tradeState = "交易终止";
+                        break;
+                    case (int)Witbird.SHTS.Model.TradeState.InProgress:
+                        tradeState = "交易进行";
+                        break;
+                    case (int)Witbird.SHTS.Model.TradeState.New:
+                        tradeState = "等待审核";
+                        break;
+                    case (int)Witbird.SHTS.Model.TradeState.Invalid:
+                        tradeState = "违规交易";
+                        break;
+                    default:
+                        break;
+                }
+
+                <input type="hidden" id="tradeId" value="@currentTrade.TradeId" />
+                <div class="dtitle">
+                    <span class="dtitle" style="color: #FD9102;">[@(tradeState)]</span>@currentTrade.TradeSubject
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">交易信息</div>
+                    <table class="table table-striped">
+                        <tr class="">
+                            <td class="left">交易金额：</td>
+                            <td class="primary">￥@(currentTrade.TradeAmount)</td>
+                            <td class="right">
+                                @if (!string.IsNullOrEmpty(currentTrade.ResourceUrl) && currentTrade.ResourceUrl.ToLower().Contains("/demand/"))
+                                {
+                                    <a href="@Model.CurrentTrade.ResourceUrl" class="btn btn-info" title="点击查看中介交易需求">查看需求</a>
+                                }
+                                else if (!string.IsNullOrEmpty(currentTrade.ResourceUrl) && currentTrade.ResourceUrl.ToLower().Contains("/resource/"))
+                                {
+                                    <a href="@Model.CurrentTrade.ResourceUrl" class="btn btn-info" title="点击查看中介交易资源">点评资源</a>
+                                }
+                                else
+                                {
+
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">买家应付：</td>
+                            <td class="primary">￥@(Model.CurrentTrade.BuyerPay)</td>
+
+                            <td class="right">
+                                @if (currentTrade.IsBuyerPaid)
+                                {
+                                    <span style="color: green; font-size: 18px;">已付款</span>
+                                }
+                                else
+                                {
+                                    if (currentTrade.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                                    {
+                                        if (Model.CurrentUser.UserId == currentTrade.BuyerId)
+                                        {
+                                        <a href="javascript:void(0);" class="btn btn-success" title="立即支付交易款项" onclick="generateTradeOrder(@Model.CurrentTrade.TradeId);">
+                                            立即付款
+                                        </a>
+                                        }
+                                        else
+                                        {
+                                        <span class="primary">等待买家付款</span>
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="left">手续费：</td>
+                            <td class="primary">￥@(Model.CurrentTrade.PayCommission)</td>
+                            <td class="right">(卖家支付)</td>
+                        </tr>
+                        <tr>
+                            <td class="left">卖家可得：</td>
+                            <td class="primary">￥@(Model.CurrentTrade.SellerGet)</td>
+                            <td class="right">(已扣除手续费)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">买家信息</div>
+                    <table class="table">
+                        @if (currentTrade.UserId == buyer.UserId)
+                        {
+                            <tr>
+                                <td class="left">用户名：</td>
+                                <td colspan="2">
+                                    @(buyer.UserName)
+                                    @if (buyer.UserId == Model.CurrentUser.UserId)
+                                    {
+                                        <span>(我)</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="left">QQ/微信：</td>
+                                <td colspan="2">@currentTrade.UserQQ</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系手机：</td>
+                                @if (buyer.UserId != Model.CurrentUser.UserId)
+                                {
+                                    <td>@currentTrade.UserCellPhone</td>
+                                    <td class="right"><a class="btn btn-success" href="tel:@currentTrade.UserCellPhone"><i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打</a></td>
+                                }
+                                else
+                                {
+                                    <td colspan="2">@currentTrade.UserCellPhone</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="left">联系邮箱：</td>
+                                <td colspan="2">@currentTrade.UserEmail</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系地址：</td>
+                                <td colspan="2">
+                                    @if (!string.IsNullOrEmpty(currentTrade.UserAddress))
+                                    {
+                                        <span>@currentTrade.UserAddress</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #178aa5">未填写联系地址</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="left">用户名：</td>
+                                <td colspan="2">
+                                    @buyer.UserName
+                                    @if (buyer.UserId == Model.CurrentUser.UserId)
+                                    {
+                                        <span>(我)</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="left">QQ/微信：</td>
+                                <td colspan="2">@buyer.QQ</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系手机：</td>
+                                @if (buyer.UserId != Model.CurrentUser.UserId)
+                                {
+                                    <td>@buyer.Cellphone</td>
+                                    <td class="right"><a class="btn btn-success" href="tel:@buyer.Cellphone"><i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打</a></td>
+                                }
+                                else
+                                {
+                                    <td colspan="2">@buyer.Cellphone</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="left">联系邮箱：</td>
+                                <td colspan="2">@buyer.Cellphone</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系地址：</td>
+                                <td colspan="2">
+                                    @if (!string.IsNullOrEmpty(buyer.Adress))
+                                    {
+                                        <span>@buyer.Adress</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #178aa5">未填写联系地址</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">卖家信息</div>
+                    <table class="table">
+                        @if (currentTrade.UserId == seller.UserId)
+                        {
+                            <tr>
+                                <td class="left">用户名：</td>
+                                <td colspan="2">@(seller.UserName)(我)</td>
+                            </tr>
+                            <tr>
+                                <td class="left">QQ/微信：</td>
+                                <td>@currentTrade.UserQQ</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系手机：</td>
+                                @if (seller.UserId != Model.CurrentUser.UserId)
+                                {
+                                    <td>@currentTrade.UserCellPhone</td>
+                                    <td class="right">
+                                        <a class="btn btn-success" href="tel:@currentTrade.UserCellPhone">
+                                            <i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+
+                                    <td colspan="2">@currentTrade.UserCellPhone</td>
+                                }
+
+
+                            </tr>
+                            <tr>
+                                <td class="left">联系邮箱：</td>
+                                <td colspan="2">@currentTrade.UserEmail</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系地址：</td>
+                                <td colspan="2">
+                                    @if (!string.IsNullOrEmpty(currentTrade.UserAddress))
+                                    {
+                                        <span>@currentTrade.UserAddress</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #178aa5">未填写联系地址</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="left">用户名：</td>
+                                <td colspan="2">@seller.UserName</td>
+                            </tr>
+                            <tr>
+                                <td class="left">QQ/微信：</td>
+                                <td colspan="2">@seller.QQ</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系手机：</td>
+                                @if (seller.UserId != Model.CurrentUser.UserId)
+                                {
+                                    <td>@seller.Cellphone</td>
+                                    <td class="right">
+                                        <a class="btn btn-success" href="tel:@seller.Cellphone"><i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td colspan="2">@seller.Cellphone</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td class="left">联系邮箱：</td>
+                                <td colspan="2">@seller.Cellphone</td>
+                            </tr>
+                            <tr>
+                                <td class="left">联系地址：</td>
+                                <td colspan="2">
+                                    @if (!string.IsNullOrEmpty(seller.Adress))
+                                    {
+                                        <span>@seller.Adress</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #178aa5">未填写联系地址</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">中介详情</div>
+                    <div class="panel-body">
+                        @(new HtmlString(Model.CurrentTrade.TradeBody))
+                    </div>
+                </div>
+                <div class="panel panel-success" style="margin-bottom: 50px;">
+                    <div class="panel-heading">回复记录</div>
+                    <div class="panel-body" style="padding:0;">
+                        <ul id="chatHistory" class="content">
+
+                            @{
+                                var rightPhotoUrl = Model.CurrentWeChatUser.Photo;
+                                var leftPhotoUrl = "";
+                                var adminPhotoUrl = "/Content/images/pay/user_picture.gif";
+
+                                foreach (var history in Model.CurrentTrade.Histories)
+                                {
+                                    if (history.IsAdminUpdate)
+                                    {
+                                        leftPhotoUrl = adminPhotoUrl;
+                                    }
+                                    else if (history.UserId == seller.UserId)
+                                    {
+                                        leftPhotoUrl = seller.Photo;
+                                    }
+                                    else
+                                    {
+                                        leftPhotoUrl = buyer.Photo;
+                                    }
+
+                                    if (!string.IsNullOrWhiteSpace(history.HistoryBody))
+                                    {
+                                        var timestring = history.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                        // Posted by myself
+                                        if (history.UserId == Model.CurrentWeChatUser.UserId)
+                                        {
+                                            <li class="time"><span class="spanright">@timestring</span></li>
+
+                                            if (!string.IsNullOrEmpty(history.HistorySubject))
+                                            {
+                                                <li class="high-light">
+                                                    <img src="@rightPhotoUrl" class="imgright" />
+
+                                                    <span class="spanright">@(new HtmlString(history.HistorySubject))</span>
+                                                </li>
+                                            }
+                                            if (!string.IsNullOrEmpty(history.HistoryBody))
+                                            {
+                                                <li>
+                                                    <img src="@rightPhotoUrl" class="imgright" />
+                                                    <span class="spanright">@(new HtmlString(history.HistoryBody))</span>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="time"><span class="spanleft">@timestring</span></li>
+
+                                            if (!string.IsNullOrEmpty(history.HistorySubject))
+                                            {
+                                                <li class="high-light">
+                                                    <img src="@leftPhotoUrl" class="imgleft" />
+                                                    <span class="spanleft">@(new HtmlString(history.HistorySubject))</span>
+                                                </li>
+                                            }
+                                            if (!string.IsNullOrEmpty(history.HistoryBody))
+                                            {
+
+                                                <li>
+                                                    <img src="@leftPhotoUrl" class="imgleft" />
+                                                    <span class="spanleft">@(new HtmlString(history.HistoryBody))</span>
+                                                </li>
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer">
+                    @if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.InProgress)
+                    {
+                        <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
+                        <div class="btn-group dropup">
+                            <button id="btnSend" class="btn btn-success">发送</button>
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <input name="file_upload" id="file_upload" type="file" class="hide" accept="image/*" />
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="commonlist" style="">
+                            <li class="atitle">
+                                <lable style="color: #FD9102;font-size:16px;">当中介状态处于等待审核、交易完成或交易终止状态时，不支持回复！</lable>
+                            </li>
+                        </ul>
+                    }
+                </div>
+                                }
+                                else
+                                {
+                                    <ul class="commonlist" style="">
+                                        <li class="atitle">
+                                            <lable style="color: #FD9102;font-size:16px;">中介交易只有中介买卖双方可以查看及回复！</lable>
+                                        </li>
+                                    </ul>
+                                    }
+                                }
+                                else
+                                {
+                                    <ul class="commonlist" style="">
+                                        <li class="atitle">
+                                            <lable style="color: #FD9102;font-size:16px;">中介记录不存在或已删除！</lable>
+                                        </li>
+                                    </ul>
+                                }
+    </div>
+</div>
+@section FooterJS
+{
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
+<script src="~/Content/js/trade-mobile.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
     <script>
+        autoTextarea('text');
 
         window.onload = function () {
             //scrollToButtom();
@@ -218,91 +691,176 @@
                     text.focus();
                     return;
                 } else {
-                    var liNode = document.createElement('li');
-                    liNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
-                    content.appendChild(liNode);
+                    var timeNode = document.createElement('li');
+                    var textNode = document.createElement('li');
+                    var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+
+                    $(timeNode).addClass('time');
+                    timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
+                    textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
+                    content.appendChild(timeNode);
+                    content.appendChild(textNode);
                     scrollToButtom();
                     text.value = '';
                     // Saves to database
                     $.post('/wechat/trade/ReplyTradeWithOperation',
                     {
                         id: $('#tradeId').val(),
-                        operation: "",
+                        operation: "update",
                         content: comments
                     },
-                    function (msg) {
-                        if (msg != '') {
-                            content.removeChild(liNode);
+                    function (data) {
+                        if (!data.IsSuccessful) {
+                            content.removeChild(timeNode);
+                            content.removeChild(textNode);
                             text.value = comments;
-                            alert(msg);
+                            if (data.ErrorMessage != '') {
+                                showMessage(data.ErrorMessage, false);
+                            }
+                            else {
+                                showMessage('图片上传失败，请重新尝试！', false);
+                            }
                         }
                     }).error(function () {
-                        content.removeChild(liNode);
+                        content.removeChild(timeNode);
+                        content.removeChild(textNode);
                         text.value = comments;
-                        alert('消息发送失败！');
+                        showMessage('消息发送失败!', false);
                     });
                 }
             });
-            function scrollToButtom() {
-                window.scrollTo(0, document.body.scrollHeight);
+
+            $('#file_upload').uploadifive({
+                'auto': true,
+                'uploadScript': '/Content/upload/uploadimage.ashx',
+                'buttonText': '<i class="glyphicon glyphicon-plus"></i>&nbsp;上传图片',
+                'buttonClass': 'btn btn-Upload',
+                'fileType': 'image/*',
+                'multi': false,
+                'queueSizeLimit': 10,
+                'uploadLimit': 10,
+                'fileSizeLimit': 12 * 1024 * 1024,
+                'onSelect': function (file) {
+                    if (file.size >= 12 * 1024 * 1024) {
+                        showMessage('每张图片不能超过5M', false);
+                        $("#file_upload").uploadify('cancel');
+                        return false;
+                    }
+                },
+                'onCancel': function (file) {
+                    //alert('The file ' + file.name + ' was cancelled!');
+                },
+                'onUploadComplete': function (file, data) {
+                    var postfile = JSON.parse(data);
+                    var originalImg = '';
+                    if (postfile.Action) {
+                        originalImg = postfile.OriginalImage;
+                        uploadTradeImg(originalImg);
+                        $('.dropup').removeClass('open');
+                    }
+                    else {
+                        showMessage('图片上传失败，请重新尝试', false);
+                        $("#file_upload").uploadify('cancel');
+                        $(itemid).remove();
+                    }
+                },
+                'onFallback': function () {
+                    //alert("该浏览器无法使用!");
+                },
+                'onUpload': function (file) {
+                }
+            });
+
+            $('.content li span.spanleft img').click(function () {
+                showBigImg($(this));
+            });
+            $('.content li span.spanright img').click(function () {
+                showBigImg($(this));
+            });
+        }
+
+        function uploadTradeImg(imgUrl) {
+            var arrIconSrc = '@Model.CurrentWeChatUser.Photo';
+            var content = document.getElementById('chatHistory');
+
+            if (imgUrl == '') {
+                return;
+            } else {
+                var timeNode = document.createElement('li');
+                var textNode = document.createElement('li');
+                var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+                var imgNode = '<img src=' + imgUrl + ' alt="图片加载失败" />';
+
+                //$(imgNode).click(function () {
+                //    showBigImg($(this));
+                //});
+
+                $(timeNode).addClass('time');
+                timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
+                textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + imgNode + '</span>'
+
+                content.appendChild(timeNode);
+                content.appendChild(textNode);
+
+                scrollToButtom();
+                text.value = '';
+                // Saves to database
+                $.post('/wechat/trade/ReplyTradeWithOperation',
+                {
+                    id: $('#tradeId').val(),
+                    operation: 'update',
+                    content: imgNode
+                },
+                function (data) {
+                    if (!data.IsSuccessful) {
+                        content.removeChild(timeNode);
+                        content.removeChild(textNode);
+                        if (data.ErrorMessage != '') {
+                            showMessage(data.ErrorMessage, false);
+                        }
+                        else {
+                            showMessage('图片上传失败，请重新尝试！', false);
+                        }
+                    }
+                }).error(function () {
+                    content.removeChild(timeNode);
+                    content.removeChild(textNode);
+                    showMessage('图片上传失败，请重新尝试！', false);
+                });
             }
         }
-    </script>
-}
 
-<div class="main">
-    <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
+        function scrollToButtom() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
 
-        @if (Model != null && Model.CurrentTrade != null)
-        {
-            var tradeState = string.Empty;
-            switch (Model.CurrentTrade.State)
-            {
-                case (int)Witbird.SHTS.Model.TradeState.Completed:
-                    tradeState = "交易完成";
-                    break;
-                case (int)Witbird.SHTS.Model.TradeState.Finished:
-                    tradeState = "交易终止";
-                    break;
-                case (int)Witbird.SHTS.Model.TradeState.InProgress:
-                    tradeState = "交易进行";
-                    break;
-                case (int)Witbird.SHTS.Model.TradeState.New:
-                    tradeState = "等待审核";
-                    break;
-                case (int)Witbird.SHTS.Model.TradeState.Invalid:
-                    tradeState = "违规交易";
-                    break;
-                default:
-                    break;
+        function showBigImg(imgNode) {
+            if (imgNode) {
+                ds.dialog({
+                    title: '大图阅览',
+                    content: $(imgNode).clone()
+                });
             }
+        }
 
-            <input type="hidden" id="tradeId" value="@Model.CurrentTrade.TradeId" />
-            <ul class="details">
-                <li class="dtitle">
-                    [@(tradeState)]@Model.CurrentTrade.TradeSubject
-                </li>
-                </ul>
-                <div class="active_info" style="word-break: break-all;">
-                    @(new HtmlString(Model.CurrentTrade.TradeBody))
-                </div>
-
-                <div class="footer">
-                    <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
-                    <button id="btnSend" class="button btn-green">发送</button>
-                </div>
-
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
                 }
-                else
-                {
-                <ul class="commonlist" style="">
-                    <li class="atitle">
-                        <lable style="color: #FD9102;font-size:16px;">您所查询的报价记录不存在或已删除！</lable>
-                    </li>
-                </ul>
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
                 }
-</div>
-</div>
-@section FooterJS
-{
+            }
+        }
+
+    </script>
 }

@@ -13,21 +13,10 @@
     <script src="/Content/kindeditor/kindeditor-min.js"></script>
     <script src="/Content/kindeditor/zh_CN.js"></script>
     <script type="text/javascript" src="/content/js/trade.js"></script>
+<script type="text/javascript" src="~/content/js/trade-pc.js"></script>
     <script type="text/javascript" src="/content/js/payment.js"></script>
     <script type="text/javascript" src="/areas/admin/content/js/common.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function (e) {
-            $(".select1").uedSelect({
-                width: 345
-            });
-            $(".select2").uedSelect({
-                width: 150
-            });
-            $(".select3").uedSelect({
-                width: 100
-            });
-        });
-    </script>
+   
     <style type="text/css">
         #trade {
             background-color: #ffffff;
@@ -196,19 +185,20 @@
                                     Model.CurrentUser.UserId == Model.CurrentTrade.SellerId))
                                 {
                                     <td class="body">
-                                        @if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.New)
-                                        {
-                                            <span>该中介交易还没有通过管理员审核，不支持查看及回复</span>
-                                        }
-                                        else if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.Invalid)
-                                        { 
-                                            <span>该中介交易已被管理员设置为违规交易，不支持查看及回复</span>
-                                        }
-                                        else
-                                        {
-                                            @(new HtmlString(Model.CurrentTrade.TradeBody))
-                                        }
+                                        @*@if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.New)
+    {
+        <span>该中介交易还没有通过管理员审核，不支持查看及回复</span>
+    }
+    else if (Model.CurrentTrade.State == (int)Witbird.SHTS.Model.TradeState.Invalid)
+    {
+        <span>该中介交易已被管理员设置为违规交易，不支持查看及回复</span>
+    }
+    else
+    {
+        @(new HtmlString(Model.CurrentTrade.TradeBody))
+    }*@
 
+                                        @(new HtmlString(Model.CurrentTrade.TradeBody))
                                     </td>
                                 }
                                 else

@@ -81,6 +81,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return result;
             }
 
+            try
+            {
+                var count = 0;
+                var myTradeList = tradeService.GetTradeListByUserId(CurrentUser.UserId, int.MaxValue, 1, out count);
+                if (myTradeList.IsNotNull())
+                {
+                    var trade = myTradeList.FirstOrDefault(item => item.ResourceUrl.Replace("/wechat", string.Empty).Equals(parameter.TradeResourceUrl, StringComparison.CurrentCultureIgnoreCase));
+                    if (trade != null)
+                    {
+                        result = new RedirectResult("/wechat/trade/show/" + trade.TradeId);
+                        return result;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+
             return View(parameter);
         }
 
@@ -316,7 +335,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             if (UserInfo == null)
             {
-                return Redirect("/common/ErrorAccessDenied");
+                var errorMessage = new ErrorMessage() { Title = "权限不足", Detail = "您没有权限查看该记录!" };
+                return RedirectToAction("Index", "Error", errorMessage);
             }
 
             WeChatTradeModel model = new WeChatTradeModel();
@@ -331,12 +351,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 // The current trade does not exist.
                 if (model.CurrentTrade == null)
                 {
-                    return Redirect("/common/ErrorPageNotFound");
+                    var errorMessage = new ErrorMessage() { Title = "404-中介记录不存在", Detail = "您查看的记录不存在或已被删除!" };
+                    return RedirectToAction("Index", "Error", errorMessage);
                 }
                 // Only the buyer or seller has permission to view the trade detail.
                 else if (model.CurrentTrade.SellerId != UserInfo.UserId && model.CurrentTrade.BuyerId != UserInfo.UserId)
                 {
-                    return Redirect("/common/ErrorAccessDenied");
+                    var errorMessage = new ErrorMessage() { Title = "权限不足", Detail = "您没有权限查看该记录!" };
+                    return RedirectToAction("Index", "Error", errorMessage);
                 }
 
                 model.CurrentTrade.Seller = model.CurrentTrade.Seller ?? new User();
@@ -354,7 +376,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return View(model);
         }
 
-        public ActionResult MyTradeList(string id)
+        public ActionResult MyTradeList(string page)
         {
             WeChatTradeModel model = new WeChatTradeModel();
             model.CurrentWeChatUser = CurrentWeChatUser;
@@ -362,16 +384,16 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             if (IsUserLogin)
             {
                 //页码，总数重置
-                int page = 1;
-                if (!string.IsNullOrEmpty(id))
+                int pageIndex = 1;
+                if (!string.IsNullOrEmpty(page))
                 {
-                    Int32.TryParse(id, out page);
+                    Int32.TryParse(page, out pageIndex);
                 }
                 int allCount = 0;
-                model.TradeList = tradeService.GetTradeListByUserId(UserInfo.UserId, 20, page, out allCount);
+                model.TradeList = tradeService.GetTradeListByUserId(UserInfo.UserId, 10, pageIndex, out allCount);
 
-                model.PageIndex = page;//当前页数
-                model.PageSize = 20;//每页显示多少条
+                model.PageIndex = pageIndex;//当前页数
+                model.PageSize = 10;//每页显示多少条
                 model.PageStep = 10;//每页显示多少页码
                 model.AllCount = allCount;//总条数
 
@@ -427,7 +449,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                 {
                                     url = "http://" + url;
                                 }
-                                url = url + "/trade/" + tradeId + ".html";
+                                url = url + "/trade/show/" + tradeId;
 
                                 if (!string.IsNullOrEmpty(trade.TradeOrderId))
                                 {
@@ -436,7 +458,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                 if (order != null && order.UserName == UserInfo.UserName && order.Amount == trade.BuyerPay)
                                 {
                                     //result = "success&orderid=" + order.OrderId + "&returnurl=" + Request.UrlReferrer.AbsoluteUri;
-                                    result = string.Format(Constant.PostPayInfoFormat, order.OrderId, url);
+                                    result = string.Format(Constant.PostPayInfoFormatForWechat, order.OrderId, url);
                                 }
                                 else
                                 {
@@ -509,20 +531,21 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult ReplyTradeWithOperation(string id, string operation, string content)
         {
-            string result = "回复失败";
-            bool isValid = true;
+            bool isSuccessful = false;
+            string errorMessage = string.Empty;
+
             if (!IsUserLogin)
             {
-                result = "当前未登录或登录超时，请重新登录";
-                isValid = false;
+                errorMessage = "当前未登录或登录超时，请刷新页面后重试！";
+                isSuccessful = false;
             }
-
-            if (isValid)
+            else
             {
                 try
                 {
                     int tradeId = -1;
-                    int tradeState = -1;
+                    int oldTradeState = -1;
+                    int newState = -1;
 
                     tradeId = int.Parse(id);
                     tradeService.CheckReplyTradeParameters(operation, content);
@@ -530,42 +553,43 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     if (trade == null)
                     {
-                        throw new ArgumentException("交易信息不存在");
+                        throw new ArgumentException("中介交易信息不存在或已删除！");
                     }
 
                     string roleName = ValidateUserReplyTradePermission(UserInfo.UserId, trade.SellerId, trade.BuyerId);
 
                     // Checks trade state.
-                    tradeState = trade.State;
-                    trade.State = tradeService.ConvertToTradeStateFromOperation(operation, tradeState);
-                    tradeService.CheckTradeState(tradeState, trade.State);
+                    oldTradeState = trade.State;
+                    newState = tradeService.ConvertToTradeStateFromOperation(operation, oldTradeState);
+                    tradeService.CheckTradeState(oldTradeState, newState);
 
                     string historySubject = string.Empty;
-                    if (tradeState != trade.State)
+                    if (oldTradeState != newState)
                     {
-                        historySubject = roleName + UserInfo.UserName + "将交易状态从 " + TradeService.ConvertStateToDisplayMode(trade.State) +
-                            " 改变为 " + TradeService.ConvertStateToDisplayMode(tradeState);
+                        historySubject = roleName + UserInfo.UserName + "将交易状态从 " + TradeService.ConvertStateToDisplayMode(oldTradeState) +
+                            " 改变为 " + TradeService.ConvertStateToDisplayMode(newState);
                     }
 
-                    isValid = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)tradeState, DateTime.Now);
+                    isSuccessful = tradeService.ReplyTradeWithOperation(historySubject, content, tradeId, UserInfo.UserId, UserInfo.UserName, false, (TradeState)newState, DateTime.Now);
 
-                    if (isValid)
+                    if (!isSuccessful)
                     {
-                        result = "success";
-                    }
-                    else
-                    {
-                        result = "回复交易失败";
+                        errorMessage = "回复失败，请重新尝试！";
                     }
                 }
                 catch (Exception e)
                 {
                     LogService.Log("回复交易失败", e.ToString());
-                    result = e.Message;
+                    errorMessage = e.Message;
                 }
             }
 
-            return Content(result);
+            var data = new
+            {
+                IsSuccessful = isSuccessful,
+                ErrorMessage = errorMessage
+            };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

@@ -105,7 +105,8 @@
         @(new HtmlString(Model.Demand.ContentText))
     </div>
     @if (!Model.HasCurrentWeChatUserBought)
-    {<ul class="details">
+    {
+        <ul class="details">
         <li>
             @if (Model.Demand.IsCompleted)
             {
