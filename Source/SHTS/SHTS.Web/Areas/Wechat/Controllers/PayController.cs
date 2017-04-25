@@ -98,12 +98,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult GenerateOrder(string orderId, string returnUrl)
         {
-            var routeParameters = new
-            {
-                orderId = orderId,
-                returnUrl = returnUrl
-            };
-            return RedirectToAction("Index", routeParameters);
+            return Redirect("/wechat/pay/index?orderId=" + orderId + "&returnUrl=" + returnUrl + "&showwxpaytitle=1");
         }
 
         /// <summary>

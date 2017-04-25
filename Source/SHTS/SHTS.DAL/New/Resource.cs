@@ -27,7 +27,7 @@ namespace Witbird.SHTS.DAL.New
                     }
                     else
                     {
-                        _ImgUrls = new string[1] { string.Empty };
+                        _ImgUrls = new string[] { };
                     }
                 }
                 return _ImgUrls;
