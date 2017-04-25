@@ -10,6 +10,7 @@ using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Public;
@@ -49,15 +50,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             publicConfigService = new PublicConfigService();
         }
 
-        /// <summary>
-        /// 提交订单信息到订单页面
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult GenerateOrder(string orderId, string returnUrl)
+        public ActionResult Index(string orderId, string returnUrl)
         {
+            if (string.IsNullOrEmpty(orderId))
+            {
+                var errorMessage = new ErrorMessage() { Title = "订单参数错误", Detail = "订单参数错误，请返回刷新页面后重试！" };
+                return RedirectToAction("Index", "Error", errorMessage);
+            }
+
             OrderModel model = new OrderModel();
             model.ReturnUrl = returnUrl;
 
@@ -65,6 +65,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 orderId.CheckEmptyString("Order ID");
                 model.Order = orderService.GetOrderByOrderId(orderId);
+
+                if(model.Order == null)
+                {
+                    var errorMessage = new ErrorMessage() { Title = "订单参数错误", Detail = "订单参数错误，请返回刷新页面后重试！" };
+                    return RedirectToAction("Index", "Error", errorMessage);
+                }
 
                 if (model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
                     model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
@@ -75,9 +81,29 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             catch (Exception e)
             {
                 LogService.Log("生成订单页面数据失败", e.ToString());
+
+                var errorMessage = new ErrorMessage() { Title = "订单参数错误", Detail = "订单参数错误，请返回刷新页面后重试！" };
+                return RedirectToAction("Index", "Error", errorMessage);
             }
 
-            return View("Index", model);
+            return View(model);
+        }
+
+        /// <summary>
+        /// 提交订单信息到订单页面
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GenerateOrder(string orderId, string returnUrl)
+        {
+            var routeParameters = new
+            {
+                orderId = orderId,
+                returnUrl = returnUrl
+            };
+            return RedirectToAction("Index", routeParameters);
         }
 
         /// <summary>

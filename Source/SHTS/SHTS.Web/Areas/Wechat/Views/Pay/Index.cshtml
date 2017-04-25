@@ -7,6 +7,7 @@
 
 @section head
 {
+    <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .table .left {
@@ -83,7 +84,7 @@
                                     线下付款
                                 </button>
                             }
-                            <button class="btn btn-default" onclick="if (confirm('您确定放弃支付订单金额吗？'){window.location='@Model.Order.ResourceUrl'});">
+                            <button class="btn btn-default" onclick="if (confirm('您确定放弃支付订单金额吗？')){window.location='@Model.Order.ResourceUrl';}">
                                 取消付款
                             </button>
                         </li>
