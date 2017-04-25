@@ -470,7 +470,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                                     string orderId = orderService.GenerateNewOrderNumber();
                                     string subject = "活动在线网 | 支付中介交易款项";
-                                    string body = "买家" + UserInfo.UserName + "支付中介交易款项, 中介交易摘要：" + trade.TradeSubject;
+                                    string body = "中介内容：" + trade.TradeSubject;
                                     //int userId = UserInfo.UserId;
                                     string username = UserInfo.UserName;
                                     decimal amount = trade.BuyerPay;

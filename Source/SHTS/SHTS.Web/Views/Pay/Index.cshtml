@@ -29,21 +29,25 @@
                             <tbody>
                                 <tr>
                                     <td>订单编号：<span>@Model.Order.OrderId</span></td>
-                                    <td>订单摘要：<span>@Model.Order.Subject</span>
+                                    <td>
+                                        订单摘要：<span>@Model.Order.Subject</span>
                                     </td>
                                     <td>用户姓名：<span>@Model.Order.UserName</span></td>
                                 </tr>
                                 <tr>
                                     <td>订单金额：<span>￥ @Model.Order.Amount 元</span></td>
-                                    <td>支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</span>
+                                    <td>
+                                        支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</span>
                                     </td>
-                                    <td>更新时间：<span>@DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                                    <td>
+                                        更新时间：<span>@DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")</span>
                                     </td>
                                 </tr>
                                 @if (!string.IsNullOrEmpty(Model.Order.ResourceUrl) && Model.Order.OrderType == (int)Witbird.SHTS.Model.OrderType.Trade)
                                 {
                                     <tr>
-                                        <td colspan="3">中介连接：<a href="@Model.Order.ResourceUrl" title="查看中介交易信息" target="_blank"><span>@Model.Order.ResourceUrl</span></a>
+                                        <td colspan="3">
+                                            中介连接：<a href="@Model.Order.ResourceUrl" title="查看中介交易信息" target="_blank"><span>@Model.Order.ResourceUrl</span></a>
                                         </td>
                                     </tr>
                                 }
@@ -59,15 +63,15 @@
                 </div>
             </div>
 
-                                if (Model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
-                                    Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
-                                {
-                                    if (Model != null && Model.OfflineBankInfos != null)
-                                    {
-            <div class="listdivitem onlinePayContent">
-                <div class="listdivitemsummary">
-                    <div class="listdivitemtitle">
-                        请将交易金额汇款至线下支付银行帐号
+            if (Model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
+                Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
+            {
+                if (Model != null && Model.OfflineBankInfos != null)
+                {
+                    <div class="listdivitem onlinePayContent">
+                        <div class="listdivitemsummary">
+                            <div class="listdivitemtitle">
+                                请将交易金额汇款至线下支付银行帐号
                                 <span style="margin-left: 20px; color: #FD9102; font-weight: normal; font-size: 15px;">
                                     @if (Model.Order.OrderType == (int)Witbird.SHTS.Model.OrderType.Trade)
                                     {
@@ -78,104 +82,105 @@
                                         <b>温馨提示：线下支付只支持充值一年VIP会员，支付完成后请等待管理员审核</b>
                                     }
                                 </span>
-                    </div>
-                    <div class="listdivitemdescription">
-                        <table class="listdivitemtable">
-                            <tbody>
-                                @foreach (var item in Model.OfflineBankInfos)
-                                {
-                                    string bankName = "";
-                                    string bankAccount = "";
-                                    string bankUserName = "";
-                                    string bankAddress = "";
-                                    string[] values = item.ConfigValue.Split(Witbird.SHTS.Common.Constant.TradeBankInfoConfigSeperator);
-                                    if (values.Length == 4)
-                                    {
-                                        bankName = values[0];
-                                        bankAccount = values[1];
-                                        bankUserName = values[2];
-                                        bankAddress = values[3];
-                                    <tr>
-                                        <td>开户银行：<span>@bankName</span></td>
-                                        <td>银行帐号：<span>@bankAccount</span></td>
-                                        <td>开户名：<span>@bankUserName</span></td>
-                                        <td>开户行地址：<span>@bankAddress</span></td>
-                                    </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="listdivitemlink">
-                        <a class="btn" href="@Model.Order.ResourceUrl" title="线下支付完成后请点击此按钮到下一步" onclick="javascript:alert('线下支付完成后，请耐心等待管理员审核');" >支付完成
-                        </a>
-                    </div>
-                    <div style="clear: both;"></div>
-
-                </div>
-            </div>
-                                    }
-            <div class="listdivitem hide onlinePayContent">
-                <div class="listdivitemtitle">
-                    支付宝支付订单金额
-                </div>
-                <form id="payform" action="/pay/payonline" method="post">
-                    <input type="hidden" name="orderId" value="@Model.Order.OrderId" />
-                    <div class="listdivitemsummary">
-                        <div class="listdivitemdescription">
-                            <div class="payment selected">
-                                <label>
-                                    <input type="radio" name="payment" value="alipay" checked="checked" onchange="onpaymentchange();" />
-                                    <img src="/content/images/pay/alipay_logo.gif" alt="支付宝" />
-                                </label>
-                                <span></span>
                             </div>
+                            <div class="listdivitemdescription">
+                                <table class="listdivitemtable">
+                                    <tbody>
+                                        @foreach (var item in Model.OfflineBankInfos)
+                                        {
+                                            string bankName = "";
+                                            string bankAccount = "";
+                                            string bankUserName = "";
+                                            string bankAddress = "";
+                                            string[] values = item.ConfigValue.Split(Witbird.SHTS.Common.Constant.TradeBankInfoConfigSeperator);
+                                            if (values.Length == 4)
+                                            {
+                                                bankName = values[0];
+                                                bankAccount = values[1];
+                                                bankUserName = values[2];
+                                                bankAddress = values[3];
+                                                <tr>
+                                                    <td>开户银行：<span>@bankName</span></td>
+                                                    <td>银行帐号：<span>@bankAccount</span></td>
+                                                    <td>开户名：<span>@bankUserName</span></td>
+                                                    <td>开户行地址：<span>@bankAddress</span></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="listdivitemlink">
+                                <a class="btn" href="@Model.Order.ResourceUrl" title="线下支付完成后请点击此按钮到下一步" onclick="javascript:alert('线下支付完成后，请耐心等待管理员审核');">
+                                    支付完成
+                                </a>
+                            </div>
+                            <div style="clear: both;"></div>
 
-                            @*<div class="payment">
+                        </div>
+                    </div>
+                }
+                <div class="listdivitem hide onlinePayContent">
+                    <div class="listdivitemtitle">
+                        支付宝支付订单金额
+                    </div>
+                    <form id="payform" action="/pay/payonline" method="post">
+                        <input type="hidden" name="orderId" value="@Model.Order.OrderId" />
+                        <div class="listdivitemsummary">
+                            <div class="listdivitemdescription">
+                                <div class="payment selected">
+                                    <label>
+                                        <input type="radio" name="payment" value="alipay" checked="checked" onchange="onpaymentchange();" />
+                                        <img src="/content/images/pay/alipay_logo.gif" alt="支付宝" />
+                                    </label>
+                                    <span></span>
+                                </div>
+
+                                @*<div class="payment">
                                         <label>
                                             <input type="radio" name="payment" value="chinabank" onchange="onpaymentchange();" />
                                             <img src="/content/images/pay/chinabank_logo.jpg" alt="网银在线" />
                                         </label>
                                         <span></span>
                                     </div>*@
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div class="listdivitemlink">
+                            <a class="btn" href="javascript:void(0);" title="立即支付订单金额" onclick="doPayForOrderEvent();">
+                                立即支付
+                            </a>
+                            <br />
+                        </div>
+                    </form>
+                </div>
 
-                    <div class="listdivitemlink">
-                        <a class="btn" href="javascript:void(0);" title="立即支付订单金额" onclick="doPayForOrderEvent();">
-                            立即支付
-                        </a>
-                        <br />
-                    </div>
-                </form>
-            </div>
-            
-            <div class="listdivitem">
-                <div class="listdivitemsummary">
-                    <div class="listdivitemtitle">
-                        <a class="btn" href="javascript:void(0);" title="点击选择支付方式" onclick="expandByClassName('onlinePayContent', this);">
-                            在线支付
-                        </a>
+                <div class="listdivitem">
+                    <div class="listdivitemsummary">
+                        <div class="listdivitemtitle">
+                            <a class="btn" href="javascript:void(0);" title="点击选择支付方式" onclick="expandByClassName('onlinePayContent', this);">
+                                在线支付
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-                                }
-                                else
-                                {
-            <div class="listdivitem">
-                <table class="listdivitemtable">
-                    <tbody>
-                        <tr>
-                            <td>
-                                @*<span>该订单已不能支付</span>*@
-                                <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-                                }
+            }
+            else
+            {
+                <div class="listdivitem">
+                    <table class="listdivitemtable">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @*<span>该订单已不能支付</span>*@
+                                    <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
         }
         else
         {

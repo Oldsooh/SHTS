@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.AdvancedAPIs;
+using Senparc.Weixin.MP.TenPayLibV3;
+using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;
@@ -15,6 +19,24 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class PayController : WechatBaseController
     {
+        private static TenPayV3Info _tenPayV3Info;
+
+        /// <summary>
+        /// 微信支付相关配置信息
+        /// </summary>
+        public static TenPayV3Info TenPayV3Info
+        {
+            get
+            {
+                if (_tenPayV3Info == null)
+                {
+                    _tenPayV3Info =
+                        TenPayV3InfoCollection.Data[System.Configuration.ConfigurationManager.AppSettings["TenPayV3_MchId"]];
+                }
+                return _tenPayV3Info;
+            }
+        }
+
         //
         // GET: /Pay/
         IPayService payService = null;
@@ -67,50 +89,136 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpPost]
         public ActionResult PayOnline(string orderId, string payment)
         {
-            string responseHtml = "";
+            bool isSuccessful = false;
+            string errorMessage = "";
+
+            string appId = string.Empty;
+            string timeStamp = string.Empty;
+            string nonceStr = string.Empty;
+            string package = string.Empty;
+            string paySign = string.Empty;
 
             try
             {
-                // 取消其他在线支付方式,只支持支付宝,强制设置
-                payment = PaymentService.ALIPAYSERVICE;
+                TradeOrder order = orderService.GetOrderByOrderId(orderId);
 
-                //客户端IP地址
-                string clientIPAddr = GetUserIp();
-
-                payService = BuildPayService(payment);
-
-                if (payService != null)
+                if (order == null)
                 {
-                    TradeOrder order = orderService.GetOrderByOrderId(orderId);
-
-                    if (order != null && !string.IsNullOrEmpty(order.OrderId))
-                    {
-                        PayRequestCriteria criteria = new PayRequestCriteria();
-                        criteria.OrderId = order.OrderId;
-                        criteria.Amount = order.Amount.ToString();
-                        criteria.Subject = order.Subject;
-                        criteria.Body = order.Body;
-                        criteria.ClientIP = clientIPAddr;
-                        //criteria.AddCustomParameter("", "");
-
-                        responseHtml = payService.BuildRequest(criteria);
-                    }
-                    else
-                    {
-                        responseHtml = "订单：" + orderId + "不存在";
-                    }
+                    errorMessage = "订单信息有误，请重新尝试！";
                 }
                 else
                 {
-                    responseHtml = "The pay service " + payment + " does not support.";
+                    if (order.State == (int)OrderState.Succeed)
+                    {
+                        errorMessage = "订单已支付成功，请刷新页面后查看。";
+                    }
+                    else
+                    {
+                        isSuccessful = PreparePaySign(order, out appId, out timeStamp, out nonceStr, out package, out paySign, out errorMessage);
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                LogService.Log("PayOnline Failed", e.ToString());
+                LogService.LogWexin("在线支付中介订单", ex.ToString());
+                isSuccessful = false;
+                errorMessage = "支付过程出错，请刷新页面后重新尝试！";
             }
 
-            return Content(responseHtml);
+            var jsonResult = new
+            {
+                IsSuccessFul = isSuccessful,
+                Message = errorMessage,
+                AppId = appId,
+                TimeStamp = timeStamp,
+                NonceStr = nonceStr,
+                Package = package,
+                PaySign = paySign
+            };
+
+            LogService.LogWexin("支付中介订单", "isSuccessFul: " + isSuccessful.ToString() + "  message:"
+                + errorMessage + "  appId: " + appId + "  timeStamp:" + timeStamp + "  nonceStr:" + nonceStr + "  package:" + package + "  paySign:" + paySign);
+
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
+
+        private bool PreparePaySign(TradeOrder order, out string appId, out string timeStamp,
+            out string nonceStr, out string package, out string paySign, out string message)
+        {
+            bool isSuccessFul = false;
+
+            appId = string.Empty;
+            timeStamp = string.Empty;
+            nonceStr = string.Empty;
+            package = string.Empty;
+            paySign = string.Empty;
+
+            message = string.Empty;
+
+            try
+            {
+
+                //创建支付应答对象
+                RequestHandler packageReqHandler = new RequestHandler(null);
+                //初始化
+                packageReqHandler.Init();
+
+                appId = TenPayV3Info.AppId;
+                timeStamp = TenPayV3Util.GetTimestamp();
+                nonceStr = TenPayV3Util.GetNoncestr();
+
+                string body = "活动在线网-支付中介交易款项";
+
+                //设置package订单参数
+                packageReqHandler.SetParameter("appid", TenPayV3Info.AppId);		  //公众账号ID
+                packageReqHandler.SetParameter("mch_id", TenPayV3Info.MchId);		  //商户号
+                packageReqHandler.SetParameter("nonce_str", nonceStr);                    //随机字符串
+                packageReqHandler.SetParameter("body", body);    //商品信息
+                packageReqHandler.SetParameter("out_trade_no", order.OrderId);		//商家订单号
+                packageReqHandler.SetParameter("total_fee", (Convert.ToInt32(order.Amount * 100).ToString()));			        //商品金额,以分为单位(money * 100).ToString()
+                packageReqHandler.SetParameter("spbill_create_ip", Request.UserHostAddress);   //用户的公网ip，不是商户服务器IP
+                packageReqHandler.SetParameter("notify_url", TenPayV3Info.TenPayV3Notify);		    //接收财付通通知的URL
+                packageReqHandler.SetParameter("trade_type", TenPayV3Type.JSAPI.ToString());	                    //交易类型
+                packageReqHandler.SetParameter("openid", CurrentWeChatUser.OpenId);	                    //用户的openId
+
+                string sign = packageReqHandler.CreateMd5Sign("key", TenPayV3Info.Key);
+                packageReqHandler.SetParameter("sign", sign);	                    //签名
+
+                string data = packageReqHandler.ParseXML();
+
+                var result = TenPayV3.Unifiedorder(data);
+                var res = XDocument.Parse(result);
+
+                LogService.LogWexin("微信支付参数", res.ToString());
+                string prepayId = res.Element("xml").Element("prepay_id").Value;
+
+                //设置支付参数
+                RequestHandler paySignReqHandler = new RequestHandler(null);
+                paySignReqHandler.SetParameter("appId", TenPayV3Info.AppId);
+                paySignReqHandler.SetParameter("timeStamp", timeStamp);
+                paySignReqHandler.SetParameter("nonceStr", nonceStr);
+                paySignReqHandler.SetParameter("package", string.Format("prepay_id={0}", prepayId));
+                paySignReqHandler.SetParameter("signType", "MD5");
+
+                paySign = paySignReqHandler.CreateMd5Sign("key", TenPayV3Info.Key);
+                package = string.Format("prepay_id={0}", prepayId);
+            }
+            catch (Exception ex)
+            {
+                message = "支付过程发生错误";
+                LogService.LogWexin("构建支付参数出错", ex.ToString());
+            }
+
+            if (!string.IsNullOrEmpty(appId) &&
+                !string.IsNullOrEmpty(timeStamp) &&
+                !string.IsNullOrEmpty(nonceStr) &&
+                !string.IsNullOrEmpty(package) &&
+                !string.IsNullOrEmpty(paySign))
+            {
+                isSuccessFul = true;
+            }
+
+            return isSuccessFul;
         }
 
         #region 支付结果处理方法

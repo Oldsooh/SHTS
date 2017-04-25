@@ -7,9 +7,24 @@
 
 @section head
 {
-    <link href="~/areas/Wechat/content/styles/payment.css" rel="stylesheet" />
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table .left {
+            width: 100px;
+            padding-right: 0;
+        }
 
-    <link href="~/Areas/Wechat/Content/styles/user.css" rel="stylesheet" />
+        .operation button {
+            border-radius: 15px;
+            padding: 3px 10px;
+            width: 32%;    
+            outline: none!important;
+        }
+
+        .commonlist {
+            border: none;
+        }
+    </style>
 }
 
 <div class="wrap">
@@ -20,55 +35,119 @@
             <input id="isPaySucceed" type="hidden" value="@Model.Order.State" />
             <input id="returnUrl" type="hidden" value="@Model.ReturnUrl" />
 
-            <div class="listdivitem">
-                <div class="listdivitemsummary">
-                    <div class="listdivitemtitle">
-                        订单信息
-                    </div>
-                    <div class="listdivitemdescription">
-                        <table class="listdivitemtable">
-                            <tbody>
-                                <tr>
-                                    <td>订单编号：<span>@Model.Order.OrderId</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        订单摘要：<span>@Model.Order.Subject</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>用户姓名：<span>@Model.Order.UserName</span></td>
-                                </tr>
-                                <tr>
-                                    <td>订单金额：<span>￥ @Model.Order.Amount 元</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        支付状态：<span>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        订单备注：
-                                        <span>@Model.Order.Body</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div style="clear: both;"></div>
-
-                </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">订单信息</div>
+                <table class="table table-striped">
+                    <tr>
+                        <td class="left">订单编号：</td>
+                        <td>@Model.Order.OrderId</td>
+                    </tr>
+                    <tr>
+                        <td class="left">订单摘要：</td>
+                        <td>@Model.Order.Subject</td>
+                    </tr>
+                    <tr>
+                        <td class="left">用户姓名：</td>
+                        <td>@Model.Order.UserName</td>
+                    </tr>
+                    <tr>
+                        <td class="left">订单金额：</td>
+                        <td class="yellow">@(Model.Order.Amount)元</td>
+                    </tr>
+                    <tr>
+                        <td class="left">支付状态：</td>
+                        <td>@Witbird.SHTS.BLL.Services.OrderService.ConvertOrderStateToDisplayValue(Model.Order.State)</td>
+                    </tr>
+                    <tr>
+                        <td class="left">
+                            订单备注：
+                        </td>
+                        <td>
+                            @Model.Order.Body
+                        </td>
+                    </tr>
+                </table>
             </div>
-
             if (Model.Order.State == (int)Witbird.SHTS.Model.OrderState.New ||
                 Model.Order.State == (int)Witbird.SHTS.Model.OrderState.Failed)
             {
-                <div class="listdivitem">
-                    <input name="" type="button" class="tjzl_btn" value="取消" onclick="window.location.href ='@(Model.ReturnUrl)'" />&nbsp;&nbsp;&nbsp;
-                    <input name="" type="button" class="tjzl_btn userbtn" style="font-size: 16px;"
-                           value="确定支付" onclick="doPayForOrderEvent();" />
-                    <br />
+                <div>
+                    <ul class="commonlist">
+                        <li class="operation">
+                            <button href="javascript:void(0);" class="btn btn-success" onclick="onlinePay(this,'@Model.Order.OrderId');">
+                                <i class="glyphicon glyphicon-hand-right"></i>&nbsp;在线支付
+                            </button>
+                            @if (Model != null && Model.OfflineBankInfos != null)
+                            {
+                                <button class="btn btn-info" title="查看线下支付银行帐号" onclick="expandByClassName('offlineBanks');">
+                                    线下付款
+                                </button>
+                            }
+                            <button class="btn btn-default" onclick="if (confirm('您确定放弃支付订单金额吗？'){window.location='@Model.Order.ResourceUrl'});">
+                                取消付款
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="offlineBanks hide">
+                    @if (Model != null && Model.OfflineBankInfos != null)
+                    {
+                        <br />
+                        <div class="panel panel-info">
+                            <div class="panel-heading">线下支付</div>
+                            <div class="panel-body yellow">
+                                如果不方便在线支付订单款项，您也可以通过线下转账方式来支付哦！我们提供了如下银行账户供您选择。由于线下汇款需工作人员确认，请在汇款完成后及时在
+                                <a href="@Model.Order.ResourceUrl" style="font-weight:bold;" onclick="return confirm('您将前往中介详情页面？');">
+                                    中介详情页面
+                                </a>
+                                上传您的汇款凭证或支付结果截图，并联系客服人员及时处理。
+                                <br />
+                                <a href="@Model.Order.ResourceUrl" class="btn btn-success" style="width: 100%; font-weight:bold;" onclick="return alert('线下转账完成请及时上传您的汇款凭证或支付截图，并联系管理员确认！');">
+                                    已汇款
+                                </a>
+                            </div>
+                        </div>
+                        var index = 1;
+                        foreach (var item in Model.OfflineBankInfos)
+                        {
+                            string bankName = "";
+                            string bankAccount = "";
+                            string bankUserName = "";
+                            string bankAddress = "";
+                            string[] values = item.ConfigValue.Split(Witbird.SHTS.Common.Constant.TradeBankInfoConfigSeperator);
+                            if (values.Length == 4)
+                            {
+                                bankName = values[0];
+                                bankAccount = values[1];
+                                bankUserName = values[2];
+                                bankAddress = values[3];
+
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">银行帐号@(index)</div>
+                                    <table class="table table-striped">
+                                        <tr class="">
+                                            <td class="left">银行名称：</td>
+                                            <td>@bankName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left">银行帐号：</td>
+                                            <td>@bankAccount</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left">账户姓名：</td>
+                                            <td>@bankUserName</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left">银行地址：</td>
+                                            <td>@bankAddress</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                index++;
+                            }
+                        }
+                    }
                 </div>
             }
             else
@@ -78,13 +157,32 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <span>订单支付成功，<span id="countDownTime" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
+                                    <span>该订单已支付成功，<span id="countDownTime" class="yellow2" style="font-size: 17px; font-weight: bold;">3</span>&nbsp;秒后页面将跳转到详情页面</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <script>
+
+                    var seconds = 3;
+                    function countDown() {
+                        var isPaySucceed = $('#isPaySucceed').val();
+                        if (isPaySucceed == 1) {
+                            $('#countDownTime').html(seconds);
+                        }
+                        if (seconds < 1) {
+                            var returnUrl = $('#returnUrl').val();
+                            if (isPaySucceed == 1 && returnUrl != '') {
+                                window.location.href = returnUrl;
+                            }
+                        }
+                        if (seconds > 0) {
+                            seconds--;
+                            setTimeout('countDown()', 1000);
+                        }
+                    }
+
                     countDown();
                 </script>
             }
@@ -99,45 +197,91 @@
 @section FooterJS
 {
     <script>
-        function doPayForOrderEvent() {
-            $('#payform').submit();
-        }
 
-        var seconds = 3;
-        function countDown() {
-            var isPaySucceed = $('#isPaySucceed').val();
-            if (isPaySucceed == 1) {
-                $('#countDownTime').html(seconds);
-            }
-            if (seconds < 1) {
-                var returnUrl = $('#returnUrl').val();
-                if (isPaySucceed == 1 && returnUrl != '') {
-                    window.location.href = returnUrl;
-                }
-            }
-            if (seconds > 0) {
-                seconds--;
-                setTimeout('countDown()', 1000);
-            }
-        }
-
-        function callPayApi(a, t, n, p, ps) {
-            WeixinJSBridge.invoke('getBrandWCPayRequest', {
-                "appId": a,
-                "timeStamp": t,
-                "nonceStr": n,
-                "package": p,
-                "signType": "MD5",
-                "paySign": ps
-            }, function (res) {
-                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    window.location = "/member/info?id=@(ViewBag.CompanyId)&name=@(ViewBag.SourceAccountId)";
+        function expandByClassName(className) {
+            $('.' + className).each(function () {
+                if ($(this).hasClass('hide')) {
+                    $(this).removeClass('hide');
                 }
                 else {
-                    window.location = "/pay/prerecharge?id=@(ViewBag.CompanyId)&name=@(ViewBag.SourceAccountId)";
+                    $(this).addClass('hide');
+                }
+            });
+
+        }
+
+        function onlinePay(button, orderId) {
+            try{
+                $(button).html('正在支付...');
+                $(button).attr('disabled','disabled');
+
+                $.post("/wechat/pay/payonline",
+                {
+                    orderId: orderId,
+                    payment: 'wechat'
+                },
+                function (data) {
+                    if (data.IsSuccessFul) {
+                        callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
+                    }
+                    else {
+                        if (data.Message == ''){
+                            showMessage('支付出错，请刷新页面重新尝试',false);
+                        }
+                        else{
+                            showMessage(data.Message, false);
+                        }
+                    }
+                }).error(function (data) { alert(data); });
+            }
+            catch(e){
+            }
+            finally{
+                $(button).html('<i class="glyphicon glyphicon-hand-right"></i>&nbsp;在线支付');
+                $(button).removeAttr('disabled');
+            }
+        }
+
+        function callPayApi(appId, timeStamp, nonceStr, package1, paySign) {
+            WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                "appId": appId,
+                "timeStamp": timeStamp,
+                "nonceStr": nonceStr,
+                "package": package1,
+                "signType": "MD5",
+                "paySign": paySign
+            }, function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    alert('订单支付成功!');
+                    window.location.reload();
+                }
+                else {
+                    if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                        showMessage("您取消了支付");
+                    }
+                    else {
+                        showMessage('支付出错，请重新尝试！\n' + res.err_msg, false);
+                    }
                 }
             });
         }
-
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
     </script>
 }
