@@ -123,6 +123,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         protected override void OnException(ExceptionContext filterContext)
         {
             base.OnException(filterContext);
+            if (filterContext.Exception != null)
+            {
+                LogService.LogWexin("微信服务器错误", filterContext.Exception.ToString());
+            }
             Response.Redirect("/wechat/error/error_503");
         }
         /// <summary>
