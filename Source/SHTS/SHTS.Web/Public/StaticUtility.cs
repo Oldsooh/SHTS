@@ -238,7 +238,7 @@ namespace Witbird.SHTS.Web.Public
         {
             return AllCities.Where(v => v.IsActive &&
             ((v.EntityType == 1 && !v.Id.Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)) ||
-            (v.EntityType == 2 && v.ParentId.Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)))).OrderBy(item => item.Sort).ToList();
+            (v.EntityType == 2 && (v.ParentId??"").Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)))).OrderBy(item => item.Sort).ToList();
         }
 
         /// <summary>
