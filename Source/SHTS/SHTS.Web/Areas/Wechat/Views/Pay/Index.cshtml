@@ -25,6 +25,10 @@
         .commonlist {
             border: none;
         }
+
+        .qrcode{
+            width:100%;
+        }
     </style>
 }
 
@@ -76,7 +80,7 @@
                     <ul class="commonlist">
                         <li class="operation">
                             <button href="javascript:void(0);" class="btn btn-success" onclick="expandByClassName('onlineBanks');"> @*onclick="onlinePay(this,'@Model.Order.OrderId');">*@
-                                <i class="glyphicon glyphicon-hand-right"></i>&nbsp;在线支付
+                                在线支付
                             </button>
                             @if (Model != null && Model.OfflineBankInfos != null)
                             {
@@ -94,11 +98,7 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">在线支付</div>
                         <div class="panel-body yellow">
-                            我们提供了如下支付二维码供您在线转账支付中介款项，请长按并选择识别图中的二维码后转账。转账时记得添加转账备注。请在汇款完成后及时在
-                            <a href="@Model.Order.ResourceUrl" style="font-weight:bold;" onclick="return confirm('您将前往中介详情页面？');">
-                                中介详情页面
-                            </a>
-                            上传您的汇款凭证或支付结果截图，并联系客服人员及时处理。
+                            请长按并选择识别图中的二维码后转账,转账时记得添加转账备注。
                             <br />
                             <a href="@Model.Order.ResourceUrl" class="btn btn-success" style="width: 100%; font-weight:bold;" onclick="return alert('转账完成请及时上传您的汇款凭证或支付截图，并联系管理员确认！');">
                                 已付款
@@ -109,7 +109,7 @@
                         <div class="panel-heading">微信转账</div>
                         <div class="panel-body">
 
-                            <img src="~/Content/images/wechat/wechat_pay_qrcode.png" />
+                            <img class="qrcode" src="~/Content/images/wechat/wechat_pay_qrcode.png" />
                         </div>
                     </div>
                 </div>
@@ -226,6 +226,17 @@
             $('.' + className).each(function () {
                 if ($(this).hasClass('hide')) {
                     $(this).removeClass('hide');
+
+                    if (className == 'onlineBanks') {
+                        $('.offlineBanks').each(function () {
+                            $(this).addClass('hide');
+                        });
+                    }
+                    else {
+                        $('.onlineBanks').each(function () {
+                            $(this).addClass('hide');
+                        });
+                    }
                 }
                 else {
                     $(this).addClass('hide');

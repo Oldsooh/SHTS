@@ -13,7 +13,8 @@
     <style type="text/css">
         .inline {
             display: inline-block;
-            width: 49%;
+            /*width: 49%;*/
+            width: 100%;
             margin-top: 10px;
             margin-bottom: 10px;
         }
@@ -38,7 +39,8 @@
                     }
 
             .inline > input[type=text] {
-                width: 86%;
+                /*width: 86%;*/
+                width: 93%;
             }
 
             .inline.wide > input[type=text], .inline.wide>textarea {
@@ -172,6 +174,7 @@
                         资源类别
                     </div>
                     <select id="ResType" name="ResType" class="text" onchange="changeResType(this);">
+                        <option value="-1">请选择资源类别</option>
                         @foreach (var item in Html.ResourceList())
                         {
                             <option value="@item.Value">@item.Text</option>
@@ -489,6 +492,12 @@
             }
 
             var resType = $('#ResType').val();
+            if (resType == -1) {
+                $('#ResType').focus();
+                showMessage('请先选择资源类别', false);
+                return false;
+            }
+
             // 活动场地
             if (resType == 1) {
                 var facilities = "";
