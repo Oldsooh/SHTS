@@ -18,7 +18,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             CityModel model = new CityModel();
             model.Provinces = cityService.GetProvinces(true);
-            model.ReturnUrl = Request.UrlReferrer.AbsoluteUri;
+            model.ReturnUrl = Request.UrlReferrer?.AbsoluteUri;
             return View(model);
         }
 

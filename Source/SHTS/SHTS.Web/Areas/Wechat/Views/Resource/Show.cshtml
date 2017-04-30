@@ -24,9 +24,9 @@
 @section head
 {
     <link href="~/Content/css/resourceview.css" rel="stylesheet" />
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-2.1.4.min.js"></script>
+    <script src="~/Content/js/bootstrap/bootstrap.min.js"></script>
 <link href="/content/css/login.css" rel="stylesheet" />
 <link href="/Content/dialog/css/base.css" rel="stylesheet" />
 <style type="text/css">
@@ -61,6 +61,11 @@
         width: auto!important;
         top:0!important;
     }
+    .active_info *{
+        font-size:14px!important;
+        font-family:Tahoma!important;
+    }
+
 </style>
 
     <style type="text/css">
@@ -110,7 +115,7 @@
         <ul class="details">
             <li>
                     <div class="buypanel">
-                        <span class="yellow2">如果对该资源有需求，您可以点击下方按钮对其发起中介申请：</span>
+                        <span class="yellow2">如需中介交易，请联系对方后再申请：</span>
                         <br />
                         <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Id)&type=resource'">立即申请中介</button>
 

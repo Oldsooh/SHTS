@@ -7,7 +7,7 @@ using Witbird.SHTS.Web.Areas.Wechat.Models;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
-    public class ErrorController : Controller
+    public class ErrorController : WechatBaseController
     {
         //
         // GET: /Wechat/Error/

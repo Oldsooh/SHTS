@@ -10,7 +10,7 @@ using WitBird.Com.SMS;
 
 namespace Witbird.SHTS.Web.Public
 {
-    public class StaticUtility
+    public static class StaticUtility
     {
         private static Config config;
         private static EmailMessageUtil emailManager;
@@ -47,7 +47,7 @@ namespace Witbird.SHTS.Web.Public
                 if (emailManager == null)
                 {
                     MailConfig mailConfig = ConfigManager.GetMailConfig();
-                    emailManager = new EmailMessageUtil(mailConfig.EmailServer, mailConfig.MailAccount, mailConfig.MailAccountName, 
+                    emailManager = new EmailMessageUtil(mailConfig.EmailServer, mailConfig.MailAccount, mailConfig.MailAccountName,
                         mailConfig.MailAccountPassword, mailConfig.EmailServerPort, mailConfig.EnableSSL, mailConfig.EnableAuthentication);
                 }
 
@@ -97,7 +97,7 @@ namespace Witbird.SHTS.Web.Public
             {
                 foreach (var item in AllCities)
                 {
-                    if (item.EntityType != 1 && item.Id == id)
+                    if (item.Id == id)
                     {
                         if (item.Id != "zhixiashi")//如果是直辖市则不返回“直辖市”
                         {
@@ -220,13 +220,25 @@ namespace Witbird.SHTS.Web.Public
         }
 
         #region 三级联动
+
+
+        public static bool IsSpecialCity(string cityId)
+        {
+            return cityId.Equals("beijing", StringComparison.CurrentCultureIgnoreCase) ||
+                cityId.Equals("shanghai", StringComparison.CurrentCultureIgnoreCase) ||
+                cityId.Equals("tianjin", StringComparison.CurrentCultureIgnoreCase) ||
+                cityId.Equals("chongqing", StringComparison.CurrentCultureIgnoreCase);
+        }
+
         /// <summary>
         /// 一级
         /// </summary>
         /// <returns></returns>
         public static List<City> GetProvice()
         {
-            return AllCities.Where(v => v.IsActive && v.EntityType == 1).ToList();
+            return AllCities.Where(v => v.IsActive &&
+            ((v.EntityType == 1 && !v.Id.Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)) ||
+            (v.EntityType == 2 && v.ParentId.Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)))).OrderBy(item => item.Sort).ToList();
         }
 
         /// <summary>
@@ -241,7 +253,16 @@ namespace Witbird.SHTS.Web.Public
             }
             else
             {
-                return AllCities.Where(v => v.IsActive && v.EntityType == 2 && v.ParentId != null && v.ParentId.Equals(provinceId)).ToList();
+                if (IsSpecialCity(provinceId))
+                {
+                    return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(provinceId))
+                        .OrderBy(item => item.Sort).ToList();
+                }
+                else
+                {
+                    return AllCities.Where(v => v.IsActive && v.EntityType == 2 && v.ParentId != null && v.ParentId.Equals(provinceId))
+                        .OrderBy(item => item.Sort).ToList();
+                }
             }
         }
 
@@ -251,13 +272,14 @@ namespace Witbird.SHTS.Web.Public
         /// <returns></returns>
         public static List<City> GetArea(string cityId)
         {
-            if (string.IsNullOrEmpty(cityId))
+            if (string.IsNullOrEmpty(cityId) || IsSpecialCity(cityId))
             {
                 return new List<City>();
             }
             else
             {
-                return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(cityId)).ToList();
+                return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(cityId))
+                    .OrderBy(item => item.Sort).ToList();
             }
         }
 
@@ -268,40 +290,28 @@ namespace Witbird.SHTS.Web.Public
             if (!string.IsNullOrWhiteSpace(locationId))
             {
                 var ids = locationId.Split(new char[] { '_' });
-
+                // provinceId_cityId_areaId
                 if (ids.Length == 3)
                 {
-                    City province = AllCities.Where(v => v.IsActive && v.EntityType == 1).
-                        FirstOrDefault(x => x.Id.Equals(ids[0], StringComparison.InvariantCultureIgnoreCase));
-                    City city = null;
-                    City area = null;
-                    if (province != null)
-                    {
-                        result += province.Name;
-                        city = GetCity(province.Id).FirstOrDefault(x => x.Id.Equals(ids[1], StringComparison.InvariantCultureIgnoreCase));
+                    string provinceName = GetCityNameById(ids[0]);
+                    string cityName = GetCityNameById(ids[1]);
+                    string areaName = GetCityNameById(ids[2]);
 
-                        if (city != null)
-                        {
-                            result += city.Name;
-                            area = GetArea(city.Id).FirstOrDefault(x => x.Id.Equals(ids[2], StringComparison.InvariantCultureIgnoreCase));
-                            if (area != null)
-                            {
-                                result += area.Name;
-                            }
-                            else
-                            {
-                                result += "/---";
-                            }
-                        }
-                        else
-                        {
-                            result += "/---";
-                        }
-                    }
+                    result = provinceName.DefaultIfNullOrEmpty() + "/" + cityName.DefaultIfNullOrEmpty() + '/' + areaName.DefaultIfNullOrEmpty();
                 }
             }
 
             return result;
+        }
+
+        private static string DefaultIfNullOrEmpty(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = "---";
+            }
+
+            return value;
         }
         #endregion
 

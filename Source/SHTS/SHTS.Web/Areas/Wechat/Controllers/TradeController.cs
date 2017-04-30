@@ -482,7 +482,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                                     if (success && order != null)
                                     {
                                         //result = "success&orderid=" + orderId + "&returnurl=" + Request.UrlReferrer.AbsoluteUri;
-                                        result = string.Format(Constant.PostPayInfoFormat, orderId, url);
+                                        result = string.Format(Constant.PostPayInfoFormatForWechat, orderId, url);
                                     }
                                     else
                                     {

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Models;
+using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Controllers
 {
@@ -54,7 +55,17 @@ namespace Witbird.SHTS.Web.Controllers
         [HttpPost]
         public ActionResult Cities(string provinceId)
         {
-            List<City> cities = cityService.GetCitiesByProvinceId(provinceId, true);
+            List<City> cities = null;
+
+            if (StaticUtility.IsSpecialCity(provinceId))
+            {
+                cities = cityService.GetAreasByCityId(provinceId, true);
+            }
+            else
+            {
+                cities = cityService.GetCitiesByProvinceId(provinceId, true);
+            }
+
             if (cities == null)
             {
                 cities = new List<City>();
@@ -75,7 +86,12 @@ namespace Witbird.SHTS.Web.Controllers
         [HttpPost]
         public ActionResult Areas(string cityId)
         {
-            List<City> areas = cityService.GetAreasByCityId(cityId, true);
+            List<City> areas = null;
+            if (!StaticUtility.IsSpecialCity(cityId))
+            {
+                areas = cityService.GetAreasByCityId(cityId, true);
+            }
+
             if (areas == null)
             {
                 areas = new List<City>();

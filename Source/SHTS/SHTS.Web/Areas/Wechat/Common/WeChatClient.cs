@@ -30,13 +30,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <summary>
             /// 微信主动交互时间即将超时
             /// </summary>
-            public const string RequestTimeExceedMessage = @"亲爱的需求订阅用户，由于微信服务号消息限制，48小时内如无主动交互我们将无法向您推送您订阅的最新需求信息。为了保证您的正常使用，你可以:
-
-1. 点击底部菜单
-查找业务 -> 获取订阅
-
-2. 点击底部菜单 
-查找业务 -> 更新订阅";
+            public const string RequestTimeExceedMessage = @"如需平台向你发送业务信息，请点击底部菜单【业务订单】→【获取更新】";
 
             /// <summary>
             /// 当前没有可推荐的需求订阅信息
@@ -46,7 +40,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <summary>
             /// 用户没有开启需求订阅，不能获取订阅内容
             /// </summary>
-            public const string NotEnableSubscription = @"由于您没有开启需求订阅，暂时无法获取需求内容。请点击菜单 需求信息 -> 需求订阅设置 来开启吧！开启后，您就可以免费收到最新发布的需求内容哦！";
+            public const string NotEnableSubscription = @"由于您没有开启需求订阅，暂时无法获取需求内容。请点击菜单【业务订单】→【订阅业务】来开启吧！开启后，您就可以免费收到最新发布的需求内容哦！";
 
             /// <summary>
             /// 用户关注公众号时候的欢迎信息

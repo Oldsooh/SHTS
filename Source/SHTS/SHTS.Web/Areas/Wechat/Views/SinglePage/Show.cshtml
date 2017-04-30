@@ -1,0 +1,38 @@
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.NewsModel
+@{
+    ViewBag.Title = Model.News.Title;
+    Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
+}
+@section head
+{
+<link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        button {
+            border-radius: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            width:100%;
+        }
+    </style>
+}
+
+<div class="main">
+    <ul class="details">
+        <li class="dtitle">
+            <h2 style="font-size: 16px; color: #1CB03A;">@Model.News.Title</h2>
+        </li>
+    </ul>
+    <div class="active_info">
+        @if (!string.IsNullOrEmpty(Model.News.ImageUrl))
+        {
+            <img src="@Model.News.ImageUrl" style="width:300px; margin-bottom:10px;" /><br />
+        }
+        @(new HtmlString(Model.News.ContentStyle))
+    </div>
+    <div style="margin-bottom:20px;">
+        <button type="button" onclick="javascript:history.go(-1);" class="btn btn-success">返回上一页</button>
+    </div>
+</div>

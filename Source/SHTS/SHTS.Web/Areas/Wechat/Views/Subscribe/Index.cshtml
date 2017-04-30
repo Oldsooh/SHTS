@@ -171,6 +171,9 @@
 
     <script type="text/javascript">
 
+        function isSpecialCity(cityId) {
+            return cityId == 'zhixiashi' || cityId == 'beijing' || cityId == 'shanghai' || cityId == 'tianjin' || cityId == 'chongqing';
+        }
         // Adds new location into subscibed areas.
         function addArea() {
             if (!isEnableSubscription()) {
@@ -181,7 +184,7 @@
             var cityId = $('#ddlCity').val();
             var areaId = $('#ddlArea').val();
 
-            if (provinceId == '' || cityId == '') {
+            if (!isSpecialCity(provinceId) && (provinceId == '' || cityId == '')) {
                 alert('请选择需求区域省份与城市，区/县可不选！');
                 return;
             }
@@ -799,7 +802,13 @@
                         var areaIds = string.Empty;
                         foreach (var area in Model.SubscribedAreas)
                         {
-                            areaIds += area.SubscriptionValue + ",";
+                            var areaId = area.SubscriptionValue;
+                            if (areaId.StartsWith("zhixiashi"))
+                            {
+                                areaId = areaId.Remove(0, 10) + "_";
+                            }
+
+                            areaIds += areaId + ",";
                         }
 
                         if (areaIds.Length > 0)
@@ -813,6 +822,10 @@
                             for (int i = 0; i < Model.SubscribedAreas.Count; i++)
                             {
                                 var areaId = Model.SubscribedAreas[i].SubscriptionValue;
+                                if (areaId.StartsWith("zhixiashi"))
+                                {
+                                    areaId = areaId.Remove(0, 10) + "_";
+                                }
                                 var areaName = Witbird.SHTS.Web.Public.StaticUtility.GetLocationName(areaId);
 
                                 <div id="@areaId" class="cell">

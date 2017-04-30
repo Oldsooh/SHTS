@@ -223,6 +223,7 @@
     <Compile Include="Areas\Wechat\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\CityController.cs" />
     <Compile Include="Areas\Wechat\Controllers\DemandController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\SinglePageController.cs" />
     <Compile Include="Areas\Wechat\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Wechat\Controllers\FinanceController.cs" />
     <Compile Include="Areas\Wechat\Controllers\IndexController.cs" />
@@ -924,6 +925,7 @@
     <Content Include="Content\js\Account\login.js" />
     <Content Include="Content\js\Activity\shareactivity.js" />
     <Content Include="Content\js\Analysis\Analysis.js" />
+    <Content Include="Content\js\bootstrap\bootstrap.min.js" />
     <Content Include="Content\js\city.js" />
     <Content Include="Content\js\home.js" />
     <Content Include="Content\js\jquery-1.11.1.min.js" />
@@ -1095,7 +1097,11 @@
     <Content Include="Areas\Wechat\Views\Error\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\MyTradeList.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\show.cshtml" />
+    <Content Include="Areas\Wechat\Views\SinglePage\Index.cshtml" />
+    <Content Include="Areas\Wechat\Views\SinglePage\Show.cshtml" />
+    <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
+    <Content Include="Content\js\jquery-2.1.4.min.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.form.js" />
     <Content Include="Content\js\jquery.validate.js" />

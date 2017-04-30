@@ -122,20 +122,16 @@
                 <div class="buypanel">
                     <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
                     <br />
-                    您可以对该需求立即中介申请：
-                    <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
-
-                    <br />
-                    <br />
-                    您可以免费提供您的报价/报名信息:
                     <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                     <br />
-                    <br />
-                    客户接受报价/报名后点击下面按钮获取联系方式，也可以直接联系客户！@*仅需<span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>！*@
                     <br />
                     @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
                     @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
                     <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+                    <br />
+                    <br />
+                    如需中介交易，请联系对方后再申请：
+                    <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
                 </div>
             }
         </li>
