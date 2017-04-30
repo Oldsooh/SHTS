@@ -408,6 +408,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 model.CurrentUser = UserInfo;
             }
+            else
+            {
+                var errorMessage = new ErrorMessage() { Title = "权限错误", Detail = "您还没有绑定PC端会员帐号！请先绑定会员帐号后查看！" };
+                return RedirectToAction("Index", "Error", errorMessage);
+            }
 
             return View(model);
         }

@@ -914,6 +914,13 @@
     <Content Include="Content\images\top_bg.gif" />
     <Content Include="Content\images\totop1.gif" />
     <Content Include="Content\images\totopd1.gif" />
+    <Content Include="Content\images\wechat\default.jpg" />
+    <Content Include="Content\images\wechat\step_1.jpg" />
+    <Content Include="Content\images\wechat\step_2.jpg" />
+    <Content Include="Content\images\wechat\step_3.jpg" />
+    <Content Include="Content\images\wechat\step_4.jpg" />
+    <Content Include="Content\images\wechat\step_5.jpg" />
+    <Content Include="Content\images\wechat\wechat_pay_qrcode.png" />
     <Content Include="Content\images\zs1.jpg" />
     <Content Include="Content\images\zs2.jpg" />
     <Content Include="Content\images\zs3.jpg" />
