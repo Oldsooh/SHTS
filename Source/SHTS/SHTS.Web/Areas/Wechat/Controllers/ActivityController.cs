@@ -89,7 +89,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return Redirect("/wechat/account/login");
             }
             ShareActivityViewModel model = new ShareActivityViewModel();
-            model.Provinces = (new CityService()).GetProvinces(true);
             model.ActivityTypes = (new ActivityTypeManager()).GetAllActivityTypes();
 
             ViewData["CurrentWeChatUser"] = CurrentWeChatUser;

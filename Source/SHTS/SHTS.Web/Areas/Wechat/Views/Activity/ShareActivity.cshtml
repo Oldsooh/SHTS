@@ -76,12 +76,9 @@
             <div class="cell">
                 <select id="ddlProvince" class="text" name="LocationId[]" onchange=" loadCities() ">
                     <option value="">省份</option>
-                    @if (Model.Provinces != null && Model.Provinces.Count > 0)
+                    @foreach (var item in Html.ProviceList())
                     {
-                        foreach (var item in Model.Provinces)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
+                        <option value="@item.Value">@item.Text</option>
                     }
                 </select>
                 <select id="ddlCity" class="text" name="LocationId[]" onchange=" loadAreas() ">

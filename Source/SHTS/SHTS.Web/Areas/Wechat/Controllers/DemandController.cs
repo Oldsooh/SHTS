@@ -195,7 +195,6 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 return Redirect("/wechat/account/login");
             }
             DemandModel model = new DemandModel();
-            model.Provinces = cityService.GetProvinces(true);
             return View(model);
         }
 

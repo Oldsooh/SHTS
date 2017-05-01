@@ -1104,7 +1104,6 @@
     <Content Include="Areas\Wechat\Views\Error\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\MyTradeList.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\show.cshtml" />
-    <Content Include="Areas\Wechat\Views\SinglePage\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\SinglePage\Show.cshtml" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />

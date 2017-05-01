@@ -475,11 +475,8 @@
                                 }
                                 else
                                 {
-
                                     <td colspan="2">@currentTrade.UserCellPhone</td>
                                 }
-
-
                             </tr>
                             <tr>
                                 <td class="left">联系邮箱：</td>
@@ -558,20 +555,25 @@
                                 var rightPhotoUrl = Model.CurrentWeChatUser.Photo;
                                 var leftPhotoUrl = "";
                                 var adminPhotoUrl = "/Content/images/pay/user_picture.gif";
+                                var leftDisplayName = "";
+                                var rightDisplayName = "我";
 
                                 foreach (var history in Model.CurrentTrade.Histories)
                                 {
                                     if (history.IsAdminUpdate)
                                     {
                                         leftPhotoUrl = adminPhotoUrl;
+                                        leftDisplayName = "管理员";
                                     }
                                     else if (history.UserId == seller.UserId)
                                     {
                                         leftPhotoUrl = seller.Photo;
+                                        leftDisplayName = "卖家";
                                     }
                                     else
                                     {
                                         leftPhotoUrl = buyer.Photo;
+                                        leftDisplayName = "买家";
                                     }
 
                                     if (!string.IsNullOrWhiteSpace(history.HistoryBody))
@@ -580,7 +582,7 @@
                                         // Posted by myself
                                         if (history.UserId == Model.CurrentWeChatUser.UserId)
                                         {
-                                            <li class="time"><span class="spanright">@timestring</span></li>
+                                            <li class="time"><span class="spanright">@(timestring)&nbsp;@(rightDisplayName)</span></li>
 
                                             if (!string.IsNullOrEmpty(history.HistorySubject))
                                             {
@@ -600,7 +602,7 @@
                                         }
                                         else
                                         {
-                                            <li class="time"><span class="spanleft">@timestring</span></li>
+                                            <li class="time"><span class="spanleft">@(leftDisplayName)&nbsp;@(timestring)</span></li>
 
                                             if (!string.IsNullOrEmpty(history.HistorySubject))
                                             {
