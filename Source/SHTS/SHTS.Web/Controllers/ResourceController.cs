@@ -552,7 +552,7 @@ namespace Witbird.SHTS.Web.Controllers
             var space = resourceManager.GetResourceById(id);
             if (space == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Common", "ErrorPageNotFound");
             }
             else
             {

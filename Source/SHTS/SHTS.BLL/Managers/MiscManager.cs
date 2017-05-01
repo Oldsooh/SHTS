@@ -14,47 +14,47 @@ namespace Witbird.SHTS.BLL.Managers
         #region 获取杂项列表
         public List<SpaceType> GetSpaceTypeList()
         {
-            return context.SpaceTypes.ToList();
+            return context.SpaceTypes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
 
         public List<SpaceFeature> GetSpaceFeatureList()
         {
-            return context.SpaceFeatures.ToList();
+            return context.SpaceFeatures.Where(item => item != null && !item.MarkForDelete).ToList();
         }
 
         public List<SpaceFacility> GetSpaceFacilityList()
         {
-            return context.SpaceFacilities.ToList();
+            return context.SpaceFacilities.Where(item => item != null && !item.MarkForDelete).ToList();
         }
         public List<SpaceSize> GetSpaceSizeList()
         {
-            return context.SpaceSizes.ToList();
+            return context.SpaceSizes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
         public List<SpacePeople> GetSpacePeopleList()
         {
-            return context.SpacePeoples.ToList();
+            return context.SpacePeoples.Where(item => item != null && !item.MarkForDelete).ToList();
         }
         public List<ActorType> GetActorTypeList()
         {
-            return context.ActorTypes.OrderBy(x => x.DisplayOrder).ToList();
+            return context.ActorTypes.Where(item => item != null && !item.MarkForDelete).OrderBy(x => x.DisplayOrder).ToList();
         }
         public List<ActorFrom> GetActorFromList()
         {
-            return context.ActorFroms.ToList();
+            return context.ActorFroms.Where(item => item != null && !item.MarkForDelete).ToList();
         }
         public List<ActorSex> GetActorSexList()
         {
-            return context.ActorSexes.ToList();
+            return context.ActorSexes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
 
         public List<EquipType> GetEquipTypeList()
         {
-            return context.EquipTypes.ToList();
+            return context.EquipTypes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
 
         public List<OtherType> GetOtherTypeList()
         {
-            return context.OtherTypes.ToList();
+            return context.OtherTypes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
         #endregion
 

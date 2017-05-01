@@ -102,9 +102,9 @@
                 地址：@Model.Activity.Adress &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </p>
         </div>
-        <div class="comeing_summary">
+        @*<div class="comeing_summary">
               <div class="showContent"><strong>摘要</strong>:@Model.Activity.Description</div>
-         </div>
+         </div>*@
         <div class="showContent">
             @(new HtmlString(Model.Activity.ContentStyle))
             @if (Model.Activity.IsFromMobile.Value)

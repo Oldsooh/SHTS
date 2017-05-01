@@ -78,11 +78,12 @@
         您当前所处的位置：<a href="/" class="blue">首页</a><span class="ch c1">&nbsp;&gt;&nbsp;</span> @Html.ActionLink(sectionText, sectionName, null, new { @class = "blue" })<span class="ch">&nbsp;&gt;&nbsp;@Model.Title</span>
     </div>
     <div style="clear: both;"></div>
+
     <div class="comeing_threadstation">
         <div id="DB_gallery">
             <div class="DB_imgSet">
                 <div class="DB_imgWin">
-                    <img src="~/uploadfiles/2014/12/31/1.jpg" alt="" />
+                    <img src="" alt="" />
                 </div>
                 <div class="DB_page"><span class="DB_current">0</span>-<span class="DB_total">0</span></div>
                 <div class="DB_prevBtn">
@@ -269,7 +270,7 @@
                             foreach (var item in rightModel.Spaces)
                             {
                                 <li class="newsli">
-                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <a class="newsa" href="@Html.CreateShowUrl("resource", item.Id)" target="_blank">@item.Title</a>
                                     <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
                                 </li>
                             }
@@ -288,7 +289,7 @@
                             foreach (var item in rightModel.Actors)
                             {
                                 <li class="newsli">
-                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <a class="newsa" href="@Html.CreateShowUrl("resource", item.Id)" target="_blank">@item.Title</a>
                                     <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
                                 </li>
                             }
@@ -307,7 +308,7 @@
                             foreach (var item in rightModel.Equipments)
                             {
                                 <li class="newsli">
-                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <a class="newsa" href="@Html.CreateShowUrl("resource", item.Id)" target="_blank">@item.Title</a>
                                     <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
                                 </li>
                             }
@@ -317,7 +318,7 @@
             </div>
             <div class="newsCagetory">
                 <div class="contentTitle">
-                    <h2>活动设备</h2>
+                    <h2>其他资源</h2>
                 </div>
                 <div class="contentItem">
                     <ul class="newsul">
@@ -326,7 +327,7 @@
                             foreach (var item in rightModel.Others)
                             {
                                 <li class="newsli">
-                                    <a class="newsa" href="@Html.CreateShowUrl("Spaces", item.Id)" target="_blank">@item.Title</a>
+                                    <a class="newsa" href="@Html.CreateShowUrl("resource", item.Id)" target="_blank">@item.Title</a>
                                     <span class="newsli_date">@item.CreateTime.ToString("MM-dd")</span>
                                 </li>
                             }
@@ -350,6 +351,7 @@
         var resourceComments;
         KindEditor.ready(function (K) {
             resourceComments = K.create('#resourceComments', {
+                cssData: 'body{font-size:14px;font-family:Tahoma;}',
                 width: '655px',
                 height: '250px',
                 resizeType: 1,
@@ -360,9 +362,8 @@
                 uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
                 fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
                 items: [
-                    'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-                    'removeformat', '|',
-                     'emoticons', 'link', 'image']
+                    'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                    '|', 'justifyleft', 'justifycenter', 'justifyright', '|', 'emoticons', 'image', 'link', 'table']
             });
         });
 

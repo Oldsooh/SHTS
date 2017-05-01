@@ -41,6 +41,7 @@ $(function () {
 var tradedetail;
 KindEditor.ready(function (K) {
     tradedetail = K.create('#tradedetail', {
+        cssData: 'body{font-size:14px;font-family:Tahoma;}',
         width: '680px',
         height: '500px',
         resizeType: 1,
@@ -51,15 +52,15 @@ KindEditor.ready(function (K) {
         uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
         fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
         items: [
-            'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'link', 'image', 'multiimage', 'insertfile']
+            'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            '|', 'justifyleft', 'justifycenter', 'justifyright', '|', 'emoticons', 'image', 'link', 'table']
     });
 });
 
 var tradeReply;
 KindEditor.ready(function (K) {
     tradeReply = K.create('#tradeReply', {
+        cssData: 'body{font-size:14px;font-family:Tahoma;}',
         width: '730px',
         height: '314px',
         resizeType: 1,
@@ -70,9 +71,8 @@ KindEditor.ready(function (K) {
         uploadJson: '/content/kindeditor/asp.net/upload_json.ashx',
         fileManagerJson: '/content/kindeditor/asp.net/file_manager_json.ashx',
         items: [
-            'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'link', 'image', 'multiimage', 'insertfile']
+            'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            '|', 'justifyleft', 'justifycenter', 'justifyright', '|', 'emoticons', 'image', 'link', 'table']
     });
 });
 

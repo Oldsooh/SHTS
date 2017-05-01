@@ -43,23 +43,23 @@
         });
     </script>
     <script type="text/ecmascript">
-        var editorContent;//定义编辑器
-        KindEditor.ready(function (K) {
-            editorContent = K.create('#editorContent', {
-                height: '500px',
-                resizeType: 1,
-                allowPreviewEmoticons: false,
-                allowImageUpload: true,
-                allowFileManager: true,
-                fillDescAfterUploadImage: true,
-                uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
-                fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
-                items: [
-                    'source', 'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                    'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'table']
-            });
+    var editorContent;//定义编辑器
+    KindEditor.ready(function (K) {
+        editorContent = K.create('#editorContent', {
+            cssData: 'body{font-size:14px;font-family:Tahoma;}',
+            height: '500px',
+            resizeType: 1,
+            allowPreviewEmoticons: false,
+            allowImageUpload: true,
+            allowFileManager: true,
+            fillDescAfterUploadImage: true,
+            uploadJson: '/Content/kindeditor/asp.net/upload_json.ashx',
+            fileManagerJson: '/Content/kindeditor/asp.net/file_manager_json.ashx',
+            items: [
+                'fontname', 'fontsize', 'lineheight', '|', 'undo', 'redo', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                '|', 'justifyleft', 'justifycenter', 'justifyright', '|', 'emoticons', 'image', 'link', 'table']
         });
+    });
     </script>
     <script type="text/javascript">
         function editNews() {

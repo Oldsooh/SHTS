@@ -59,7 +59,7 @@ namespace Witbird.SHTS.DAL.New
                     }
                     else
                     {
-                        _SmallImgUrls.Add(string.Empty); ;
+                        //_SmallImgUrls.Add(string.Empty); ;
                     }
                 }
                 return _SmallImgUrls;
@@ -91,7 +91,7 @@ namespace Witbird.SHTS.DAL.New
                     }
                     else
                     {
-                        _BigImgUrls.Add(string.Empty); ;
+                        //_BigImgUrls.Add(string.Empty); ;
                     }
                 }
                 return _BigImgUrls;

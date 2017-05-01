@@ -119,104 +119,12 @@ namespace Witbird.SHTS.Web.Public
         /// <returns></returns>
         public static string GetProvinceAndCityNameById(string provinceId, string cityId)
         {
-            string result = string.Empty;
-
-            if (!string.IsNullOrEmpty(provinceId))
-            {
-                if (AllCities != null && AllCities.Count > 0)
-                {
-                    foreach (var item in AllCities)
-                    {
-                        if (item.EntityType == 1 && item.Id == provinceId)
-                        {
-                            if (provinceId != "zhixiashi")//如果是直辖市则不返回“直辖市”
-                            {
-                                result = item.Name;
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(cityId))
-            {
-                if (AllCities != null && AllCities.Count > 0)
-                {
-                    foreach (var item in AllCities)
-                    {
-                        if (item.EntityType == 2 && item.Id == cityId)
-                        {
-                            result += item.Name;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return result;
+            return GetCityNameById(provinceId) + GetCityNameById(cityId);
         }
 
         public static string GetProvinceAndCityNameById(string provinceId, string cityId, string areaId)
         {
-            string result = string.Empty;
-
-            if (!string.IsNullOrEmpty(provinceId))
-            {
-                if (AllCities != null && AllCities.Count > 0)
-                {
-                    foreach (var item in AllCities)
-                    {
-                        if (item.EntityType == 1 && item.Id == provinceId)
-                        {
-                            if (provinceId != "zhixiashi")//如果是直辖市则不返回“直辖市”
-                            {
-                                result = item.Name;
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(cityId))
-            {
-                if (AllCities != null && AllCities.Count > 0)
-                {
-                    foreach (var item in AllCities)
-                    {
-                        if (item.EntityType == 2 && item.Id == cityId)
-                        {
-                            if (string.IsNullOrEmpty(result))
-                            {
-                                result = item.Name;
-                            }
-                            else
-                            {
-                                result += " " + item.Name;
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(areaId))
-            {
-                if (AllCities != null && AllCities.Count > 0)
-                {
-                    foreach (var item in AllCities)
-                    {
-                        if (item.EntityType == 3 && item.Id == areaId)
-                        {
-                            result += " " + item.Name;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return result;
+            return GetCityNameById(provinceId) + GetCityNameById(cityId) + GetCityNameById(areaId);
         }
 
         #region 三级联动

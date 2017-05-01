@@ -352,7 +352,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="/admin/">首页</a></li>
-            <li><a href="/admin/demand/index">需求列表</a></li>
+            <li><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">需求列表</a></li>
         </ul>
     </div>
 
@@ -391,11 +391,12 @@
                         <input id="cbxSelectAll" onclick="selectAllDemands(this);" type="checkbox" value="" />
                     </th>
                     <th>序号</th>
-                    <th>需求类型</th>
+                    @*<th>需求类型</th>*@
                     <th>需求状态</th>
                     <th style="min-width:250px;">标题</th>
                     <th>发布者</th>
                     <th>地区</th>
+                    <th>发布时间</th>
                     <th>开始时间</th>
                     <th>结束时间</th>
                     <th>微信金额</th>
@@ -414,9 +415,9 @@
                             <td>
                                 <span>@item.RowNumber</span>
                             </td>
-                            <td>
+                            @*<td>
                                 <span>@item.ResourceTypeName</span>
-                            </td>
+                            </td>*@
                             <td>
                                 <span>
                                     @item.StatusValueString
@@ -428,6 +429,9 @@
                             <td>@item.UserName</td>
                             <td>
                                 @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
+                            </td>
+                            <td>
+                                <span>@item.InsertTime.ToString("yyyy-MM-dd")</span>
                             </td>
                             <td>
                                 <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
