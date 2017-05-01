@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Daos\AccessRecordDao.cs" />
     <Compile Include="Daos\ActivityDao.cs" />
     <Compile Include="Daos\CityDao.cs" />
     <Compile Include="Daos\CommonDao.cs" />

@@ -143,6 +143,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessRecord.ashx.cs">
+      <DependentUpon>AccessRecord.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Analysis.ashx.cs">
       <DependentUpon>Analysis.ashx</DependentUpon>
     </Compile>
@@ -1106,6 +1109,7 @@
     <Content Include="Areas\Wechat\Views\Trade\show.cshtml" />
     <Content Include="Areas\Wechat\Views\SinglePage\Show.cshtml" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
+    <Content Include="AccessRecord.ashx" />
     <None Include="Content\js\jquery.validate-vsdoc.js" />
     <Content Include="Content\js\jquery-2.1.4.min.js" />
     <Content Include="Content\js\jquery.cookie.js" />

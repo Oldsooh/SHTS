@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\AccessRecordManager.cs" />
     <Compile Include="Managers\ActivityTypeManager.cs" />
     <Compile Include="Managers\AdminRoleManager.cs" />
     <Compile Include="Managers\AdminUserManager.cs" />

@@ -345,6 +345,10 @@
     <link href="~/Content/fancyBox/jquery.fancybox.css" rel="stylesheet" />
     <script src="/Content/kindeditor/kindeditor-min.js"></script>
     <script src="/Content/kindeditor/zh_CN.js"></script>
+    @if (Model != null)
+    {
+        <script src="~/AccessRecord.ashx?type=resource&id=@Model.Id" type="text/javascript" async="async"></script>
+    }
     <script type="text/javascript">
 
 

@@ -17,7 +17,6 @@ namespace Witbird.SHTS.Model
         public int Id { get; set; }
         public string UserIP { get; set; }
         public string AccessUrl { get; set; }
-        public string Type { get; set; }
         public System.DateTime InsertedTimestamp { get; set; }
     }
 }
