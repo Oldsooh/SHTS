@@ -12,12 +12,12 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ActorType
+    public partial class AccessRecord
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool MarkForDelete { get; set; }
-        public Nullable<int> DisplayOrder { get; set; }
+        public string UserIP { get; set; }
+        public string AccessUrl { get; set; }
+        public string Type { get; set; }
+        public System.DateTime InsertedTimestamp { get; set; }
     }
 }

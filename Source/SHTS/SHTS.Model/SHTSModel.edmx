@@ -26,6 +26,16 @@
           <Property Name="Agent" Type="nvarchar" MaxLength="100" />
           <Property Name="Device" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="AccessRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserIP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccessUrl" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="Id" />
@@ -306,20 +316,6 @@
           <Property Name="FrozenBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FinanceOrder">
-          <Key>
-            <PropertyRef Name="OrderId" />
-          </Key>
-          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Detail" Type="nvarchar" MaxLength="2000" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
-          <Property Name="LastUpdateTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="FinanceRecord">
           <Key>
@@ -707,6 +703,7 @@
         <EntityContainer Name="shtsModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccessRecord" EntityType="Self.AccessRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityVote" EntityType="Self.ActivityVote" Schema="dbo" store:Type="Tables" />
@@ -729,7 +726,6 @@
           <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceBalance" EntityType="Self.FinanceBalance" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FinanceOrder" EntityType="Self.FinanceOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceRecord" EntityType="Self.FinanceRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceWithdrawRecord" EntityType="Self.FinanceWithdrawRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GuestBook" EntityType="Self.GuestBook" Schema="dbo" store:Type="Tables" />
@@ -813,6 +809,7 @@
           <EntitySet Name="FinanceOrder" EntityType="shtsModel.FinanceOrder" />
           <EntitySet Name="FinanceRecord" EntityType="shtsModel.FinanceRecord" />
           <EntitySet Name="FinanceWithdrawRecord" EntityType="shtsModel.FinanceWithdrawRecord" />
+          <EntitySet Name="AccessRecord" EntityType="shtsModel.AccessRecord" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -1512,6 +1509,16 @@
           <Property Name="BankInfo" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="AccessRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserIP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessUrl" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2227,21 +2234,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FinanceOrder">
-            <EntityTypeMapping TypeName="shtsModel.FinanceOrder">
-              <MappingFragment StoreEntitySet="FinanceOrder">
-                <ScalarProperty Name="LastUpdateTimestamp" ColumnName="LastUpdateTimestamp" />
-                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Detail" ColumnName="Detail" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FinanceRecord">
             <EntityTypeMapping TypeName="shtsModel.FinanceRecord">
               <MappingFragment StoreEntitySet="FinanceRecord">
@@ -2265,6 +2257,17 @@
                 <ScalarProperty Name="WithdrawStatus" ColumnName="WithdrawStatus" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccessRecord">
+            <EntityTypeMapping TypeName="shtsModel.AccessRecord">
+              <MappingFragment StoreEntitySet="AccessRecord">
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
+                <ScalarProperty Name="UserIP" ColumnName="UserIP" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

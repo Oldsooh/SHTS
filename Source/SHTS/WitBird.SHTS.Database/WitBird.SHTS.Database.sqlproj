@@ -92,6 +92,7 @@
     <Folder Include="StoredProcedure\Resource" />
     <Folder Include="Table\Finance" />
     <Folder Include="StoredProcedure\Finance" />
+    <Folder Include="Table\ViewRecord" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="StoredProcedure\Calc.sql" />
@@ -259,6 +260,8 @@
     <Build Include="StoredProcedure\Finance\sp_FinanceBalanceUpdate.sql" />
     <Build Include="StoredProcedure\Finance\sp_FinanceRecordInsert.sql" />
     <Build Include="StoredProcedure\Order\sp_CheckOrderForDemandBonusByDemandId.sql" />
+    <Build Include="Table\ViewRecord\AccessRecord.sql" />
+    <Build Include="Table\ViewRecord\IDX_AccessRecord_UserIP_AccessUrl.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.publish.xml" />
