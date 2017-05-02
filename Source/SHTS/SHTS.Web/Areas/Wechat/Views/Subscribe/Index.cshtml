@@ -171,9 +171,6 @@
 
     <script type="text/javascript">
 
-        function isSpecialCity(cityId) {
-            return cityId == 'zhixiashi' || cityId == 'beijing' || cityId == 'shanghai' || cityId == 'tianjin' || cityId == 'chongqing';
-        }
         // Adds new location into subscibed areas.
         function addArea() {
             if (!isEnableSubscription()) {
@@ -184,7 +181,7 @@
             var cityId = $('#ddlCity').val();
             var areaId = $('#ddlArea').val();
 
-            if (!isSpecialCity(provinceId) && (provinceId == '' || cityId == '')) {
+            if (provinceId == '' || cityId == '') {
                 alert('请选择需求区域省份与城市，区/县可不选！');
                 return;
             }
@@ -805,7 +802,13 @@
                             var areaId = area.SubscriptionValue;
                             if (areaId.StartsWith("zhixiashi"))
                             {
-                                areaId = areaId.Remove(0, 10) + "_";
+                                var ids = areaId.Split('_');
+                                ids[0] = ids[1];
+                                if (!ids[1].EndsWith("shi"))
+                                {
+                                    ids[1] = ids[1] + "shi";
+                                }
+                                areaId = ids[0] + "_" + ids[1] + "_" + ids[2];
                             }
 
                             areaIds += areaId + ",";
@@ -824,7 +827,13 @@
                                 var areaId = Model.SubscribedAreas[i].SubscriptionValue;
                                 if (areaId.StartsWith("zhixiashi"))
                                 {
-                                    areaId = areaId.Remove(0, 10) + "_";
+                                    var ids = areaId.Split('_');
+                                    ids[0] = ids[1];
+                                    if (!ids[1].EndsWith("shi"))
+                                    {
+                                        ids[1] = ids[1] + "shi";
+                                    }
+                                    areaId = ids[0] + "_" + ids[1] + "_" + ids[2];
                                 }
                                 var areaName = Witbird.SHTS.Web.Public.StaticUtility.GetLocationName(areaId);
 

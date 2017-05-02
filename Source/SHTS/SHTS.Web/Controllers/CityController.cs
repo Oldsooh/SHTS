@@ -55,16 +55,7 @@ namespace Witbird.SHTS.Web.Controllers
         [HttpPost]
         public ActionResult Cities(string provinceId)
         {
-            List<City> cities = null;
-
-            if (StaticUtility.IsSpecialCity(provinceId))
-            {
-                cities = cityService.GetAreasByCityId(provinceId, true);
-            }
-            else
-            {
-                cities = cityService.GetCitiesByProvinceId(provinceId, true);
-            }
+            List<City> cities = cityService.GetCitiesByProvinceId(provinceId, true);
 
             if (cities == null)
             {
@@ -86,11 +77,7 @@ namespace Witbird.SHTS.Web.Controllers
         [HttpPost]
         public ActionResult Areas(string cityId)
         {
-            List<City> areas = null;
-            if (!StaticUtility.IsSpecialCity(cityId))
-            {
-                areas = cityService.GetAreasByCityId(cityId, true);
-            }
+            List<City> areas = cityService.GetAreasByCityId(cityId, true);
 
             if (areas == null)
             {

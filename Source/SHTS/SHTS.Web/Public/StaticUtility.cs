@@ -99,10 +99,7 @@ namespace Witbird.SHTS.Web.Public
                 {
                     if (item.Id == id)
                     {
-                        if (item.Id != "zhixiashi")//如果是直辖市则不返回“直辖市”
-                        {
-                            result = item.Name;
-                        }
+                        result = item.Name;
                         break;
                     }
                 }
@@ -129,24 +126,13 @@ namespace Witbird.SHTS.Web.Public
 
         #region 三级联动
 
-
-        public static bool IsSpecialCity(string cityId)
-        {
-            return cityId.Equals("beijing", StringComparison.CurrentCultureIgnoreCase) ||
-                cityId.Equals("shanghai", StringComparison.CurrentCultureIgnoreCase) ||
-                cityId.Equals("tianjin", StringComparison.CurrentCultureIgnoreCase) ||
-                cityId.Equals("chongqing", StringComparison.CurrentCultureIgnoreCase);
-        }
-
         /// <summary>
         /// 一级
         /// </summary>
         /// <returns></returns>
         public static List<City> GetProvice()
         {
-            return AllCities.Where(v => v.IsActive &&
-            ((v.EntityType == 1 && !v.Id.Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)) ||
-            (v.EntityType == 2 && (v.ParentId??"").Equals("zhixiashi", StringComparison.CurrentCultureIgnoreCase)))).OrderBy(item => item.Sort).ToList();
+            return AllCities.Where(v => v.IsActive && v.EntityType == 1).OrderBy(item => item.Sort).ToList();
         }
 
         /// <summary>
@@ -161,16 +147,9 @@ namespace Witbird.SHTS.Web.Public
             }
             else
             {
-                if (IsSpecialCity(provinceId))
-                {
-                    return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(provinceId))
-                        .OrderBy(item => item.Sort).ToList();
-                }
-                else
-                {
-                    return AllCities.Where(v => v.IsActive && v.EntityType == 2 && v.ParentId != null && v.ParentId.Equals(provinceId))
-                        .OrderBy(item => item.Sort).ToList();
-                }
+
+                return AllCities.Where(v => v.IsActive && v.EntityType == 2 && v.ParentId != null && v.ParentId.Equals(provinceId))
+                    .OrderBy(item => item.Sort).ToList();
             }
         }
 
@@ -180,15 +159,8 @@ namespace Witbird.SHTS.Web.Public
         /// <returns></returns>
         public static List<City> GetArea(string cityId)
         {
-            if (string.IsNullOrEmpty(cityId) || IsSpecialCity(cityId))
-            {
-                return new List<City>();
-            }
-            else
-            {
-                return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(cityId))
-                    .OrderBy(item => item.Sort).ToList();
-            }
+            return AllCities.Where(v => v.IsActive && v.EntityType == 3 && v.ParentId != null && v.ParentId.Equals(cityId))
+                .OrderBy(item => item.Sort).ToList();
         }
 
         public static string GetLocationName(string locationId)
