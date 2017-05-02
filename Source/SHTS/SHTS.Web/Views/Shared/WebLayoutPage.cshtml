@@ -45,6 +45,7 @@
     </script>
     @RenderSection("FooterJS", false)
     <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer" type="text/javascript" async="async"></script>
+    <script src="~/AccessRecord.ashx?PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
     <script type="text/javascript">
         function showewm(id) {
             if (id == 1) {

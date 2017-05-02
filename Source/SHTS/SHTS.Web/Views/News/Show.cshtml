@@ -3,6 +3,8 @@
     ViewBag.Title = Model.News.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Model.News.Keywords;
     ViewBag.Description = Model.News.Description;
+    ViewBag.PageType = "singlepage";
+    ViewBag.PageId = Model.News.Id;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
 @section head

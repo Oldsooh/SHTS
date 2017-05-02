@@ -6,6 +6,8 @@
     ViewBag.Title = "[" + Model.Demand.StatusValueString + "]" + Model.Demand.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Model.Demand.Title;
     ViewBag.Description = Model.Demand.Description;
+    ViewBag.PageType = "demand";
+    ViewBag.PageId = Model.Demand.Id;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
 

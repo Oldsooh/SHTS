@@ -2,6 +2,8 @@
     ViewBag.Title = " 中介交易 | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
     ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    ViewBag.PageType = "trade";
+    ViewBag.PageId = Model.CurrentTrade.TradeId;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
 @model Witbird.SHTS.Web.Models.TradeModel

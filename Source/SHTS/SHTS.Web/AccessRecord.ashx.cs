@@ -17,16 +17,24 @@ namespace Witbird.SHTS.Web
     public class AccessRecord : IHttpHandler, IRequiresSessionState
     {
         private const string Content_Type = "text/plain";
-        private const string Type = "Type";
-        private const string Id = "Id";
+        private const string PageType = "PageType";
+        private const string PageId = "PageId";
 
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = Content_Type;
-            var type = context.Request.QueryString[Type];
-            var id = context.Request.QueryString[Id];
+            var type = context.Request.QueryString[PageType];
+            var id = context.Request.QueryString[PageId];
             var accessUrl = context.Request.UrlReferrer == null ? null
                 : context.Request.UrlReferrer.ToString();
+
+            if (string.IsNullOrWhiteSpace(type) ||
+                string.IsNullOrWhiteSpace(id) ||
+                string.IsNullOrWhiteSpace(accessUrl))
+            {
+                return;
+            }
+
             var userIP = context.Request.UserHostAddress;
             var access = new Model.AccessRecord
             {
@@ -49,17 +57,19 @@ namespace Witbird.SHTS.Web
                             tableName = "Resource";
                             primaryId = "Id";
                             primaryValue = id;
-                            columnName = "ClickCount";
+                            columnName = "ReadCount";
                             break;
                         case "demand":
-                            tableName = "Demand";
+                        case "activity":
+                        case "singlepage":
+                            tableName = type;
                             primaryId = "Id";
                             primaryValue = id;
                             columnName = "ViewCount";
                             break;
-                        case "activity":
-                            tableName = "Activity";
-                            primaryId = "Id";
+                        case "trade":
+                            tableName = type;
+                            primaryId = "TradeId";
                             primaryValue = id;
                             columnName = "ViewCount";
                             break;

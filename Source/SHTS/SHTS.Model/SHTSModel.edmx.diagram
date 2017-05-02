@@ -53,10 +53,10 @@
         <EntityTypeShape EntityType="shtsModel.SmsRecord" Width="1.5" PointX="18.75" PointY="11.75" />
         <EntityTypeShape EntityType="shtsModel.ActivityVote" Width="1.5" PointX="12.75" PointY="18.75" />
         <EntityTypeShape EntityType="shtsModel.FinanceBalance" Width="1.5" PointX="18.75" PointY="15.75" />
-        <EntityTypeShape EntityType="shtsModel.FinanceOrder" Width="1.5" PointX="18.75" PointY="18.75" />
         <EntityTypeShape EntityType="shtsModel.FinanceRecord" Width="1.5" PointX="8.75" PointY="19.75" />
         <EntityTypeShape EntityType="shtsModel.FinanceWithdrawRecord" Width="1.5" PointX="20.75" PointY="4.75" />
-        <EntityTypeShape EntityType="shtsModel.AccessRecord" Width="1.5" PointX="4.75" PointY="20.75" />
+        <EntityTypeShape EntityType="shtsModel.FinanceOrder" Width="1.5" PointX="19.375" PointY="18.75" />
+        <EntityTypeShape EntityType="shtsModel.AccessRecord" Width="1.5" PointX="5.375" PointY="20.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

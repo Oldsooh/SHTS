@@ -3,6 +3,8 @@
     ViewBag.Title = Model.SinglePage.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name;
     ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
     ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
+    ViewBag.PageType = "singlepage";
+    ViewBag.PageId = Model.SinglePage.Id;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
 @section head

@@ -1,6 +1,8 @@
 ﻿@model Witbird.SHTS.DAL.New.Resource
 @{
     ViewBag.Title = Model.Title;
+    ViewBag.PageType = "Resource";
+    ViewBag.PageId = Model.Id;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
     var xx = "space";
     switch (Model.ResourceType)

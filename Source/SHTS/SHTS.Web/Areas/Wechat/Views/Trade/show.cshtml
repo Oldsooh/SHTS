@@ -1,6 +1,8 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.WeChatTradeModel
 @{
     ViewBag.Title = Model.CurrentTrade.TradeSubject;
+    ViewBag.PageType = "trade";
+    ViewBag.PageId = Model.CurrentTrade.TradeId;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head

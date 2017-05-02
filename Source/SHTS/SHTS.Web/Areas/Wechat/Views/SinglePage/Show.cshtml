@@ -1,6 +1,8 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.NewsModel
 @{
     ViewBag.Title = Model.News.Title;
+    ViewBag.PageType = "singlepage";
+    ViewBag.PageId = Model.News.Id;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head

@@ -11,7 +11,5 @@ BEGIN
 	 INNER JOIN [User] U ON U.UserId=AT.UserId
 	 WHERE Id=@Id
 	 and AT.[State] !=1
-
-	 Update [Activity] set ViewCount=ViewCount+1 WHERE Id=@Id 
 END
 GO

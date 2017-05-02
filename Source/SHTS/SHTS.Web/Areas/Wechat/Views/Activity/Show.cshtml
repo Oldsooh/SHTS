@@ -1,6 +1,8 @@
 ﻿@model Witbird.SHTS.Web.Models.ActivityModel.ShowActivityViewModel
 @{
     ViewBag.Title = Model.Activity.Title;
+    ViewBag.PageType = "activity";
+    ViewBag.PageId = Model.Activity.Id;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 

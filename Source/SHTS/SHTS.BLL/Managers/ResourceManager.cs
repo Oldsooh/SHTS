@@ -164,8 +164,6 @@ namespace Witbird.SHTS.BLL.Managers
             var resource = context.Resources.SingleOrDefault(v => v.Id == id);
             if (resource != null)
             {
-                resource.ReadCount = resource.ReadCount + 1;
-                context.SubmitChanges();
                 resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
                     .OrderByDescending(v => v.CreateTime).Take(20).ToList();
 

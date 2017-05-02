@@ -140,7 +140,7 @@
     </div>
 
     <div class="newsRight">
-        @if (Model.PreTypeActivityList != null && Model.PreTypeActivityList.Count > 0)
+        @if (Model.PreTypeActivityList != null && Model.PreTypeActivityList.Count > 0 && Model.ActivityTypes != null)
         {
             foreach (var vtype in Model.ActivityTypes)
             {

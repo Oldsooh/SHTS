@@ -3,6 +3,8 @@
     ViewBag.Title = Model.Activity.Title + " | " + Witbird.SHTS.Web.Public.StaticUtility.Config.Name; ;
     ViewBag.Keywords = Model.Activity.Keywords;
     ViewBag.Description = Model.Activity.Description;
+    ViewBag.PageType = "activity";
+    ViewBag.PageId = Model.Activity.Id;
     Layout = "~/Views/Shared/WebLayoutPage.cshtml";
 }
 @section head
