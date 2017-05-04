@@ -104,11 +104,6 @@ namespace Witbird.SHTS.Web.Controllers
             try
             {
                 SinglePage news = singlePageService.GetSingPageById(id.ToString());
-                if (news != null)
-                {
-                    news.ViewCount += 1;
-                    singlePageService.EditSinglePage(news);
-                }
                 model.News = news;
                 int newsCount = 0;
                 model.Slides = singlePageService.GetSlides();

@@ -138,5 +138,17 @@ namespace Witbird.SHTS.Model
             get;
             set;
         }
+
+        public bool IsCurrentUserTraded
+        {
+            get;
+            set;
+        }
+
+        public int CurrentUserTradeId
+        {
+            get;
+            set;
+        }
     }
 }

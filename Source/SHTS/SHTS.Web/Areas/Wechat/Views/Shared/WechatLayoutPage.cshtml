@@ -61,8 +61,7 @@
 
     </div>
     @RenderSection("FooterJS", false)
-    <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer" type="text/javascript" async="async"></script>
-    <script src="~/AccessRecord.ashx?PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
+    <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer&PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
     @if (Session["CityId"] == null)
     {
         <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>

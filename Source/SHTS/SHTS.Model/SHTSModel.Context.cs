@@ -75,7 +75,6 @@ namespace Witbird.SHTS.Model
         public DbSet<FinanceBalance> FinanceBalance { get; set; }
         public DbSet<FinanceRecord> FinanceRecord { get; set; }
         public DbSet<FinanceWithdrawRecord> FinanceWithdrawRecord { get; set; }
-        public DbSet<FinanceOrder> FinanceOrder { get; set; }
         public DbSet<AccessRecord> AccessRecord { get; set; }
     }
 }

@@ -62,6 +62,48 @@ namespace Witbird.SHTS.Web.Public
                 mailConfig.MailAccountPassword, mailConfig.EmailServerPort, mailConfig.EnableSSL, mailConfig.EnableAuthentication);
         }
 
+        public static bool IsSpecialCityIdMatched(string sourceCityId, string targetCityId)
+        {
+            bool isMatched = false;
+
+            if (string.IsNullOrEmpty(sourceCityId) || string.IsNullOrEmpty(targetCityId))
+            {
+                return isMatched;
+            }
+
+            if ((targetCityId.Equals("beijing", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityId.Equals("shanghai", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityId.Equals("chongqing", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityId.Equals("tianjin", StringComparison.CurrentCultureIgnoreCase)) &&
+                sourceCityId.StartsWith(targetCityId))
+            {
+                isMatched = true;
+            }
+
+            return isMatched;
+        }
+
+        public static bool IsSpecialCityNameMatched(string sourceCityName, string targetCityName)
+        {
+            bool isMatched = false;
+
+            if (string.IsNullOrEmpty(sourceCityName) || string.IsNullOrEmpty(targetCityName))
+            {
+                return isMatched;
+            }
+
+            if ((targetCityName.Equals("北京", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityName.Equals("上海", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityName.Equals("重庆", StringComparison.CurrentCultureIgnoreCase) ||
+                targetCityName.Equals("天津", StringComparison.CurrentCultureIgnoreCase)) &&
+                sourceCityName.StartsWith(targetCityName))
+            {
+                isMatched = true;
+            }
+
+            return isMatched;
+        }
+
         private static List<City> _allCities;
         /// <summary>
         /// 全局静态城市，包括省、市、区

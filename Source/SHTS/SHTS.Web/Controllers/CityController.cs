@@ -32,7 +32,7 @@ namespace Witbird.SHTS.Web.Controllers
             {
                 foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
                 {
-                    if (item != null && item.Id == id)
+                    if (item != null && (item.Id == id || StaticUtility.IsSpecialCityIdMatched(item.Id, id)))
                     {
                         CurrentCityId = item.Id;
                         CurrentCityName = item.Name;
@@ -111,7 +111,7 @@ namespace Witbird.SHTS.Web.Controllers
                     {
                         foreach (var item in allCities)
                         {
-                            if (item.EntityType == 2 && item.Name == cityName)
+                            if (item.EntityType == 2 && (item.Name == cityName || StaticUtility.IsSpecialCityNameMatched(item.Name, cityName)))
                             {
                                 CurrentCityId = item.Id;
                                 CurrentCityName = item.Name;

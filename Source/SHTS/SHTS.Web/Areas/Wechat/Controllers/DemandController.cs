@@ -43,6 +43,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         OrderService orderService = new OrderService();
         CityService cityService = new CityService();
         DemandQuoteService quoteService = new DemandQuoteService();
+        TradeService tradeService = new TradeService();
 
         public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, string area, string starttime, string endtime, string startbudget, string endbudget)
         {
@@ -152,15 +153,35 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     hasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
 
                     // 查询报价记录
-                    if (isPostedByMyself)
+                    var quotes = quoteService.GetAllDemandQuotesForOneDemand(demand.Id);
+                    if (quotes.HasItem())
                     {
-                        var quotes = quoteService.GetAllDemandQuotesForOneDemand(demand.Id);
-                        if (quotes.HasItem())
+                        demand.QuoteEntities.AddRange(quotes);
+                    }
+
+                    //查询中介记录
+                    if (CurrentWeChatUser.UserId.HasValue)
+                    {
+                        var count = 0;
+                        var myTradeList = tradeService.GetTradeListByUserId(CurrentUser.UserId, int.MaxValue, 1, out count);
+                        if (myTradeList.IsNotNull())
                         {
-                            demand.QuoteEntities.AddRange(quotes);
+                            var url = Fetch.BuildBaseUrl("/demand/show/" + demand.Id);
+                            var trade = myTradeList.FirstOrDefault(item => item.ResourceUrl.Replace("/wechat", string.Empty).Equals(url, StringComparison.CurrentCultureIgnoreCase));
+                            
+                            if (trade != null)
+                            {
+                                demand.IsCurrentUserTraded = true;
+                                demand.CurrentUserTradeId = trade.TradeId;
+                            }
+                            else
+                            {
+                                demand.IsCurrentUserTraded = false;
+                                demand.CurrentUserTradeId = -1;
+                            }
                         }
                     }
-                    
+
                     if (!hasWeChatUserBoughtForDemand)
                     {
                         demand.Phone = "未购买查看权限";

@@ -8,7 +8,13 @@
 {
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
     <style type="text/css">
+        .dtitle {
+            font-size: 18px !important;
+        }
+
         .reg-form .cell label {
             position: absolute;
             font-size: 10px;
@@ -26,59 +32,44 @@
             margin-bottom: 20px;
         }
 
-        .reg-form {
-            height: auto;
-            padding-left: 5px;
-            padding-right: 5px;
+        .glyphicon {
+            top: 2px;
+            padding-right: 2px;
         }
 
-            .reg-form .cell select {
-                height: 100%;
-                width: 32.5%;
-            }
-
-            .reg-form .cell textarea {
-                height: 100%;
-                width: 96%;
-            }
-
-            .reg-form .cell label {
-                color: #333 !important;
-                font-size: 16px;
-                font-weight: normal;
-                position: initial;
-                padding: 0;
-            }
-
-        .commonlist {
-            border: none;
-            margin: 0 auto;
+        .panel {
+            word-break: break-word;
         }
 
-            .commonlist li span {
-                font-size: 17px;
-            }
-
-        .time {
-                height: 20px;
-    margin-bottom: -5px
+        .panel-heading {
+            padding-left: 10px !important;
         }
 
-            .time span {
-                border: none!important;
-                font-size: 11px!important;
-                color: #898989!important;
-                box-shadow: none!important;
-                background:none!important;
-            }
+        .panel-body, .table td {
+            font-size: 14px !important;
+        }
 
-            .time span.spanleft{
-                padding-left: 32px!important;
-            }
+        .table a {
+            border-radius: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
-            .time span.spanright{
-                padding-right: 32px!important;
-            }
+        .table .right {
+            text-align: right;
+        }
+
+        .table .left {
+            width: 80px;
+            text-align: left;
+            padding-right: 0;
+        }
+
+        .table .primary {
+            /*color: #FD9102;*/
+        }
     </style>
     @*for chat history*@
     <style>
@@ -105,8 +96,8 @@
         }
 
             .footer textarea {
-                width: 79%;
-                height: 30px;
+                width: 77%;
+                height: 40px;
                 padding: 5px;
                 font-size: 16px;
                 border-radius: 5px;
@@ -114,21 +105,12 @@
             }
 
             .footer button {
-                height: 40px;
-                width: 45px;
+                height: 38px;
                 border-radius: 5px;
                 position: absolute;
                 padding: 2px;
                 font-size: 15px;
-                font-weight: 900;
-                margin-left: 1px;
             }
-
-
-        .content img {
-            width: 30px;
-            height: 30px;
-        }
 
         .content {
             padding: 15px;
@@ -142,14 +124,25 @@
                 overflow: hidden;
             }
 
-                .content li img {
+
+                .content li .imgleft {
                     float: left;
+                    width: 30px;
+                    height: 30px;
                     border-radius: 30px;
                     border: 1px solid #ddd;
                 }
 
-                .content li span {
-                    background: #7cfc00;
+                .content li .imgright {
+                    float: right;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 30px;
+                    border: 1px solid #ddd;
+                }
+
+
+                .content li span.spanleft, .content li span.spanright {
                     padding: 5px;
                     border-radius: 10px;
                     float: left;
@@ -162,14 +155,6 @@
                     word-wrap: break-word;
                 }
 
-                .content li img.imgleft {
-                    float: left;
-                }
-
-                .content li img.imgright {
-                    float: right;
-                }
-
                 .content li span.spanleft {
                     float: left;
                     background: #fff;
@@ -178,6 +163,37 @@
                 .content li span.spanright {
                     float: right;
                     background: #7cfc00;
+                }
+
+                    .content li span.spanleft img, .content li span.spanright img {
+                        max-width: 80px;
+                        max-height: 80px;
+                        cursor: pointer;
+                    }
+
+                .content li.time {
+                    height: 20px;
+                    margin-bottom: -5px;
+                }
+
+                    .content li.time span {
+                        border: none !important;
+                        font-size: 11px !important;
+                        color: #898989 !important;
+                        box-shadow: none !important;
+                        background: none !important;
+                    }
+
+                        .content li.time span.spanleft {
+                            padding-left: 32px !important;
+                        }
+
+                        .content li.time span.spanright {
+                            padding-right: 32px !important;
+                        }
+
+                .content li.high-light {
+                    font-weight: bold;
                 }
 
         .bottom {
@@ -195,90 +211,42 @@
             padding: 0;
         }
 
-        .btn-blue {
-            background-color: #337ab7;
-            width: 100%;
-            height: 30px !important;
+        .btn-group, .btn-group-vertical {
+            vertical-align: initial !important;
+        }
+
+        .dropdown-menu {
+            min-width: initial !important;
+        }
+
+        .btn-Upload {
             border-radius: 15px;
-            outline: none;
-            font-size: 15px;
+            font-size: 14px;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+            cursor: pointer;
+        }
+
+            .btn-Upload input[type=file] {
+                cursor: pointer;
+            }
+
+        .ds_dialog, .ds_dialog_active {
+            left: 0 !important;
+        }
+
+        .ds_dialog_content img {
+            width: 100%;
+            max-height: 400px;
+        }
+
+        .uploadifive-queue {
+            display: none;
         }
     </style>
     @*for chat history*@
-    <script>
 
-        window.onload = function () {
-            //scrollToButtom();
-            $('#btnSend').click(function () {
-                var arrIconSrc = '@currentWeChatUser.Photo';
-                var text = document.getElementById('text');
-                var content = document.getElementById('chatHistory');
-                var comments = text.value;
-
-                if (comments == '') {
-                    text.focus();
-                    return;
-                } else {
-                    var liNode = document.createElement('li');
-                    liNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
-                    content.appendChild(liNode);
-                    scrollToButtom();
-                    text.value = '';
-                    // Saves to database
-                    $.post('/wechat/quote/addQuoteHistory',
-                    {
-                        quoteId: $('#quoteId').val(),
-                        comments: comments
-                    },
-                    function (msg) {
-                        if (msg != '') {
-                            content.removeChild(liNode);
-                            text.value = comments;
-                            alert(msg);
-                        }
-                    }).error(function () {
-                        content.removeChild(liNode);
-                        text.value = comments;
-                        alert('留言消息发送失败！');
-                    });
-                }
-            });
-            $('#btnAccept').click(function () {
-                if (confirm('您确认接受该报价吗？')) {
-                    updateQuoteStatus('Accept');
-                }
-            });
-            $('#btnReject').click(function () {
-                if (confirm('您确认拒绝该报价吗？')) {
-                    updateQuoteStatus('Denied');
-                }
-            });
-
-            function updateQuoteStatus(statusId) {
-                // Saves to database
-                $.post('/wechat/quote/UpdateQuoteStatus',
-                {
-                    quoteId: $('#quoteId').val(),
-                    statusId: statusId
-                },
-                function (msg) {
-                    if (msg != '') {
-                        alert(msg);
-                    }
-
-                    window.location.href = window.location.href;
-                }).error(function () {
-                    alert('更新失败！');
-                    window.location.href = window.location.href;
-                });
-            }
-            function scrollToButtom() {
-                window.scrollTo(0, document.body.scrollHeight);
-            }
-        }
-    </script>
-    <script>
-    </script>
 }
 
 <div class="main">
@@ -288,7 +256,7 @@
         {
             var contactName = "联系人：" + Model.ContactName;
             //var contactPhone = "电话：" + Model.ContactPhoneNumber;
-            var quotePrice = "报价/报名：" + Model.QuotePrice + "元/人";
+            var quotePrice = "报价/报名：" + Model.QuotePrice;
             var quoteTime = Model.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
 
             <input type="hidden" id="quoteId" value="@Model.QuoteId" />
@@ -349,82 +317,102 @@
                     quoteStatus = "报价等待处理中！";
                 }
             }
-
-            <ul class="commonlist" style="">
-
-                <li class="atitle">
-                    <lable style="color: #FD9102;font-size:17px;">@(new HtmlString(quoteStatus))</lable>
-                </li>
-                <li class="atitle">
-                    <br />
-                    <lable>需求信息：</lable>
-                </li>
-                <li class="atitle">
-                    <a href="/wechat/demand/show/@(Model.Demand.Id)" style="margin-right: 10px;">
-                        <lable style="color: #FD9102;font-size:16px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
-                    </a>
-                </li>
-                <li>
-                    区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</span>
-
-                </li>
-                <li>
-                    金额预算：
-                    @if (Model.Demand.Budget == 0)
-                    {
-                        <span class="yellow">面议</span>
-                    }
-                    else
-                    {
-                        <span class="yellow">@Model.Demand.Budget 元</span>
-                    }
-                </li>
-                <li>需求时间：<span class="yellow">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
-                <!--还没购买电话-->
-
-                @if (isPostedByMySelf)
+            <div class="panel panel-info">
+                <div class="panel-heading">报价状态</div>
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            @(new HtmlString(quoteStatus))
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">需求信息</div>
+                <table class="table table-striped">
+                    <tr>
+                        <td class="left">需求内容：</td>
+                        <td class=""><a href="/wechat/demand/show/@Model.Demand.Id" style="padding-left:0;">@Model.Demand.Title</a></td>
+                    </tr>
+                    <tr>
+                        <td class="left">区域位置：</td>
+                        <td class="">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</td>
+                    </tr>
+                    <tr>
+                        <td class="left">预算金额：</td>
+                        <td class="">
+                            @if (Model.Demand.Budget == 0)
+                            {
+                                <span>面议</span>
+                            }
+                            else
+                            {
+                                <span>@(Model.Demand.Budget)元</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left">起止时间：</td>
+                        <td class="">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</td>
+                    </tr>
+                </table>
+            </div>
+            if (isPostedByMySelf)
+            {
+                var phone = "***********";
+                var weixin = "***********";
+                var email = "***********";
+                if (Model.HasWeChatUserBoughtForDemand)
                 {
-                    if (!Model.HasWeChatUserBoughtForDemand)
-                    {
-                        <li>
-                            <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
-                        </li>
-                    }
-                    else
-                    {
-                        var phone = string.IsNullOrWhiteSpace(Model.Demand.Phone) ? "未填" : Model.Demand.Phone;
-                        var weixin = string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) ? "未填" : Model.Demand.QQWeixin;
-                        var email = string.IsNullOrWhiteSpace(Model.Demand.Email) ? "未填" : Model.Demand.Email;
+                    phone = string.IsNullOrWhiteSpace(Model.Demand.Phone) ? "未填" : Model.Demand.Phone;
+                    weixin = string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) ? "未填" : Model.Demand.QQWeixin;
+                    email = string.IsNullOrWhiteSpace(Model.Demand.Email) ? "未填" : Model.Demand.Email;
 
-                        <li class="atitle">
-                            <br />
-                            <lable>客户联系方式：</lable>
-                        </li>
-                        <li>
-                            联系电话：
-                            <span class="yellow2"><a href="tel:@Model.Demand.Phone">@phone</a></span>
-                        </li>
-                        <li>
-                            QQ/微信：
-                            <span class="yellow2">@weixin</span>
-                        </li>
-                        <li>
-                            电子邮箱：
-                            <span class="yellow2">@email</span>
-                        </li>
-                    }
+                }
+                else
+                {
+                    // do nothing.
                 }
 
-                @*<li class="atitle">
-                        <br />
-                        <lable>下面是本次报价/报名信息：</lable>
-                    </li>
-                    <li>
-                        联系姓名：<span class="yellow">@Model.ContactName</span>
-                    </li>
-                    <li>报价金额/人数：<span class="yellow">@((int)Model.QuotePrice)</span></li>
-                    <li>报价细则：@Model.QuoteHistories[0].Comments</li>*@
-            </ul>
+                <div class="panel panel-info">
+                    <div class="panel-heading">客户联系方式</div>
+                    <table class="table table-striped">
+                        <tr>
+                            <td class="left">联系电话：</td>
+                            <td class="">@phone</td>
+                            <td class="right">
+                                @if (Model.HasWeChatUserBoughtForDemand)
+                                {
+                                    <a class="btn btn-success" href="tel:@phone"><i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打</a>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">QQ/微信：</td>
+                            <td colspan="2">@weixin</td>
+                        </tr>
+                        <tr>
+                            <td class="left">邮箱地址：</td>
+                            <td colspan="2">
+                                @email
+                            </td>
+                        </tr>
+                        @if (!Model.HasWeChatUserBoughtForDemand)
+                        {
+                            <tr>
+                                <td colspan="3">
+                                    <a href="javascript:void(0);" class="btn btn-success" style="width:100%;height:30px;line-height:30px;" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            // do nothing
+                        }
+                    </table>
+                </div>
+
+            }
 
             if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
             {
@@ -443,78 +431,94 @@
                     </div>
                 }
             }
-            <div id="container">
-                <lable style="font-size:16px;color:#898989;">报价/报名详情及回复：</lable>
-                <ul id="chatHistory" class="content">
+            <div class="panel panel-success">
+                <div class="panel-heading">报价/报名详情及回复：</div>
+                <div class="panel-body">
+                    <ul id="chatHistory" class="content">
 
-                    @{ 
-                        var rightPhotoUrl = currentWeChatUser.Photo;
-                        var leftPhotoUrl = "";
+                        @{
+                            var rightPhotoUrl = currentWeChatUser.Photo;
+                            var leftPhotoUrl = "";
+                            var leftDisplayName = "";
+                            var rightDisplayName = "我";
 
-                        if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
-                        {
-                            leftPhotoUrl = "/content/wechat/images/quoteUserPhoto.png";
-                        }
-                        else
-                        {
-                            leftPhotoUrl = "/content/wechat/images/demandUserPhoto.png";
-                        }
-                    }
-
-                    @if (Model.WeChatUserId == currentWeChatUser.Id)
-                    {
-                        <li class="time"><span class="spanright">@quoteTime</span></li>
-                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactName</span></li>
-                        @*<li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>*@
-                        <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@quotePrice</span></li>
-                    }
-                    else
-                    {
-                        <li class="time"><span class="spanleft">@quoteTime</span></li>
-                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactName</span></li>
-                        @*<li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>*@
-                        <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@quotePrice</span></li>
-                    }
-
-                    @foreach (var history in Model.QuoteHistories)
-                    {
-                        if (!string.IsNullOrWhiteSpace(history.Comments))
-                        {
-                            var timestring = history.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
-                            // Posted by myself
-                            if (history.WeChatUserId == currentWeChatUser.Id)
+                            if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                             {
-                                <li class="time"><span class="spanright">@timestring</span></li>
-                                <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@history.Comments</span></li>
+                                leftPhotoUrl = "/content/wechat/images/quoteUserPhoto.png";
+                                leftDisplayName = "报价方";
                             }
                             else
                             {
-                                <li class="time"><span class="spanleft">@timestring</span></li>
-                                <li>
-                                    <img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@history.Comments</span>
-                                </li>
+                                leftPhotoUrl = "/content/wechat/images/demandUserPhoto.png";
+                                leftDisplayName = "客户";
                             }
                         }
-                    }
 
-                </ul>
+                        @if (Model.WeChatUserId == currentWeChatUser.Id)
+                        {
+                            <li class="time"><span class="spanright">@quoteTime&nbsp;@(rightDisplayName)</span></li>
+                            <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactName</span></li>
+                            @*<li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>*@
+                            <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@quotePrice</span></li>
+                        }
+                        else
+                        {
+                            <li class="time"><span class="spanleft">@(leftDisplayName)&nbsp;@quoteTime</span></li>
+                            <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactName</span></li>
+                            @*<li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>*@
+                            <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@quotePrice</span></li>
+                        }
+
+                        @foreach (var history in Model.QuoteHistories)
+                        {
+                            if (!string.IsNullOrWhiteSpace(history.Comments))
+                            {
+                                var timestring = history.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
+                                // Posted by myself
+                                if (history.WeChatUserId == currentWeChatUser.Id)
+                                {
+                                    <li class="time"><span class="spanright">@timestring&nbsp;@(rightDisplayName)</span></li>
+                                    <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@(new HtmlString(history.Comments))</span></li>
+                                }
+                                else
+                                {
+                                    <li class="time"><span class="spanleft">@(leftDisplayName)&nbsp;@timestring</span></li>
+                                    <li>
+                                        <img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@(new HtmlString(history.Comments))</span>
+                                    </li>
+                                }
+                            }
+                        }
+
+                    </ul>
+                </div>
             </div>
 
 
             <div class="footer">
                 <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
-                <button id="btnSend" class="button btn-green">发送</button>
+                <div class="btn-group dropup">
+                    <button id="btnSend" class="btn btn-success">发送</button>
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <input name="file_upload" id="file_upload" type="file" class="hide" accept="image/*" />
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-        }
-        else
-        {
-            <ul class="commonlist" style="">
-                <li class="atitle">
-                    <lable style="color: #FD9102;font-size:16px;">您所查询的报价记录不存在或已删除！</lable>
-                </li>
-            </ul>
-        }
+                            }
+                            else
+                            {
+                                <ul class="commonlist" style="">
+                                    <li class="atitle">
+                                        <lable style="color: #FD9102;font-size:16px;">您所查询的报价记录不存在或已删除！</lable>
+                                    </li>
+                                </ul>
+                            }
     </div>
 </div>
 @{
@@ -523,7 +527,221 @@
 <input type="hidden" id="txtMessage" value="@errorMessage" />
 @section FooterJS
 {
+    <script src="~/Content/js/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
     <script>
+        autoTextarea('text');
+    </script>
+    <script>
+        //scrollToButtom();
+        $('#btnSend').click(function () {
+            var arrIconSrc = '@currentWeChatUser.Photo';
+            var text = document.getElementById('text');
+            var content = document.getElementById('chatHistory');
+            var comments = text.value;
+
+            if (comments == '') {
+                text.focus();
+                return;
+            } else {
+                var timeNode = document.createElement('li');
+                var textNode = document.createElement('li');
+                var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+
+                $(timeNode).addClass('time');
+                timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
+                textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
+                content.appendChild(timeNode);
+                content.appendChild(textNode);
+                scrollToButtom();
+                text.value = '';
+                // Saves to database
+                $.post('/wechat/quote/AddQuoteHistory',
+                {
+                    quoteId: $('#quoteId').val(),
+                    comments: comments
+                },
+                function (data) {
+                    if (!data.IsSuccessful) {
+                        content.removeChild(timeNode);
+                        content.removeChild(textNode);
+                        text.value = comments;
+                        if (data.ErrorMessage != '') {
+                            showMessage(data.ErrorMessage, false);
+                        }
+                        else {
+                            showMessage('消息发送失败，请重新尝试！', false);
+                        }
+                    }
+                }).error(function () {
+                    content.removeChild(timeNode);
+                    content.removeChild(textNode);
+                    text.value = comments;
+                    showMessage('消息发送失败!', false);
+                });
+            }
+        });
+
+        $('#file_upload').uploadifive({
+            'auto': true,
+            'uploadScript': '/Content/upload/uploadimage.ashx',
+            'buttonText': '<i class="glyphicon glyphicon-plus"></i>&nbsp;上传图片',
+            'buttonClass': 'btn btn-Upload',
+            'fileType': 'image/*',
+            'multi': false,
+            'queueSizeLimit': 10,
+            'uploadLimit': 10,
+            'fileSizeLimit': 12 * 1024 * 1024,
+            'onSelect': function (file) {
+                if (file.size >= 12 * 1024 * 1024) {
+                    showMessage('每张图片不能超过5M', false);
+                    $("#file_upload").uploadify('cancel');
+                    return false;
+                }
+            },
+            'onCancel': function (file) {
+                //alert('The file ' + file.name + ' was cancelled!');
+            },
+            'onUploadComplete': function (file, data) {
+                var postfile = JSON.parse(data);
+                var originalImg = '';
+                if (postfile.Action) {
+                    originalImg = postfile.OriginalImage;
+                    uploadTradeImg(originalImg);
+                    $('.dropup').removeClass('open');
+                }
+                else {
+                    showMessage('图片上传失败，请重新尝试', false);
+                    $("#file_upload").uploadify('cancel');
+                    $(itemid).remove();
+                }
+            },
+            'onFallback': function () {
+                //alert("该浏览器无法使用!");
+            },
+            'onUpload': function (file) {
+            }
+        });
+
+        $('.content li span.spanleft img').click(function () {
+            showBigImg($(this));
+        });
+        $('.content li span.spanright img').click(function () {
+            showBigImg($(this));
+        });
+
+        function uploadTradeImg(imgUrl) {
+            var arrIconSrc = '@currentWeChatUser.Photo';
+            var content = document.getElementById('chatHistory');
+
+            if (imgUrl == '') {
+                return;
+            } else {
+                var timeNode = document.createElement('li');
+                var textNode = document.createElement('li');
+                var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+                var imgNode = '<img src=' + imgUrl + ' alt="图片加载失败" />';
+
+                //$(imgNode).click(function () {
+                //    showBigImg($(this));
+                //});
+
+                $(timeNode).addClass('time');
+                timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
+                textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + imgNode + '</span>'
+
+                content.appendChild(timeNode);
+                content.appendChild(textNode);
+
+                scrollToButtom();
+                text.value = '';
+                // Saves to database
+                $.post('/wechat/quote/AddQuoteHistory',
+                {
+                    quoteId: $('#quoteId').val(),
+                    comments: imgNode
+                },
+                function (data) {
+                    if (!data.IsSuccessful) {
+                        content.removeChild(timeNode);
+                        content.removeChild(textNode);
+                        if (data.ErrorMessage != '') {
+                            showMessage(data.ErrorMessage, false);
+                        }
+                        else {
+                            showMessage('图片上传失败，请重新尝试！', false);
+                        }
+                    }
+                }).error(function () {
+                    content.removeChild(timeNode);
+                    content.removeChild(textNode);
+                    showMessage('图片上传失败，请重新尝试！', false);
+                });
+            }
+        }
+
+        function showBigImg(imgNode) {
+            if (imgNode) {
+                ds.dialog({
+                    title: '大图阅览',
+                    content: $(imgNode).clone()
+                });
+            }
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
+
+        $('#btnAccept').click(function () {
+            if (confirm('您确认接受该报价吗？')) {
+                updateQuoteStatus('Accept');
+            }
+        });
+        $('#btnReject').click(function () {
+            if (confirm('您确认拒绝该报价吗？')) {
+                updateQuoteStatus('Denied');
+            }
+        });
+
+        function updateQuoteStatus(statusId) {
+            // Saves to database
+            $.post('/wechat/quote/UpdateQuoteStatus',
+            {
+                quoteId: $('#quoteId').val(),
+                statusId: statusId
+            },
+            function (msg) {
+                if (msg != '') {
+                    showMessage(msg, true);
+                }
+
+                window.location.href = window.location.href;
+            }).error(function () {
+                showMessage('更新失败！', false);
+                //window.location.reload();
+            });
+        }
+        function scrollToButtom() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
         function buyDemand(demandId) {
             //wechat/demand/Buy
             $.post("/wechat/demand/Buy",
@@ -535,7 +753,7 @@
                     callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
                 }
                 else {
-                    alert(data.Message);
+                    showMessage(data.Message, false);
                 }
             }).error(function (data) { alert(data); });
         }
@@ -550,8 +768,8 @@
                 "paySign": paySign
             }, function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    alert("您已成功购买该需求联系方式和详细地址的永久查看权限。");
-                    window.location = window.location;
+                    alert("购买成功！");
+                    window.location.reload();
                 }
                 else {
                     if (res.err_msg == "get_brand_wcpay_request:cancel") {
@@ -569,7 +787,7 @@
         var message = $('#txtMessage').val();
         if (message != '') {
             $('#txtMessage').val('');
-            alert(message);
+            showMessage(message, false);
         }
     </script>
 }

@@ -147,9 +147,6 @@
     <Compile Include="FinanceBalance.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FinanceOrder.cs">
-      <DependentUpon>SHTSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="FinanceRecord.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>

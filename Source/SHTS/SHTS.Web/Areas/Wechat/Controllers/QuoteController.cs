@@ -250,7 +250,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {
-                    history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
+                    if (!history.Comments.StartsWith("<img"))
+                    {
+                        history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
+                    }
                 }
             }
 
@@ -345,12 +348,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return Content(errorMessage);
         }
 
+        [ValidateInput(false)]
         public ActionResult AddQuoteHistory(int quoteId, string comments)
         {
+            bool isSuccessful = false;
             string errorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(comments))
             {
+                isSuccessful = false;
                 errorMessage = "请输入留言内容！";
             }
             else
@@ -358,6 +364,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 DemandQuote quote = quoteService.GetDemandQuote(quoteId, false);
                 if (!quote.IsNotNull())
                 {
+                    isSuccessful = false;
                     errorMessage = "报价记录不存在或已被删除！";
                 }
                 else
@@ -374,10 +381,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                     if (!result)
                     {
+                        isSuccessful = false;
                         errorMessage = "留言消息发送失败!";
                     }
                     else
                     {
+                        isSuccessful = true;
+
                         if (quote.WeChatUserId == CurrentWeChatUser.Id)
                         {
                             // Sends notification to wechat client.
@@ -410,7 +420,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
             }
 
-            return Content(errorMessage);
+            var data = new
+            {
+                IsSuccessful = isSuccessful,
+                ErrorMessge = errorMessage
+            };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         private void SendNotification(string message, int quoteId, string openId)

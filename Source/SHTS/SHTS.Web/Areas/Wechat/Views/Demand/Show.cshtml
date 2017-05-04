@@ -6,6 +6,18 @@
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
     string buyDemandFee = ViewData["BuyDemandFee"] as string;
     var currentWeChatUser = Session[Witbird.SHTS.Web.Areas.Wechat.Controllers.WechatBaseController.WeChatUserInfo] as Witbird.SHTS.Model.WeChatUser;
+    var hasAlreadyQuoted = false;
+    var quoteId = -1;
+
+    if (Model.Demand.QuoteEntities.Count > 0)
+    {
+        var quote = Model.Demand.QuoteEntities[0];
+        if (quote.WeChatUserId == currentWeChatUser.Id)
+        {
+            hasAlreadyQuoted = true;
+            quoteId = quote.QuoteId;
+        }
+    }
 }
 @section head
 {
@@ -97,35 +109,49 @@
     @if (!Model.HasCurrentWeChatUserBought)
     {
         <ul class="details">
-        <li>
-            @if (Model.Demand.IsCompleted)
-            {
-                <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
-                    <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
-                    ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
-                    <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
-                </div>
-            }
-            else
-            {
-                <div class="buypanel">
-                    <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
-                    <br />
-                    <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
-                    <br />
-                    <br />
-                    @*<a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>*@
-                    @*<button type="button" class="button btn-green" onclick="buyDemand(@Model.Demand.Id);">一键获取联系方式</button>*@
-                    <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
-                    <br />
-                    <br />
-                    如需中介交易，请联系对方后再申请：
-                    <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
-                </div>
-            }
-        </li>
-    </ul>
+            <li>
+                @if (Model.Demand.IsCompleted)
+                {
+                    <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
+                        <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
+                        <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
+                        ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
+                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="buypanel">
+                        <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
+                        <br />
+                        @if (hasAlreadyQuoted)
+                    {
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">已报价，点击查看</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
+                        }
+                        <br />
+                        <br />
+                        <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+                        @if (Model.Demand.IsCurrentUserTraded)
+                        {
+                            <br />
+                            <br />
+                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)'">中介中，点击查看</button>
+                        }
+                        else
+                        {
+                            <br />
+                            <br />
+                            <span>如需中介交易，请联系对方后再申请：</span>
+                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
+                        }
+                    </div>
+                }
+            </li>
+        </ul>
     }
     else
     {
@@ -134,21 +160,49 @@
                 <div class="buypanel">
                     @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                     {
-                        <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
+                        if (Model.Demand.QuoteEntities.Count > 0)
+                        {
+                            <span>有收到@(Model.Demand.QuoteEntities.Count)条报价：</span>
+                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
+                        }
+                        else
+                        {
+                            <span>暂无报价/报名记录</span>
+                        }
+                        <br />
+                        <br />
+                        <span>如需中介交易，请联系对方后再申请：</span>
+                        <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
                     }
                     else
                     {
-                        <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
+                        if (hasAlreadyQuoted)
+                        {
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">查看您的报价/报名</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
+                        }
+                        if (Model.Demand.IsCurrentUserTraded)
+                        {
+                            <br />
+                            <br />
+                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)'">中介中，点击查看</button>
+                        }
+                        else
+                        {
+                            <br />
+                            <br />
+                            <span>如需中介交易，请联系对方后再申请：</span>
+                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
+                        }
                     }
-                    <br />
-                    <br />
-                    如需中介交易，请联系对方后再申请：
-                    <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
                 </div>
             </li>
         </ul>
     }
-<div style="clear: both; height: 10px;"></div>
+    <div style="clear: both; height: 10px;"></div>
 </div>
 <script>
     function buyDemand(demandId) {

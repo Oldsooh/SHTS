@@ -5,6 +5,7 @@ using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
+using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
 {
@@ -33,7 +34,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             {
                 foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.AllCities)
                 {
-                    if (item.Id == id)
+                    if (item != null && (item.Id == id || StaticUtility.IsSpecialCityIdMatched(item.Id, id)))
                     {
                         CurrentCityId = item.Id;
                         CurrentCityName = item.Name;
@@ -109,7 +110,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                 {
                     foreach (var item in allCities)
                     {
-                        if (item.EntityType == 2 && item.Name == cityName)
+                        if (item.EntityType == 2 && (item.Name == cityName || StaticUtility.IsSpecialCityNameMatched(item.Name, cityName)))
                         {
                             CurrentCityId = item.Id;
                             CurrentCityName = item.Name;
