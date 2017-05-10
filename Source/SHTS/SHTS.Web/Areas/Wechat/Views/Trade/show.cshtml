@@ -97,21 +97,38 @@
         }
 
             .footer textarea {
-                width: 77%;
+                width: 71%;
                 height: 40px;
                 padding: 5px;
-                font-size: 16px;
+                font-size: 18px;
                 border-radius: 5px;
                 outline: none;
             }
 
             .footer button {
-                height: 38px;
-                border-radius: 5px;
+                border-radius: 5px!important;
                 position: absolute;
-                padding: 2px;
-                font-size: 15px;
+                font-size: 17px;
+                font-weight: bold;
             }
+
+            .footer .btn-group{
+                margin-left: -4px;
+            }
+                .footer button.btn-more {
+                    background: none;
+                    padding:0!important;
+                    margin-left:2px!important;
+                }
+
+                    .footer button.btn-more .glyphicon {
+                        border: 1px solid;
+                        border-radius: 50%;
+                        width: 34px;
+                        height: 34px;
+                        padding: 0 !important;
+                        font-size: 30px;
+                    }
 
         .content {
             padding: 15px;
@@ -245,9 +262,10 @@
         .uploadifive-queue {
             display: none;
         }
-               .panel-body {
-    padding: 15px 0px!important;
-}
+
+        .panel-body {
+            padding: 15px 0px !important;
+        }
     </style>
     @*for chat history*@
 }
@@ -327,13 +345,13 @@
                                     {
                                         if (Model.CurrentUser.UserId == currentTrade.BuyerId)
                                         {
-                                        <a href="javascript:void(0);" class="btn btn-success" title="立即支付交易款项" onclick="generateTradeOrder(@Model.CurrentTrade.TradeId);">
-                                            立即付款
-                                        </a>
+                                            <a href="javascript:void(0);" class="btn btn-success" title="立即支付交易款项" onclick="generateTradeOrder(@Model.CurrentTrade.TradeId);">
+                                                立即付款
+                                            </a>
                                         }
                                         else
                                         {
-                                        <span class="primary">等待买家付款</span>
+                                            <span class="primary">等待买家付款</span>
                                         }
                                     }
                                     else
@@ -637,9 +655,9 @@
                     {
                         <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
                         <div class="btn-group dropup">
-                            <button id="btnSend" class="btn btn-success">发送</button>
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
+                            <button id="btnSend" class="btn btn-primary">发送</button>
+                            <button type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background:none;">
+                                <span class="glyphicon glyphicon-plus"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
@@ -681,8 +699,8 @@
 {
     <script src="~/Content/js/bootstrap/bootstrap.min.js"></script>
     <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
-<script src="~/Content/js/trade-mobile.js"></script>
-    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
+    <script src="~/Content/js/trade-mobile.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js?v=4"></script>
     <script>
         autoTextarea('text');
 
