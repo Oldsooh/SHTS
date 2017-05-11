@@ -250,7 +250,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {
-                    if (!history.Comments.StartsWith("<img"))
+                    if (!history.Comments.StartsWith("<img") && !history.Comments.StartsWith("<video"))
                     {
                         history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
                     }

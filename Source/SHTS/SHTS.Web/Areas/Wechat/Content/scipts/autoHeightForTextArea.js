@@ -17,7 +17,7 @@ function autoHeight(elemid) {
         var text = ele(elemid).value;
         var linesCount = text.split('\n').length;
 
-        if (linesCount > 1 || text.length > 15) {
+        if (linesCount > 1 || text.length > 12) {
             ele("_textareacopy").value = ele(elemid).value;
             ele(elemid).style.height = ele("_textareacopy").scrollHeight + ele("_textareacopy").style.height + "px";
         }

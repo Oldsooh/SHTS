@@ -248,6 +248,9 @@
     <Compile Include="Areas\Wechat\Models\NewsModel.cs" />
     <Compile Include="Areas\Wechat\Models\ResourceViewModel.cs" />
     <Compile Include="Areas\Wechat\Models\TradeModel.cs" />
+    <Compile Include="Content\upload\uploadvideo.ashx.cs">
+      <DependentUpon>uploadvideo.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\PCBaseController.cs" />
     <Compile Include="Models\FinanceModel.cs" />
@@ -714,6 +717,7 @@
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
     <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />
     <Content Include="Areas\Wechat\Content\scipts\validate.js" />
+    <Content Include="Content\dialog\js\new_dsdialog.js" />
     <Content Include="Content\images\button_grey_close.png" />
     <Content Include="Areas\Wechat\Content\images\projection.png" />
     <Content Include="Areas\Wechat\Content\images\shouwei\button_bg.gif" />
@@ -1544,6 +1548,7 @@
     <Content Include="Content\uploadifive\uploadifive-image-only.php" />
     <Content Include="Content\uploadifive\uploadifive.php" />
     <Content Include="Content\uploadifive\__MACOSX\Sample\._.DS_Store" />
+    <Content Include="Content\upload\uploadvideo.ashx" />
     <None Include="Properties\PublishProfiles\line.pubxml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\User\VipInfo.cshtml" />

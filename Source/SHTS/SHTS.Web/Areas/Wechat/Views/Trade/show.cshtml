@@ -97,7 +97,7 @@
         }
 
             .footer textarea {
-                width: 71%;
+                width: 68%;
                 height: 40px;
                 padding: 5px;
                 font-size: 18px;
@@ -106,29 +106,30 @@
             }
 
             .footer button {
-                border-radius: 5px!important;
+                border-radius: 5px !important;
                 position: absolute;
                 font-size: 17px;
                 font-weight: bold;
             }
 
-            .footer .btn-group{
-                margin-left: -4px;
+            .footer .btn-group {
+                margin-left: -2px;
             }
-                .footer button.btn-more {
-                    background: none;
-                    padding:0!important;
-                    margin-left:2px!important;
-                }
 
-                    .footer button.btn-more .glyphicon {
-                        border: 1px solid;
-                        border-radius: 50%;
-                        width: 34px;
-                        height: 34px;
-                        padding: 0 !important;
-                        font-size: 30px;
-                    }
+            .footer button.btn-more {
+                background: none;
+                padding: 0 !important;
+                margin-left: 2px !important;
+            }
+
+                .footer button.btn-more .glyphicon {
+                    border: 1px solid;
+                    border-radius: 50%;
+                    width: 34px;
+                    height: 34px;
+                    padding: 0 !important;
+                    font-size: 30px;
+                }
 
         .content {
             padding: 15px;
@@ -239,7 +240,7 @@
 
         .btn-Upload {
             border-radius: 15px;
-            font-size: 14px;
+            font-size: 17px;
             padding: 0;
             padding-left: 10px;
             padding-right: 10px;
@@ -796,10 +797,7 @@
                 }
             });
 
-            $('.content li span.spanleft img').click(function () {
-                showBigImg($(this));
-            });
-            $('.content li span.spanright img').click(function () {
+            $('.content li span.spanleft img,.content li span.spanright img,.content li span.spanleft video,.content li span.spanright video').click(function () {
                 showBigImg($(this));
             });
         }

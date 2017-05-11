@@ -96,7 +96,7 @@
         }
 
             .footer textarea {
-                width: 71%;
+                width: 68%;
                 height: 40px;
                 padding: 5px;
                 font-size: 18px;
@@ -105,29 +105,30 @@
             }
 
             .footer button {
-                border-radius: 5px!important;
+                border-radius: 5px !important;
                 position: absolute;
                 font-size: 17px;
                 font-weight: bold;
             }
 
-            .footer .btn-group{
-                margin-left: -4px;
+            .footer .btn-group {
+                margin-left: -2px;
             }
-                .footer button.btn-more {
-                    background: none;
-                    padding:0!important;
-                    margin-left:2px!important;
-                }
 
-                    .footer button.btn-more .glyphicon {
-                        border: 1px solid;
-                        border-radius: 50%;
-                        width: 34px;
-                        height: 34px;
-                        padding: 0 !important;
-                        font-size: 30px;
-                    }
+            .footer button.btn-more {
+                background: none;
+                padding: 0 !important;
+                margin-left: 2px !important;
+            }
+
+                .footer button.btn-more .glyphicon {
+                    border: 1px solid;
+                    border-radius: 50%;
+                    width: 34px;
+                    height: 34px;
+                    padding: 0 !important;
+                    font-size: 30px;
+                }
 
         .content {
             padding: 15px;
@@ -182,7 +183,7 @@
                     background: #7cfc00;
                 }
 
-                    .content li span.spanleft img, .content li span.spanright img {
+                    .content li span.spanleft img, .content li span.spanright img, .content li span.spanleft video, .content li span.spanright video {
                         max-width: 80px;
                         max-height: 80px;
                         cursor: pointer;
@@ -238,7 +239,7 @@
 
         .btn-Upload {
             border-radius: 15px;
-            font-size: 14px;
+            font-size: 17px;
             padding: 0;
             padding-left: 10px;
             padding-right: 10px;
@@ -253,7 +254,7 @@
             left: 0 !important;
         }
 
-        .ds_dialog_content img {
+        .ds_dialog_content img, .ds_dialog_content video {
             width: 100%;
             max-height: 400px;
         }
@@ -510,9 +511,18 @@
                                 }
                             }
                         }
-
+                        <li class="time"><span class="spanright">@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")&nbsp;我</span></li>
+                        <li>
+                            <img src="@rightPhotoUrl" class="imgright">
+                            <span class="spanright">
+                                <video>
+                                    <source src="~/Content/images/wechat_vedio_demo.mp4" type="video/mp4" />
+                                </video>
+                            </span>
+                        </li>
                     </ul>
                 </div>
+
             </div>
 
 
@@ -526,6 +536,9 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li>
                             <input name="file_upload" id="file_upload" type="file" class="hide" accept="image/*" />
+                        </li>
+                        <li>
+                            <input name="file_upload_video" id="file_upload_video" type="file" class="hide" accept="video/*" />
                         </li>
                     </ul>
                 </div>
@@ -607,7 +620,7 @@
         $('#file_upload').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadimage.ashx',
-            'buttonText': '<i class="glyphicon glyphicon-plus"></i>&nbsp;上传图片',
+            'buttonText': '<i class="glyphicon glyphicon-camera"></i>&nbsp;上传图片',
             'buttonClass': 'btn btn-Upload',
             'fileType': 'image/*',
             'multi': false,
@@ -629,7 +642,8 @@
                 var originalImg = '';
                 if (postfile.Action) {
                     originalImg = postfile.OriginalImage;
-                    uploadTradeImg(originalImg);
+                    var imgNode = '<img src=' + originalImg + ' alt="图片加载失败" />';
+                    uploadTradeImg(imgNode);
                     $('.dropup').removeClass('open');
                 }
                 else {
@@ -645,24 +659,123 @@
             }
         });
 
-        $('.content li span.spanleft img').click(function () {
-            showBigImg($(this));
+        $('#file_upload_video').uploadifive({
+            'auto': true,
+            'uploadScript': '/Content/upload/uploadvideo.ashx',
+            'buttonText': '<i class="glyphicon glyphicon-film"></i>&nbsp;上传视频',
+            'buttonClass': 'btn btn-Upload',
+            'fileType': 'video/*',
+            'multi': false,
+            'queueSizeLimit': 10,
+            'uploadLimit': 10,
+            'fileSizeLimit': 20 * 1024 * 1024,
+            'onSelect': function (file) {
+                if (file.size >= 20 * 1024 * 1024) {
+                    showMessage('视频大小不能超过20M', false);
+                    $("#file_upload_video").uploadify('cancel');
+                    return false;
+                }
+            },
+            'onCancel': function (file) {
+                //alert('The file ' + file.name + ' was cancelled!');
+            },
+            'onUploadComplete': function (file, data) {
+
+                var result = JSON.parse(data);
+                if (result.IsSuccessful) {
+                    var fileName = result.FileName;
+                    var fileType = result.FileType;
+                    var videoNode = '<video><source src=' + fileName + ' type="video/' + fileType + '" /></video>';
+                    uploadTradeImg(videoNode);
+                    $('.dropup').removeClass('open');
+                }
+                else {
+                    showMessage('视频上传失败，请重新尝试', false);
+                    $("#file_upload_video").uploadify('cancel');
+                    $(itemid).remove();
+                }
+            },
+            'onFallback': function () {
+                //alert("该浏览器无法使用!");
+            },
+            'onUpload': function (file) {
+            }
         });
-        $('.content li span.spanright img').click(function () {
+
+        $('.content li span.spanleft img,.content li span.spanright img').click(function () {
             showBigImg($(this));
         });
 
-        function uploadTradeImg(imgUrl) {
+        $('.content li span.spanleft video,.content li span.spanright video').click(function () {
+            showVideo($(this));
+        });
+
+        function showBigImg(imgNode) {
+            if (imgNode) {
+                var clonedImgNode = $(imgNode).clone();
+                ds.dialog({
+                    title: '大图阅览',
+                    content: clonedImgNode,
+                    onclose: function () {
+                        $('.ds_dialog').remove();
+                    }
+                });
+            }
+        }
+
+        function showVideo(videoNode) {
+            if (videoNode) {
+                $(videoNode).attr('controls', 'controls');
+                var clonedVideoNode = ($(videoNode).clone())[0];
+                ds.dialog({
+                    title: '视频阅览',
+                    content: clonedVideoNode,
+                    onclose: function () {
+                        clonedVideoNode.pause();
+                        $('.ds_dialog').remove();
+                    }
+                });
+                clonedVideoNode.play();
+                //$(clonedVideoNode).click(function () {
+                //    if (!clonedVideoNode.paused) {
+                //        clonedVideoNode.pause();
+                //    }
+                //    else {
+                //        clonedVideoNode.play();
+                //    }
+                //});
+            }
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
+
+        function uploadTradeImg(imgNode) {
             var arrIconSrc = '@currentWeChatUser.Photo';
             var content = document.getElementById('chatHistory');
 
-            if (imgUrl == '') {
+            if (imgNode == '') {
                 return;
             } else {
                 var timeNode = document.createElement('li');
                 var textNode = document.createElement('li');
                 var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
-                var imgNode = '<img src=' + imgUrl + ' alt="图片加载失败" />';
 
                 //$(imgNode).click(function () {
                 //    showBigImg($(this));
@@ -676,7 +789,6 @@
                 content.appendChild(textNode);
 
                 scrollToButtom();
-                text.value = '';
                 // Saves to database
                 $.post('/wechat/quote/AddQuoteHistory',
                 {
@@ -702,33 +814,6 @@
             }
         }
 
-        function showBigImg(imgNode) {
-            if (imgNode) {
-                ds.dialog({
-                    title: '大图阅览',
-                    content: $(imgNode).clone()
-                });
-            }
-        }
-
-        function showMessage(msg, isSuccessfulMsg) {
-            if (msg != '') {
-                if (isSuccessfulMsg) {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/success.png"
-                    });
-                }
-                else {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/info.png"
-                    });
-                }
-            }
-        }
 
         $('#btnAccept').click(function () {
             if (confirm('您确认接受该报价吗？')) {
