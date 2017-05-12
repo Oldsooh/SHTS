@@ -8,7 +8,7 @@
 {
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
-    <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
     <style type="text/css">
         .dtitle {
@@ -128,6 +128,7 @@
                     height: 34px;
                     padding: 0 !important;
                     font-size: 30px;
+                    font-family: initial!important;
                 }
 
         .content {
@@ -511,15 +512,6 @@
                                 }
                             }
                         }
-                        <li class="time"><span class="spanright">@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")&nbsp;我</span></li>
-                        <li>
-                            <img src="@rightPhotoUrl" class="imgright">
-                            <span class="spanright">
-                                <video>
-                                    <source src="~/Content/images/wechat_vedio_demo.mp4" type="video/mp4" />
-                                </video>
-                            </span>
-                        </li>
                     </ul>
                 </div>
 
@@ -561,7 +553,7 @@
 <input type="hidden" id="txtMessage" value="@errorMessage" />
 @section FooterJS
 {
-    <script src="~/Content/js/bootstrap/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
     <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js?v=4"></script>
     <script>
@@ -620,7 +612,7 @@
         $('#file_upload').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadimage.ashx',
-            'buttonText': '<i class="glyphicon glyphicon-camera"></i>&nbsp;上传图片',
+            'buttonText': '<i class="glyphicon glyphicon-camera"></i>上传图片',
             'buttonClass': 'btn btn-Upload',
             'fileType': 'image/*',
             'multi': false,
@@ -662,7 +654,7 @@
         $('#file_upload_video').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadvideo.ashx',
-            'buttonText': '<i class="glyphicon glyphicon-film"></i>&nbsp;上传视频',
+            'buttonText': '<i class="glyphicon glyphicon-film"></i>上传视频',
             'buttonClass': 'btn btn-Upload',
             'fileType': 'video/*',
             'multi': false,
@@ -680,14 +672,16 @@
                 //alert('The file ' + file.name + ' was cancelled!');
             },
             'onUploadComplete': function (file, data) {
-
                 var result = JSON.parse(data);
                 if (result.IsSuccessful) {
                     var fileName = result.FileName;
                     var fileType = result.FileType;
-                    var videoNode = '<video><source src=' + fileName + ' type="video/' + fileType + '" /></video>';
+                    var originalSource = '<source src=' + fileName + ' type="video/' + fileType + '" />';
+                    var mp4Source = '<source src=' + result.Mp4FileName + ' type="video/mp4" />';
+                    var videoNode = '<video>' + mp4Source + originalSource + '</video>';
                     uploadTradeImg(videoNode);
                     $('.dropup').removeClass('open');
+                    showMessage('上传成功', true);
                 }
                 else {
                     showMessage('视频上传失败，请重新尝试', false);
@@ -707,7 +701,9 @@
         });
 
         $('.content li span.spanleft video,.content li span.spanright video').click(function () {
-            showVideo($(this));
+            //showVideo($(this));
+            $(this)[0].played = 0;
+            $(this)[0].play();
         });
 
         function showBigImg(imgNode) {
@@ -723,29 +719,30 @@
             }
         }
 
-        function showVideo(videoNode) {
-            if (videoNode) {
-                $(videoNode).attr('controls', 'controls');
-                var clonedVideoNode = ($(videoNode).clone())[0];
-                ds.dialog({
-                    title: '视频阅览',
-                    content: clonedVideoNode,
-                    onclose: function () {
-                        clonedVideoNode.pause();
-                        $('.ds_dialog').remove();
-                    }
-                });
-                clonedVideoNode.play();
-                //$(clonedVideoNode).click(function () {
-                //    if (!clonedVideoNode.paused) {
-                //        clonedVideoNode.pause();
-                //    }
-                //    else {
-                //        clonedVideoNode.play();
-                //    }
-                //});
-            }
-        }
+        //function showVideo(videoNode) {
+        //    if (videoNode) {
+        //        var clonedVideoNode = ($(videoNode).clone())[0];
+        //        $(clonedVideoNode).attr('controls', 'controls');
+        //        $(clonedVideoNode).attr('autoplay', 'autoplay');
+        //        ds.dialog({
+        //            title: '视频阅览',
+        //            content: clonedVideoNode,
+        //            onclose: function () {
+        //                clonedVideoNode.pause();
+        //                $('.ds_dialog').remove();
+        //            }
+        //        });
+        //        clonedVideoNode.play();
+        //        //$(clonedVideoNode).click(function () {
+        //        //    if (!clonedVideoNode.paused) {
+        //        //        clonedVideoNode.pause();
+        //        //    }
+        //        //    else {
+        //        //        clonedVideoNode.play();
+        //        //    }
+        //        //});
+        //    }
+        //}
 
         function showMessage(msg, isSuccessfulMsg) {
             if (msg != '') {

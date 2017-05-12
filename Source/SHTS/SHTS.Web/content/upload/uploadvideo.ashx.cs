@@ -17,11 +17,14 @@ namespace Witbird.SHTS.Web.Content.upload
         {
             context.Response.ContentType = "application/javascript";
 
-            //存放图片的根目录 
+            //存放视频的根目录 
             string folderName = "/uploadfiles/quotevideo/";
             string message = string.Empty;
             string outputFileName = string.Empty;
             var outputFileType = string.Empty;
+            var outputMp4FileName = string.Empty;
+            var ffmpegToolFileName = context.Server.MapPath("~" + "/videoconverter/ffmpeg-3.2.4-win64-shared/bin/ffmpeg.exe");
+            var isSuccessful = false;
 
             //定义错误消息
             try
@@ -60,15 +63,22 @@ namespace Witbird.SHTS.Web.Content.upload
                         }
                         //保存文件的物理路径
                         string oldFile = uploadPath + fileName + filetrype;
+                        string mp4FileName = uploadPath + fileName + ".mp4";
+
                         try
                         {
                             //保存文件
                             postFile.SaveAs(oldFile);
                             outputFileName = folderName + timePath + fileName + filetrype;
                             outputFileType = filetrype.Replace(".", string.Empty);
+                            outputMp4FileName = folderName + timePath + fileName + ".mp4";
+
+                            isSuccessful = VideoConverter.Convert(ffmpegToolFileName, oldFile, mp4FileName);
+
                         }
                         catch(Exception ex)
                         {
+                            isSuccessful = false;
                             message = "视频上传失败";
                             LogService.Log("上传失败--" + postFile.FileName, ex.ToString());
                         }
@@ -76,24 +86,28 @@ namespace Witbird.SHTS.Web.Content.upload
                     }
                     else
                     {
+                        isSuccessful = false;
                         message = "视频大小不能超过20MB";
                     }
                 }
                 else
                 {
+                    isSuccessful = false;
                     message = "请选择视频文件";
                 }
             }
             catch (Exception e)
             {
+                isSuccessful = false;
                 message = e.Message;
                 LogService.Log("上传失败", e.ToString());
             }
             var data = new
             {
-               IsSuccessful = !string.IsNullOrEmpty(message),
+               IsSuccessful = isSuccessful,
                FileName = outputFileName,
                FileType = outputFileType,
+               Mp4FileName = outputMp4FileName,
                ErrorMessage = message
             };
             context.Response.Write(data.ToJson());

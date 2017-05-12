@@ -204,7 +204,7 @@
                 e.stopPropagation();
                 e.preventDefault();
                 self.hide();
-                return $.type(ops.onclose) === 'function' && ops.onclose.call(this) === false || !ops.onclose ? false : this.hide();
+                return $.type(ops.onclose) === 'function' && ops.onclose.call(this) === false || !ops.onclose ? false : self.hide();
             });
             this.shell.bind('mousedown',
             function () {
