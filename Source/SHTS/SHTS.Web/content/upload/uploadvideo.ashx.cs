@@ -23,6 +23,8 @@ namespace Witbird.SHTS.Web.Content.upload
             string outputFileName = string.Empty;
             var outputFileType = string.Empty;
             var outputMp4FileName = string.Empty;
+            var outputImageFileName = string.Empty;
+
             var ffmpegToolFileName = context.Server.MapPath("~" + "/videoconverter/ffmpeg-3.2.4-win64-shared/bin/ffmpeg.exe");
             var isSuccessful = false;
 
@@ -64,6 +66,7 @@ namespace Witbird.SHTS.Web.Content.upload
                         //保存文件的物理路径
                         string oldFile = uploadPath + fileName + filetrype;
                         string mp4FileName = uploadPath + fileName + ".mp4";
+                        string imageFileName = uploadPath + fileName + ".png";
 
                         try
                         {
@@ -72,8 +75,9 @@ namespace Witbird.SHTS.Web.Content.upload
                             outputFileName = folderName + timePath + fileName + filetrype;
                             outputFileType = filetrype.Replace(".", string.Empty);
                             outputMp4FileName = folderName + timePath + fileName + ".mp4";
+                            outputImageFileName = folderName + timePath + fileName + ".png";
 
-                            isSuccessful = VideoConverter.Convert(ffmpegToolFileName, oldFile, mp4FileName);
+                            isSuccessful = VideoConverter.Convert(ffmpegToolFileName, oldFile, mp4FileName, imageFileName);
 
                         }
                         catch(Exception ex)
@@ -108,6 +112,7 @@ namespace Witbird.SHTS.Web.Content.upload
                FileName = outputFileName,
                FileType = outputFileType,
                Mp4FileName = outputMp4FileName,
+               ImageFileName = outputImageFileName,
                ErrorMessage = message
             };
             context.Response.Write(data.ToJson());

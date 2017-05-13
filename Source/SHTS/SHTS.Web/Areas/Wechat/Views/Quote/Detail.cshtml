@@ -128,7 +128,7 @@
                     height: 34px;
                     padding: 0 !important;
                     font-size: 30px;
-                    font-family: initial!important;
+                    font-family: initial !important;
                 }
 
         .content {
@@ -184,9 +184,36 @@
                     background: #7cfc00;
                 }
 
-                    .content li span.spanleft img, .content li span.spanright img, .content li span.spanleft video, .content li span.spanright video {
-                        max-width: 80px;
-                        max-height: 80px;
+                .content li span.spanright_img_video {
+                    background: #fff;
+                    border: none;
+                    box-shadow: none;
+                }
+
+                .content li span.spanleft img, .content li span.spanright img, .content li span.spanleft video, .content li span.spanright video {
+                    max-width: 80px;
+                    max-height: 80px;
+                    cursor: pointer;
+                }
+
+                .content li .video {
+                    display: inline-block;
+                    background: #fff !important;
+                }
+
+                    .content li .video img {
+                        opacity: 0.6;
+                        float: left;
+                    }
+
+                    .content li .video .btn-video-play {
+                        z-index: 99;
+                        font-size: 30px;
+                        float: left;
+                        margin-right: -40px;
+                        margin-top: 22px;
+                        right: -7px;
+                        color: white;
                         cursor: pointer;
                     }
 
@@ -261,7 +288,7 @@
         }
 
         .uploadifive-queue {
-            display: none;
+            /*display: none;*/
         }
 
         .panel-body {
@@ -512,6 +539,19 @@
                                 }
                             }
                         }
+                        <!-- test video -->
+                        @*<li>
+                                <img src="http://wx.qlogo.cn/mmopen/IhibzibzkVmSRib5taUdMtK5FbghrrLjYVEDZayng3zfwDx3SQQq5k4sQD8IPZmwB06tsYZtkM7kRmCDibia9Txom8lGnXern6RFd/0" class="imgright">
+                                <span class="spanright">
+                                    <span class="video">
+                                        <i class="btn-video-play glyphicon glyphicon-play-circle"></i>
+                                        <img src="/uploadfiles/quotevideo/2017/05/13/20170513174245830.png" alt="图片不存在" />
+                                        <video class="hide">
+                                            <source src="/uploadfiles/quotevideo/2017/05/12/20170512230548826.mp4" type="video/mp4">
+                                        </video>
+                                    </span>
+                                </span>
+                            </li>*@
                     </ul>
                 </div>
 
@@ -535,7 +575,6 @@
                     </ul>
                 </div>
             </div>
-
                             }
                             else
                             {
@@ -618,36 +657,54 @@
             'multi': false,
             'queueSizeLimit': 10,
             'uploadLimit': 10,
-            'fileSizeLimit': 12 * 1024 * 1024,
-            'onSelect': function (file) {
-                if (file.size >= 12 * 1024 * 1024) {
-                    showMessage('每张图片不能超过5M', false);
+            'fileSizeLimit': 10 * 1024 * 1024,
+            'onAddQueueItem':function(file){
+                if (file.size >= 10 * 1024 * 1024) {
+                    showMessage('每张图片不能超过10M', false);
                     $("#file_upload").uploadify('cancel');
                     return false;
+                }
+                else {
+                    if (window.FileReader) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = function (e) {
+                            var imgNode = document.createElement('img');
+                            $(imgNode).attr('src', e.target.result);
+                            $(imgNode).attr('alt', '图片加载失败');
+                            showPreviewMessage(imgNode);
+                        };
+                    }
+
+                    $('.dropup').removeClass('open');
                 }
             },
             'onCancel': function (file) {
                 //alert('The file ' + file.name + ' was cancelled!');
             },
             'onUploadComplete': function (file, data) {
+                var isSuccessful = false;
                 var postfile = JSON.parse(data);
                 var originalImg = '';
                 if (postfile.Action) {
                     originalImg = postfile.OriginalImage;
                     var imgNode = '<img src=' + originalImg + ' alt="图片加载失败" />';
-                    uploadTradeImg(imgNode);
-                    $('.dropup').removeClass('open');
+                    isSuccessful = uploadMediaHistory(imgNode);
                 }
                 else {
                     showMessage('图片上传失败，请重新尝试', false);
                     $("#file_upload").uploadify('cancel');
-                    $(itemid).remove();
+                }
+
+                if (!isSuccessful) {
+                    // remove preview message
+                }
+                else {
+                    // remove progress information
                 }
             },
             'onFallback': function () {
-                //alert("该浏览器无法使用!");
-            },
-            'onUpload': function (file) {
+                showMessage('您的浏览器不支持上传图片', false);
             }
         });
 
@@ -667,32 +724,41 @@
                     $("#file_upload_video").uploadify('cancel');
                     return false;
                 }
+                else {
+                    $('.dropup').removeClass('open');
+                }
             },
             'onCancel': function (file) {
-                //alert('The file ' + file.name + ' was cancelled!');
+                console.log('onCancel');
             },
             'onUploadComplete': function (file, data) {
+                var isSuccessful = false;
                 var result = JSON.parse(data);
                 if (result.IsSuccessful) {
                     var fileName = result.FileName;
                     var fileType = result.FileType;
                     var originalSource = '<source src=' + fileName + ' type="video/' + fileType + '" />';
                     var mp4Source = '<source src=' + result.Mp4FileName + ' type="video/mp4" />';
-                    var videoNode = '<video>' + mp4Source + originalSource + '</video>';
-                    uploadTradeImg(videoNode);
-                    $('.dropup').removeClass('open');
-                    showMessage('上传成功', true);
+                    var imageFileName = result.ImageFileName;
+                    var videoNode = '<span class="video"><i class="btn-video-play glyphicon glyphicon-play-circle"></i><img src="' + imageFileName
+                        + '" alt="图片不存在" /><video class="hide" poster="' + imageFileName + '">'
+                        + mp4Source + originalSource + '</video></span>';
+                    isSuccessful = uploadMediaHistory(videoNode);
                 }
                 else {
                     showMessage('视频上传失败，请重新尝试', false);
                     $("#file_upload_video").uploadify('cancel');
-                    $(itemid).remove();
+                }
+
+                if (!isSuccessful) {
+                    // remove preview message
+                }
+                else {
+                    // remove progress information
                 }
             },
             'onFallback': function () {
-                //alert("该浏览器无法使用!");
-            },
-            'onUpload': function (file) {
+                showMessage('您的浏览器不支持上传视频', false);
             }
         });
 
@@ -700,10 +766,22 @@
             showBigImg($(this));
         });
 
-        $('.content li span.spanleft video,.content li span.spanright video').click(function () {
-            //showVideo($(this));
-            $(this)[0].played = 0;
-            $(this)[0].play();
+        $('.content li span.spanright img').each(function () {
+            $(this).parent().addClass('spanright_img_video');
+        });
+        $('.content li span.spanright .video').each(function () {
+            $(this).parent().addClass('spanright_img_video');
+        });
+
+        //$('.content li span.spanleft video,.content li span.spanright video').click(function () {
+        //    //showVideo($(this));
+        //    $(this)[0].currentTime = 0;
+        //    $(this)[0].play();
+        //});
+        $('.btn-video-play').click(function () {
+            var videoNode = $(this).parent().find('video')[0];
+            videoNode.currentTime = 0;
+            videoNode.play();
         });
 
         function showBigImg(imgNode) {
@@ -719,30 +797,34 @@
             }
         }
 
-        //function showVideo(videoNode) {
-        //    if (videoNode) {
-        //        var clonedVideoNode = ($(videoNode).clone())[0];
-        //        $(clonedVideoNode).attr('controls', 'controls');
-        //        $(clonedVideoNode).attr('autoplay', 'autoplay');
-        //        ds.dialog({
-        //            title: '视频阅览',
-        //            content: clonedVideoNode,
-        //            onclose: function () {
-        //                clonedVideoNode.pause();
-        //                $('.ds_dialog').remove();
-        //            }
-        //        });
-        //        clonedVideoNode.play();
-        //        //$(clonedVideoNode).click(function () {
-        //        //    if (!clonedVideoNode.paused) {
-        //        //        clonedVideoNode.pause();
-        //        //    }
-        //        //    else {
-        //        //        clonedVideoNode.play();
-        //        //    }
-        //        //});
-        //    }
-        //}
+        function showVideo(videoNode) {
+            if (videoNode) {
+                var clonedVideoNode = ($(videoNode).clone())[0];
+                $(clonedVideoNode).attr('controls', 'controls');
+                $(clonedVideoNode).attr('autoplay', 'autoplay');
+                //webkit-playsinline="true" playsinline="true" x5-video-player-type="h5"
+                $(clonedVideoNode).attr('webkit-playsinline', 'true');
+                $(clonedVideoNode).attr('playsinline', 'true');
+                $(clonedVideoNode).attr('x5-video-player-type', 'h5');
+                ds.dialog({
+                    title: '视频阅览',
+                    content: clonedVideoNode,
+                    onclose: function () {
+                        clonedVideoNode.pause();
+                        $('.ds_dialog').remove();
+                    }
+                });
+                clonedVideoNode.play();
+                //$(clonedVideoNode).click(function () {
+                //    if (!clonedVideoNode.paused) {
+                //        clonedVideoNode.pause();
+                //    }
+                //    else {
+                //        clonedVideoNode.play();
+                //    }
+                //});
+            }
+        }
 
         function showMessage(msg, isSuccessfulMsg) {
             if (msg != '') {
@@ -763,52 +845,62 @@
             }
         }
 
-        function uploadTradeImg(imgNode) {
+        function showPreviewMessage(messageNode) {
+
             var arrIconSrc = '@currentWeChatUser.Photo';
             var content = document.getElementById('chatHistory');
+            var timeNode = document.createElement('li');
+            var textNode = document.createElement('li');
+            var currentTime = (new Date()).Format('yyyy-MM-dd hh:mm:ss'); 
 
-            if (imgNode == '') {
-                return;
-            } else {
-                var timeNode = document.createElement('li');
-                var textNode = document.createElement('li');
-                var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+            $(timeNode).addClass('time');
+            timeNode.innerHTML = '<span class="spanright">' + currentTime + '&nbsp;我</span>';
+            textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + messageNode.outerHTML + '</span>'
 
-                //$(imgNode).click(function () {
-                //    showBigImg($(this));
-                //});
+            content.appendChild(timeNode);
+            content.appendChild(textNode);
 
-                $(timeNode).addClass('time');
-                timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
-                textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + imgNode + '</span>'
+            scrollToButtom();
 
-                content.appendChild(timeNode);
-                content.appendChild(textNode);
+            $('.content li span.spanleft img,.content li span.spanright img').click(function () {
+                showBigImg($(this));
+            });
+            $('.content li span.spanright img').each(function () {
+                $(this).parent().addClass('spanright_img_video');
+            });
 
-                scrollToButtom();
+        }
+
+        function uploadMediaHistory(mediaNode) {
+            var isSuccessful = false;
+            if (mediaNode != '') {
                 // Saves to database
                 $.post('/wechat/quote/AddQuoteHistory',
                 {
                     quoteId: $('#quoteId').val(),
-                    comments: imgNode
+                    comments: mediaNode
                 },
                 function (data) {
                     if (!data.IsSuccessful) {
-                        content.removeChild(timeNode);
-                        content.removeChild(textNode);
                         if (data.ErrorMessage != '') {
                             showMessage(data.ErrorMessage, false);
                         }
                         else {
-                            showMessage('图片上传失败，请重新尝试！', false);
+                            showMessage('上传失败，请重新尝试！', false);
                         }
+
+                        isSuccessful = false;
+                    }
+                    else {
+                        isSuccessful = true;
                     }
                 }).error(function () {
-                    content.removeChild(timeNode);
-                    content.removeChild(textNode);
-                    showMessage('图片上传失败，请重新尝试！', false);
+                    isSuccessful = false;
+                    showMessage('上传失败，请重新尝试！', false);
                 });
             }
+
+            return isSuccessful;
         }
 
 
@@ -843,6 +935,23 @@
         }
         function scrollToButtom() {
             window.scrollTo(0, document.body.scrollHeight);
+        }
+        Date.prototype.Format = function (fmt) { //author: meizz   
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份   
+                "d+": this.getDate(),                    //日   
+                "h+": this.getHours(),                   //小时   
+                "m+": this.getMinutes(),                 //分   
+                "s+": this.getSeconds(),                 //秒   
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+                "S": this.getMilliseconds()             //毫秒   
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
         }
 
         function buyDemand(demandId) {
