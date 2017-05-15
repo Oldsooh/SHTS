@@ -246,7 +246,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 // 如果是自己发布的需求，无需购买即可查看
                 var isPostedByMyself = (quote.Demand.UserId == CurrentWeChatUser.UserId);
                 quote.HasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
-                
+
                 // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {
@@ -377,44 +377,48 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         WeChatUserId = CurrentWeChatUser.Id
                     };
 
-                    var result = quoteService.NewQuoteHistory(history);
+                    isSuccessful = quoteService.NewQuoteHistory(history);
 
-                    if (!result)
+                    if (!isSuccessful)
                     {
-                        isSuccessful = false;
                         errorMessage = "留言消息发送失败!";
                     }
                     else
                     {
-                        isSuccessful = true;
-
-                        if (quote.WeChatUserId == CurrentWeChatUser.Id)
+                        try
                         {
-                            // Sends notification to wechat client.
-                            Task.Factory.StartNew(() =>
+                            if (quote.WeChatUserId == CurrentWeChatUser.Id)
                             {
-                                var demand = demandService.GetDemandById(quote.DemandId);
-
-                                if (demand.IsNotNull())
+                                // Sends notification to wechat client.
+                                Task.Factory.StartNew(() =>
                                 {
-                                    var toWeChatUser = userService.GetWeChatUser(demand.UserId);
+                                    var demand = demandService.GetDemandById(quote.DemandId);
+
+                                    if (demand.IsNotNull())
+                                    {
+                                        var toWeChatUser = userService.GetWeChatUser(demand.UserId);
+                                        if (toWeChatUser.IsNotNull())
+                                        {
+                                            SendNotification(comments, quote.QuoteId, toWeChatUser.OpenId);
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Task.Factory.StartNew(() =>
+                                {
+                                    var toWeChatUser = userService.GetWeChatUserByWeChatUserId(quote.WeChatUserId);
                                     if (toWeChatUser.IsNotNull())
                                     {
                                         SendNotification(comments, quote.QuoteId, toWeChatUser.OpenId);
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
-                        else
+                        catch(Exception ex)
                         {
-                            Task.Factory.StartNew(() =>
-                            {
-                                var toWeChatUser = userService.GetWeChatUserByWeChatUserId(quote.WeChatUserId);
-                                if (toWeChatUser.IsNotNull())
-                                {
-                                    SendNotification(comments, quote.QuoteId, toWeChatUser.OpenId);
-                                }
-                            });
+                            LogService.LogWexin("推送报价消息失败", ex.ToString());
                         }
                     }
                 }

@@ -161,7 +161,7 @@
                 }
 
 
-                .content li span.spanleft, .content li span.spanright {
+                .content li .spanleft, .content li .spanright {
                     padding: 5px;
                     border-radius: 10px;
                     float: left;
@@ -174,25 +174,25 @@
                     word-wrap: break-word;
                 }
 
-                .content li span.spanleft {
+                .content li .spanleft {
                     float: left;
                     background: #fff;
                 }
 
-                .content li span.spanright {
+                .content li .spanright {
                     float: right;
                     background: #7cfc00;
                 }
 
-                .content li span.spanright_img_video {
+                .content li .spanright_img_video {
                     background: #fff;
                     border: none;
                     box-shadow: none;
                 }
 
-                .content li span.spanleft img, .content li span.spanright img, .content li span.spanleft video, .content li span.spanright video {
-                    max-width: 80px;
-                    max-height: 80px;
+                .content li .spanleft img, .content li .spanright img, .content li .spanleft video, .content li .spanright video {
+                    width: 80px;
+                    max-height: 100px;
                     cursor: pointer;
                 }
 
@@ -203,18 +203,16 @@
 
                     .content li .video img {
                         opacity: 0.6;
-                        float: left;
+                        /*float: left;*/
                     }
 
                     .content li .video .btn-video-play {
                         z-index: 99;
                         font-size: 30px;
-                        float: left;
-                        margin-right: -40px;
-                        margin-top: 22px;
-                        right: -7px;
-                        color: white;
+                        margin-right: -55px;
+                        color: green;
                         cursor: pointer;
+                        vertical-align: middle;
                     }
 
                 .content li.time {
@@ -230,16 +228,33 @@
                         background: none !important;
                     }
 
-                        .content li.time span.spanleft {
-                            padding-left: 32px !important;
-                        }
+                    .content li.time .spanleft {
+                        padding-left: 32px !important;
+                    }
 
-                        .content li.time span.spanright {
-                            padding-right: 32px !important;
-                        }
+                    .content li.time .spanright {
+                        padding-right: 32px !important;
+                    }
 
                 .content li.high-light {
                     font-weight: bold;
+                }
+
+        .upload-progress {
+            padding-right: 20px;
+        }
+
+            .upload-progress .info {
+            }
+
+            .upload-progress .progress {
+                height: 15px;
+                margin-bottom:2px;
+            }
+
+                .upload-progress .progress .progress-bar {
+                    line-height: 15px;
+                    min-width: 2em;
                 }
 
         .bottom {
@@ -288,7 +303,7 @@
         }
 
         .uploadifive-queue {
-            /*display: none;*/
+            display: none;
         }
 
         .panel-body {
@@ -539,26 +554,27 @@
                                 }
                             }
                         }
-                        <!-- test video -->
-                        @*<li>
-                                <img src="http://wx.qlogo.cn/mmopen/IhibzibzkVmSRib5taUdMtK5FbghrrLjYVEDZayng3zfwDx3SQQq5k4sQD8IPZmwB06tsYZtkM7kRmCDibia9Txom8lGnXern6RFd/0" class="imgright">
-                                <span class="spanright">
-                                    <span class="video">
-                                        <i class="btn-video-play glyphicon glyphicon-play-circle"></i>
-                                        <img src="/uploadfiles/quotevideo/2017/05/13/20170513174245830.png" alt="图片不存在" />
-                                        <video class="hide">
-                                            <source src="/uploadfiles/quotevideo/2017/05/12/20170512230548826.mp4" type="video/mp4">
-                                        </video>
-                                    </span>
-                                </span>
-                            </li>*@
                     </ul>
                 </div>
 
             </div>
 
-
             <div class="footer">
+
+                <div class="upload-progress hide">
+                    <div class="info">
+                        <span>上传中，请稍后...</span>
+                        <span style="float: right;">
+                            <span id="upload-loaded-total">0KB/0KB</span>
+                            <span id="btnCancenUploading"></span>
+                        </span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            0%
+                        </div>
+                    </div>
+                </div>
                 <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
                 <div class="btn-group dropup">
                     <button id="btnSend" class="btn btn-primary">发送</button>
@@ -599,7 +615,6 @@
         autoTextarea('text');
     </script>
     <script>
-        //scrollToButtom();
         $('#btnSend').click(function () {
             var arrIconSrc = '@currentWeChatUser.Photo';
             var text = document.getElementById('text');
@@ -648,63 +663,60 @@
             }
         });
 
+        var isCancelledUploading = false;
         $('#file_upload').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadimage.ashx',
             'buttonText': '<i class="glyphicon glyphicon-camera"></i>上传图片',
             'buttonClass': 'btn btn-Upload',
+            'removeCompleted': 'true',
             'fileType': 'image/*',
             'multi': false,
             'queueSizeLimit': 10,
             'uploadLimit': 10,
             'fileSizeLimit': 10 * 1024 * 1024,
-            'onAddQueueItem':function(file){
-                if (file.size >= 10 * 1024 * 1024) {
-                    showMessage('每张图片不能超过10M', false);
-                    $("#file_upload").uploadify('cancel');
-                    return false;
-                }
-                else {
-                    if (window.FileReader) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onloadend = function (e) {
-                            var imgNode = document.createElement('img');
-                            $(imgNode).attr('src', e.target.result);
-                            $(imgNode).attr('alt', '图片加载失败');
-                            showPreviewMessage(imgNode);
-                        };
-                    }
-
-                    $('.dropup').removeClass('open');
-                }
+            'onSelect': function (file) {
+                $('.dropup').removeClass('open');
+                showProgressBar();
             },
             'onCancel': function (file) {
-                //alert('The file ' + file.name + ' was cancelled!');
+                isCancelledUploading = true;
+                hideProgressBar();
+            },
+            'onAddQueueItem': function (file) {
+                if (file.size >= 10 * 1024 * 1024) {
+                    showMessage('每张图片不能超过10M', false);
+                    $("#file_upload").uploadifive('cancel');
+                    return false;
+                }
+                hideProgressBar();
             },
             'onUploadComplete': function (file, data) {
+                isCancelledUploading = false;
                 var isSuccessful = false;
                 var postfile = JSON.parse(data);
                 var originalImg = '';
                 if (postfile.Action) {
                     originalImg = postfile.OriginalImage;
                     var imgNode = '<img src=' + originalImg + ' alt="图片加载失败" />';
-                    isSuccessful = uploadMediaHistory(imgNode);
+
+                    uploadMediaHistory(imgNode);
                 }
                 else {
                     showMessage('图片上传失败，请重新尝试', false);
-                    $("#file_upload").uploadify('cancel');
                 }
 
-                if (!isSuccessful) {
-                    // remove preview message
-                }
-                else {
-                    // remove progress information
-                }
+                hideProgressBar();
             },
             'onFallback': function () {
+                isCancelledUploading = true;
                 showMessage('您的浏览器不支持上传图片', false);
+                hideProgressBar();
+            },
+            'onProgress': function (file, e) {
+                if (e.lengthComputable) {
+                    setProgressBar(e.loaded, e.total, false);
+                }
             }
         });
 
@@ -713,25 +725,32 @@
             'uploadScript': '/Content/upload/uploadvideo.ashx',
             'buttonText': '<i class="glyphicon glyphicon-film"></i>上传视频',
             'buttonClass': 'btn btn-Upload',
+            'removeCompleted': 'true',
             'fileType': 'video/*',
             'multi': false,
             'queueSizeLimit': 10,
             'uploadLimit': 10,
             'fileSizeLimit': 20 * 1024 * 1024,
             'onSelect': function (file) {
-                if (file.size >= 20 * 1024 * 1024) {
-                    showMessage('视频大小不能超过20M', false);
-                    $("#file_upload_video").uploadify('cancel');
-                    return false;
-                }
-                else {
-                    $('.dropup').removeClass('open');
-                }
+                $('.dropup').removeClass('open');
+                showProgressBar();
             },
             'onCancel': function (file) {
-                console.log('onCancel');
+                isCancelledUploading = true;
+                hideProgressBar();
+            },
+
+            'onAddQueueItem': function (file) {
+                if (file.size >= 20 * 1024 * 1024) {
+                    showMessage('视频不能超过20M', false);
+                    $("#file_upload_video").uploadifive('cancel');
+                    return false;
+                }
+
+                hideProgressBar();
             },
             'onUploadComplete': function (file, data) {
+                isCancelledUploading = false;
                 var isSuccessful = false;
                 var result = JSON.parse(data);
                 if (result.IsSuccessful) {
@@ -743,35 +762,27 @@
                     var videoNode = '<span class="video"><i class="btn-video-play glyphicon glyphicon-play-circle"></i><img src="' + imageFileName
                         + '" alt="图片不存在" /><video class="hide" poster="' + imageFileName + '">'
                         + mp4Source + originalSource + '</video></span>';
-                    isSuccessful = uploadMediaHistory(videoNode);
+
+                    uploadMediaHistory(videoNode);
                 }
                 else {
                     showMessage('视频上传失败，请重新尝试', false);
-                    $("#file_upload_video").uploadify('cancel');
                 }
 
-                if (!isSuccessful) {
-                    // remove preview message
-                }
-                else {
-                    // remove progress information
-                }
+                hideProgressBar();
             },
             'onFallback': function () {
+                isCancelledUploading = true;
                 showMessage('您的浏览器不支持上传视频', false);
+            },
+            'onProgress': function (file, e) {
+                if (e.lengthComputable) {
+                    setProgressBar(e.loaded, e.total, false);
+                }
             }
         });
 
-        $('.content li span.spanleft img,.content li span.spanright img').click(function () {
-            showBigImg($(this));
-        });
-
-        $('.content li span.spanright img').each(function () {
-            $(this).parent().addClass('spanright_img_video');
-        });
-        $('.content li span.spanright .video').each(function () {
-            $(this).parent().addClass('spanright_img_video');
-        });
+        refreshImgAndVideoMessages();
 
         //$('.content li span.spanleft video,.content li span.spanright video').click(function () {
         //    //showVideo($(this));
@@ -797,6 +808,7 @@
             }
         }
 
+        // This method is not currently used.
         function showVideo(videoNode) {
             if (videoNode) {
                 var clonedVideoNode = ($(videoNode).clone())[0];
@@ -826,53 +838,90 @@
             }
         }
 
-        function showMessage(msg, isSuccessfulMsg) {
-            if (msg != '') {
-                if (isSuccessfulMsg) {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/success.png"
-                    });
+        function cancelUploading(){
+            $("#file_upload").uploadifive('cancel');
+            $("#file_upload_video").uploadifive('cancel');
+        }
+
+        function showProgressBar() {
+            if ($('.upload-progress').hasClass('hide')) {
+                //$('#btnCancenUploading').html('<a href="javascriptvoid(0);" onclick="cancelUploading();">取消</a>');
+                $('#btnCancenUploading').html('');
+                $('.upload-progress').removeClass('hide');
+            }
+        }
+        function hideProgressBar(){
+            $('.upload-progress').addClass('hide');
+            setProgressBar(0,1, true);
+        }
+        function setProgressBar(loaded, total, isUploadComplete){
+            var percent = 1;
+            if (!isUploadComplete) {
+                percent = Math.round((loaded / total) * 100);
+                percent = percent > 99 ? 99 : percent;
+                var uploadedTotal = $('#upload-loaded-total');
+                var progressBar = $('.upload-progress').find('.progress-bar');
+                if (uploadedTotal) {
+                    uploadedTotal.html(Math.ceil(loaded / 1024) + 'KB/' + Math.ceil(total / 1024) + 'KB');
                 }
-                else {
-                    ds.dialog({
-                        title: '消息提示',
-                        content: msg,
-                        icon: "/Content/dialog/images/info.png"
-                    });
-                }
+            }
+            else{
+                percent = 100;
+            }
+
+            if (progressBar) {
+                progressBar.attr('aria-valuenow', percent);
+                progressBar.css('width', percent + '%');
+                progressBar.html(percent + '%');
+            }
+
+            if (percent == 100){
+                $('#btnCancenUploading').html('上传成功');
             }
         }
 
         function showPreviewMessage(messageNode) {
-
             var arrIconSrc = '@currentWeChatUser.Photo';
             var content = document.getElementById('chatHistory');
             var timeNode = document.createElement('li');
             var textNode = document.createElement('li');
-            var currentTime = (new Date()).Format('yyyy-MM-dd hh:mm:ss'); 
+            var currentTime = (new Date()).Format('yyyy-MM-dd hh:mm:ss');
 
             $(timeNode).addClass('time');
             timeNode.innerHTML = '<span class="spanright">' + currentTime + '&nbsp;我</span>';
-            textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + messageNode.outerHTML + '</span>'
-
+            textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + messageNode + '</span>'
             content.appendChild(timeNode);
             content.appendChild(textNode);
 
             scrollToButtom();
+            refreshImgAndVideoMessages();
+        }
 
+        function refreshImgAndVideoMessages() {
             $('.content li span.spanleft img,.content li span.spanright img').click(function () {
-                showBigImg($(this));
+                if (!$(this).parent().hasClass('video')) {
+                    showBigImg($(this));
+                }
+                else {
+                    var videoNode = $(this).parent().find('video')[0];
+                    videoNode.currentTime = 0;
+                    videoNode.play();
+                }
             });
             $('.content li span.spanright img').each(function () {
                 $(this).parent().addClass('spanright_img_video');
             });
 
+            $('.content li span.spanright .video').each(function () {
+                $(this).parent().addClass('spanright_img_video');
+            });
         }
 
         function uploadMediaHistory(mediaNode) {
-            var isSuccessful = false;
+            if (isCancelledUploading) {
+                return;
+            }
+
             if (mediaNode != '') {
                 // Saves to database
                 $.post('/wechat/quote/AddQuoteHistory',
@@ -888,19 +937,15 @@
                         else {
                             showMessage('上传失败，请重新尝试！', false);
                         }
+                    }
+                    else{
+                        showPreviewMessage(mediaNode);
+                    }
 
-                        isSuccessful = false;
-                    }
-                    else {
-                        isSuccessful = true;
-                    }
                 }).error(function () {
-                    isSuccessful = false;
                     showMessage('上传失败，请重新尝试！', false);
                 });
             }
-
-            return isSuccessful;
         }
 
 
@@ -933,26 +978,6 @@
                 //window.location.reload();
             });
         }
-        function scrollToButtom() {
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-        Date.prototype.Format = function (fmt) { //author: meizz   
-            var o = {
-                "M+": this.getMonth() + 1,                 //月份   
-                "d+": this.getDate(),                    //日   
-                "h+": this.getHours(),                   //小时   
-                "m+": this.getMinutes(),                 //分   
-                "s+": this.getSeconds(),                 //秒   
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
-                "S": this.getMilliseconds()             //毫秒   
-            };
-            if (/(y+)/.test(fmt))
-                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt))
-                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
 
         function buyDemand(demandId) {
             //wechat/demand/Buy
@@ -967,7 +992,7 @@
                 else {
                     showMessage(data.Message, false);
                 }
-            }).error(function (data) { alert(data); });
+            }).error(function (data) { showMessage(data, false); });
         }
 
         function callPayApi(appId, timeStamp, nonceStr, package1, paySign) {
@@ -985,14 +1010,53 @@
                 }
                 else {
                     if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                        alert("您取消了购买。");
+                        showMessage("您取消了购买。", true);
                     }
                     else {
-                        alert(res.err_msg);
-                        alert("购买发生错误！请刷新重试，如频繁发生该错误，请联系管理员.");
+                        alert("微信你支付发生错误，错误代码: " + res.err_msg);
                     }
                 }
             });
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
+                    });
+                }
+                else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
+                }
+            }
+        }
+
+        function scrollToButtom() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份
+                "d+": this.getDate(),                    //日
+                "h+": this.getHours(),                   //小时
+                "m+": this.getMinutes(),                 //分
+                "s+": this.getSeconds(),                 //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds()             //毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
         }
     </script>
     <script>
