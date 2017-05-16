@@ -759,8 +759,8 @@
                     var originalSource = '<source src=' + fileName + ' type="video/' + fileType + '" />';
                     var mp4Source = '<source src=' + result.Mp4FileName + ' type="video/mp4" />';
                     var imageFileName = result.ImageFileName;
-                    var videoNode = '<span class="video"><i class="btn-video-play glyphicon glyphicon-play-circle"></i><img src="' + imageFileName
-                        + '" alt="图片不存在" /><video class="hide" poster="' + imageFileName + '">'
+                    var videoNode = '<span class="video"><i class="btn-video-play glyphicon glyphicon-play-circle" onclick="playVideo(this);"></i><img onclick="playVideo(this);" src="' + imageFileName
+                        + '" alt="视频加载失败" /><video class="hide" preload="auto" poster="' + imageFileName + '">'
                         + mp4Source + originalSource + '</video></span>';
 
                     uploadMediaHistory(videoNode);
@@ -789,11 +789,12 @@
         //    $(this)[0].currentTime = 0;
         //    $(this)[0].play();
         //});
-        $('.btn-video-play').click(function () {
-            var videoNode = $(this).parent().find('video')[0];
+
+        function playVideo(obj){
+            var videoNode = $(obj).parent().find('video')[0];
             videoNode.currentTime = 0;
             videoNode.play();
-        });
+        }
 
         function showBigImg(imgNode) {
             if (imgNode) {
@@ -852,13 +853,13 @@
         }
         function hideProgressBar(){
             $('.upload-progress').addClass('hide');
-            setProgressBar(0,1, true);
+            setProgressBar(0,1, false);
         }
         function setProgressBar(loaded, total, isUploadComplete){
             var percent = 1;
             if (!isUploadComplete) {
                 percent = Math.round((loaded / total) * 100);
-                percent = percent > 99 ? 99 : percent;
+                percent = percent > 97 ? 97 : percent;
                 var uploadedTotal = $('#upload-loaded-total');
                 var progressBar = $('.upload-progress').find('.progress-bar');
                 if (uploadedTotal) {
@@ -921,7 +922,7 @@
             if (isCancelledUploading) {
                 return;
             }
-
+            var beginTime = new Date();
             if (mediaNode != '') {
                 // Saves to database
                 $.post('/wechat/quote/AddQuoteHistory',
@@ -947,7 +948,6 @@
                 });
             }
         }
-
 
         $('#btnAccept').click(function () {
             if (confirm('您确认接受该报价吗？')) {
