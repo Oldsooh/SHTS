@@ -387,6 +387,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     {
                         try
                         {
+                            if (comments.Contains("<video"))
+                            {
+                                comments = "视频消息";
+                            }
+                            else if (comments.Contains("<img"))
+                            {
+                                comments = "图片消息";
+                            }
+
                             if (quote.WeChatUserId == CurrentWeChatUser.Id)
                             {
                                 // Sends notification to wechat client.

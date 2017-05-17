@@ -93,6 +93,7 @@
             position: fixed;
             bottom: 0;
             background: #fff;
+            z-index: 999;
         }
 
             .footer textarea {
@@ -184,7 +185,7 @@
                     background: #7cfc00;
                 }
 
-                .content li .spanright_img_video {
+                .content li .img_video {
                     background: #fff;
                     border: none;
                     box-shadow: none;
@@ -202,18 +203,33 @@
                 }
 
                     .content li .video img {
-                        opacity: 0.6;
-                        /*float: left;*/
+                        /*opacity: 0.6;*/
                     }
 
-                    .content li .video .btn-video-play {
-                        z-index: 99;
-                        font-size: 30px;
-                        margin-right: -55px;
-                        color: green;
-                        cursor: pointer;
-                        vertical-align: middle;
-                    }
+                .content li .spanleft .video img {
+                    float: left;
+                }
+
+                .content li .video .btn-video-play {
+                    z-index: 10;
+                    font-size: 30px;
+                    height: 30px;
+                    width: 30px;
+                    cursor: pointer;
+                    vertical-align: middle;
+                    background: white;
+                    border-radius: 50%;
+                    opacity: 0.8;
+                }
+
+                .content li .spanleft .video .btn-video-play {
+                    margin-left: -55px;
+                    margin-top: 35px;
+                }
+
+                .content li .spanright .video .btn-video-play {
+                    margin-right: -55px;
+                }
 
                 .content li.time {
                     height: 20px;
@@ -249,7 +265,7 @@
 
             .upload-progress .progress {
                 height: 15px;
-                margin-bottom:2px;
+                margin-bottom: 2px;
             }
 
                 .upload-progress .progress .progress-bar {
@@ -303,6 +319,10 @@
         }
 
         .uploadifive-queue {
+            display: none;
+        }
+
+        input[type=file] {
             display: none;
         }
 
@@ -386,10 +406,26 @@
                 <div class="panel-heading">报价状态</div>
                 <table class="table table-striped">
                     <tr>
-                        <td>
+                        <td class="yellow2">
                             @(new HtmlString(quoteStatus))
                         </td>
                     </tr>
+                    @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1) && (Model.AcceptStatus == "Wait" || Model.AcceptStatus == "Denied"))
+                    {
+                        <tr>
+                            <td>
+                                @if (Model.AcceptStatus == "Wait")
+                                {
+                                    <button type="button" id="btnAccept" class="btn btn-primary" style="float:left;width:45%;">接受报价/报名</button>
+                                    <button type="button" id="btnReject" class="btn btn-danger" style="float:right;width:45%;">拒绝</button>
+                                }
+                                else if (Model.AcceptStatus == "Denied")
+                                {
+                                    <button type="button" id="btnAccept" class="btn btn-primary" style="float:left;width:100%;">接受报价/报名</button>
+                                }
+                            </td>
+                        </tr>
+                    }
                 </table>
             </div>
             <div class="panel panel-info">
@@ -477,24 +513,6 @@
                     </table>
                 </div>
 
-            }
-
-            if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
-            {
-                if (Model.AcceptStatus == "Wait")
-                {
-                    <div class="bottom">
-                        <button type="button" id="btnAccept" class="button btn-green" style="float:left;">接受报价/报名</button>
-                        <button type="button" id="btnReject" class="button btn-gray" style="float:right;">拒绝</button>
-
-                    </div>
-                }
-                else if (Model.AcceptStatus == "Denied")
-                {
-                    <div class="bottom">
-                        <button type="button" id="btnAccept" class="button btn-green" style="float:left;width:100%;">接受报价/报名</button>
-                    </div>
-                }
             }
             <div class="panel panel-success" style="margin-bottom: 50px;">
                 <div class="panel-heading">报价/报名详情及回复：</div>
@@ -627,10 +645,10 @@
             } else {
                 var timeNode = document.createElement('li');
                 var textNode = document.createElement('li');
-                var currentTime = new Date().toString('yyyy-MM-dd HH:mm:ss');
+                var currentTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
 
                 $(timeNode).addClass('time');
-                timeNode.innerHTML = '<span class="spanright">' + currentTime + '</span>';
+                timeNode.innerHTML = '<span class="spanright">' + currentTime + '&nbsp;我</span>';
                 textNode.innerHTML = '<img class="imgright" src="' + arrIconSrc + '"><span class="spanright">' + comments + '</span>'
                 content.appendChild(timeNode);
                 content.appendChild(textNode);
@@ -667,7 +685,7 @@
         $('#file_upload').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadimage.ashx',
-            'buttonText': '<i class="glyphicon glyphicon-camera"></i>上传图片',
+            'buttonText': '<i class="glyphicon glyphicon-camera"></i><span onclick="confirmBeforeUpload(this,\'上传的图片尺寸大小不能超过10M。是否继续上传？\');">上传图片</span>',
             'buttonClass': 'btn btn-Upload',
             'removeCompleted': 'true',
             'fileType': 'image/*',
@@ -723,7 +741,7 @@
         $('#file_upload_video').uploadifive({
             'auto': true,
             'uploadScript': '/Content/upload/uploadvideo.ashx',
-            'buttonText': '<i class="glyphicon glyphicon-film"></i>上传视频',
+            'buttonText': '<i class="glyphicon glyphicon-film"></i><span onclick="confirmBeforeUpload(this,\'上传的视频尺寸不能超过15秒，且大小不能超过20M。是否继续上传？\');">上传视频</span>',
             'buttonClass': 'btn btn-Upload',
             'removeCompleted': 'true',
             'fileType': 'video/*',
@@ -782,6 +800,19 @@
             }
         });
 
+        function confirmBeforeUpload(obj, message) {
+            var fileControls = $(obj).parent().find('input[type=file]');
+            if (fileControls) {
+                $(fileControls).each(function () {
+                    var fileControl = $(this);
+                    if (fileControl.attr('style').indexOf('display') == -1) {
+                        ds.dialog.confirm(message, function () {
+                            fileControl.click();
+                        });
+                    }
+                });
+            }
+        }
         refreshImgAndVideoMessages();
 
         //$('.content li span.spanleft video,.content li span.spanright video').click(function () {
@@ -790,7 +821,7 @@
         //    $(this)[0].play();
         //});
 
-        function playVideo(obj){
+        function playVideo(obj) {
             var videoNode = $(obj).parent().find('video')[0];
             videoNode.currentTime = 0;
             videoNode.play();
@@ -839,7 +870,7 @@
             }
         }
 
-        function cancelUploading(){
+        function cancelUploading() {
             $("#file_upload").uploadifive('cancel');
             $("#file_upload_video").uploadifive('cancel');
         }
@@ -851,11 +882,11 @@
                 $('.upload-progress').removeClass('hide');
             }
         }
-        function hideProgressBar(){
+        function hideProgressBar() {
             $('.upload-progress').addClass('hide');
-            setProgressBar(0,1, false);
+            setProgressBar(0, 1, false);
         }
-        function setProgressBar(loaded, total, isUploadComplete){
+        function setProgressBar(loaded, total, isUploadComplete) {
             var percent = 1;
             if (!isUploadComplete) {
                 percent = Math.round((loaded / total) * 100);
@@ -866,7 +897,7 @@
                     uploadedTotal.html(Math.ceil(loaded / 1024) + 'KB/' + Math.ceil(total / 1024) + 'KB');
                 }
             }
-            else{
+            else {
                 percent = 100;
             }
 
@@ -876,7 +907,7 @@
                 progressBar.html(percent + '%');
             }
 
-            if (percent == 100){
+            if (percent == 100) {
                 $('#btnCancenUploading').html('上传成功');
             }
         }
@@ -909,12 +940,8 @@
                     videoNode.play();
                 }
             });
-            $('.content li span.spanright img').each(function () {
-                $(this).parent().addClass('spanright_img_video');
-            });
-
-            $('.content li span.spanright .video').each(function () {
-                $(this).parent().addClass('spanright_img_video');
+            $('.content li span.spanleft img,.content li span.spanright img,.content li span.spanleft .video, .content li span.spanright .video').each(function () {
+                $(this).parent().addClass('img_video');
             });
         }
 
@@ -939,7 +966,7 @@
                             showMessage('上传失败，请重新尝试！', false);
                         }
                     }
-                    else{
+                    else {
                         showPreviewMessage(mediaNode);
                     }
 

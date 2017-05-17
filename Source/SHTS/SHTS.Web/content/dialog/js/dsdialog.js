@@ -658,7 +658,7 @@
                 fixed: true,
                 left: '50%',
                 top: '40%',
-                icon: 'confirm.png',
+                icon: '../../content/images/confirm.png',
                 title: '\u6d88\u606f\u786e\u8ba4',
                 content: content,
                 onyes: onyes || true,

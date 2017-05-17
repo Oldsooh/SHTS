@@ -718,6 +718,11 @@
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
     <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />
     <Content Include="Areas\Wechat\Content\scipts\validate.js" />
+    <Content Include="Content\images\all_wechat_kefu.jpg" />
+    <Content Include="Content\images\confirm.png" />
+    <Content Include="Content\images\ewm1.png" />
+    <Content Include="Content\images\ewm2.png" />
+    <Content Include="Content\images\question1.png" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\bin\avcodec-57.dll" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\bin\avdevice-57.dll" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\bin\avfilter-6.dll" />
