@@ -383,10 +383,14 @@ namespace Witbird.SHTS.Web.Controllers
                 Demand demand = demandService.GetDemandById(demandId);
                 if (demand != null)
                 {
+                    if (!demand.ContentStyle.Contains("<img"))
+                    {
+                        demand.ContentStyle = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentStyle, CommonService.ReplacementForContactInfo);
+                        demand.Description = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Description, CommonService.ReplacementForContactInfo);
+                        demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
+                    }
+
                     demand.ContentText = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentText, CommonService.ReplacementForContactInfo);
-                    demand.ContentStyle = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.ContentStyle, CommonService.ReplacementForContactInfo);
-                    demand.Description = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Description, CommonService.ReplacementForContactInfo);
-                    demand.Title = FilterHelper.Filter(FilterLevel.PhoneAndEmail, demand.Title, CommonService.ReplacementForContactInfo);
 
                     int userId = IsUserLogin ? CurrentUser.UserId : -1;
                     if (demand.UserId != userId && !IsVip)
