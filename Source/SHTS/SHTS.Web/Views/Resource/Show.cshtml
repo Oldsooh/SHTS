@@ -145,15 +145,16 @@
                                                             break;
                 }
             </div>
-            <div class="submitWrap cf cOverflow" style="display: none;">
-                <div class="submit" id="seo_submit-4" onclick="_hmt.push(['_trackEvent', 'pkg-booking-btn','click']);">
-                    中介申请
-                </div>
-                <div class="customize-plan" style="clear: both;">
-                    申请与该活动场地发起中介交易
-                </div>
-            </div>
         </div>
+
+        @*<div class="submitWrap cf cOverflow" style="display: none;">
+            <div class="submit" id="seo_submit-4" onclick="_hmt.push(['_trackEvent', 'pkg-booking-btn','click']);">
+                中介申请
+            </div>
+            <div class="customize-plan" style="clear: both;">
+                申请与该活动场地发起中介交易
+            </div>
+        </div>*@
     </div>
     <div id="splitline"></div>
     <div class="newsLeft showLeft" style="border-bottom: none;">
@@ -161,6 +162,10 @@
             <h2 class="detail_title" style="font-family: 'microsoft yahei', simsun; font-size: 18px; font-weight: normal; color: #0066CC;">
                 详细介绍
             </h2>
+
+            <h3 style="font-size:16px;">
+                如需查看更多业务和资源，请点击关注<a href="http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&amp;mid=406616045&amp;idx=1&amp;sn=0284c00c826b9faacc9fd51d61e90a31&amp;scene=0&amp;previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect" class="blue" target="_blank">微信公众号</a>
+            </h3>
         </div>
         <div class="showContent" style="overflow: hidden;">
             @(new HtmlString(Model.Description))

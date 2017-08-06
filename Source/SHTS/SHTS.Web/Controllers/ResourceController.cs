@@ -564,7 +564,7 @@ namespace Witbird.SHTS.Web.Controllers
                     space.WeChat = string.Empty;
                     space.Email = "认证会员可见";
                     space.Contract = "认证会员可见";
-                    space.DetailAddress = "认证会员可见";
+                    //space.DetailAddress = "认证会员可见";
                 }
 
                 try

@@ -4,9 +4,14 @@ using Senparc.Weixin.MP.TenPayLibV3;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Xml.Linq;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
@@ -96,7 +101,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             parameters.EndBudget = model.EndBudget;
             parameters.StartTime = model.StartTime;
             parameters.EndTime = model.EndTime;
-            
+
             if (!string.IsNullOrEmpty(city))
             {
                 model.Areas = cityService.GetAreasByCityId(city, true);
@@ -139,6 +144,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             if (tempId != 0)
             {
                 bool hasWeChatUserBoughtForDemand = false;
+                bool hasWeChatUserSharedForDemand = false;
                 var demand = demandService.GetDemandById(tempId);
 
                 if (demand != null)
@@ -154,6 +160,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     // 如果是自己发布的需求，无需购买即可查看
                     var isPostedByMyself = (demand.UserId == CurrentWeChatUser.UserId);
                     hasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, demand.Id);
+                    hasWeChatUserSharedForDemand = isPostedByMyself || demandService.HasWeChatUserSharedForDemand(CurrentWeChatUser.OpenId, demand.Id);
 
                     // 查询报价记录
                     var quotes = quoteService.GetAllDemandQuotesForOneDemand(demand.Id);
@@ -171,7 +178,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         {
                             var url = Fetch.BuildBaseUrl("/demand/show/" + demand.Id);
                             var trade = myTradeList.FirstOrDefault(item => item.ResourceUrl.Replace("/wechat", string.Empty).Equals(url, StringComparison.CurrentCultureIgnoreCase));
-                            
+
                             if (trade != null)
                             {
                                 demand.IsCurrentUserTraded = true;
@@ -188,13 +195,18 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     if (!hasWeChatUserBoughtForDemand)
                     {
                         demand.Phone = "未购买查看权限";
-                        demand.QQWeixin = "未购买查看权限";
                         demand.Email = "未购买查看权限";
                         demand.Address = "未购买查看权限";
+                    }
+
+                    if (!hasWeChatUserSharedForDemand)
+                    {
+                        demand.QQWeixin = "未购买查看权限";
                     }
                 }
 
                 model.HasCurrentWeChatUserBought = hasWeChatUserBoughtForDemand;
+                model.HasCurrentUserSharedWechat = hasWeChatUserSharedForDemand;
                 model.Demand = demand;
             }
 
@@ -312,7 +324,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             string subject = string.IsNullOrWhiteSpace(demand.Title) ? "微信用户购买需求联系方式永久权限" : demand.Title;
                             string body = "微信用户" + CurrentWeChatUser.NickName + "购买需求（" + demand.Title + "）联系方式的永久查看权限";
                             string username = CurrentWeChatUser.OpenId;
-                            
+
                             string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;
 
                             TradeOrder order = orderService.AddNewOrder(
@@ -597,6 +609,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return Content(result);
         }
 
+        /// <summary>
+        /// 准备微信支付参数
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="appId"></param>
+        /// <param name="timeStamp"></param>
+        /// <param name="nonceStr"></param>
+        /// <param name="package"></param>
+        /// <param name="paySign"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private bool PreparePaySign(TradeOrder order, out string appId, out string timeStamp,
             out string nonceStr, out string package, out string paySign, out string message)
         {
@@ -676,5 +699,192 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return isSuccessFul;
         }
 
+        #region 微信分享后可见代码
+
+
+
+        /// <summary>
+        /// 分享微信朋友圈查看需求微信联系方式
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ShareWechat(int id)
+        {
+            bool isSuccessFul = false;
+
+            try
+            {
+                Demand demand = demandService.GetDemandById(id);
+
+                if (demand != null)
+                {
+                    string orderId = orderService.GenerateNewOrderNumber();
+                    string subject = string.IsNullOrWhiteSpace(demand.Title) ? "微信用户分享需求到朋友圈" : demand.Title;
+                    string body = "微信用户" + CurrentWeChatUser.NickName + "分享需求（" + demand.Title + "）到朋友圈可免费查看微信号";
+                    string username = CurrentWeChatUser.OpenId;
+
+                    string resourceUrl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + id;
+
+                    TradeOrder order = orderService.AddNewOrder(
+                        orderId, subject, body, 0, OrderState.Succeed, username, resourceUrl, OrderType.WeChatShared, id);
+                    isSuccessFul = order != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.LogWexin("记录微信分享", ex.ToString());
+                isSuccessFul = false;
+            }
+
+            var jsonResult = new
+            {
+                IsSuccessFul = isSuccessFul
+            };
+
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult PrepareWechatShareParameter(int demandId)
+        {
+            bool isSuccessful = false;
+            string message = string.Empty;
+            var appId = string.Empty;
+            var timestamp = string.Empty;
+            var nonceStr = string.Empty;
+            var title = string.Empty;
+            var pageurl = string.Empty;
+            var ticket = string.Empty;
+            var signature = string.Empty;
+
+            Demand demand = demandService.GetDemandById(demandId);
+
+            if (demand == null)
+            {
+                isSuccessful = false;
+                message = "该需求不存在或已被删除，请刷新页面后重试。";
+            }
+            else
+            {
+                appId = TenPayV3Info.AppId;
+                timestamp = TenPayV3Util.GetTimestamp();
+                nonceStr = TenPayV3Util.GetNoncestr();
+
+                //微信access_token，用于获取微信jsapi_ticket  
+                string token = GetAccess_token(appId, TenPayV3Info.AppSecret);
+                //微信jsapi_ticket  
+                ticket = GetTicket(token);
+
+                title = "活动在线-" + demand.Title;
+                pageurl = "http://" + StaticUtility.Config.Domain + "/wechat/demand/show/" + demandId; ;
+
+                //对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串  
+                string str = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + pageurl;
+                //签名,使用SHA1生成  
+                signature = FormsAuthentication.HashPasswordForStoringInConfigFile(str, "SHA1").ToLower();
+
+                isSuccessful = true;
+            }
+
+            var data = new
+            {
+                IsSuccessFul = isSuccessful,
+                Message = message,
+                AppId = appId,
+                Timestamp = timestamp,
+                NonceStr = nonceStr,
+                Title = title,
+                PageUrl = pageurl,
+                Ticket = ticket,
+                Signature = signature
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>  
+        /// 获取微信jsapi_ticket  
+        /// </summary>  
+        /// <param name="token">access_token</param>  
+        /// <returns>jsapi_ticket</returns>  
+        public string GetTicket(string token)
+        {
+            string ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + token + "&type=jsapi";
+            string jsonresult = HttpGet(ticketUrl, "UTF-8");
+            WX_Ticket wxTicket = JsonDeserialize<WX_Ticket>(jsonresult);
+            return wxTicket.ticket;
+        }
+
+        /// <summary>  
+        /// 获取微信access_token  
+        /// </summary>  
+        /// <param name="appid">公众号的应用ID</param>  
+        /// <param name="secret">公众号的应用密钥</param>  
+        /// <returns>access_token</returns>  
+        private string GetAccess_token(string appid, string secret)
+        {
+            string tokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+            string jsonresult = HttpGet(tokenUrl, "UTF-8");
+            WX_Token wx = JsonDeserialize<WX_Token>(jsonresult);
+            return wx.access_token;
+        }
+
+        /// <summary>  
+        /// JSON反序列化  
+        /// </summary>  
+        /// <typeparam name="T">实体类</typeparam>  
+        /// <param name="jsonString">JSON</param>  
+        /// <returns>实体类</returns>  
+        private T JsonDeserialize<T>(string jsonString)
+        {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T));
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
+            T obj = (T)ser.ReadObject(ms);
+            return obj;
+        }
+
+        /// <summary>  
+        /// HttpGET请求  
+        /// </summary>  
+        /// <param name="url">请求地址</param>  
+        /// <param name="encode">编码方式：GB2312/UTF-8</param>  
+        /// <returns>字符串</returns>  
+        private string HttpGet(string url, string encode)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "text/html;charset=" + encode;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream myResponseStream = response.GetResponseStream();
+            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(encode));
+            string retString = myStreamReader.ReadToEnd();
+            myStreamReader.Close();
+            myResponseStream.Close();
+
+            return retString;
+        }
+
+        #endregion 微信分享后可见代码
+
+    }
+
+    /// <summary>  
+    /// 通过微信API获取access_token得到的JSON反序列化后的实体  
+    /// </summary>  
+    public class WX_Token
+    {
+        public string access_token { get; set; }
+        public string expires_in { get; set; }
+    }
+
+    /// <summary>  
+    /// 通过微信API获取jsapi_ticket得到的JSON反序列化后的实体  
+    /// </summary>  
+    public class WX_Ticket
+    {
+        public string errcode { get; set; }
+        public string errmsg { get; set; }
+        public string ticket { get; set; }
+        public string expires_in { get; set; }
     }
 }

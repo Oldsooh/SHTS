@@ -21,6 +21,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string sp_UpdateDemandWeixinBuyFee = "sp_UpdateDemandWeixinFeeByDemandId";
         private const string sp_UpdateDemandStatus = "sp_UpdateDemandStatus";
         private const string sp_SelectTradeOrderByOpenIdAndDemandId = "sp_SelectTradeOrderByOpenIdAndDemandId";
+        private const string sp_SelectTradeOrderForWeChatShare = "sp_SelectTradeOrderForWeChatShare";
         private const string sp_DemandSelectForWeChatPush = "sp_DemandSelectForWeChatPush";
 
         public List<Demand> SelectDemands(int pageCount, int pageIndex, out int count, SqlConnection conn)
@@ -344,7 +345,7 @@ namespace Witbird.SHTS.DAL.Daos
         }
 
         /// <summary>
-        /// 
+        /// 查询微信用户购买需求联系信息订单记录
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="wechatUserOpenId"></param>
@@ -359,6 +360,24 @@ namespace Witbird.SHTS.DAL.Daos
             };
 
             return DBHelper.GetSingleDataFromDB(conn, sp_SelectTradeOrderByOpenIdAndDemandId, parameters).Rows.Count;
+        }
+
+        /// <summary>
+        /// 查询微信用户分享需求订单记录
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="wechatUserOpenId"></param>
+        /// <param name="demandId"></param>
+        /// <returns></returns>
+        public static int SelectTradeOrderForWechatShare(SqlConnection conn, string wechatUserOpenId, int demandId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@UserName", wechatUserOpenId),
+                new SqlParameter("@ResourceId", demandId)
+            };
+
+            return DBHelper.GetSingleDataFromDB(conn, sp_SelectTradeOrderForWeChatShare, parameters).Rows.Count;
         }
 
         /// <summary>

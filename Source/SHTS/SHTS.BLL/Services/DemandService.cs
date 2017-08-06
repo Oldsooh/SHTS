@@ -382,6 +382,35 @@ namespace Witbird.SHTS.BLL.Services
         }
 
         /// <summary>
+        /// 检查用户是否已分享需求的微信号查看权限
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="demandId"></param>
+        /// <returns></returns>
+        public bool HasWeChatUserSharedForDemand(string openId, int demandId)
+        {
+            bool result = false;
+            var conn = DBHelper.GetSqlConnection();
+            try
+            {
+                conn.Open();
+                if (!string.IsNullOrEmpty(openId))
+                {
+                    result = DemandDao.SelectTradeOrderForWechatShare(conn, openId, demandId) > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.Log("查询已分享需求失败", e.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Updates demand status with specified status value.
         /// </summary>
         /// <param name="demandId"></param>

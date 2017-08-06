@@ -48,6 +48,14 @@
                 font-size: 15px;
             }
 
+        .btn-buy {
+            width: 30%;
+            height: 25px !important;
+            border-radius: 15px;
+            outline: none;
+            font-size: 15px;
+        }
+
         .btn-blue {
             background-color: #337ab7;
         }
@@ -82,24 +90,51 @@
                 @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)
             </span>
         </li>
-        @if (Model.HasCurrentWeChatUserBought)
+
+        @if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
         {
-            <li>
-                详细地址：
-                <span class="yellow2">@Model.Demand.Address</span>
-            </li>
-            <li>
-                联系电话：
-                <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
-            </li>
-            <li>
-                QQ/微信：
-                <span class="yellow2">@Model.Demand.QQWeixin</span>
-            </li>
-            <li>
-                电子邮箱：
-                <span class="yellow2">@Model.Demand.Email</span>
-            </li>
+            if (Model.HasCurrentWeChatUserBought)
+            {
+                <li>
+                    联系电话：
+                    <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
+                </li>
+                <li>
+                    电子邮箱：
+                    <span class="yellow2">@Model.Demand.Email</span>
+                </li>
+
+                <li>
+                    详细地址：
+                    <span class="yellow2">@Model.Demand.Address</span>
+                </li>
+            }
+            else
+            {
+                <li>
+                    联系电话：
+                    <span class="yellow2"><button type="button" class="button btn-buy btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系电话</button></span>
+                </li>
+            }
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin))
+        {
+            if (Model.HasCurrentUserSharedWechat)
+            {
+                <li>
+                    QQ/微信：
+                    <span class="yellow2">@Model.Demand.QQWeixin</span>
+                </li>
+            }
+            else
+            {
+                <li>
+                    QQ/微信：
+                    <span class="yellow2">
+                        <button type="button" class="button btn-buy btn-green" onclick="showWechat();">查看微信</button>
+                    </span>
+                </li>
+            }
         }
         <li>需求内容：</li>
     </ul>
@@ -116,7 +151,7 @@
                         <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
                         <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
                         ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
-                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
+                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">获取联系电话</span></a>
                     </div>
                 }
                 else
@@ -132,9 +167,7 @@
                         {
                             <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
                         }
-                        <br />
-                        <br />
-                        <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+
                         @if (Model.Demand.IsCurrentUserTraded)
                         {
                             <br />
@@ -244,5 +277,83 @@
                 }
             }
         });
+    }
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    var appId = '';
+    var timestamp = '';
+    var nonceStr = '';
+    var title = '';
+    var pageurl = '';
+    var ticket = '';
+    var signature = '';
+    var demandId = @Model.Demand.Id;
+
+    $(function () {
+        $.post("/wechat/demand/PrepareWechatShareParameter",
+            {
+                demandId: demandId
+            },
+            function (data) {
+                if (data.IsSuccessFul) {
+                    appId = data.AppId;
+                    timestamp = data.Timestamp;
+                    nonceStr = data.NonceStr;
+                    title = data.Title;
+                    pageurl = data.PageUrl;
+                    ticket = data.ticket;
+                    signature = data.signature;
+                }
+                else{
+                    alert('需求记录不存在或已被删除');
+                }
+            }).error(function (data) { alert('需求记录不存在或已被删除');});
+    });
+    wx.config({
+        //debug: true,   //调试模式，开启后则会在客户端直接alert结果
+        appId: appId,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline'
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: title,
+            link: pageurl,
+            imgUrl: '/content/images/logo.png',  //分享的LOGO
+            trigger: function (res) {
+
+            },
+            success: function (res) {
+                $.post("/wechat/demand/ShareWechat",
+                {
+                    id: demandId
+                },
+                function (data) {
+                    if (data.IsSuccessFul) {
+                        window.location.href = window.location.href;
+                    }
+                    else {
+                        alert('分享内容失败，请刷新页面后重试');
+                    }
+                }).error(function (data) { alert('分享内容失败，请刷新页面后重试'); });
+            },
+            cancel: function (res) {
+            },
+            fail: function (res) {
+                alert('wx.onMenuShareTimeline:fail: ' + JSON.stringify(res));
+            }
+        });
+    });
+
+    function showWechat(){
+        alert('请点击右上角分享到朋友圈后查看微信联系方式');
     }
 </script>

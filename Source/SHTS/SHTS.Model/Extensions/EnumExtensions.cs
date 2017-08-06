@@ -42,7 +42,7 @@ namespace Witbird.SHTS.Model
 
 
     /// <summary>
-    /// 确定由来支付中介手续费
+    /// 确定由谁来支付中介手续费
     /// </summary>
     public enum Payer
     {
@@ -130,7 +130,11 @@ namespace Witbird.SHTS.Model
         /// <summary>
         /// 需求发布鼓励金
         /// </summary>
-        RechargeByDemandBonus
+        RechargeByDemandBonus,
+        /// <summary>
+        /// 用户分享微信朋友圈免费查看需求微信号
+        /// </summary>
+        WeChatShared
     }
 
     /// <summary>
