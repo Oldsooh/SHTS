@@ -321,7 +321,8 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@TimeLength", TimeLength),
                 new SqlParameter("@PeopleNumber", PeopleNumber),
                 new SqlParameter("@Budget", demand.Budget),
-                new SqlParameter("@IsActive", demand.IsActive)
+                new SqlParameter("@IsActive", demand.IsActive),
+                new SqlParameter("@ImageUrls", demand.ImageUrls?? string.Empty)
             };
             return DBHelper.SetDataToDB(conn, sp_DemandUpdate, sqlParameters);
         }

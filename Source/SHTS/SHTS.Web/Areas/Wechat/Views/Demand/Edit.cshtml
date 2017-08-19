@@ -9,6 +9,147 @@
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
+    <link href="~/Content/webuploader/demo.css" rel="stylesheet" />
+    <link href="~/Content/uploadifive/uploadifive.css" rel="stylesheet" />
+    <style type="text/css">
+        .inline {
+            display: inline-block;
+            width: 49%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+            .inline.wide {
+                width: 100%;
+            }
+
+            .inline > .title {
+                font-size: 13px;
+                /* color: #666; */
+            }
+
+                .inline > .title.highlight {
+                    font-weight: bold;
+                }
+
+
+                    .inline > .title.highlight:after {
+                        content: '*';
+                        color: red;
+                    }
+
+            .inline > input[type=text] {
+                width: 86%;
+            }
+
+            .inline.wide > input[type=text], .inline.wide > textarea {
+                width: 93%;
+            }
+
+            .inline.wide > button {
+                width: 99% !important;
+                border-radius: 5px;
+            }
+
+            .inline > select {
+                width: 100%;
+                height: 100%;
+            }
+
+            .inline.area > select {
+                width: 32%;
+            }
+
+            .inline > .detail {
+                border: 1px solid #CECECF;
+                box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+                padding-left: 10px;
+                padding-bottom: 10px;
+                width: 96%;
+            }
+
+                .inline > .detail > div {
+                    display: inline-block;
+                    margin-top: 10px;
+                }
+
+                .inline > .detail > div {
+                    margin-right: 10px;
+                }
+
+                    .inline > .detail > div input[type=checkbox] {
+                        width: 18px;
+                        height: 18px;
+                        position: initial;
+                        vertical-align: middle;
+                        margin-top: -3px;
+                    }
+
+        .hd {
+            display: none;
+        }
+
+
+        #uploader-demo label {
+            position: inherit;
+            font-size: 10px;
+            color: transparent;
+            top: 0px;
+            padding-left: 0px;
+            width: 80% !important;
+        }
+
+        .wrap {
+            height: auto;
+        }
+
+        .register-box {
+            position: initial;
+            margin-bottom: 20px;
+        }
+
+        .reg-form {
+            height: auto;
+            padding-left: 5px;
+            width: unset !important;
+        }
+
+        .uploadifive-button, .uploadifive-button > input[type=file], .uploadifive-queue-item {
+            border-radius: 3px !important;
+            margin-top: 5px !important;
+            margin-right: 10px !important;
+            padding: 0 !important;
+            width: 100px !important;
+            height: 100px !important;
+            float: left !important;
+            background-repeat: round !important;
+            border: 1px solid #666 !important;
+        }
+
+        .uploadifive-button {
+            background-image: url('/Areas/Wechat/Content/images/btnAdd.png') !important;
+            background-repeat: no-repeat !important;
+            background-size: contain;
+        }
+
+            .uploadifive-button, .uploadifive-button:hover {
+                background-color: initial !important;
+            }
+
+        .uploadifive-queue-item > .close {
+            width: 30px;
+            height: 30px;
+            background-image: url(../../../../Content/images/no.png);
+            background-size: contain;
+        }
+
+        .uploadifive-queue-item > div > .fileinfo, .uploadifive-queue-item > div > .filename {
+            display: none;
+            width: 0px;
+            height: 0px;
+        }
+    </style>
+
     <style type="text/css">
         .reg-form .cell label {
             position: absolute;
@@ -44,7 +185,7 @@
 
             .reg-form .cell select {
                 height: 100%;
-                width: 32.5%;
+                width: 32%;
             }
 
             .reg-form .cell textarea {
@@ -82,8 +223,8 @@
             position: inherit !important;
         }
 
-        .hd{
-            display:none;
+        .hd {
+            display: none;
         }
     </style>
 
@@ -91,40 +232,65 @@
         function editDemand() {
             var Title = document.getElementById("Title").value;
             var Phone = document.getElementById("Phone").value;
+            var Weixin = document.getElementById("QQWeixin").value;
             var ContentText = document.getElementById("ContentText").value;
+            var imagesUrls = "";
+            isfirst = true;
+            $('.uploadifive-queue-item').each(function () {
+                if (!isfirst) {
+                    imagesUrls += '|';
+                }
 
-            if (Title != "") {
-                if (Phone != "") {
-                    if (ContentText != "") {
-                        $.ajax({
-                            url: '/wechat/demand/edit',
-                            data: $("#editForm").serialize(),
-                            type: 'POST',
-                            success: function (msg) {
-                                if (msg == "success") {
-                                    alert("更新成功");
-                                    window.location = "/wechat/demand/mydemands";
-                                }
-                                else {
-                                    alert(msg);
-                                }
-                            },
-                            error: function (msg) {
-                                alert("无法连接到服务器，请检查网络连接是否良好");
-                            }
-                        });
+                isfirst = false;
+                var imageUrl = $(this).attr('rurl');
+
+                imagesUrls += imageUrl;
+            });
+
+            //if (isEmptyValue(imagesUrls)) {
+            //    $('.uploadifive-button')[0].focus();
+            //    showMessage('请上传几张资源图片用于展示', false);
+            //    return false;
+            //}
+            $('#ImageUrls').val(imagesUrls);
+
+            if (Title == "" || Title.trim() == "") {
+                alert("请填写需求标题");
+                return;
+            }
+
+
+            if ((Phone == "" || Phone.trim() == "") && (Weixin == "" || Weixin.trim() == "")) {
+                alert("请填写联系电话或者微信号");
+                return;
+            }
+
+            if (ContentText == "" || ContentText.trim() == "") {
+                alert("请填写需求详细内容");
+                return;
+            }
+
+            if (Title.indexOf('寻找') == -1) {
+                Title = '寻找' + Title;
+                $('#Title').val(Title);
+            }
+            $.ajax({
+                url: '/wechat/demand/edit',
+                data: $("#editForm").serialize(),
+                type: 'POST',
+                success: function (msg) {
+                    if (msg == "success") {
+                        alert("更新成功");
+                        window.location.href = "/wechat/demand/mydemands";
                     }
                     else {
-                        alert("内容不能为空");
+                        alert(msg);
                     }
+                },
+                error: function (msg) {
+                    alert("网络异常，更新失败");
                 }
-                else {
-                    alert("电话不能为空");
-                }
-            }
-            else {
-                alert("标题不能为空");
-            }
+            });
         }
 
         function demandCategoryChange() {
@@ -162,13 +328,16 @@
     </script>
 
     <script>
-    function toLogin() {
-        alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
-        window.location = "/wechat/account/login";
-    }
+        function toLogin() {
+            alert("您需要绑定会员账号后继续操作。可登录在PC端同步查看我发布的需求信息和活动在线。");
+            window.location = "/wechat/account/login";
+        }
     </script>
     <link href="/content/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
     <script src="/content/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Content/js/jquery-1.11.1.min.js"></script>
+<script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
+<script src="~/Areas/Wechat/Content/scipts/uploadImgScript.js"></script>
 }
 @if (CurrentWeChatUser != null && !CurrentWeChatUser.IsUserLoggedIn)
 {
@@ -181,7 +350,7 @@
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
         <form action="/wechat/demand/edit" id="editForm" class="reg-form" method="post">
             <input type="hidden" id="id" name="id" value="@Model.Demand.Id" />
-            @{ 
+            @{
                 var hideSpaceTypeClass = "hd";
                 var hideActorTypeClass = "hd";
                 var hideEquipTypeClass = "hd";
@@ -214,7 +383,7 @@
                     {
                         if (item.Value.Equals(Model.Demand.ResourceType.ToString()))
                         {
-                        <option value="@item.Value" selected="selected">@item.Text</option>
+                            <option value="@item.Value" selected="selected">@item.Text</option>
                         }
                         else
                         {
@@ -228,7 +397,7 @@
                     {
                         if (resourceType == 1 && item.Value.Equals(resourceTypeId))
                         {
-                        <option value="@item.Value" selected="selected">@item.Text</option>
+                            <option value="@item.Value" selected="selected">@item.Text</option>
                         }
                         else
                         {
@@ -285,7 +454,7 @@
             <div class="cell">
                 @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
                 <input id="starttime" name="StartTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
-                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;" 
+                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;"
                        value='@(Model.Demand.StartTime.HasValue ? Model.Demand.StartTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
 
                 <input id="endtime" name="EndTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
@@ -302,7 +471,7 @@
                 <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text" value="@Model.Demand.Phone">
             </div>
             <div class="cell">
-                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="QQ/微信" class="text" value="@Model.Demand.QQWeixin">
+                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="微信" class="text" value="@Model.Demand.QQWeixin">
             </div>
             <div class="cell">
                 <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text" value="@Model.Demand.Email">
@@ -366,6 +535,32 @@
             <div class="cell" style="height: 200px;">
                 <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 180px; width: 94%;">@Model.Demand.ContentText</textarea>
             </div>
+            <!--upload image-->
+            <div class="inline wide">
+                <div class="title highlight">
+                    添加几张照片，让您的信息更受欢迎
+                </div>
+                <input id="ImageUrls" name="ImageUrls" type="hidden">
+                <input name="file_upload" id="file_upload" type="file" multiple="multiple" accept="image/*" />
+                @if (Model.Demand.ImgUrls.Length > 0)
+                {
+                    // 0: index, 1: small img url, 2: original img url, 3: index
+                    var queueItemTemplate = "<div class=\"uploadifive-queue-item complete\" id=\"uploadifive-file_upload-file-{0}\" style=\"background-image:url('{1}')\" rurl=\"{2}\"><a class=\"close\" href=\"javascript:void(0);\" onclick=\"clearItem(this);\">X</a><div><span class=\"filename\">{3}.jpg</span><span class=\"fileinfo\"> - Completed</span></div><div class=\"progress\" style=\"display: none;\"><div class=\"progress-bar\" style=\"width: 100%;\"></div></div></div>";
+                    var imgHtmls = "";
+                    <div id="uploadifive-file_upload-queue" class="uploadifive-queue">
+                        @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                        {
+                            var imgUrl = Model.Demand.ImgUrls[i];
+                            var item = string.Format(queueItemTemplate, i, imgUrl, imgUrl, i);
+
+                            imgHtmls += item;
+                        }
+
+                        @(new HtmlString(imgHtmls))
+                    </div>
+                }
+            </div>
+
             <div class="bottom">
                 <button type="button" id="js-mobile_btn" class="button btn-green" onclick="editDemand()">更新需求</button>
             </div>

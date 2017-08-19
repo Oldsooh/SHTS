@@ -89,7 +89,7 @@ namespace Witbird.SHTS.BLL.Managers
         /// <returns></returns>
         public bool AddDemand(int userId, int resourceType, int resourceSubTypeId, string title, string contentStyle,
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
-            string startTime, string endTime, string timeLength, string peopleNumber, int budget, int weixinBuyDemandFee, out string errorMessage, out int demandId)
+            string startTime, string endTime, string timeLength, string peopleNumber, int budget, int weixinBuyDemandFee, string imageUrls,  out string errorMessage, out int demandId)
         {
             bool isAddSuccessfully = false;
             demandId = -1;
@@ -118,9 +118,9 @@ namespace Witbird.SHTS.BLL.Managers
                 {
                     errorMessage = "请填写正确需求开始与结束时间！";
                 }
-                else if (string.IsNullOrWhiteSpace(phone))
+                else if (string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(qqweixin))
                 {
-                    errorMessage = "为了保证资源提供商能及时联系到您，请勿必填写电话号码！";
+                    errorMessage = "为了保证资源提供商能及时联系到您，请填写电话号码或者微信！";
                 }
                 else if (budget < 0)
                 {
@@ -157,6 +157,7 @@ namespace Witbird.SHTS.BLL.Managers
                     demand.InsertTime = DateTime.Now;
                     demand.Status = (int)DemandStatus.InProgress;
                     demand.WeixinBuyFee = weixinBuyDemandFee;
+                    demand.ImageUrls = imageUrls;
 
                     isAddSuccessfully = demandRepository.AddEntitySave(demand);
                     errorMessage = "success";

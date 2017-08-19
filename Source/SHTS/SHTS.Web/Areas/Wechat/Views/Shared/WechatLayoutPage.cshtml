@@ -13,6 +13,7 @@
         #nav { margin-top: 10px; height: auto; }
         .navli { width: 20%; }
     </style>
+    <script type="text/JavaScript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="~/Content/js/jquery-1.11.1.min.js"></script>
     <script src="~/Content/js/jquery.cookie.js"></script>
     <script src="~/Content/js/jquery.validate.min.js"></script>
@@ -60,7 +61,6 @@
         @RenderBody()
 
     </div>
-    @RenderSection("FooterJS", false)
     <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer&PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
     @if (Session["CityId"] == null)
     {
@@ -96,5 +96,7 @@
             setLocalCity();
         </script>
     }
+
+    @RenderSection("FooterJS", false)
 </body>
 </html>

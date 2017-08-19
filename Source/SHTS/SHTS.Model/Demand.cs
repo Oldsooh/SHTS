@@ -39,5 +39,6 @@ namespace Witbird.SHTS.Model
         public Nullable<int> WeixinBuyFee { get; set; }
         public Nullable<int> Status { get; set; }
         public Nullable<int> ResourceTypeId { get; set; }
+        public string ImageUrls { get; set; }
     }
 }

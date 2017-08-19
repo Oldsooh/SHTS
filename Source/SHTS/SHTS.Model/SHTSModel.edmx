@@ -218,6 +218,7 @@
           <Property Name="InsertTime" Type="datetime" Nullable="false" />
           <Property Name="WeixinBuyFee" Type="int" />
           <Property Name="Status" Type="int" />
+          <Property Name="ImageUrls" Type="text" />
         </EntityType>
         <EntityType Name="DemandCategory">
           <Key>
@@ -977,6 +978,7 @@
           <Property Name="WeixinBuyFee" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <Property Name="ResourceTypeId" Type="Int32" />
+          <Property Name="ImageUrls" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DemandCategory">
           <Key>
@@ -1661,6 +1663,7 @@
           <EntitySetMapping Name="Demand">
             <EntityTypeMapping TypeName="shtsModel.Demand">
               <MappingFragment StoreEntitySet="Demand">
+                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
                 <ScalarProperty Name="ResourceTypeId" ColumnName="ResourceTypeId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="WeixinBuyFee" ColumnName="WeixinBuyFee" />

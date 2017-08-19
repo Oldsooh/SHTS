@@ -23,6 +23,9 @@
 {
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-2.1.4.min.js"></script>
+    <script src="~/Content/js/bootstrap/bootstrap.min.js"></script>
     <style type="text/css">
         #demand a {
             color: #ffffff;
@@ -49,7 +52,7 @@
             }
 
         .btn-buy {
-            width: 30%;
+            width: auto;
             height: 25px !important;
             border-radius: 15px;
             outline: none;
@@ -58,6 +61,15 @@
 
         .btn-blue {
             background-color: #337ab7;
+        }
+
+        .container {
+            width: auto !important;
+            top: 0 !important;
+        }
+
+        .col-md-12 {
+            padding: 0;
         }
     </style>
 }
@@ -99,15 +111,6 @@
                     联系电话：
                     <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
                 </li>
-                <li>
-                    电子邮箱：
-                    <span class="yellow2">@Model.Demand.Email</span>
-                </li>
-
-                <li>
-                    详细地址：
-                    <span class="yellow2">@Model.Demand.Address</span>
-                </li>
             }
             else
             {
@@ -117,21 +120,36 @@
                 </li>
             }
         }
+
+        @if (Model.HasCurrentWeChatUserBought)
+        {
+            <li>
+                电子邮箱：
+                <span class="yellow2">@Model.Demand.Email</span>
+            </li>
+
+            <li>
+                详细地址：
+                <span class="yellow2">@Model.Demand.Address</span>
+            </li>
+        }
         @if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin))
         {
             if (Model.HasCurrentUserSharedWechat)
             {
                 <li>
-                    QQ/微信：
+                    客户微信：
                     <span class="yellow2">@Model.Demand.QQWeixin</span>
                 </li>
             }
             else
             {
                 <li>
-                    QQ/微信：
+                    客户微信：
                     <span class="yellow2">
-                        <button type="button" class="button btn-buy btn-green" onclick="showWechat();">查看微信</button>
+                        @*<button type="button" class="button btn-buy btn-green" onclick="showWechat();">查看微信</button>*@
+                        <span id="qqWeixinValue" class="yellow2">分享朋友圈后即可免费查看</span>
+                        <input type="hidden" id="qqWeixinHiddenValue" value="@Model.Demand.QQWeixin" />
                     </span>
                 </li>
             }
@@ -235,23 +253,70 @@
             </li>
         </ul>
     }
-    <div style="clear: both; height: 10px;"></div>
+    @if (Model.Demand.ImgUrls.Length > 0)
+    {
+        <div style="clear: both; height: 10px;"></div>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="carousel slide" id="carousel-144040">
+                        <ol class="carousel-indicators">
+                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <li class="active" data-slide-to="0" data-target="#carousel-144040">
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li data-slide-to="@i" data-target="#carousel-144040">
+                                    </li>
+                                }
+                            }
+                        </ol>
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <div class="item active">
+                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="item">
+                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                    </div>
+                                }
+                            }
+                        </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
 <script>
-    function buyDemand(demandId) {
-        //wechat/demand/Buy
-        $.post("/wechat/demand/Buy",
-        {
-            id: demandId
-        },
-        function (data) {
-            if (data.IsSuccessFul) {
-                callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
+    function showMessage(msg, isSuccessfulMsg) {
+        if (msg != '') {
+            if (isSuccessfulMsg) {
+                ds.dialog({
+                    title: '消息提示',
+                    content: msg,
+                    icon: "/Content/dialog/images/success.png"
+                });
             }
             else {
-                alert(data.Message);
+                ds.dialog({
+                    title: '消息提示',
+                    content: msg,
+                    icon: "/Content/dialog/images/info.png"
+                });
             }
-        }).error(function (data) { alert(data); });
+        }
     }
 
     function callPayApi(appId, timeStamp, nonceStr, package1, paySign) {
@@ -278,41 +343,39 @@
             }
         });
     }
+
+    function buyDemand(demandId) {
+        //wechat/demand/Buy
+        $.post("/wechat/demand/Buy",
+        {
+            id: demandId
+        },
+        function (data) {
+            if (data.IsSuccessFul) {
+                callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
+            }
+            else {
+                alert(data.Message);
+            }
+        }).error(function (data) { alert(data); });
+    }
+
+    function showWechat() {
+        alert('请点击右上角分享到朋友圈后查看微信联系方式');
+    }
 </script>
 
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
-    var appId = '';
-    var timestamp = '';
-    var nonceStr = '';
-    var title = '';
-    var pageurl = '';
-    var ticket = '';
-    var signature = '';
+    var appId = '@Model.WechatShareParameters.AppId';
+    var timestamp = @Model.WechatShareParameters.Timestamp;
+    var nonceStr = '@Model.WechatShareParameters.NonceStr';
+    var signature = '@Model.WechatShareParameters.Signature';
+    var title = '@Model.WechatShareParameters.Title';
+    var link = '@Model.WechatShareParameters.Link';
     var demandId = @Model.Demand.Id;
 
-    $(function () {
-        $.post("/wechat/demand/PrepareWechatShareParameter",
-            {
-                demandId: demandId
-            },
-            function (data) {
-                if (data.IsSuccessFul) {
-                    appId = data.AppId;
-                    timestamp = data.Timestamp;
-                    nonceStr = data.NonceStr;
-                    title = data.Title;
-                    pageurl = data.PageUrl;
-                    ticket = data.ticket;
-                    signature = data.signature;
-                }
-                else{
-                    alert('需求记录不存在或已被删除');
-                }
-            }).error(function (data) { alert('需求记录不存在或已被删除');});
-    });
     wx.config({
-        //debug: true,   //调试模式，开启后则会在客户端直接alert结果
+        //debug: true,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
@@ -326,34 +389,34 @@
     wx.ready(function () {
         wx.onMenuShareTimeline({
             title: title,
-            link: pageurl,
-            imgUrl: '/content/images/logo.png',  //分享的LOGO
-            trigger: function (res) {
-
-            },
-            success: function (res) {
-                $.post("/wechat/demand/ShareWechat",
+            link: link,
+            imgUrl: '',
+            success: function () {
+                console.log('分享成功');
+                $.post("/wechat/demand/sharewechat",
                 {
                     id: demandId
                 },
                 function (data) {
+                    console.log(data);
+                    console.log($('#qqWeixinValueHiddenValue').val());
+                    console.log($('#qqWeixinValue').html());
                     if (data.IsSuccessFul) {
-                        window.location.href = window.location.href;
+                        $('#qqWeixinValue').html($('#qqWeixinHiddenValue').val());
                     }
-                    else {
-                        alert('分享内容失败，请刷新页面后重试');
-                    }
-                }).error(function (data) { alert('分享内容失败，请刷新页面后重试'); });
+                    console.log($('#qqWeixinValue').html());
+                }).error(function (data) { 
+                    showMessage('分享发生了点小故障，请刷新一下页面后再试试哦');
+                });
             },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert('wx.onMenuShareTimeline:fail: ' + JSON.stringify(res));
+            cancel: function () {
+                showMessage('分享朋友圈就可以免费查看微信哦');
             }
         });
     });
 
-    function showWechat(){
-        alert('请点击右上角分享到朋友圈后查看微信联系方式');
-    }
+
+    wx.error(function (res) {
+        //alert('error');
+    });
 </script>

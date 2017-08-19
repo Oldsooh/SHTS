@@ -18,7 +18,8 @@
 	@TimeLength		nvarchar(50),
 	@PeopleNumber	nvarchar(50),
 	@Budget			int,
-	@IsActive		bit
+	@IsActive		bit,
+	@ImageUrls		text
 AS
 BEGIn
 	Update Demand
@@ -42,6 +43,7 @@ BEGIn
       ,[PeopleNumber]=@PeopleNumber
       ,[Budget]=@Budget
 	  ,[IsActive]=@IsActive
+	  ,[ImageUrls] = @ImageUrls
 	where Id = @Id
 END
 GO

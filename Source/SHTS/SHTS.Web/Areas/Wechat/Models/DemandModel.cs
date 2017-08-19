@@ -24,5 +24,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
         public List<TradeOrder> PaidDemandOrders { get; set; }
 
         public string ActionName { get; set; }
+
+        public WechatParameters WechatShareParameters { get; set; }
+    }
+
+    public class WechatParameters
+    {
+        public string AppId;
+        public string Timestamp;
+        public string NonceStr;
+        public string Title;
+        public string Link;
+        public string Signature;
     }
 }

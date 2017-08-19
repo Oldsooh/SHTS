@@ -150,7 +150,7 @@ namespace Witbird.SHTS.Web.Controllers
 
                 if (demandManager.AddDemand(CurrentUser.UserId, ResourceType, resourceSubTypeId, title, contentStyle, provinceId,
                     cityId, areaId, address, phone, qqweixin, email, startTime, endTime, timeLength, peopleNumber,
-                    demandBudget, (int)BuyDemandFee, out result, out demandId))
+                    demandBudget, (int)BuyDemandFee, string.Empty, out result, out demandId))
                 {
                     Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
                 }

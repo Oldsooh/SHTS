@@ -717,6 +717,7 @@
     <Content Include="Areas\Wechat\Content\images\bg.png" />
     <Content Include="Areas\Wechat\Content\images\btnAdd.png" />
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
+    <Content Include="Areas\Wechat\Content\scipts\jweixin-1.2.0.js" />
     <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />
     <Content Include="Areas\Wechat\Content\scipts\validate.js" />
     <Content Include="Content\images\all_wechat_kefu.jpg" />
@@ -1215,6 +1216,7 @@
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\doc\examples\Makefile" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\doc\examples\README" />
+    <Content Include="Areas\Wechat\Views\Demand\TestWXShare.cshtml" />
     <None Include="VideoConverter\ffmpeg-3.2.4-win64-shared\presets\ffprobe.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1435,7 +1437,6 @@
     <Content Include="Content\kindeditor\themes\qq\editor.gif" />
     <Content Include="Content\kindeditor\themes\qq\qq.css" />
     <Content Include="Content\kindeditor\themes\simple\simple.css" />
-    <Content Include="Content\kindeditor\uploadfiles\image\20141017\20141017200615_4418.jpg" />
     <Content Include="Content\kindeditor\zh_CN.js" />
     <Content Include="Content\mobile\css\common4.css" />
     <Content Include="Content\mobile\images\banner.jpg" />
@@ -1544,53 +1545,6 @@
     <None Include="Content\js\jquery-1.4.4-vsdoc.js" />
     <Content Include="Content\js\jquery-1.4.4.js" />
     <Content Include="Content\js\jquery-1.4.4.min.js" />
-    <Content Include="uploadfiles\2014\12\16\20141216010106296.jpg" />
-    <Content Include="uploadfiles\2014\12\16\20141216010318976.jpg" />
-    <Content Include="uploadfiles\2014\12\16\20141216010453909.jpg" />
-    <Content Include="uploadfiles\2014\12\16\20141216010711486.jpg" />
-    <Content Include="uploadfiles\2014\12\16\20141216011042342.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716391.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716391_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716399.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716399_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716445.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224223716445_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230500577.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230500577_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518929.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518929_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518933.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518933_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518994.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230518994_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230606480.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230606480_small.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230606499.jpg" />
-    <Content Include="uploadfiles\2014\12\24\20141224230606499_small.jpg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402251.jpg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402251_big.jpg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402251_small.jpg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402263.jpeg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402263_big.jpeg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402263_small.jpeg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402396.jpeg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402396_big.jpeg" />
-    <Content Include="uploadfiles\2014\12\30\20141230222402396_small.jpeg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704397.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704397_big.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704397_small.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704470.jpeg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704470_big.jpeg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704470_small.jpeg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704544.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704544_big.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704544_small.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704666.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704666_big.jpg" />
-    <Content Include="uploadfiles\2014\12\31\20141231001704666_small.jpg" />
-    <Content Include="uploadfiles\2014\12\31\1.jpg" />
-    <Content Include="uploadfiles\2014\12\31\2.jpg" />
-    <Content Include="uploadfiles\photo.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

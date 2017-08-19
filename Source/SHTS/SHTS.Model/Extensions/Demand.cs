@@ -150,5 +150,25 @@ namespace Witbird.SHTS.Model
             get;
             set;
         }
+
+        private string[] _ImgUrls;
+        public string[] ImgUrls
+        {
+            get
+            {
+                if (_ImgUrls == null)
+                {
+                    if (!string.IsNullOrEmpty(ImageUrls))
+                    {
+                        _ImgUrls = ImageUrls.Split('|');
+                    }
+                    else
+                    {
+                        _ImgUrls = new string[] { };
+                    }
+                }
+                return _ImgUrls;
+            }
+        }
     }
 }

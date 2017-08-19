@@ -149,14 +149,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
                 // 取消强制关注逻辑
                 //用户还未关注，提示用户关注我们先。
-                //if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
-                //{
-                //    filterContext.Result = new RedirectResult(FollowUsUrl);
-                //}
-                //else 
-
+                if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
+                {
+                    filterContext.Result = new RedirectResult(WeChatClient.Constant.FollowUrlBeforeAccess);
+                    Caching.Set(wechatOpenIdCookie.Value + "_LastUrl", GetOriginalUrlString(filterContext));
+                }
                 // 未获得用户数据，重新授权
-                if (wechatUser == null || !wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
+                else if (!wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
                 {
                     isWeChatAuthRequired = true;
                 }
@@ -353,7 +352,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// </summary>
         private void SetWeChatUserSessionForTestingUseOnly()
         {
-            WeChatUser wechatUser = new UserService().GetWeChatUserByWeChatUserId(112818);// 112816
+            WeChatUser wechatUser = new UserService().GetWeChatUserByWeChatUserId(112816);// 112818
             if (wechatUser.IsNotNull())
             {
                 CurrentWeChatUser = wechatUser;

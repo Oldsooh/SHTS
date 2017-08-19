@@ -58,6 +58,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// </summary>
             public const string AboutUsUrl = "http://mp.weixin.qq.com/s?__biz=MzIzODAzMjg1Mg==&mid=406616045&idx=1&sn=0284c00c826b9faacc9fd51d61e90a31&scene=0&previewkey=hJ65r3CvPxZrCv2xPXuf8MNS9bJajjJKzz%2F0By7ITJA%3D#wechat_redirect";
 
+            public const string FollowUrlBeforeAccess = "http://mp.weixin.qq.com/s/XEWi6MFylTIs6xfM5lUIsA";
+
         }
 
         public static class Sender
