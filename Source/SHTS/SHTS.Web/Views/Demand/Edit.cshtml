@@ -41,6 +41,11 @@
 
         function editDemand() {
             $("#editorContent").val(editorContent.html());//把编辑器的内空复制到 textarea 标签
+            var Title = $('#txtTitle').val();
+            if (Title.indexOf('寻找') == -1) {
+                Title = '寻找' + Title;
+                $('#txtTitle').val(Title);
+            }
             $.ajax({
                 url: '/demand/edit',
                 data: $("#addform").serialize(),
@@ -227,13 +232,11 @@
             }
             <div class="ur_title"><span class="red ch"></span>标题：</div>
             <div class="ur_box">
-                <input class="ur_txt1" name="title" maxlength="50" value="@Model.Demand.Title" />
-                <span style="color: #ff0000;">&nbsp;&nbsp;必填</span><span style="color: #4193ff;">&nbsp;&nbsp;请认真填写，方便提供商看到.</span>
+                <span style="position:absolute;font-size:15px;">&nbsp;&nbsp;寻找</span>
+                <input type="text" id="txtTitle" name="title" style="padding-left:40px;width:244px;" placeholder="请输入需求标题" class="ur_txt1" value="">
+                <span style="color: #ff0000;">&nbsp;&nbsp; 必填</span><span style="color: #4193ff;">&nbsp;&nbsp;请认真填写，方便提供商看到.</span>
             </div>
             <div class="clearfix"></div>
-
-
-
 
             <div class="ur_title lh24"><span class="red ch"></span>地区：</div>
             <div class="ur_box">

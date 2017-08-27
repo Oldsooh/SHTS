@@ -79,12 +79,22 @@
         <li class="dtitle">
             <lable style="color: #FD9102;font-size:20px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
         </li>
+        <li style="text-align:right;">
+            @if (Model.Demand.IsCurrentUserTraded)
+            {
+                <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)">查看中介申请</a>
+            }
+            else
+            {
+                <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand">申请中介</a>
+            }
+        </li>
         <li>发布时间：<span class="yellow2">@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm")</span></li>
         @*<li>发布来源：<span class="yellow2">@Model.Demand.UserName</span></li>*@
-        <li>需求类别：<span class="yellow2">@Model.Demand.ResourceTypeName</span></li>
-        <li>需求类型：<span class="yellow2">@Html.GetResourceSubTypeNameById(Model.Demand.ResourceType, Model.Demand.ResourceTypeId)</span></li>
+        @*<li>需求类别：<span class="yellow2">@Model.Demand.ResourceTypeName</span></li>*@
+        @*<li>需求类型：<span class="yellow2">@Html.GetResourceSubTypeNameById(Model.Demand.ResourceType, Model.Demand.ResourceTypeId)</span></li>*@
         <li>起止时间：<span class="yellow2">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</span></li>
-        <li>参与人数：<span class="yellow2">@Model.Demand.PeopleNumber</span></li>
+        @*<li>参与人数：<span class="yellow2">@Model.Demand.PeopleNumber</span></li>*@
         <li>
             预算金额：
             @if (Model.Demand.Budget == 0)
@@ -102,37 +112,6 @@
                 @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)
             </span>
         </li>
-
-        @if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
-        {
-            if (Model.HasCurrentWeChatUserBought)
-            {
-                <li>
-                    联系电话：
-                    <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
-                </li>
-            }
-            else
-            {
-                <li>
-                    联系电话：
-                    <span class="yellow2"><button type="button" class="button btn-buy btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系电话</button></span>
-                </li>
-            }
-        }
-
-        @if (Model.HasCurrentWeChatUserBought)
-        {
-            <li>
-                电子邮箱：
-                <span class="yellow2">@Model.Demand.Email</span>
-            </li>
-
-            <li>
-                详细地址：
-                <span class="yellow2">@Model.Demand.Address</span>
-            </li>
-        }
         @if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin))
         {
             if (Model.HasCurrentUserSharedWechat)
@@ -154,6 +133,44 @@
                 </li>
             }
         }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
+        {
+            if (Model.HasCurrentWeChatUserBought)
+            {
+                <li>
+                    详细地址：
+                    <span class="yellow2">@Model.Demand.Address</span>
+                </li>
+                <li>
+                    联系电话：
+                    <span class="yellow2"><a href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
+                </li>
+                <li>
+                    电子邮箱：
+                    <span class="yellow2">@Model.Demand.Email</span>
+                </li>
+            }
+            else
+            {
+                <li>
+                    联系电话：
+                    <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);" style="color:red;font-weight:bold;font-size:14px;">点击获取联系方式，第一时间联系客户</a>
+                </li>
+            }
+        }
+        else
+        {
+            <li>
+                详细地址：
+                <span class="yellow2">@Model.Demand.Address</span>
+            </li>
+            <li>
+                电子邮箱：
+                <span class="yellow2">@Model.Demand.Email</span>
+            </li>
+        }
+
         <li>需求内容：</li>
     </ul>
     <div class="active_info">
@@ -165,39 +182,35 @@
             <li>
                 @if (Model.Demand.IsCompleted)
                 {
+                    if (string.IsNullOrWhiteSpace(Model.Demand.Phone))
+                    {
                     <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
                         <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
                         <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
                         ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
-                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">获取联系电话</span></a>
+                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
                     </div>
+                    }
                 }
                 else
                 {
                     <div class="buypanel">
-                        <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
-                        <br />
+                        @*<span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
+                            <br />*@
                         @if (hasAlreadyQuoted)
-                    {
+                        {
                             <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">已报价，点击查看</button>
                         }
                         else
                         {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">免费报价报名</button>
                         }
 
-                        @if (Model.Demand.IsCurrentUserTraded)
+                        @if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
                         {
                             <br />
                             <br />
-                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)'">中介中，点击查看</button>
-                        }
-                        else
-                        {
-                            <br />
-                            <br />
-                            <span>如需中介交易，请联系对方后再申请：</span>
-                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
+                            <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
                         }
                     </div>
                 }
@@ -220,33 +233,16 @@
                         {
                             <span>暂无报价/报名记录</span>
                         }
-                        <br />
-                        <br />
-                        <span>如需中介交易，请联系对方后再申请：</span>
-                        <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
                     }
                     else
                     {
                         if (hasAlreadyQuoted)
                         {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">查看您的报价/报名</button>
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">免费报价报名</button>
                         }
                         else
                         {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">报价/报名</button>
-                        }
-                        if (Model.Demand.IsCurrentUserTraded)
-                        {
-                            <br />
-                            <br />
-                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)'">中介中，点击查看</button>
-                        }
-                        else
-                        {
-                            <br />
-                            <br />
-                            <span>如需中介交易，请联系对方后再申请：</span>
-                            <button type="button" class="button btn-info" onclick="window.location.href='/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand'">立即申请中介</button>
+                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">免费报价/报名</button>
                         }
                     }
                 </div>
@@ -370,7 +366,7 @@
     var timestamp = @Model.WechatShareParameters.Timestamp;
     var nonceStr = '@Model.WechatShareParameters.NonceStr';
     var signature = '@Model.WechatShareParameters.Signature';
-    var title = '@Model.WechatShareParameters.Title';
+    var title = '活动在线-' + '@Model.WechatShareParameters.Title';
     var link = '@Model.WechatShareParameters.Link';
     var demandId = @Model.Demand.Id;
 
@@ -390,7 +386,7 @@
         wx.onMenuShareTimeline({
             title: title,
             link: link,
-            imgUrl: '',
+            imgUrl: 'http://www.huodongzaixian.com/content/images/logo.png',
             success: function () {
                 console.log('分享成功');
                 $.post("/wechat/demand/sharewechat",
@@ -399,18 +395,19 @@
                 },
                 function (data) {
                     console.log(data);
-                    console.log($('#qqWeixinValueHiddenValue').val());
-                    console.log($('#qqWeixinValue').html());
-                    if (data.IsSuccessFul) {
+                    if (data.IsSuccessFul && $('#qqWeixinValue')) {
                         $('#qqWeixinValue').html($('#qqWeixinHiddenValue').val());
                     }
-                    console.log($('#qqWeixinValue').html());
-                }).error(function (data) { 
-                    showMessage('分享发生了点小故障，请刷新一下页面后再试试哦');
+                }).error(function (data) {
+                    if ($('#qqWeixinValue')) {
+                        alert('分享发生了点小故障，请刷新一下页面后再试试哦');
+                    }
                 });
             },
             cancel: function () {
-                showMessage('分享朋友圈就可以免费查看微信哦');
+                if ($('#qqWeixinValue')){
+                    alert('分享朋友圈就可以免费查看微信哦');
+                }
             }
         });
     });

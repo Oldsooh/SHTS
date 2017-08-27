@@ -443,7 +443,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
         {
             var strongResponseMessage = CreateResponseMessage<ResponseMessageNews>();
             strongResponseMessage.Articles.Add(GetWelcomeInfo());
-
+            
             // 推送用户关注前访问的链接
             var lastUrlCacheName = requestMessage.FromUserName + "_LastUrl";
             var lastUrl = Caching.Get(lastUrlCacheName);
@@ -451,7 +451,7 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
             {
                 var article = new Article()
                 {
-                    Title = "点此继续访问您关注前想访问的链接哦！",
+                    Title = "点击查看你需要的信息",
                     Description = "",
                     PicUrl = "",
                     Url = lastUrl.ToString()
@@ -460,8 +460,6 @@ namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler
 
                 Caching.Remove(lastUrlCacheName);
             }
-
-            strongResponseMessage.Articles.Add(GetWelcomeInfo());
             try
             {
                 // 关注事件，下边边注册微信用户

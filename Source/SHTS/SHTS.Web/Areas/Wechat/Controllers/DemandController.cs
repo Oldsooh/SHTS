@@ -199,12 +199,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         }
                     }
 
-                    if (!hasWeChatUserBoughtForDemand)
-                    {
-                        demand.Phone = "未购买查看权限";
-                        demand.Email = "未购买查看权限";
-                        demand.Address = "未购买查看权限";
-                    }
+                    //if (!hasWeChatUserBoughtForDemand)
+                    //{
+                    //    demand.Phone = "未购买查看权限";
+                    //    demand.Email = "未购买查看权限";
+                    //    demand.Address = "未购买查看权限";
+                    //}
 
                     //if (!hasWeChatUserSharedForDemand && !string.IsNullOrWhiteSpace(demand.QQWeixin))
                     //{
