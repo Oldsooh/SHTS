@@ -15,6 +15,7 @@ using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Public;
 using System.Web.Mvc;
 using System.Text;
+using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
 
 namespace Witbird.SHTS.Web.Subscription
 {
@@ -254,9 +255,9 @@ namespace Witbird.SHTS.Web.Subscription
                                 var response = StaticUtility.EmailManager.Send(mailEntity);
 
                                 StringBuilder logBuilder = new StringBuilder();
-                                foreach (var item in matchedSubscribers)
+                                foreach (var item in mailEntity.To)
                                 {
-                                    logBuilder.Append("微信用户OpenId: ").Append(item.Key).Append(", 邮箱帐号: ").Append(item.Value).Append("\r\n");
+                                    logBuilder.Append(" 邮箱帐号: ").Append(item.Address).Append(", ");
                                 }
 
                                 if (response.IsSuccess)
@@ -278,27 +279,24 @@ namespace Witbird.SHTS.Web.Subscription
 
                             #region 推送模板消息
 
+                            var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demandId;
+                            var messageData = new
+                            {
+                                first = new TemplateDataItem("您有一条新的业务信息，请查看"),
+                                keyword1 = new TemplateDataItem(demand.ResourceTypeName),
+                                keyword2 = new TemplateDataItem(demand.Title),
+                                keyword3 = new TemplateDataItem(demand.UserName),
+                                keyword4 = new TemplateDataItem("点击详情立即查看"),
+                                keyword5 = new TemplateDataItem(demand.InsertTime.ToString("yyyy-MM-dd HH:mm:ss")),
+                                remark = new TemplateDataItem("\r\n点击详情立即查看。")
+                            };
+
                             foreach (var openId in matchedSubscribers.Keys)
                             {
-                                try
+                                var sendResult = WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
+                                if (!sendResult)
                                 {
-                                    var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demandId;
-                                    var messageData = new
-                                    {
-                                        first = "您有一条新的业务信息，请查看",
-                                        keyword1 = demand.ResourceTypeName,
-                                        keyword2 = demand.Title,
-                                        keyword3 = demand.UserName,
-                                        keyword4 = "点击详情立即查看",
-                                        keyword5 = demand.InsertTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                        remark = "\r\n点击详情立即查看。"
-                                    };
-
-                                    WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
-                                }
-                                catch (Exception ex)
-                                {
-                                    LogService.LogWexin("模板消息推送需求失败,openId: " + openId, ex.ToString());
+                                    LogService.LogWexin("模板消息推送需求失败,openId: " + openId, messageData.ToString());
                                 }
                             }
                             

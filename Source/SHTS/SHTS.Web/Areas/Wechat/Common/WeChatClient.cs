@@ -180,13 +180,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <param name="url"></param>
             /// <param name="data"></param>
             /// <returns></returns>
-            public static bool SendTemplateMessage(string openId, string templateId, object data = null, string url = "", string topcolor = "#17113")
+            public static bool SendTemplateMessage(string openId, string templateId, object data = null, string url = "")
             {
                 var isSuccessFul = false;
 
                 try
                 {
                     AccessTokenContainer.Register(App.AppId, App.AppSecret);
+                    var topcolor = "";
                     var sendResult = TemplateApi.SendTemplateMessage(App.AppId, openId, templateId, topcolor, url, data);
                 }
                 catch(Exception ex)

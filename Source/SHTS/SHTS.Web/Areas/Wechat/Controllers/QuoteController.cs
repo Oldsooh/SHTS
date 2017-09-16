@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             var toWeChatUser = userService.GetWeChatUser(demand.UserId);
                             if (toWeChatUser.IsNotNull())
                             {
-                                var messageData = ConstrunctNewQuoteData(quoteId, CurrentUser.UserName, quote.InsertedTimestamp, quote.QuotePrice.ToString("D"));
+                                var messageData = ConstrunctNewQuoteData(quoteId, CurrentWeChatUser.NickName, quote.InsertedTimestamp, quote.QuotePrice.ToString());
                                 SendNotification(quoteId, toWeChatUser.OpenId, messageData);
                             }
                         });
@@ -467,10 +468,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             var data = new
             {
-                first = "您收到了新的报价！",
-                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
-                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                remark = "报价方： " + fromUserName + "\r\n报价金额: " + quotePrice + "\r\n\r\n点击详情立即查看报价内容。"
+                first = new TemplateDataItem("您收到了新的报价！"),
+                keyword1 = new TemplateDataItem("XQBJ" + quoteId.ToString().PadLeft(8, '0')),
+                keyword2 = new TemplateDataItem(quoteTime.ToString("yyyy-MM-dd HH:mm:ss")),
+                remark = new TemplateDataItem("报价方： " + fromUserName + "\r\n报价金额: " + quotePrice + "\r\n\r\n点击详情立即查看报价内容。")
             };
 
             return data;
@@ -480,10 +481,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             var data = new
             {
-                first = "您收到了新的需求报价留言！",
-                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
-                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                remark = "回复内容: " + message + "\r\n\r\n点击详情立即查看并回复留言。"
+                first = new TemplateDataItem("您收到了新的需求报价留言！"),
+                keyword1 = new TemplateDataItem("XQBJ" + quoteId.ToString().PadLeft(8, '0')),
+                keyword2 = new TemplateDataItem(quoteTime.ToString("yyyy-MM-dd HH:mm:ss")),
+                remark = new TemplateDataItem("回复内容: " + message + "\r\n\r\n点击详情立即查看并回复留言。")
             };
 
             return data;
@@ -493,10 +494,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             var data = new
             {
-                first = "恭喜您！客户同意并接受了您的报价！",
-                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
-                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                remark = "\r\n点击详情立即查看报价详情并联系客户。"
+                first = new TemplateDataItem("恭喜您！客户同意并接受了您的报价！"),
+                keyword1 = new TemplateDataItem("XQBJ" + quoteId.ToString().PadLeft(8, '0')),
+                keyword2 = new TemplateDataItem(quoteTime.ToString("yyyy-MM-dd HH:mm:ss")),
+                remark = new TemplateDataItem("\r\n点击详情立即查看报价详情并联系客户。")
             };
 
             return data;
@@ -506,10 +507,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             var data = new
             {
-                first = "您的报价未被客户接受！",
-                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
-                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                remark = "\r\n点击详情立即联系客户并再次洽谈。"
+                first = new TemplateDataItem("您的报价未被客户接受！"),
+                keyword1 = new TemplateDataItem("XQBJ" + quoteId.ToString().PadLeft(8, '0')),
+                keyword2 = new TemplateDataItem(quoteTime.ToString("yyyy-MM-dd HH:mm:ss")),
+                remark = new TemplateDataItem("\r\n点击详情立即联系客户并再次洽谈。")
             };
 
             return data;
