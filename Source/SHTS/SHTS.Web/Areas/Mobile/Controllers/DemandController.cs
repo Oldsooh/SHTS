@@ -204,7 +204,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                     city, area, address, phone, qqweixin, email, startTime, endTime, string.Empty, peopleNumber,
                     demandBudget, (int)BuyDemandFee, string.Empty, out result, out demandId))
                 {
-                    Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
+                    Subscription.WorkingThread.Instance.SendDemandToSubscribers(demandId);
                 }
             }
 

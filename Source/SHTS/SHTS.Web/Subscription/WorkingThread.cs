@@ -182,7 +182,7 @@ namespace Witbird.SHTS.Web.Subscription
             });
         }
 
-        public void SendDemandByEmail(int demandId)
+        public void SendDemandToSubscribers(int demandId)
         {
             Task.Factory.StartNew(() =>
             {
@@ -196,67 +196,119 @@ namespace Witbird.SHTS.Web.Subscription
 
                     // Get all subscribed details.
                     var subscriptions = subscriptionService.GetSubscriptionsOnlySubscribed();
-                    // Get all subscribed wechat users.
+                    // Get all subscribed wechat users. Performance Issue TODO ??? 
                     var subscribedWeChatUsers = userService.GetWeChatUserOnlySubscribed();
                     // Get email subscription format.
                     PublicConfigService configService = new PublicConfigService();
                     // {0}:取消订阅链接， {1}：需求标题，{2}：需求类型，{3}：需求类别，{4}：需求预算，{5}：需求开始时间和结束时间，{6}：区域位置，{7}：需求详情，{8}：查看需求链接
                     var emailSubscriptionContentFormat = configService.GetConfigValue("EmailSubscriptionContentFormat").ConfigValue;
 
-                    // 等待被推送的用户, key: wechatuserid, value: email address
-                    var emailAddresses = new Dictionary<int, string>();
+                    // 等待被推送的用户, key: openId, value: email address
+                    var matchedSubscribers = new Dictionary<string, string>();
 
                     if (subscriptions.HasItem() && subscribedWeChatUsers.HasItem())
                     {
                         foreach (var subscription in subscriptions)
                         {
-                            if (subscription.IsEnableEmailSubscription.HasValue && subscription.IsEnableEmailSubscription.Value)
-                            {
-                                var isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
+                            var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
 
+                            // Make sure user has continue subscribed our wechat account.
+                            if (wechatUser.IsNotNull())
+                            {
+                                bool isDemandMatchWithSubscription = false;
+
+                                // if demand was posted by himself.
+                                if (wechatUser.UserId.HasValue && demand.UserId != wechatUser.UserId.Value)
+                                {
+                                    isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
+                                }
+                                
                                 if (isDemandMatchWithSubscription)
                                 {
-                                    // Only subscried user can recieve articles.
-                                    var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
-
-                                    // Make sure user has continue subscribed our wechat account.
-                                    if (wechatUser.IsNotNull() && !string.IsNullOrEmpty(subscription.EmailAddress))
+                                    // 如果启用了邮箱推送并邮箱不为空，则同时推送到邮箱
+                                    if (subscription.IsEnableEmailSubscription.HasValue &&
+                                    subscription.IsEnableEmailSubscription.Value &&
+                                    !string.IsNullOrEmpty(subscription.EmailAddress))
                                     {
-                                        emailAddresses.Add(wechatUser.Id, subscription.EmailAddress);
+                                        matchedSubscribers.Add(wechatUser.OpenId, subscription.EmailAddress);
+                                    }
+                                    else
+                                    {
+                                        matchedSubscribers.Add(wechatUser.OpenId, string.Empty);
                                     }
                                 }
                             }
                         }
 
-                        if (emailAddresses.Count > 0)
+                        if (matchedSubscribers.Count > 0)
                         {
-                            var displayName = "活动在线网";
-                            var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
-                            var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
-                            var mailEntity = StaticUtility.EmailManager.CreateMailMessage(emailAddresses.Values.ToList(), displayName, mailSubject, mailBody);
-                            var response = StaticUtility.EmailManager.Send(mailEntity);
+                            #region 邮箱推送
 
-                            StringBuilder logBuilder = new StringBuilder();
-                            foreach (var item in emailAddresses)
+                            try
                             {
-                                logBuilder.Append("微信用户ID: ").Append(item.Key).Append(", 邮箱帐号: ").Append(item.Value).Append("\r\n");
+                                var displayName = "活动在线网";
+                                var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
+                                var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
+                                var mailEntity = StaticUtility.EmailManager.CreateMailMessage(matchedSubscribers.Values
+                                    .Where(mailAddress => !string.IsNullOrWhiteSpace(mailAddress)).ToList(), displayName, mailSubject, mailBody);
+                                var response = StaticUtility.EmailManager.Send(mailEntity);
+
+                                StringBuilder logBuilder = new StringBuilder();
+                                foreach (var item in matchedSubscribers)
+                                {
+                                    logBuilder.Append("微信用户OpenId: ").Append(item.Key).Append(", 邮箱帐号: ").Append(item.Value).Append("\r\n");
+                                }
+
+                                if (response.IsSuccess)
+                                {
+                                    LogService.LogWexin("邮箱推送需求成功", logBuilder.ToString());
+                                }
+                                else
+                                {
+                                    logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString()).Append("\r\n");
+                                    LogService.LogWexin("邮箱推送需求失败", logBuilder.ToString());
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                LogService.LogWexin("邮箱推送需求失败", ex.ToString());
                             }
 
-                            if (response.IsSuccess)
+                            #endregion
+
+                            #region 推送模板消息
+
+                            foreach (var openId in matchedSubscribers.Keys)
                             {
-                                LogService.LogWexin("邮箱推送需求成功", logBuilder.ToString());
+                                try
+                                {
+                                    var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/demand/show/" + demandId;
+                                    var messageData = new
+                                    {
+                                        first = "您有一条新的业务信息，请查看",
+                                        keyword1 = demand.ResourceTypeName,
+                                        keyword2 = demand.Title,
+                                        keyword3 = demand.UserName,
+                                        keyword4 = "点击详情立即查看",
+                                        keyword5 = demand.InsertTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                                        remark = "\r\n点击详情立即查看。"
+                                    };
+
+                                    WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogService.LogWexin("模板消息推送需求失败,openId: " + openId, ex.ToString());
+                                }
                             }
-                            else
-                            {
-                                logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString()).Append("\r\n");
-                                LogService.LogWexin("邮箱推送需求失败", logBuilder.ToString());
-                            }
+                            
+                            #endregion
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    LogService.LogWexin("邮箱推送需求失败", ex.ToString());
+                    LogService.LogWexin("推送需求失败", ex.ToString());
                 }
             });
         }
@@ -297,7 +349,7 @@ namespace Witbird.SHTS.Web.Subscription
             {
                 return false;
             }
-
+            
             List<Location> subscribedLocations = new List<Location>();
             List<DemandType> subscribedTypes = new List<DemandType>();
             List<Keyword> subscribedKeywords = new List<Keyword>();

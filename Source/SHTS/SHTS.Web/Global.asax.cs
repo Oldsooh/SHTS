@@ -54,7 +54,7 @@ namespace Witbird.SHTS.Web
             TenPayV3InfoCollection.Register(tenPayV3Info);
 
             // Start wechat push subscribe demand working thread.
-            Subscription.WorkingThread.Instance.Run();
+            //Subscription.WorkingThread.Instance.Run();
         }
 
         /// <summary>

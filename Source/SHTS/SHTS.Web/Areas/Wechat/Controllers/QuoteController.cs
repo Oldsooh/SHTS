@@ -99,7 +99,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             var toWeChatUser = userService.GetWeChatUser(demand.UserId);
                             if (toWeChatUser.IsNotNull())
                             {
-                                SendNotification(message, quote.QuoteId, toWeChatUser.OpenId);
+                                var messageData = ConstrunctNewQuoteData(quoteId, CurrentUser.UserName, quote.InsertedTimestamp, quote.QuotePrice.ToString("D"));
+                                SendNotification(quoteId, toWeChatUser.OpenId, messageData);
                             }
                         });
                     }
@@ -338,7 +339,17 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             var toWeChatUser = userService.GetWeChatUserByWeChatUserId(quote.WeChatUserId);
                             if (toWeChatUser.IsNotNull())
                             {
-                                SendNotification(message, quote.QuoteId, toWeChatUser.OpenId);
+                                object messageData = null;
+                                if (statusId.Equals(DemandQuoteStatus.Accept.ToString()))
+                                {
+                                    messageData = ConstrunctAcceptQuoteData(quoteId, quote.InsertedTimestamp);
+                                }
+                                else
+                                {
+                                    messageData = ConstrunctRejectQuoteData(quoteId, quote.InsertedTimestamp);
+                                }
+
+                                SendNotification(quoteId, toWeChatUser.OpenId, messageData);
                             }
                         });
                     }
@@ -395,37 +406,35 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             {
                                 comments = "图片消息";
                             }
+                            else
+                            {
+                                comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, comments);
+                            }
 
+                            WeChatUser toWeChatUser = null;
                             if (quote.WeChatUserId == CurrentWeChatUser.Id)
                             {
-                                // Sends notification to wechat client.
-                                Task.Factory.StartNew(() =>
+                                var demand = demandService.GetDemandById(quote.DemandId);
+                                if (demand.IsNotNull())
                                 {
-                                    var demand = demandService.GetDemandById(quote.DemandId);
-
-                                    if (demand.IsNotNull())
-                                    {
-                                        var toWeChatUser = userService.GetWeChatUser(demand.UserId);
-                                        if (toWeChatUser.IsNotNull())
-                                        {
-                                            SendNotification(comments, quote.QuoteId, toWeChatUser.OpenId);
-                                        }
-                                    }
-                                });
+                                    toWeChatUser = userService.GetWeChatUser(demand.UserId);
+                                }
                             }
                             else
                             {
+                                toWeChatUser = userService.GetWeChatUserByWeChatUserId(quote.WeChatUserId);
+                            }
+
+                            if (toWeChatUser.IsNotNull())
+                            {
                                 Task.Factory.StartNew(() =>
                                 {
-                                    var toWeChatUser = userService.GetWeChatUserByWeChatUserId(quote.WeChatUserId);
-                                    if (toWeChatUser.IsNotNull())
-                                    {
-                                        SendNotification(comments, quote.QuoteId, toWeChatUser.OpenId);
-                                    }
+                                    var messageData = ConstrunctQuoteCommentsData(quoteId, quote.InsertedTimestamp, comments);
+                                    SendNotification(quoteId, toWeChatUser.OpenId, messageData);
                                 });
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             LogService.LogWexin("推送报价消息失败", ex.ToString());
                         }
@@ -441,21 +450,70 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
-        private void SendNotification(string message, int quoteId, string openId)
+        private void SendNotification(int quoteId, string openId, object messageData)
         {
             try
             {
-                var viewUrl = "您收到了新的报价/报名提醒:{0}\r\n <a href=\"http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +
-            "/wechat/quote/detail?quoteId={1}\">点击这里，立即查看</a>";
-
-                message = FilterHelper.Filter(FilterLevel.PhoneAndEmail, message, CommonService.ReplacementForContactInfo);
-
-                WeChatClient.Sender.SendText(openId, string.Format(viewUrl, message, quoteId));
+                var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +"/wechat/quote/detail?quoteId=" + quoteId;
+                WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.QuoteRemind, messageData, viewUrl);
             }
             catch (Exception ex)
             {
                 LogService.LogWexin("Failed to send notification", ex.ToString());
             }
         }
+
+        private object ConstrunctNewQuoteData(int quoteId, string fromUserName, DateTime quoteTime, string quotePrice)
+        {
+            var data = new
+            {
+                first = "您收到了新的报价！",
+                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
+                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                remark = "报价方： " + fromUserName + "\r\n报价金额: " + quotePrice + "\r\n\r\n点击详情立即查看报价内容。"
+            };
+
+            return data;
+        }
+
+        private object ConstrunctQuoteCommentsData(int quoteId, DateTime quoteTime, string message)
+        {
+            var data = new
+            {
+                first = "您收到了新的需求报价留言！",
+                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
+                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                remark = "回复内容: " + message + "\r\n\r\n点击详情立即查看并回复留言。"
+            };
+
+            return data;
+        }
+
+        private object ConstrunctAcceptQuoteData(int quoteId, DateTime quoteTime)
+        {
+            var data = new
+            {
+                first = "恭喜您！客户同意并接受了您的报价！",
+                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
+                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                remark = "\r\n点击详情立即查看报价详情并联系客户。"
+            };
+
+            return data;
+        }
+
+        private object ConstrunctRejectQuoteData(int quoteId, DateTime quoteTime)
+        {
+            var data = new
+            {
+                first = "您的报价未被客户接受！",
+                keyword1 = "XQBJ" + quoteId.ToString().PadLeft(8, '0'),
+                keyword2 = quoteTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                remark = "\r\n点击详情立即联系客户并再次洽谈。"
+            };
+
+            return data;
+        }
+
     }
 }

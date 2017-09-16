@@ -152,7 +152,7 @@ namespace Witbird.SHTS.Web.Controllers
                     cityId, areaId, address, phone, qqweixin, email, startTime, endTime, timeLength, peopleNumber,
                     demandBudget, (int)BuyDemandFee, string.Empty, out result, out demandId))
                 {
-                    Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
+                    Subscription.WorkingThread.Instance.SendDemandToSubscribers(demandId);
                 }
             }
 

@@ -283,7 +283,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     city, area, address, phone, qqweixin, email, startTime, endTime, string.Empty, peopleNumber,
                     demandBudget, (int)BuyDemandFee, imageUrls, out result, out demandId))
                 {
-                    Subscription.WorkingThread.Instance.SendDemandByEmail(demandId);
+                    Subscription.WorkingThread.Instance.SendDemandToSubscribers(demandId);
                 }
             }
 

@@ -232,6 +232,7 @@
     <Compile Include="Areas\Wechat\Controllers\QAuthCallBackController.cs" />
     <Compile Include="Areas\Wechat\Controllers\QuoteController.cs" />
     <Compile Include="Areas\Wechat\Controllers\SubscribeController.cs" />
+    <Compile Include="Areas\Wechat\Controllers\TestController.cs" />
     <Compile Include="Areas\Wechat\Controllers\TradeController.cs" />
     <Compile Include="Areas\Wechat\Controllers\WechatBaseController.cs" />
     <Compile Include="Areas\Wechat\Controllers\NewsController.cs" />

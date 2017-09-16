@@ -60,6 +60,60 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
 
             public const string FollowUrlBeforeAccess = "http://mp.weixin.qq.com/s/XEWi6MFylTIs6xfM5lUIsA";
 
+            
+            public class TemplateMessage
+            {
+                /*
+                 *  模版IDgQSO61afq1-RXP659u9R-qszNKwiluurk2mIPCUokpo
+                    开发者调用模版消息接口时需提供模版ID
+                    标题  报价提醒
+                    行业IT科技 - 互联网|电子商务
+                    详细内容
+                    {{first.DATA}}
+                    交易编号：{{keyword1.DATA}}
+                    报价日期：{{keyword2.DATA}}
+                    {{remark.DATA}}
+                    在发送时，需要将内容中的参数（{{.DATA}}内为参数）赋值替换为需要的信息
+                    内容示例
+                    你有一条报价提醒
+                    交易编号：12312345
+                    报价日期：2015-3-31 17:44:13
+                    请及时查看！
+                 */
+                /// <summary>
+                /// 报价提醒模板消息
+                /// </summary>
+                public const string QuoteRemind = "gQSO61afq1-RXP659u9R-qszNKwiluurk2mIPCUokpo";
+
+                /*
+                 *  模版ID:i3lCzajW9NA1qb34K5aEr0aGJPGEh-DvZ98EHPxq3_0
+                    开发者调用模版消息接口时需提供模版ID
+                    标题  需求消息提醒
+                    行业商业服务 - 广告|会展
+                    详细内容
+                    {{first.DATA}}
+                    需求类型：{{keyword1.DATA}}
+                    需求内容：{{keyword2.DATA}}
+                    联系人：{{keyword3.DATA}}
+                    联系电话：{{keyword4.DATA}}
+                    发布时间：{{keyword5.DATA}}
+                    {{remark.DATA}}
+                    在发送时，需要将内容中的参数（{{.DATA}}内为参数）赋值替换为需要的信息
+                    内容示例
+                    办会易提醒您，您收到一个需求咨询
+                    需求类型：供应需求
+                    需求内容：场地搭建-篷房搭建
+                    联系人：刘先生
+                    联系电话：17791214939
+                    发布时间：2016年1月2日 17:58
+                    请移步至个人中心查看详情，如有疑问，请拨打咨询热线4006-177-029。
+                 */
+                /// <summary>
+                /// 需求消息提醒模板消息
+                /// </summary>
+                public const string DemandRemind = "i3lCzajW9NA1qb34K5aEr0aGJPGEh-DvZ98EHPxq3_0";
+            }
+
         }
 
         public static class Sender
@@ -100,9 +154,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             public static bool SendText(string openId, string message)
             {
                 bool isSuccessFul = false;
-                AccessTokenContainer.Register(App.AppId, App.AppSecret);
                 try
                 {
+                    AccessTokenContainer.Register(App.AppId, App.AppSecret);
                     var wxResult = CustomApi.SendText(App.AppId, openId, message);
                     if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
                     {
@@ -112,6 +166,33 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                 catch (Exception ex)
                 {
                     LogService.LogWexin("Failed to send text message to user " + openId, ex.ToString());
+                }
+
+                return isSuccessFul;
+            }
+
+            /// <summary>
+            /// 发送模板消息给用户
+            /// </summary>
+            /// <param name="openId"></param>
+            /// <param name="templateId"></param>
+            /// <param name="topcolor"></param>
+            /// <param name="url"></param>
+            /// <param name="data"></param>
+            /// <returns></returns>
+            public static bool SendTemplateMessage(string openId, string templateId, object data = null, string url = "", string topcolor = "#17113")
+            {
+                var isSuccessFul = false;
+
+                try
+                {
+                    AccessTokenContainer.Register(App.AppId, App.AppSecret);
+                    var sendResult = TemplateApi.SendTemplateMessage(App.AppId, openId, templateId, topcolor, url, data);
+                }
+                catch(Exception ex)
+                {
+                    var paramsData = new { openId = openId, templateId = templateId, url = url, data = data};
+                    LogService.LogWexin("Failed to send template message to user, parameters info: " + paramsData.ToString(), ex.ToString());
                 }
 
                 return isSuccessFul;
