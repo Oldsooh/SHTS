@@ -285,7 +285,8 @@ namespace Witbird.SHTS.Web.Subscription
                                 first = new TemplateDataItem("您有一条新的业务信息，请查看"),
                                 keyword1 = new TemplateDataItem(demand.ResourceTypeName),
                                 keyword2 = new TemplateDataItem(demand.Title),
-                                keyword3 = new TemplateDataItem(demand.UserName),
+                                //keyword3 = new TemplateDataItem(demand.UserName),
+                                keyword3 = new TemplateDataItem("活动在线网会员"),
                                 keyword4 = new TemplateDataItem("点击详情立即查看"),
                                 keyword5 = new TemplateDataItem(demand.InsertTime.ToString("yyyy-MM-dd HH:mm:ss")),
                                 remark = new TemplateDataItem("\r\n点击详情立即查看。")
@@ -293,11 +294,7 @@ namespace Witbird.SHTS.Web.Subscription
 
                             foreach (var openId in matchedSubscribers.Keys)
                             {
-                                var sendResult = WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
-                                if (!sendResult)
-                                {
-                                    LogService.LogWexin("模板消息推送需求失败,openId: " + openId, messageData.ToString());
-                                }
+                                WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
                             }
                             
                             #endregion

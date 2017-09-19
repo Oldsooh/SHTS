@@ -136,6 +136,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     {
                         isSuccessFul = true;
                     }
+                    else
+                    {
+                        var paramsData = new { openId = openId, articles = articles };
+                        LogService.LogWexin("Failed to send SendArticles message to user, parameters info: ", paramsData.ToString());
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -161,6 +166,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
                     {
                         isSuccessFul = true;
+                    }
+                    else
+                    {
+                        var paramsData = new { openId = openId, message = message };
+                        LogService.LogWexin("Failed to send SendText message to user, parameters info: ", paramsData.ToString());
                     }
                 }
                 catch (Exception ex)
@@ -189,6 +199,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     AccessTokenContainer.Register(App.AppId, App.AppSecret);
                     var topcolor = "";
                     var sendResult = TemplateApi.SendTemplateMessage(App.AppId, openId, templateId, topcolor, url, data);
+                    if (sendResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
+                    {
+                        isSuccessFul = true;
+                    }
+                    else
+                    {
+                        var paramsData = new { openId = openId, templateId = templateId, url = url, data = data };
+                        LogService.LogWexin("Failed to send template message to user, parameters info: ", paramsData.ToString());
+                    }
                 }
                 catch(Exception ex)
                 {
