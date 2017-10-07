@@ -717,6 +717,8 @@
     <Content Include="Areas\Wechat\Content\images\arr-right.png" />
     <Content Include="Areas\Wechat\Content\images\bg.png" />
     <Content Include="Areas\Wechat\Content\images\btnAdd.png" />
+    <Content Include="Areas\Wechat\Content\images\share_guide1.png" />
+    <Content Include="Areas\Wechat\Content\images\share_timeine_icon.png" />
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
     <Content Include="Areas\Wechat\Content\scipts\jweixin-1.2.0.js" />
     <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />

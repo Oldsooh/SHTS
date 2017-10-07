@@ -83,13 +83,16 @@
             <lable style="color: #FD9102;font-size:20px;">[@Model.Demand.StatusValueString]</lable>@Model.Demand.Title
         </li>
         <li style="text-align:right;">
-            @if (Model.Demand.IsCurrentUserTraded)
+            @if (Model.Demand.UserId != (currentWeChatUser.UserId ?? -1) && !Model.Demand.IsCompleted)
             {
-                <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)">查看中介申请</a>
-            }
-            else
-            {
-                <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand">申请中介</a>
+                if (Model.Demand.IsCurrentUserTraded)
+                {
+                    <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/show?id=@(Model.Demand.CurrentUserTradeId)">查看中介申请</a>
+                }
+                else
+                {
+                    <a class="button btn-info" style="height: 30px;line-height: 30px;border-radius: 15px;" href="/wechat/trade/traderule?id=@(Model.Demand.Id)&type=demand">申请中介</a>
+                }
             }
         </li>
         <li>发布时间：<span class="yellow2">@Model.Demand.InsertTime.ToString("yyyy-MM-dd HH:mm")</span></li>
@@ -120,16 +123,15 @@
             if (Model.HasCurrentUserSharedWechat)
             {
                 <li>
-                    客户微信：
+                    联系微信：
                     <span class="yellow2">@Model.Demand.QQWeixin</span>
                 </li>
             }
             else
             {
                 <li>
-                    客户微信：
+                    联系微信：
                     <span class="yellow2">
-                        @*<button type="button" class="button btn-buy btn-green" onclick="showWechat();">查看微信</button>*@
                         <span id="qqWeixinValue" class="yellow2">分享朋友圈后即可免费查看</span>
                         <input type="hidden" id="qqWeixinHiddenValue" value="@Model.Demand.QQWeixin" />
                     </span>
@@ -179,122 +181,115 @@
     <div class="active_info">
         @(new HtmlString(Model.Demand.ContentText))
     </div>
-    @if (!Model.HasCurrentWeChatUserBought)
-    {
-        <ul class="details">
-            <li>
-                @if (Model.Demand.IsCompleted)
+
+
+    <ul class="details">
+        <li>
+            <div class="buypanel">
+                @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                 {
-                    if (string.IsNullOrWhiteSpace(Model.Demand.Phone))
+                    if (Model.Demand.QuoteEntities.Count > 0)
                     {
-                    <div style="margin-top:10px; margin-bottom:10px; padding:10px;width:93%;border:1px #ffd800 dashed; background:#fbdddd;color:#2577e3;">
-                        <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
-                        <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
-                        ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
-                        <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;margin-left:30%;">一键获取联系方式</span></a>
-                    </div>
+                        <span>有收到@(Model.Demand.QuoteEntities.Count)条报价：</span>
+                        <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
+                    }
+                    else
+                    {
+                        <span>暂无报价/报名记录</span>
                     }
                 }
                 else
                 {
-                    <div class="buypanel">
-                        @*<span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;正在寻找资源提供商！
-                            <br />*@
-                        @if (hasAlreadyQuoted)
-                        {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">已报价，点击查看</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">免费报价报名</button>
-                        }
-
-                        @if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
-                        {
-                            <br />
-                            <br />
-                            <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
-                        }
-                    </div>
-                }
-            </li>
-        </ul>
-    }
-    else
-    {
-        <ul class="details">
-            <li>
-                <div class="buypanel">
-                    @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
+                    if (hasAlreadyQuoted)
                     {
-                        if (Model.Demand.QuoteEntities.Count > 0)
-                        {
-                            <span>有收到@(Model.Demand.QuoteEntities.Count)条报价：</span>
-                            <button type="button" class="button btn-green" style="width:100%;" onclick="window.location = '/wechat/quote/show?demandId=@(Model.Demand.Id)'">查看报价/报名情况</button>
-                        }
-                        else
-                        {
-                            <span>暂无报价/报名记录</span>
-                        }
+                        <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">已报价，点击查看</button>
+                    }
+                    else if (!Model.Demand.IsCompleted)
+                    {
+                        <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">免费报价/报名</button>
                     }
                     else
                     {
-                        if (hasAlreadyQuoted)
+                        // nothing
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) && !Model.HasCurrentUserSharedWechat)
+                    {
+                        <button id="btnShareTimeline" type="button" class="button btn-default" style="margin-top:30px;" onclick="_system._guide(true)">
+                            <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />&nbsp;免费查看联系微信
+                        </button>
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
+                    {
+                        if (Model.Demand.IsCompleted)
                         {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/detail?quoteId=@(quoteId)'">免费报价报名</button>
+                            <p>
+                                <span class="yellow2">【@Model.Demand.StatusValueString】</span>&nbsp;该需求已经寻找到资源提供商。仅需
+                                <span class="yellow2" style="font-weight:bold;">@(Model.Demand.WeixinBuyFee)元</span>
+                                ，立即获取客户联系方式，能够带来更多未来合作机会哦！是否继续获取：<br />
+                                <a href="javascript:void(0);" onclick="buyDemand(@Model.Demand.Id);"><span class="yellow2" style="font-size:17px; font-weight:bold;">一键获取联系方式</span></a>
+                            </p>
                         }
                         else
                         {
-                            <button type="button" class="button btn-green" onclick="window.location = '/wechat/quote/quote?demandId=@(Model.Demand.Id)'">免费报价/报名</button>
+                            if (!Model.HasCurrentWeChatUserBought)
+                            {
+                                <br />
+                                <br />
+                                <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
+                            }
                         }
                     }
-                </div>
-            </li>
-        </ul>
-    }
+                }
+
+            </div>
+        </li>
+    </ul>
+
     @if (Model.Demand.ImgUrls.Length > 0)
-    {
+            {
         <div style="clear: both; height: 10px;"></div>
-        <div class="container">
-            <div class="row clearfix">
-                <div class="col-md-12 column">
-                    <div class="carousel slide" id="carousel-144040">
-                        <ol class="carousel-indicators">
-                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
-                            {
-                                if (i == 0)
-                                {
-                                    <li class="active" data-slide-to="0" data-target="#carousel-144040">
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li data-slide-to="@i" data-target="#carousel-144040">
-                                    </li>
-                                }
-                            }
-                        </ol>
-                        <div class="carousel-inner">
-                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
-                            {
-                                if (i == 0)
-                                {
-                                    <div class="item active">
-                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="item">
-                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
-                                    </div>
-                                }
-                            }
-                        </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <div class="carousel slide" id="carousel-144040">
+                                <ol class="carousel-indicators">
+                                    @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                                    {
+                                        if (i == 0)
+                                        {
+                                            <li class="active" data-slide-to="0" data-target="#carousel-144040">
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li data-slide-to="@i" data-target="#carousel-144040">
+                                            </li>
+                                        }
+                                    }
+                                </ol>
+                                <div class="carousel-inner">
+                                    @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                                    {
+                                        if (i == 0)
+                                        {
+                                            <div class="item active">
+                                                <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="item">
+                                                <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                            </div>
+                                        }
+                                    }
+                                </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
     }
 </div>
 
@@ -398,8 +393,13 @@
                 },
                 function (data) {
                     console.log(data);
-                    if (data.IsSuccessFul && $('#qqWeixinValue')) {
-                        $('#qqWeixinValue').html($('#qqWeixinHiddenValue').val());
+                    if (data.IsSuccessFul) {
+                        if ($('#qqWeixinValue')){
+                            $('#qqWeixinValue').html($('#qqWeixinHiddenValue').val());
+                        }
+                        if ($('#btnShareTimeline')){
+                            $('#btnShareTimeline').addClass('hide');
+                        }
                     }
                 }).error(function (data) {
                     if ($('#qqWeixinValue')) {
@@ -411,6 +411,10 @@
                 if ($('#qqWeixinValue')){
                     alert('分享朋友圈就可以免费查看微信哦');
                 }
+            },
+            complete: function(){    
+                document.getElementById('cover').style.display = "none";
+                document.getElementById('guide').style.display = "none";
             }
         });
     });
@@ -420,3 +424,65 @@
         //alert('error');
     });
 </script>
+
+<script type="text/javascript">
+    var _system={
+        $:function(id){return document.getElementById(id);},
+        _client:function(){
+            return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+        },
+        _scroll:function(){
+            return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+        },
+        _cover:function(show){
+            if(show){
+                this.$("cover").style.display="block";
+                this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+                this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+            }else{
+                this.$("cover").style.display="none";
+            }
+        },
+        _guide:function(click){
+            this._cover(true);
+            this.$("guide").style.display="block";
+            this.$("guide").style.top=(_system._scroll().y+5)+"px";
+            window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+            if(click){_system.$("cover").onclick=function(){
+                _system._cover();
+                _system.$("guide").style.display="none";
+                _system.$("cover").onclick=null;
+                window.onresize=null;
+            };}
+        },
+        _zero:function(n){
+            return n<0?0:n;
+        }
+    }
+</script>
+<style>
+    #cover {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 18888;
+        background-color: #000000;
+        opacity: 0.7;
+    }
+
+    #guide {
+        display: none;
+        position: absolute;
+        right: 18px;
+        top: 5px;
+        z-index: 19999;
+    }
+
+        #guide img {
+            width: 260px;
+            height: 180px;
+        }
+</style>
+<div id="cover"></div>
+<div id="guide"><img src="~/Areas/Wechat/Content/images/share_guide1.png" /></div>
