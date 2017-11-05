@@ -89,7 +89,7 @@ namespace Witbird.SHTS.BLL.Managers
         /// <returns></returns>
         public bool AddDemand(int userId, int resourceType, int resourceSubTypeId, string title, string contentStyle,
             string provinceId, string cityId, string areaId, string address, string phone, string qqweixin, string email,
-            string startTime, string endTime, string timeLength, string peopleNumber, int budget, int weixinBuyDemandFee, string imageUrls,  out string errorMessage, out int demandId)
+            string startTime, string endTime, string timeLength, string peopleNumber, int budget, int weixinBuyDemandFee, string imageUrls, out string errorMessage, out int demandId)
         {
             bool isAddSuccessfully = false;
             demandId = -1;
@@ -100,69 +100,78 @@ namespace Witbird.SHTS.BLL.Managers
                 DateTime demandStartTime = DateTime.MinValue;
                 DateTime demandEndTime = DateTime.MinValue;
 
-                if (resourceType < 0 || resourceSubTypeId < 0)
-                {
-                    errorMessage = "请选择具体类别与类型";
-                }
-                else if (string.IsNullOrWhiteSpace(title))
-                {
-                    errorMessage = "请填写需求标题！如寻找某场地、设备等资源";
-                }
-                else if (string.IsNullOrWhiteSpace(provinceId) || string.IsNullOrWhiteSpace(cityId))
-                {
-                    errorMessage = "请选择需求地点！包括省份、城市及区县信息！";
-                }
-                else if (string.IsNullOrWhiteSpace(startTime) || string.IsNullOrWhiteSpace(endTime) ||
-                    !DateTime.TryParse(startTime, out demandStartTime) || !DateTime.TryParse(endTime, out demandEndTime) ||
-                    demandStartTime < DateTime.Now.Date || demandEndTime < demandStartTime)
-                {
-                    errorMessage = "请填写正确需求开始与结束时间！";
-                }
-                else if (string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(qqweixin))
-                {
-                    errorMessage = "为了保证资源提供商能及时联系到您，请填写电话号码或者微信！";
-                }
-                else if (budget < 0)
-                {
-                    errorMessage = "请填写正确的预算金额！填写0表示面议！";
-                }
-                else if (string.IsNullOrWhiteSpace(contentStyle))
-                {
-                    errorMessage = "请填写需求内容！请直接出现电话、邮箱，以及微信联系方式等信息，否则将被系统自动屏蔽！";
-                }
-                else
-                {
-                    Demand demand = new Demand();
-                    demand.UserId = userId;
-                    demand.ResourceType = resourceType;
-                    demand.ResourceTypeId = resourceSubTypeId;
-                    demand.Title = title;
-                    demand.Description = string.Empty;
-                    demand.ContentStyle = contentStyle;
-                    demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
-                    demand.Province = provinceId;
-                    demand.City = cityId;
-                    demand.Area = areaId;
-                    demand.Address = address;
-                    demand.Phone = phone;
-                    demand.QQWeixin = qqweixin;
-                    demand.Email = email;
-                    demand.StartTime = demandStartTime;
-                    demand.EndTime = demandEndTime;
-                    demand.TimeLength = timeLength;
-                    demand.PeopleNumber = peopleNumber;
-                    demand.Budget = budget;
-                    demand.IsActive = true;
-                    demand.ViewCount = 0;
-                    demand.InsertTime = DateTime.Now;
-                    demand.Status = (int)DemandStatus.InProgress;
-                    demand.WeixinBuyFee = weixinBuyDemandFee;
-                    demand.ImageUrls = imageUrls;
+                //if (resourceType < 0 || resourceSubTypeId < 0)
+                //{
+                //    errorMessage = "请选择具体类别与类型";
+                //}
+                //else if (string.IsNullOrWhiteSpace(title))
+                //{
+                //    errorMessage = "请填写需求标题！如寻找某场地、设备等资源";
+                //}
+                //else if (string.IsNullOrWhiteSpace(provinceId) || string.IsNullOrWhiteSpace(cityId))
+                //{
+                //    errorMessage = "请选择需求地点！包括省份、城市及区县信息！";
+                //}
+                //else if (string.IsNullOrWhiteSpace(startTime) || string.IsNullOrWhiteSpace(endTime) ||
+                //    !DateTime.TryParse(startTime, out demandStartTime) || !DateTime.TryParse(endTime, out demandEndTime) ||
+                //    demandStartTime < DateTime.Now.Date || demandEndTime < demandStartTime)
+                //{
+                //    errorMessage = "请填写正确需求开始与结束时间！";
+                //}
+                //else if (string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(qqweixin))
+                //{
+                //    errorMessage = "为了保证资源提供商能及时联系到您，请填写电话号码或者微信！";
+                //}
+                //else if (budget < 0)
+                //{
+                //    errorMessage = "请填写正确的预算金额！填写0表示面议！";
+                //}
+                //else if (string.IsNullOrWhiteSpace(contentStyle))
+                //{
+                //    errorMessage = "请填写需求内容！请直接出现电话、邮箱，以及微信联系方式等信息，否则将被系统自动屏蔽！";
+                //}
+                //else
+                //{
+                Demand demand = new Demand();
+                demand.UserId = userId;
+                demand.ResourceType = resourceType;
+                demand.ResourceTypeId = resourceSubTypeId;
+                demand.Title = title;
+                demand.Description = string.Empty;
+                demand.ContentStyle = contentStyle;
+                demand.ContentText = Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(demand.ContentStyle);
+                demand.Province = provinceId;
+                demand.City = cityId;
+                demand.Area = areaId;
+                demand.Address = address;
+                demand.Phone = phone;
+                demand.QQWeixin = qqweixin;
+                demand.Email = email;
+                demand.StartTime = demandStartTime;
+                demand.EndTime = demandEndTime;
+                demand.TimeLength = timeLength;
+                demand.PeopleNumber = peopleNumber;
+                demand.Budget = budget;
+                demand.IsActive = true;
+                demand.ViewCount = 0;
+                demand.InsertTime = DateTime.Now;
+                demand.Status = (int)DemandStatus.InProgress;
+                demand.WeixinBuyFee = weixinBuyDemandFee;
+                demand.ImageUrls = imageUrls;
 
+                errorMessage = ValidateDemand(demand);
+                if (string.IsNullOrWhiteSpace(errorMessage))
+                {
                     isAddSuccessfully = demandRepository.AddEntitySave(demand);
+                    
                     errorMessage = "success";
                     demandId = demand.Id;
                 }
+                else
+                {
+                    isAddSuccessfully = false;
+                }
+                //}
             }
             catch (Exception ex)
             {
@@ -177,28 +186,28 @@ namespace Witbird.SHTS.BLL.Managers
         /// <summary>
         /// 更新供求
         /// </summary>
-            //public bool EditDemand(Demand demand)
-            //{
-            //    bool result = false;
-            //    try
-            //    {
-            //        if (demand != null)
-            //        {
-            //            result = demandRepository.UpdateEntitySave(demand);
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        LogService.Log("编辑供求失败", e.ToString());
-            //    }
-            //    return result;
-            //}
+        //public bool EditDemand(Demand demand)
+        //{
+        //    bool result = false;
+        //    try
+        //    {
+        //        if (demand != null)
+        //        {
+        //            result = demandRepository.UpdateEntitySave(demand);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogService.Log("编辑供求失败", e.ToString());
+        //    }
+        //    return result;
+        //}
 
 
-            /// <summary>
-            /// 根据ID查询供求类别
-            /// </summary>
-            /// <param name="id">类别Id</param>
+        /// <summary>
+        /// 根据ID查询供求类别
+        /// </summary>
+        /// <param name="id">类别Id</param>
         public DemandCategory GetDemandCategoryById(int id)
         {
             DemandCategory demandCategory = null;
@@ -308,6 +317,50 @@ namespace Witbird.SHTS.BLL.Managers
                 LogService.Log("删除供求类别失败", e.ToString());
             }
             return result;
+        }
+
+        public string ValidateDemand(Demand demand)
+        {
+            string errorMessage = "";
+
+            if (demand == null)
+            {
+                errorMessage = "需求内容不能为空";
+            }
+            else if (demand.ResourceType < 0 || demand.ResourceTypeId < 0)
+            {
+                errorMessage = "请选择具体类别与类型";
+            }
+            else if (string.IsNullOrWhiteSpace(demand.Title))
+            {
+                errorMessage = "请填写需求标题！如寻找某场地、设备等资源";
+            }
+            else if (string.IsNullOrWhiteSpace(demand.Province) || string.IsNullOrWhiteSpace(demand.City))
+            {
+                errorMessage = "请选择需求地点！包括省份、城市及区县信息！";
+            }
+            else if (demand.StartTime < DateTime.Now.Date || demand.EndTime < demand.StartTime)
+            {
+                errorMessage = "请填写正确需求开始与结束时间！";
+            }
+            else if (string.IsNullOrWhiteSpace(demand.PeopleNumber) && string.IsNullOrWhiteSpace(demand.QQWeixin))
+            {
+                errorMessage = "为了保证资源提供商能及时联系到您，请填写电话号码或者微信！";
+            }
+            else if (demand.Budget < 0)
+            {
+                errorMessage = "请填写正确的预算金额！填写0表示面议！";
+            }
+            else if (string.IsNullOrWhiteSpace(demand.ContentStyle))
+            {
+                errorMessage = "请填写需求内容！请直接出现电话、邮箱，以及微信联系方式等信息，否则将被系统自动屏蔽！";
+            }
+            else
+            {
+
+            }
+
+            return errorMessage;
         }
     }
 }

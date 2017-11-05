@@ -461,18 +461,18 @@
             if (isPostedByMySelf)
             {
                 var phone = "***********";
-                var weixin = "***********";
+                var weixin = "分享朋友圈后即可免费查看";
                 var email = "***********";
                 if (Model.HasWeChatUserBoughtForDemand)
                 {
                     phone = string.IsNullOrWhiteSpace(Model.Demand.Phone) ? "未填" : Model.Demand.Phone;
-                    weixin = string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) ? "未填" : Model.Demand.QQWeixin;
                     email = string.IsNullOrWhiteSpace(Model.Demand.Email) ? "未填" : Model.Demand.Email;
 
                 }
-                else
+
+                if (Model.HasWeChatUserSharedForDemand)
                 {
-                    // do nothing.
+                    weixin = string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) ? "未填" : Model.Demand.QQWeixin;
                 }
 
                 <div class="panel panel-info">
@@ -498,6 +498,15 @@
                                 @email
                             </td>
                         </tr>
+
+                        @if (!Model.HasWeChatUserSharedForDemand)
+                        {
+                            <tr>
+                                <td colspan="3">
+                                    <a href="javascript:void(0);" class="btn btn-primary" style="width:100%;height:30px;line-height:30px;" onclick="_system._guide(true);">免费查看联系微信</a>
+                                </td>
+                            </tr>
+                        }
                         @if (!Model.HasWeChatUserBoughtForDemand)
                         {
                             <tr>
@@ -505,10 +514,6 @@
                                     <a href="javascript:void(0);" class="btn btn-success" style="width:100%;height:30px;line-height:30px;" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</a>
                                 </td>
                             </tr>
-                        }
-                        else
-                        {
-                            // do nothing
                         }
                     </table>
                 </div>
@@ -1093,4 +1098,121 @@
             showMessage(message, false);
         }
     </script>
+<script>
+    var appId = '@Model.WechatShareParametersForQuote.AppId';
+    var timestamp = @Model.WechatShareParametersForQuote.Timestamp;
+    var nonceStr = '@Model.WechatShareParametersForQuote.NonceStr';
+    var signature = '@Model.WechatShareParametersForQuote.Signature';
+    var title = '活动在线-' + '@Model.WechatShareParametersForQuote.Title';
+    var link = '@Model.WechatShareParametersForQuote.Link';
+    var demandId = @Model.Demand.Id;
+
+    wx.config({
+        //debug: true,
+        appId: appId,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline'
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: title,
+            link: link,
+            imgUrl: 'http://www.huodongzaixian.com/content/images/logo.png',
+            success: function () {
+                console.log('分享成功');
+                $.post("/wechat/demand/sharewechat",
+                {
+                    id: demandId
+                },
+                function (data) {
+                    console.log(data);
+                    if (data.IsSuccessFul) {
+                        window.location = window.location;
+                    }
+                }).error(function (data) {
+                    alert('分享发生了点小故障，请刷新一下页面后再试试哦');
+                });
+            },
+            cancel: function () {
+                alert('分享朋友圈就可以免费查看微信哦');
+            },
+            complete: function(){
+                document.getElementById('cover').style.display = "none";
+                document.getElementById('guide').style.display = "none";
+            }
+        });
+    });
+
+
+    wx.error(function (res) {
+        //alert('error');
+    });
+</script>
+<script type="text/javascript">
+    var _system={
+        $:function(id){return document.getElementById(id);},
+        _client:function(){
+            return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+        },
+        _scroll:function(){
+            return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+        },
+        _cover:function(show){
+            if(show){
+                this.$("cover").style.display="block";
+                this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+                this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+            }else{
+                this.$("cover").style.display="none";
+            }
+        },
+        _guide:function(click){
+            this._cover(true);
+            this.$("guide").style.display="block";
+            this.$("guide").style.top=(_system._scroll().y+5)+"px";
+            window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+            if(click){_system.$("cover").onclick=function(){
+                _system._cover();
+                _system.$("guide").style.display="none";
+                _system.$("cover").onclick=null;
+                window.onresize=null;
+            };}
+        },
+        _zero:function(n){
+            return n<0?0:n;
+        }
+    }
+</script>
+<style>
+    #cover {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 18888;
+        background-color: #000000;
+        opacity: 0.7;
+    }
+
+    #guide {
+        display: none;
+        position: absolute;
+        right: 18px;
+        top: 5px;
+        z-index: 19999;
+    }
+
+        #guide img {
+            width: 260px;
+            height: 180px;
+        }
+</style>
+<div id="cover"></div>
+<div id="guide"><img src="~/Areas/Wechat/Content/images/share_guide1.png" /></div>
 }

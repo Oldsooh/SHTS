@@ -510,110 +510,86 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
             else
             {
-                if (ResourceType < 1)
-                {
-                    result = "请选择需求类别";
-                }
-                else if (id > 0 &&
-                    !string.IsNullOrEmpty(title) &&
-                    !string.IsNullOrEmpty(contentText) &&
-                    !string.IsNullOrEmpty(startTime) &&
-                    !string.IsNullOrEmpty(endTime) &&
-                    !string.IsNullOrEmpty(budget) &&
-                    !string.IsNullOrEmpty(phone))
-                {
-                    Demand demand = demandManager.GetDemandById(id);
+                Demand demand = demandManager.GetDemandById(id);
 
-                    if (demand != null)
+                if (demand != null)
+                {
+                    if (demand.UserId != CurrentUser.UserId)
                     {
-                        if (demand.UserId != CurrentUser.UserId)
-                        {
-                            result = "只能对自己发布的需求进行编辑";
-                        }
-                        else if (demand.IsCompleted)
-                        {
-                            result = "该需求已完成，不能进行编辑";
-                        }
-                        else
-                        {
-                            demand.ResourceType = ResourceType;
-
-                            switch (demand.ResourceType)
-                            {
-                                case 1:
-                                    demand.ResourceTypeId = SpaceTypeId;
-                                    break;
-                                case 2:
-                                    demand.ResourceTypeId = ActorTypeId;
-                                    break;
-                                case 3:
-                                    demand.ResourceTypeId = EquipTypeId;
-                                    break;
-                                case 4:
-                                    demand.ResourceTypeId = OtherTypeId;
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            demand.Title = title;
-                            demand.ContentText = contentText;
-                            demand.ContentStyle = demand.ContentText;
-
-                            if (demand.ContentText.Length > 291)
-                            {
-                                demand.Description = demand.ContentText.Substring(0, 290);
-                            }
-                            else
-                            {
-                                demand.Description = demand.ContentText;
-                            }
-
-                            demand.Province = string.IsNullOrEmpty(province) ? string.Empty : province;
-                            demand.City = string.IsNullOrEmpty(city) ? string.Empty : city;
-                            demand.Area = string.IsNullOrEmpty(area) ? string.Empty : area;
-                            demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
-                            demand.Phone = phone;
-                            demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
-                            demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
-                            demand.StartTime = DateTime.Parse(startTime);
-                            demand.EndTime = DateTime.Parse(endTime);
-                            demand.TimeLength = string.Empty;
-                            demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
-                            int tempBudget = 0;
-                            if (!string.IsNullOrEmpty(budget))
-                            {
-                                Int32.TryParse(budget, out tempBudget);
-                            }
-                            demand.Budget = tempBudget;
-                            demand.IsActive = true;
-                            demand.ViewCount = 0;
-                            demand.InsertTime = DateTime.Now;
-                            demand.Status = (int)DemandStatus.InProgress;
-                            demand.ImageUrls = imageUrls;
-
-                            if (demand.EndTime < demand.StartTime)
-                            {
-                                result = "需求结束日期应不小于开始日期";
-                            }
-                            else if (demandService.EditDemand(demand))
-                            {
-                                result = "success";
-                            }
-                            else
-                            {
-                                result = "需求更新失败";
-                            }
-                        }
+                        result = "只能对自己发布的需求进行编辑";
+                    }
+                    else if (demand.IsCompleted)
+                    {
+                        result = "该需求已完成，不能进行编辑";
                     }
                     else
                     {
-                        result = "需求不存在或已被删除";
+                        demand.ResourceType = ResourceType;
+
+                        switch (demand.ResourceType)
+                        {
+                            case 1:
+                                demand.ResourceTypeId = SpaceTypeId;
+                                break;
+                            case 2:
+                                demand.ResourceTypeId = ActorTypeId;
+                                break;
+                            case 3:
+                                demand.ResourceTypeId = EquipTypeId;
+                                break;
+                            case 4:
+                                demand.ResourceTypeId = OtherTypeId;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        demand.Title = title;
+                        demand.ContentText = contentText;
+                        demand.ContentStyle = demand.ContentText;
+
+                        if (demand.ContentText.Length > 291)
+                        {
+                            demand.Description = demand.ContentText.Substring(0, 290);
+                        }
+                        else
+                        {
+                            demand.Description = demand.ContentText;
+                        }
+
+                        demand.Province = string.IsNullOrEmpty(province) ? string.Empty : province;
+                        demand.City = string.IsNullOrEmpty(city) ? string.Empty : city;
+                        demand.Area = string.IsNullOrEmpty(area) ? string.Empty : area;
+                        demand.Address = string.IsNullOrEmpty(address) ? string.Empty : address;
+                        demand.Phone = phone;
+                        demand.QQWeixin = string.IsNullOrEmpty(qqweixin) ? string.Empty : qqweixin;
+                        demand.Email = string.IsNullOrEmpty(email) ? string.Empty : email;
+                        demand.StartTime = DateTime.Parse(startTime);
+                        demand.EndTime = DateTime.Parse(endTime);
+                        demand.TimeLength = string.Empty;
+                        demand.PeopleNumber = string.IsNullOrEmpty(peopleNumber) ? string.Empty : peopleNumber;
+                        int tempBudget = 0;
+                        if (!string.IsNullOrEmpty(budget))
+                        {
+                            Int32.TryParse(budget, out tempBudget);
+                        }
+                        demand.Budget = tempBudget;
+                        demand.IsActive = true;
+                        demand.ViewCount = 0;
+                        demand.InsertTime = DateTime.Now;
+                        demand.Status = (int)DemandStatus.InProgress;
+                        demand.ImageUrls = imageUrls;
+
+                        result = demandManager.ValidateDemand(demand);
+                        if (string.IsNullOrWhiteSpace(result) && demandService.EditDemand(demand))
+                        {
+                            result = "success";
+                        }
                     }
                 }
                 else
                 {
-                    result = "请将需求信息补充完整并检查其正确性";
+                    result = "需求不存在或已被删除";
                 }
             }
             return Content(result);

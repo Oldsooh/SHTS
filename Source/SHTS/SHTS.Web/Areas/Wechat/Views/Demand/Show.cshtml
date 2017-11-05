@@ -132,7 +132,7 @@
                 <li>
                     联系微信：
                     <span class="yellow2">
-                        <span id="qqWeixinValue" class="yellow2">分享朋友圈后即可免费查看</span>
+                        <span class="qqWeixinValue yellow2">分享朋友圈后即可免费查看</span>
                         <input type="hidden" id="qqWeixinHiddenValue" value="@Model.Demand.QQWeixin" />
                     </span>
                 </li>
@@ -213,11 +213,23 @@
                         // nothing
                     }
 
-                    if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) && !Model.HasCurrentUserSharedWechat)
+                    if (!string.IsNullOrWhiteSpace(Model.Demand.QQWeixin))
                     {
-                        <button id="btnShareTimeline" type="button" class="button btn-default" style="margin-top:30px;" onclick="_system._guide(true)">
-                            <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />&nbsp;免费查看联系微信
-                        </button>
+                        if (!Model.HasCurrentUserSharedWechat)
+                        {
+                            <button id="btnShareTimeline" type="button" class="button btn-default" style="margin-top:30px;" onclick="_system._guide(true)">
+                                <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />&nbsp;免费查看联系微信
+                            </button>
+                            <button type="button" class="qqWeixinValue button btn-default hide" style="margin-top:30px;" onclick="return;">
+                                <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="qqWeixinValue button btn-default" style="margin-top:30px;" onclick="return;">
+                                <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />联系微信：@Model.Demand.QQWeixin
+                            </button>
+                        }
                     }
 
                     if (!string.IsNullOrWhiteSpace(Model.Demand.Phone))
@@ -239,6 +251,12 @@
                                 <br />
                                 <button type="button" class="button btn-blue" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</button>
                             }
+                            else
+                            {
+                                <br />
+                                <br />
+                                <span class="button btn-blue" style="display:block;border-radius:15px;height:30px;font-size:15px;line-height:30px;" onclick="return;">联系电话: <a style="color:#ffffff;" href="tel:@Model.Demand.Phone">@Model.Demand.Phone</a></span>
+                            }
                         }
                     }
                 }
@@ -250,46 +268,46 @@
     @if (Model.Demand.ImgUrls.Length > 0)
             {
         <div style="clear: both; height: 10px;"></div>
-                <div class="container">
-                    <div class="row clearfix">
-                        <div class="col-md-12 column">
-                            <div class="carousel slide" id="carousel-144040">
-                                <ol class="carousel-indicators">
-                                    @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
-                                    {
-                                        if (i == 0)
-                                        {
-                                            <li class="active" data-slide-to="0" data-target="#carousel-144040">
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li data-slide-to="@i" data-target="#carousel-144040">
-                                            </li>
-                                        }
-                                    }
-                                </ol>
-                                <div class="carousel-inner">
-                                    @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
-                                    {
-                                        if (i == 0)
-                                        {
-                                            <div class="item active">
-                                                <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="item">
-                                                <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
-                                            </div>
-                                        }
-                                    }
-                                </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-                            </div>
-                        </div>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="carousel slide" id="carousel-144040">
+                        <ol class="carousel-indicators">
+                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <li class="active" data-slide-to="0" data-target="#carousel-144040">
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li data-slide-to="@i" data-target="#carousel-144040">
+                                    </li>
+                                }
+                            }
+                        </ol>
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.Demand.ImgUrls.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <div class="item active">
+                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="item">
+                                        <img alt="@Model.Demand.Title" src="@Model.Demand.ImgUrls[i]" />
+                                    </div>
+                                }
+                            }
+                        </div> <a class="left carousel-control" href="#carousel-144040" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-144040" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
                 </div>
+            </div>
+        </div>
     }
 </div>
 
@@ -394,25 +412,26 @@
                 function (data) {
                     console.log(data);
                     if (data.IsSuccessFul) {
-                        if ($('#qqWeixinValue')){
-                            $('#qqWeixinValue').html($('#qqWeixinHiddenValue').val());
+                        if ($('.qqWeixinValue')){
+                            $('.qqWeixinValue').html($('#qqWeixinHiddenValue').val());
+                            $('.qqWeixinValue').removeClass('hide');
                         }
                         if ($('#btnShareTimeline')){
                             $('#btnShareTimeline').addClass('hide');
                         }
                     }
                 }).error(function (data) {
-                    if ($('#qqWeixinValue')) {
+                    if ($('.qqWeixinValue')) {
                         alert('分享发生了点小故障，请刷新一下页面后再试试哦');
                     }
                 });
             },
             cancel: function () {
-                if ($('#qqWeixinValue')){
+                if ($('.qqWeixinValue')){
                     alert('分享朋友圈就可以免费查看微信哦');
                 }
             },
-            complete: function(){    
+            complete: function(){
                 document.getElementById('cover').style.display = "none";
                 document.getElementById('guide').style.display = "none";
             }

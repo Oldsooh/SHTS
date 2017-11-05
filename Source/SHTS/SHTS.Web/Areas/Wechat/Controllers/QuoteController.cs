@@ -1,10 +1,16 @@
 ﻿using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
+using Senparc.Weixin.MP.TenPayLibV3;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
@@ -16,6 +22,24 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class QuoteController : WechatBaseController
     {
+        private static TenPayV3Info _tenPayV3Info;
+
+        /// <summary>
+        /// 微信支付相关配置信息
+        /// </summary>
+        public static TenPayV3Info TenPayV3Info
+        {
+            get
+            {
+                if (_tenPayV3Info == null)
+                {
+                    _tenPayV3Info =
+                        TenPayV3InfoCollection.Data[System.Configuration.ConfigurationManager.AppSettings["TenPayV3_MchId"]];
+                }
+                return _tenPayV3Info;
+            }
+        }
+
         DemandQuoteService quoteService = new DemandQuoteService();
         DemandService demandService = new DemandService();
         UserService userService = new UserService();
@@ -248,7 +272,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 // 如果是自己发布的需求，无需购买即可查看
                 var isPostedByMyself = (quote.Demand.UserId == CurrentWeChatUser.UserId);
                 quote.HasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
-
+                quote.HasWeChatUserSharedForDemand = isPostedByMyself || demandService.HasWeChatUserSharedForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
+                quote.WechatShareParametersForQuote = PrepareWechatShareParameter(quote.Demand.Title ?? "");
                 // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {
@@ -515,6 +540,106 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             return data;
         }
+        private WechatShareParametersForQuote PrepareWechatShareParameter(string title)
+        {
+            string message = string.Empty;
+            var appId = string.Empty;
+            var timestamp = string.Empty;
+            var nonceStr = string.Empty;
+            var pageurl = Request.Url.AbsoluteUri;
+            var ticket = string.Empty;
+            var signature = string.Empty;
 
+            appId = TenPayV3Info.AppId;
+            nonceStr = TenPayV3Util.GetNoncestr();
+            TimeSpan ts = DateTime.Now - DateTime.Parse("1970-01-01 00:00:00");
+            timestamp = ts.TotalSeconds.ToString().Split('.')[0];
+
+            //微信access_token，用于获取微信jsapi_ticket  
+            string token = GetAccess_token(appId, TenPayV3Info.AppSecret);
+            //微信jsapi_ticket  
+            ticket = GetTicket(token);
+
+            //对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串  
+            string str = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + pageurl;
+            //签名,使用SHA1生成  
+            signature = FormsAuthentication.HashPasswordForStoringInConfigFile(str, "SHA1").ToLower();
+
+
+            var param = new WechatShareParametersForQuote
+            {
+                AppId = appId,
+                Timestamp = timestamp,
+                NonceStr = nonceStr,
+                Link = pageurl,
+                Signature = signature,
+                Title = title
+            };
+
+            return param;
+        }
+
+        /// <summary>  
+        /// 获取微信jsapi_ticket  
+        /// </summary>  
+        /// <param name="token">access_token</param>  
+        /// <returns>jsapi_ticket</returns>  
+        public string GetTicket(string token)
+        {
+            string ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + token + "&type=jsapi";
+            string jsonresult = HttpGet(ticketUrl, "UTF-8");
+            WX_Ticket wxTicket = JsonDeserialize<WX_Ticket>(jsonresult);
+            return wxTicket.ticket;
+        }
+
+        /// <summary>  
+        /// 获取微信access_token  
+        /// </summary>  
+        /// <param name="appid">公众号的应用ID</param>  
+        /// <param name="secret">公众号的应用密钥</param>  
+        /// <returns>access_token</returns>  
+        private string GetAccess_token(string appid, string secret)
+        {
+            string tokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+            string jsonresult = HttpGet(tokenUrl, "UTF-8");
+            WX_Token wx = JsonDeserialize<WX_Token>(jsonresult);
+            return wx.access_token;
+        }
+
+        /// <summary>  
+        /// JSON反序列化  
+        /// </summary>  
+        /// <typeparam name="T">实体类</typeparam>  
+        /// <param name="jsonString">JSON</param>  
+        /// <returns>实体类</returns>  
+        private T JsonDeserialize<T>(string jsonString)
+        {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T));
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
+            T obj = (T)ser.ReadObject(ms);
+            return obj;
+        }
+
+        /// <summary>  
+        /// HttpGET请求  
+        /// </summary>  
+        /// <param name="url">请求地址</param>  
+        /// <param name="encode">编码方式：GB2312/UTF-8</param>  
+        /// <returns>字符串</returns>  
+        private string HttpGet(string url, string encode)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "text/html;charset=" + encode;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream myResponseStream = response.GetResponseStream();
+            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(encode));
+            string retString = myStreamReader.ReadToEnd();
+            myStreamReader.Close();
+            myResponseStream.Close();
+
+            return retString;
+        }
     }
 }
+

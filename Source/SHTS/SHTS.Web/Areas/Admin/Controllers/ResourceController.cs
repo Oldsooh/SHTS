@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -165,6 +166,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 else
                 {
                     resourceManager.DeleteResourceById(id);
+                    result.Status = 0;
                 }
             }
             catch (Exception ex)

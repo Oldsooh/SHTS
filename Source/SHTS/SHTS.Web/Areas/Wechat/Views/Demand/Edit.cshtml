@@ -111,7 +111,6 @@
         .reg-form {
             height: auto;
             padding-left: 5px;
-            width: unset !important;
         }
 
         .uploadifive-button, .uploadifive-button > input[type=file], .uploadifive-queue-item {
@@ -185,7 +184,7 @@
 
             .reg-form .cell select {
                 height: 100%;
-                width: 30%;
+                width: 32%;
             }
 
             .reg-form .cell textarea {
@@ -449,33 +448,9 @@
                 </select>
             </div>
             <div class="cell">
-                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="活动标题" class="text" value="@Model.Demand.Title">
+                <input type="text" id="Title" name="Title" id="js-mobile_ipt" placeholder="需求标题" class="text" value="@Model.Demand.Title">
             </div>
-            <div class="cell">
-                @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
-                <input id="starttime" name="StartTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
-                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;"
-                       value='@(Model.Demand.StartTime.HasValue ? Model.Demand.StartTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
 
-                <input id="endtime" name="EndTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
-                       readonly="readonly" placeholder="结束时间" style="background:#fff;width:130px;left:174px;"
-                       value='@(Model.Demand.EndTime.HasValue ? Model.Demand.EndTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
-            </div>
-            <div class="cell" id="peopleNumberBox" style="display: none;">
-                <input type="number" min="1" name="PeopleNumber" placeholder="人员数量" class="text" value="@Model.Demand.PeopleNumber">
-            </div>
-            <div class="cell">
-                <input type="number" min="0" name="Budget" placeholder="预算金额(如果为面议，请填写0)" class="text" value="@Model.Demand.Budget">
-            </div>
-            <div class="cell">
-                <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text" value="@Model.Demand.Phone">
-            </div>
-            <div class="cell">
-                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="微信" class="text" value="@Model.Demand.QQWeixin">
-            </div>
-            <div class="cell">
-                <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text" value="@Model.Demand.Email">
-            </div>
             <div class="cell">
                 <select id="ddlProvince" class="text" name="Province" onchange="loadCities() ">
                     <option value="">省份</option>
@@ -531,6 +506,31 @@
             </div>
             <div class="cell">
                 <input type="text" name="Address" placeholder="详细地址" class="text" maxlength="11" value="@Model.Demand.Address">
+            </div>
+            <div class="cell">
+                @*<input type="text" name="TimeLength" placeholder="需求时长" class="text">*@
+                <input id="starttime" name="StartTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
+                       readonly="readonly" placeholder="开始时间" style="background:#fff;width:130px;"
+                       value='@(Model.Demand.StartTime.HasValue ? Model.Demand.StartTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
+
+                <input id="endtime" name="EndTime" type="datetime" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })"
+                       readonly="readonly" placeholder="结束时间" style="background:#fff;width:130px;left:174px;"
+                       value='@(Model.Demand.EndTime.HasValue ? Model.Demand.EndTime.Value.ToString("yyyy-MM-dd") : string.Empty)'>
+            </div>
+            <div class="cell" id="peopleNumberBox" style="display: none;">
+                <input type="number" min="1" name="PeopleNumber" placeholder="人员数量" class="text" value="@Model.Demand.PeopleNumber">
+            </div>
+            <div class="cell">
+                <input type="number" min="0" name="Budget" placeholder="预算金额(如果为面议，请填写0)" class="text" value="@Model.Demand.Budget">
+            </div>
+            <div class="cell">
+                <input type="text" id="Phone" name="Phone" placeholder="联系电话" class="text" value="@Model.Demand.Phone">
+            </div>
+            <div class="cell">
+                <input type="text" id="QQWeixin" name="QQWeixin" placeholder="微信" class="text" value="@Model.Demand.QQWeixin">
+            </div>
+            <div class="cell">
+                <input type="text" id="Email" name="Email" placeholder="电子邮箱" class="text" value="@Model.Demand.Email">
             </div>
             <div class="cell" style="height: 200px;">
                 <textarea name="ContentText" id="ContentText" placeholder="请填写需求详细内容" class="text" style="height: 180px; width: 94%;">@Model.Demand.ContentText</textarea>

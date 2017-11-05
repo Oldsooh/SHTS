@@ -161,7 +161,7 @@ namespace Witbird.SHTS.BLL.Managers
         #region 根据Id查找资源信息
         public Resource GetResourceById(int id, bool filterSensitiveWords = true)
         {
-            var resource = context.Resources.SingleOrDefault(v => v.Id == id);
+            var resource = context.Resources.SingleOrDefault(v => v.Id == id && v.State != 3);
             if (resource != null)
             {
                 resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
@@ -255,7 +255,7 @@ namespace Witbird.SHTS.BLL.Managers
         {
             var list = context.Resources
                 .Where(v => v.LastUpdatedTime >= lastUpdatedTime)
-                .Where(v => v.State != 256)
+                .Where(v => v.State != 3)
                 .OrderByDescending(v => v.LastUpdatedTime)
                 .ToList();
 
