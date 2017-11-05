@@ -99,6 +99,8 @@ namespace Witbird.SHTS.BLL.Managers
             {
                 DateTime demandStartTime = DateTime.MinValue;
                 DateTime demandEndTime = DateTime.MinValue;
+                DateTime.TryParse(startTime, out demandStartTime);
+                DateTime.TryParse(endTime, out demandEndTime);
 
                 //if (resourceType < 0 || resourceSubTypeId < 0)
                 //{
