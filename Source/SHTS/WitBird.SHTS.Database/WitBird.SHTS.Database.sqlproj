@@ -274,6 +274,7 @@
     <Build Include="StoredProcedure\User\sp_UpdateWeChatUserLastRequestTime.sql" />
     <None Include="WitBird.SHTS.Database.publish_123.56.100.55.xml" />
     <None Include="WitBird.SHTS.Database.publish_123.55.xml" />
+    <None Include="shts_test_WitBird.SHTS.Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />

@@ -53,5 +53,6 @@ namespace Witbird.SHTS.Model
         public int ActorSex { get; set; }
         public System.DateTime ClickTime { get; set; }
         public string UserName { get; set; }
+        public decimal QuotePrice { get; set; }
     }
 }
