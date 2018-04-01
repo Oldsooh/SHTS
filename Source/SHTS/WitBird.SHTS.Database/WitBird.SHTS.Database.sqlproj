@@ -268,13 +268,10 @@
     <Build Include="StoredProcedure\Trade\sp_SelectTradeOrderForWeChatShare.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="WitBird.SHTS.Database.publish.xml" />
     <None Include="WitBird.SHTS.Database.sqlproj.user" />
     <Build Include="StoredProcedure\DemandSubscription\sp_UpdateDemandSubscriptionLastPushTime.sql" />
     <Build Include="StoredProcedure\User\sp_UpdateWeChatUserLastRequestTime.sql" />
-    <None Include="WitBird.SHTS.Database.publish_123.56.100.55.xml" />
-    <None Include="WitBird.SHTS.Database.publish_123.55.xml" />
-    <None Include="shts_test_WitBird.SHTS.Database.publish.xml" />
+    <None Include="123.56.100.55_Test_WitBird.SHTS.Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WitBird.SHTS.Database.refactorlog" />

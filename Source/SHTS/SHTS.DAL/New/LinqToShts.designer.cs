@@ -22,7 +22,7 @@ namespace Witbird.SHTS.DAL.New
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="shts")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="shts_test")]
 	public partial class LinqToShtsDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -1921,6 +1921,8 @@ namespace Witbird.SHTS.DAL.New
 		
 		private string _UserName;
 		
+		private System.Nullable<int> _QuotePrice;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2003,6 +2005,8 @@ namespace Witbird.SHTS.DAL.New
     partial void OnClickTimeChanged();
     partial void OnUserNameChanging(string value);
     partial void OnUserNameChanged();
+    partial void OnQuotePriceChanging(System.Nullable<int> value);
+    partial void OnQuotePriceChanged();
     #endregion
 		
 		public Resource()
@@ -2786,6 +2790,26 @@ namespace Witbird.SHTS.DAL.New
 					this._UserName = value;
 					this.SendPropertyChanged("UserName");
 					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuotePrice", DbType="Int")]
+		public System.Nullable<int> QuotePrice
+		{
+			get
+			{
+				return this._QuotePrice;
+			}
+			set
+			{
+				if ((this._QuotePrice != value))
+				{
+					this.OnQuotePriceChanging(value);
+					this.SendPropertyChanging();
+					this._QuotePrice = value;
+					this.SendPropertyChanged("QuotePrice");
+					this.OnQuotePriceChanged();
 				}
 			}
 		}

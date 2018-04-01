@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="shts" Class="LinqToShtsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="shts_test" Class="LinqToShtsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=123.56.100.55;Initial Catalog=shts_test;Persist Security Info=True;User ID=sa" SettingsObjectName="Witbird.SHTS.DAL.Properties.Settings" SettingsPropertyName="shtsConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SpaceFacility" Member="SpaceFacilities">
     <Type Name="SpaceFacility">
@@ -136,6 +136,7 @@
       <Column Name="ActorSex" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ClickTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="QuotePrice" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
 </Database>
