@@ -416,7 +416,13 @@
                         }
                     </select>
                 </div>
-
+                <!--quote price-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        资源报价
+                    </div>
+                    <input type="number" id="QuotePrice" name="QuotePrice" value="@Model.QuotePrice" placeholder="请输入该资源的报价" class="text" min="0" step="100" />
+                </div>
                 <!--location area-->
                 <div class="inline wide area">
                     <div class="title highlight">
@@ -558,227 +564,234 @@
                               placeholder="请输入资源详情。如需添加图文详情，请访问电脑版。">
                         @Witbird.SHTS.Common.Html.HtmlUtil.RemoveHTMLTags(Model.Description)
                         </textarea>
-                    </div>
-                    <div class="inline wide">
-                        <button type="button" onclick="createResource(this);" class="button btn-green">修改资源</button>
-                    </div>
                 </div>
-            </form>
-        </div>
+                <div class="inline wide">
+                    <button type="button" onclick="createResource(this);" class="button btn-green">修改资源</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <!-- content -->
-    @section FooterJS
+</div>
+<!-- content -->
+@section FooterJS
 {
-        <script src="~/Content/js/city.js"></script>
-        <script src="~/Content/js/jquery-1.11.1.min.js"></script>
-        <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
-        <script src="~/Areas/Wechat/Content/scipts/uploadImgScript.js"></script>
-    
-        <script>
-            function changeResType(obj) {
-                $('.sp').addClass("hd");
-                $('.ac').addClass("hd");
-                $('.eq').addClass("hd");
-                $('.ot').addClass("hd");
-                switch (obj.value) {
-                    case "1":
-                        $('.sp').removeClass("hd");
-                        break;
-                    case "2":
-                        $('.ac').removeClass("hd");
-                        break;
-                    case "3":
-                        $('.eq').removeClass("hd");
-                        break;
-                    case "4":
-                        $('.ot').removeClass("hd");
-                        break;
-                    default:
-                        break;
-                }
+    <script src="~/Content/js/city.js"></script>
+    <script src="~/Content/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
+    <script src="~/Areas/Wechat/Content/scipts/uploadImgScript.js"></script>
+
+    <script>
+        function changeResType(obj) {
+            $('.sp').addClass("hd");
+            $('.ac').addClass("hd");
+            $('.eq').addClass("hd");
+            $('.ot').addClass("hd");
+            switch (obj.value) {
+                case "1":
+                    $('.sp').removeClass("hd");
+                    break;
+                case "2":
+                    $('.ac').removeClass("hd");
+                    break;
+                case "3":
+                    $('.eq').removeClass("hd");
+                    break;
+                case "4":
+                    $('.ot').removeClass("hd");
+                    break;
+                default:
+                    break;
             }
+        }
 
-            changeResType(document.getElementById('ResType'));
+        changeResType(document.getElementById('ResType'));
 
-            function isEmptyValue(value) {
-                if (value == '') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-
-            function prepareAndValidateData() {
-                var title = $('#title').val();
-                if (isEmptyValue(title)) {
-                    $('#title').focus();
-                    showMessage('请输入资源信息标题', false);
-                    return false;
-                }
-
-                var resType = $('#ResType').val();
-                // 活动场地
-                if (resType == 1) {
-                    var facilities = "";
-                    var isfirst = true;
-
-                    var features = "";
-                    isfirst = true;
-                    $('.spft').each(function () {
-                        if (this.checked) {
-                            if (isfirst) {
-                                features = this.value;
-                            } else {
-                                features = features + "," + this.value;
-                            }
-                            isfirst = false;
-                        }
-                    })
-                    if (isEmptyValue(features)) {
-                        $('#SpaceFeatures').focus();
-                        showMessage('请选择活动场地特点', false);
-                        return false;
-                    }
-                    $('#SpaceFeatures').val(features);
-
-                    $('.spfc').each(function () {
-                        if (this.checked) {
-                            if (isfirst) {
-                                facilities = this.value;
-                            } else {
-                                facilities = facilities + "," + this.value;
-                            }
-                            isfirst = false;
-                        }
-                    })
-
-                    $('#SpaceFacilities').val(facilities);
-
-                    //酒宴提供
-                    if ($('#chk_SpaceTreat').checked) {
-                        $('#SpaceTreat').val("1");
-                    }
-                    else {
-                        $('#SpaceTreat').val("2");
-                    }
-                }
-
-                var province = $('#ddlProvince').val();
-                if (province == -1) {
-                    $('#ddlProvince').focus();
-                    showMessage('请选择资源地区', false);
-                    return false;
-                }
-
-                var detailAddr = $('#DetailAddress').val();
-                if (isEmptyValue(detailAddr)) {
-                    $('#DetailAddress').focus();
-                    showMessage('请输入资源详细地址', false);
-                    return false;
-                }
-
-                var Contact = $('#Contact').val();
-                if (isEmptyValue(Contact)) {
-                    $('#Contact').focus();
-                    showMessage('请输入联系人姓名或称呼', false);
-                    return false;
-                }
-
-                var Mobile = $('#Mobile').val();
-                if (isEmptyValue(Mobile)) {
-                    $('#Mobile').focus();
-                    showMessage('请输入联系人手机号码', false);
-                    return false;
-                }
-
-                var imagesUrls = "";
-                isfirst = true;
-                $('.uploadifive-queue-item').each(function () {
-                    if (!isfirst) {
-                        imagesUrls += '|';
-                    }
-
-                    isfirst = false;
-                    var imageUrl = $(this).attr('rurl');
-
-                    imagesUrls += imageUrl;
-                });
-
-                if (isEmptyValue(imagesUrls)) {
-                    $('.uploadifive-button')[0].focus();
-                    showMessage('请上传几张资源图片用于展示', false);
-                    return false;
-                }
-                $('#ImageUrls').val(imagesUrls);
-
-                var Description = $('#Description').val();
-                if (isEmptyValue(Description)) {
-                    $('#Description').focus();
-                    showMessage('请输入资源详情', false);
-                    return false;
-                }
-
+        function isEmptyValue(value) {
+            if (value == '') {
                 return true;
             }
+            else {
+                return false;
+            }
+        }
 
-            function createResource(obj) {
-                if (prepareAndValidateData()) {
-                    $(obj).attr('disabled', 'disabled');
-                    $(obj).html('正在提交...');
-                    $.ajax({
-                        url: '/wechat/resource/edit',
-                        data: $("#js-form-mobile").serialize(),
-                        type: 'POST',
-                        success: function (data) {
-                            if (data.IsSuccessful) {
-                                alert('资源修改成功，请到我的资源页面查看');
-                                window.location.href = '/wechat/resource/my';
+        function prepareAndValidateData() {
+            var title = $('#title').val();
+            if (isEmptyValue(title)) {
+                $('#title').focus();
+                showMessage('请输入资源信息标题', false);
+                return false;
+            }
+
+            var resType = $('#ResType').val();
+            // 活动场地
+            if (resType == 1) {
+                var facilities = "";
+                var isfirst = true;
+
+                var features = "";
+                isfirst = true;
+                $('.spft').each(function () {
+                    if (this.checked) {
+                        if (isfirst) {
+                            features = this.value;
+                        } else {
+                            features = features + "," + this.value;
+                        }
+                        isfirst = false;
+                    }
+                })
+                if (isEmptyValue(features)) {
+                    $('#SpaceFeatures').focus();
+                    showMessage('请选择活动场地特点', false);
+                    return false;
+                }
+                $('#SpaceFeatures').val(features);
+
+                $('.spfc').each(function () {
+                    if (this.checked) {
+                        if (isfirst) {
+                            facilities = this.value;
+                        } else {
+                            facilities = facilities + "," + this.value;
+                        }
+                        isfirst = false;
+                    }
+                })
+
+                $('#SpaceFacilities').val(facilities);
+
+                //酒宴提供
+                if ($('#chk_SpaceTreat').checked) {
+                    $('#SpaceTreat').val("1");
+                }
+                else {
+                    $('#SpaceTreat').val("2");
+                }
+            }
+
+            var quotePrice = $('#QuotePrice').val();
+            if (isEmptyValue(quotePrice)) {
+                $('#QuotePrice').focus();
+                showMessage('请输入该资源的报价', false);
+                return false;
+            }
+
+            var province = $('#ddlProvince').val();
+            if (province == -1) {
+                $('#ddlProvince').focus();
+                showMessage('请选择资源地区', false);
+                return false;
+            }
+
+            var detailAddr = $('#DetailAddress').val();
+            if (isEmptyValue(detailAddr)) {
+                $('#DetailAddress').focus();
+                showMessage('请输入资源详细地址', false);
+                return false;
+            }
+
+            var Contact = $('#Contact').val();
+            if (isEmptyValue(Contact)) {
+                $('#Contact').focus();
+                showMessage('请输入联系人姓名或称呼', false);
+                return false;
+            }
+
+            var Mobile = $('#Mobile').val();
+            if (isEmptyValue(Mobile)) {
+                $('#Mobile').focus();
+                showMessage('请输入联系人手机号码', false);
+                return false;
+            }
+
+            var imagesUrls = "";
+            isfirst = true;
+            $('.uploadifive-queue-item').each(function () {
+                if (!isfirst) {
+                    imagesUrls += '|';
+                }
+
+                isfirst = false;
+                var imageUrl = $(this).attr('rurl');
+
+                imagesUrls += imageUrl;
+            });
+
+            if (isEmptyValue(imagesUrls)) {
+                $('.uploadifive-button')[0].focus();
+                showMessage('请上传几张资源图片用于展示', false);
+                return false;
+            }
+            $('#ImageUrls').val(imagesUrls);
+
+            var Description = $('#Description').val();
+            if (isEmptyValue(Description)) {
+                $('#Description').focus();
+                showMessage('请输入资源详情', false);
+                return false;
+            }
+
+            return true;
+        }
+
+        function createResource(obj) {
+            if (prepareAndValidateData()) {
+                $(obj).attr('disabled', 'disabled');
+                $(obj).html('正在提交...');
+                $.ajax({
+                    url: '/wechat/resource/edit',
+                    data: $("#js-form-mobile").serialize(),
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.IsSuccessful) {
+                            alert('资源修改成功，请到我的资源页面查看');
+                            window.location.href = '/wechat/resource/my';
+                        }
+                        else {
+                            if (isEmptyValue(data.ErrorMessage)) {
+                                showMessage('提交资源失败，请稍后再试', false);
                             }
                             else {
-                                if (isEmptyValue(data.ErrorMessage)) {
-                                    showMessage('提交资源失败，请稍后再试', false);
-                                }
-                                else {
-                                    showMessage(data.ErrorMessage, false);
-                                }
+                                showMessage(data.ErrorMessage, false);
                             }
-
-                            $(obj).html('修改资源');
-                            $(obj).removeAttr("disabled");
-                        },
-                        error: function (msg) {
-                            $(obj).html('修改资源');
-                            $(obj).removeAttr("disabled");
-                            showMessage("提交资源失败，请检查您的网络是否连接", false);
                         }
+
+                        $(obj).html('修改资源');
+                        $(obj).removeAttr("disabled");
+                    },
+                    error: function (msg) {
+                        $(obj).html('修改资源');
+                        $(obj).removeAttr("disabled");
+                        showMessage("提交资源失败，请检查您的网络是否连接", false);
+                    }
+                });
+            }
+            else {
+            }
+        }
+
+        function showMessage(msg, isSuccessfulMsg) {
+            if (msg != '') {
+                if (isSuccessfulMsg) {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/success.png"
                     });
                 }
                 else {
+                    ds.dialog({
+                        title: '消息提示',
+                        content: msg,
+                        icon: "/Content/dialog/images/info.png"
+                    });
                 }
             }
-
-            function showMessage(msg, isSuccessfulMsg) {
-                if (msg != '') {
-                    if (isSuccessfulMsg) {
-                        ds.dialog({
-                            title: '消息提示',
-                            content: msg,
-                            icon: "/Content/dialog/images/success.png"
-                        });
-                    }
-                    else {
-                        ds.dialog({
-                            title: '消息提示',
-                            content: msg,
-                            icon: "/Content/dialog/images/info.png"
-                        });
-                    }
-                }
-            }
-        </script>
-        <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
-        <script>
-            autoTextarea('Description');
-        </script>
-    }
+        }
+    </script>
+    <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js"></script>
+    <script>
+        autoTextarea('Description');
+    </script>
+}

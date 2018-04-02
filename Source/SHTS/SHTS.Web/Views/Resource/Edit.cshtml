@@ -155,6 +155,14 @@
         @Html.ValidationMessageFor(model => model.SpaceTreat)
     </div>
     <div class="clearfix"></div>
+    <div class="ur_title lh24">
+        资源报价<span class="red ch">*</span>：
+    </div>
+    <div class="ur_box">
+        @Html.TextBoxFor(model => model.QuotePrice, new { @class = "ur_txt1", @type = "number", @min = 0, @step = 100, @placeHolder = "请输入该资源的报价" })
+        @Html.ValidationMessageFor(model => model.QuotePrice, null, new { @style = "color: #4193ff" })
+    </div>
+    <div class="clearfix"></div>
     <div class="ur_title lh24"><span class="red ch"></span>地区：
     </div>
     <div class="ur_box">

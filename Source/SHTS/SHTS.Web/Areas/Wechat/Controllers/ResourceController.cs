@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.ModelBinding;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
@@ -294,6 +295,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             try
             {
+                if (!ModelState.IsValid || model == null)
+                {
+                    isSuccessful = false;
+                    errorMessage = "资源参数错误，请刷新页面后重试";
+                }
+
                 var resource = PrepareAndValidateResourceData(model);
 
 
@@ -415,7 +422,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             try
             {
 
-                if (model == null)
+                if (!ModelState.IsValid || model == null)
                 {
                     isSuccessful = false;
                     errorMessage = "资源参数错误，请刷新页面后重试";

@@ -261,6 +261,7 @@ namespace Witbird.SHTS.Web.Controllers
                         resource.ClickCount = 0;
                         resource.ClickTime = DateTime.Now;
                         resource.UserName = UserInfo.UserName;
+                        resource.QuotePrice = model.QuotePrice;
 
                         resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 0 : int.Parse(model.ActorFromId);
                         resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 0 : int.Parse(model.ActorSex);
