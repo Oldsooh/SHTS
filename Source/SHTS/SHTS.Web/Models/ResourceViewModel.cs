@@ -58,6 +58,7 @@ namespace Witbird.SHTS.Web.Models
         [Required(ErrorMessage = "必填，1000字最佳，太少大多都不好. 用于列表页简短描述.")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "请填写该资源的报价")]
         public int QuotePrice { get; set; }
 
         [Required(ErrorMessage = "请填写详细地址")]

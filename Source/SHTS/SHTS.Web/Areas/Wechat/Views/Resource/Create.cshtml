@@ -43,13 +43,13 @@
                 width: 93%;
             }
 
-            .inline.wide > input[type=text], .inline.wide>textarea {
+            .inline.wide > input[type=text], .inline.wide > textarea {
                 width: 93%;
             }
 
-            .inline.wide>button{
-                width:99%!important;
-                border-radius:5px;
+            .inline.wide > button {
+                width: 99% !important;
+                border-radius: 5px;
             }
 
             .inline > select {
@@ -115,7 +115,7 @@
             width: unset !important;
         }
 
-        .uploadifive-button,.uploadifive-button>input[type=file], .uploadifive-queue-item {
+        .uploadifive-button, .uploadifive-button > input[type=file], .uploadifive-queue-item {
             border-radius: 3px !important;
             margin-top: 5px !important;
             margin-right: 10px !important;
@@ -129,13 +129,13 @@
 
         .uploadifive-button {
             background-image: url('/Areas/Wechat/Content/images/btnAdd.png') !important;
-            background-repeat: no-repeat!important;
+            background-repeat: no-repeat !important;
             background-size: contain;
         }
 
-        .uploadifive-button, .uploadifive-button:hover{
-            background-color:initial!important;
-        }
+            .uploadifive-button, .uploadifive-button:hover {
+                background-color: initial !important;
+            }
 
         .uploadifive-queue-item > .close {
             width: 30px;
@@ -332,7 +332,13 @@
                         }
                     </select>
                 </div>
-
+                <!--quote price-->
+                <div class="inline wide">
+                    <div class="title highlight">
+                        资源报价
+                    </div>
+                    <input type="number" id="QuotePrice" name="QuotePrice" placeholder="请输入该资源的报价" class="text" min="0" step="100" />
+                </div>
                 <!--location area-->
                 <div class="inline wide area">
                     <div class="title highlight">
@@ -542,6 +548,13 @@
                 else {
                     $('#SpaceTreat').val("2");
                 }
+            }
+
+            var quotePrice = $('#QuotePrice').val();
+            if (isEmptyValue(quotePrice)) {
+                $('#QuotePrice').focus();
+                showMessage('请输入该资源的报价', false);
+                return false;
             }
 
             var province = $('#ddlProvince').val();

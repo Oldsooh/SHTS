@@ -579,6 +579,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             var email = model.Email;
             var href = model.Href;
             var currentTime = DateTime.Now;
+            var quotePrice = model.QuotePrice;
 
             if (string.IsNullOrEmpty(title))
             {
@@ -644,6 +645,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
             }
 
+            if (quotePrice <= 0)
+            {
+                throw new ArgumentException("请填写该资源的报价金额");
+            }
+
             if (string.IsNullOrEmpty(provinceId))
             {
                 throw new ArgumentException("请选择资源地区");
@@ -702,6 +708,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             resource.ClickCount = 0;
             resource.ClickTime = currentTime;
             resource.UserName = CurrentUser.UserName;
+            resource.QuotePrice = quotePrice;
 
             resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 1 : actorFromId;
             resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 1 : int.Parse(model.ActorSex);
