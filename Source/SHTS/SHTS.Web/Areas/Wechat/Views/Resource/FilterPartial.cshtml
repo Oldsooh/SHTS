@@ -144,6 +144,18 @@
         AcsxDictionary.Add(item.Key, (object)item.Value);
     }
 
+
+    //不限制报价范围
+    RouteValueDictionary QuotePriceCategoryDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "qpc")
+        {
+            continue;
+        }
+        QuotePriceCategoryDictionary.Add(item.Key, (object)item.Value);
+    }
+
     Dictionary<string, object> zindex77 = new Dictionary<string, object>();
     zindex77.Add("style", (object)"z-index:777");
 
@@ -208,7 +220,7 @@
                                     @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary)
                                 }
                             </li>
-                                CountryDictionary.Remove("ara");
+                            CountryDictionary.Remove("ara");
                         }
                     </ul>
                 </div>
@@ -553,7 +565,9 @@
     {
         //当选择了组织列别为个人的时候，会多一个筛选项为演员性别，所以这里重写css改变宽度为25%。
         <style>
-            .btn-group-root .btn-group { width: 25%; }
+            .btn-group-root .btn-group {
+                width: 20%;
+            }
         </style>
         if (Model.SelectedFilter.ContainsKey("acsx") || Model.UnselectFilter.ContainsKey("acsx"))
         {
@@ -736,6 +750,52 @@
                         <li>@Html.ActionLink(item.Name, Model.ActionName, OttpDictionary)</li>
                     }
                     OttpDictionary.Remove("ottp");
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.SelectedFilter.ContainsKey("qpc") || Model.UnselectFilter.ContainsKey("qpc"))
+    {
+        var name = "报价范围";
+        var quotePriceCategories = Witbird.SHTS.Web.Public.MiscData.QuotePriceCategories;
+
+        if (Model.SelectedFilter.ContainsKey("qpc"))
+        {
+            var first = quotePriceCategories.FirstOrDefault(x => x.Condition.ToString().Equals(Model.SelectedFilter["qpc"]));
+            if (first != null)
+            {
+                name = first.DisplayName;
+            }
+        }
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @name
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("qpc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in quotePriceCategories)
+                {
+                    QuotePriceCategoryDictionary.Add("qpc", item.Condition);
+                    if (Model.SelectedFilter.ContainsKey("qpc") && Model.SelectedFilter["qpc"].Equals(item.Condition))
+                    {
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary)</li>
+                    }
+                    QuotePriceCategoryDictionary.Remove("qpc");
                 }
             </ul>
         </div>

@@ -518,4 +518,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="AvailableBalance" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="13328189-2a87-4251-bc83-a3e4aaf33e74" ChangeDateTime="04/03/2018 01:10:49">
+    <Property Name="ElementName" Value="[dbo].[QuotePriceCategory].[Value]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[QuotePriceCategory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Condition" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d4977428-41a5-49c8-b3c5-b00bd98367a4" ChangeDateTime="04/03/2018 01:28:31">
+    <Property Name="ElementName" Value="[dbo].[QuotePriceCategory].[DsiplayOrder]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[QuotePriceCategory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DisplayOrder" />
+  </Operation>
 </Operations>

@@ -266,6 +266,7 @@
     <Build Include="StoredProcedure\ViewRecord\sp_AccessRecordSelect.sql" />
     <Build Include="StoredProcedure\Trade\sp_SelectTradeOrderByOpenIdAndDemandId.sql" />
     <Build Include="StoredProcedure\Trade\sp_SelectTradeOrderForWeChatShare.sql" />
+    <Build Include="Table\QuotePriceCategory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.sqlproj.user" />

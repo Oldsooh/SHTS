@@ -49,6 +49,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
+            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -100,6 +101,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
+            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -145,7 +147,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.AreaId = GetFilterValue(filters, "ara");
             query.PageIndex = GetIntFilterValue(filters, "page");
             query.EquipTypeId = GetIntFilterValue(filters, "eqtp");
-
+            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
 
             query.PageSize = 15;
@@ -198,6 +200,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
+            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -376,6 +379,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     //resource.State = (int)ResourceState.Created;
                     //resource.ClickCount = 0;
                     //resource.ClickTime = DateTime.Now;
+                    resource.QuotePrice = model.QuotePrice ?? 0;
 
                     resource.SpaceTypeId = model.SpaceTypeId.ToString();
                     resource.ActorTypeId = model.ActorTypeId.ToString();
@@ -788,28 +792,29 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         private Dictionary<string, string> ProcessSpaceFilters()
         {
-            string[] filters = new[] { "ara", "city", "page", "sptp", "spft", "spfc", "spsz", "sppc", "sptt", "rsst", "rsed" };//城市,分页,场地类型,场地特点,场地设施,场地大小,容纳人数,提供酒宴,开始时间,结束时间
+            //城市,分页,场地类型,场地特点,场地设施,场地大小,容纳人数,提供酒宴,开始时间,结束时间, 报价范围
+            string[] filters = new[] { "ara", "city", "page", "sptp", "spft",
+                "spfc", "spsz", "sppc", "sptt", "rsst", "rsed", "qpc" };
 
             return ProcessFiltersCore(filters);
         }
-
         private Dictionary<string, string> ProcessActorFilters()
         {
-            string[] filters = new[] { "ara", "city", "page", "actp", "rsst", "rsed", "acfm", "acsx" };//城市,分页,演员工作,开始时间,结束时间,来源,性别
+            //城市,分页,演员工作,开始时间,结束时间,来源,性别, 报价范围
+            string[] filters = new[] { "ara", "city", "page", "actp", "rsst", "rsed", "acfm", "acsx", "qpc" };
 
             return ProcessFiltersCore(filters);
         }
-
         private Dictionary<string, string> ProcessEquipmentFilters()
         {
-            string[] filters = new[] { "ara", "city", "page", "eqtp", "rsst", "rsed" };//城市,分页,开始时间,结束时间
+            //城市,分页,开始时间,结束时间,报价范围
+            string[] filters = new[] { "ara", "city", "page", "eqtp", "rsst", "rsed", "qpc" };
 
             return ProcessFiltersCore(filters);
         }
-
         private Dictionary<string, string> ProcessOtherFilters()
         {
-            string[] filters = new[] { "ara", "city", "page", "ottp", "rsst", "rsed" };//城市,分页,开始时间,结束时间
+            string[] filters = new[] { "ara", "city", "page", "ottp", "rsst", "rsed", "qpc" };//城市,分页,开始时间,结束时间
 
             return ProcessFiltersCore(filters);
         }

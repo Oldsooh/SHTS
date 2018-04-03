@@ -56,6 +56,11 @@ namespace Witbird.SHTS.BLL.Managers
         {
             return context.OtherTypes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
+
+        public List<QuotePriceCategory> GetQuotePriceCategories()
+        {
+            return context.QuotePriceCategories.Where(item => item != null && item.IsActive).OrderBy(item => item.DisplayOrder).ToList();
+        }
         #endregion
 
         #region 获取杂项内容

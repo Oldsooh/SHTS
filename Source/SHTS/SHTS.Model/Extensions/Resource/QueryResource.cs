@@ -50,6 +50,11 @@ namespace Witbird.SHTS.Model.Extensions
         //public DateTime EndDate { get; set; }
 
         public int State { get; set; }
+
+        /// <summary>
+        /// 报价范围
+        /// </summary>
+        public string QuotePriceCondition { get; set; }
         #endregion
 
         #region Space

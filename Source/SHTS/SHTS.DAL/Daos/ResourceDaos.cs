@@ -33,6 +33,7 @@ namespace Witbird.SHTS.DAL.Daos
         private const string col_userId = "@userId";
         private const string col_actorFromId = "@actorFromId";
         private const string col_actorSex = "@actorSex";
+        private const string col_QuotePrice = "@quotePrice";
 
         public QueryResourceResult GetResourceByFilter(
             SqlConnection sqlConn,
@@ -58,7 +59,8 @@ namespace Witbird.SHTS.DAL.Daos
             int pagesize,
             
             int actorFromId,
-            int actorSex)//pageindex from 0
+            int actorSex,
+            string quotePriceCondition)//pageindex from 0
         {
             QueryResourceResult result = new QueryResourceResult();
 
@@ -80,7 +82,8 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(col_pageIndex,pageindex),
                 new SqlParameter(col_pageSize,pagesize),
                 new SqlParameter(col_actorFromId,actorFromId),
-                new SqlParameter(col_actorSex,actorSex)
+                new SqlParameter(col_actorSex,actorSex),
+                new SqlParameter(col_QuotePrice, quotePriceCondition)
             };
 
             SqlDataReader reader = DBHelper.RunProcedure(sqlConn, sp_GetResourceByFilter, sqlParameters);

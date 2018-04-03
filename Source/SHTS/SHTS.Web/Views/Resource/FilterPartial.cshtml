@@ -155,6 +155,17 @@
             RstmDictionary.Add(item.Key, (object)item.Value);
         }*@
 
+    //不限制报价范围
+    RouteValueDictionary QuotePriceCategoryDictionary = new RouteValueDictionary();
+    foreach (var item in Model.SelectedFilter)
+    {
+        if (item.Key == "page" || item.Key == "qpc")
+        {
+            continue;
+        }
+        QuotePriceCategoryDictionary.Add(item.Key, (object)item.Value);
+    }
+
     Dictionary<string, object> zindex77 = new Dictionary<string, object>();
     zindex77.Add("style", (object)"z-index:777");
 
@@ -404,7 +415,7 @@
                                     @Html.ActionLink(ct.Name, Model.ActionName, CountryDictionary)
                                 }
                             </li>
-                                CountryDictionary.Remove("ara");
+                            CountryDictionary.Remove("ara");
                         }
                     </ul>
                 </div>
@@ -818,6 +829,37 @@
                 </ul>
             </div>
         }*@
+    @if (Model.SelectedFilter.ContainsKey("qpc") || Model.UnselectFilter.ContainsKey("qpc"))
+    {
+        <div class="class_list">
+            <h2>报价范围：</h2>
+            <ul>
+                <li>
+                    @if (Model.SelectedFilter.ContainsKey("qpc"))
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary, noClass)
+                    }
+                </li>
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.QuotePriceCategories)
+                {
+                    QuotePriceCategoryDictionary.Add("qpc", item.Condition);
+                    if (Model.SelectedFilter.ContainsKey("qpc") && Model.SelectedFilter["qpc"].Equals(item.Condition.ToString()))
+                    {
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary, noClass)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary)</li>
+                    }
+                    QuotePriceCategoryDictionary.Remove("qpc");
+                }
+            </ul>
+        </div>
+    }
     <div style="clear: both;"></div>
 </div>
 <div style="clear: both;"></div>

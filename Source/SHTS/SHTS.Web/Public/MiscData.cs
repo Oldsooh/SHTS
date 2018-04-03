@@ -132,6 +132,18 @@ namespace Witbird.SHTS.Web.Public
             }
         }
 
+        static List<QuotePriceCategory> quotePriceCategories = manager.GetQuotePriceCategories();
+        /// <summary>
+        /// 其他类别
+        /// </summary>
+        public static List<QuotePriceCategory> QuotePriceCategories
+        {
+            get
+            {
+                return quotePriceCategories;
+            }
+        }
+
         public static SpaceType GetSpaceTypeById(string id)
         {
             int x = 0;

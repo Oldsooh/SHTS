@@ -49,7 +49,8 @@ namespace Witbird.SHTS.BLL.Services
                     query.PageIndex,
                     query.PageSize,
                     query.ActorFromId,
-                    query.ActorSex);
+                    query.ActorSex,
+                    query.QuotePriceCondition);
             }
             catch (Exception ex)
             {
