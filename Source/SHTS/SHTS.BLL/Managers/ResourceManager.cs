@@ -61,7 +61,7 @@ namespace Witbird.SHTS.BLL.Managers
                 res.LastUpdatedTime = DateTime.Now;
                 res.EndDate = resource.EndDate;
                 res.StartDate = resource.StartDate;
-                res.QuotePrice = resource.QuotePrice;
+                res.Budget = resource.Budget;
             }
             context.SubmitChanges();
         }

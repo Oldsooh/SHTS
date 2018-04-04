@@ -1,6 +1,17 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandModel
 @{
     RouteValueDictionary dictionary = new RouteValueDictionary();
+    //if (Model.SelectedFilters != null && Model.SelectedFilters.Count > 0)
+    //{
+    //    foreach (var filter in Model.SelectedFilters)
+    //    {
+    //        if (filter.Key == "page")
+    //        {
+    //            continue;
+    //        }
+    //        dictionary.Add(filter.Key, filter.Value);
+    //    }
+    //}
 
     Dictionary<string, object> prv = new Dictionary<string, object>();
     prv.Add("class", "prv");

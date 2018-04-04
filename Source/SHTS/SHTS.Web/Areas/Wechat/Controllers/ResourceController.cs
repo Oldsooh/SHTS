@@ -49,7 +49,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -101,7 +101,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -147,7 +147,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.AreaId = GetFilterValue(filters, "ara");
             query.PageIndex = GetIntFilterValue(filters, "page");
             query.EquipTypeId = GetIntFilterValue(filters, "eqtp");
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
 
             query.PageSize = 15;
@@ -200,7 +200,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -379,7 +379,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                     //resource.State = (int)ResourceState.Created;
                     //resource.ClickCount = 0;
                     //resource.ClickTime = DateTime.Now;
-                    resource.QuotePrice = model.QuotePrice ?? 0;
+                    resource.QuotePrice = model.Budget ?? 0;
 
                     resource.SpaceTypeId = model.SpaceTypeId.ToString();
                     resource.ActorTypeId = model.ActorTypeId.ToString();
@@ -719,7 +719,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             resource.ClickCount = 0;
             resource.ClickTime = currentTime;
             resource.UserName = CurrentUser.UserName;
-            resource.QuotePrice = quotePrice;
+            resource.Budget = quotePrice;
 
             resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 1 : actorFromId;
             resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 1 : int.Parse(model.ActorSex);

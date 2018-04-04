@@ -78,7 +78,7 @@ namespace Witbird.SHTS.Web.Controllers
                     resource.ClickCount = 0;
                     resource.ClickTime = DateTime.Now;
                     resource.UserName = UserInfo.UserName;
-                    resource.QuotePrice = model.QuotePrice;
+                    resource.Budget = model.QuotePrice;
                     
 
                     resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 1 : int.Parse(model.ActorFromId);
@@ -176,7 +176,7 @@ namespace Witbird.SHTS.Web.Controllers
                     //resource.State = (int)ResourceState.Created;
                     //resource.ClickCount = 0;
                     //resource.ClickTime = DateTime.Now;
-                    resource.QuotePrice = model.QuotePrice ?? 0;
+                    resource.QuotePrice = model.Budget ?? 0;
 
                     resource.SpaceTypeId = model.SpaceTypeId.ToString();
                     resource.ActorTypeId = model.ActorTypeId.ToString();
@@ -262,7 +262,7 @@ namespace Witbird.SHTS.Web.Controllers
                         resource.ClickCount = 0;
                         resource.ClickTime = DateTime.Now;
                         resource.UserName = UserInfo.UserName;
-                        resource.QuotePrice = model.QuotePrice;
+                        resource.Budget = model.QuotePrice;
 
                         resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 0 : int.Parse(model.ActorFromId);
                         resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 0 : int.Parse(model.ActorSex);
@@ -370,7 +370,7 @@ namespace Witbird.SHTS.Web.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -422,7 +422,7 @@ namespace Witbird.SHTS.Web.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 
@@ -468,7 +468,7 @@ namespace Witbird.SHTS.Web.Controllers
             query.AreaId = GetFilterValue(filters, "ara");
             query.PageIndex = GetIntFilterValue(filters, "page");
             query.EquipTypeId = GetIntFilterValue(filters, "eqtp");
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
 
             query.PageSize = 15;
@@ -521,7 +521,7 @@ namespace Witbird.SHTS.Web.Controllers
             query.PageIndex = query.PageIndex > 1 ? query.PageIndex - 1 : 0;
             query.PageSize = 15;
             query.State = 2;
-            query.QuotePriceCondition = GetFilterValue(filters, "qpc");
+            query.BudgetCondition = GetFilterValue(filters, "qpc");
 
             var result = resourceService.GetResourceByFilter(query);
 

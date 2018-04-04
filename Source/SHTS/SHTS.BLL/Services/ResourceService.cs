@@ -50,7 +50,7 @@ namespace Witbird.SHTS.BLL.Services
                     query.PageSize,
                     query.ActorFromId,
                     query.ActorSex,
-                    query.QuotePriceCondition);
+                    query.BudgetCondition);
             }
             catch (Exception ex)
             {

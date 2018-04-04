@@ -63,12 +63,12 @@ namespace Witbird.SHTS.DAL.New
     partial void InsertActorSex(ActorSex instance);
     partial void UpdateActorSex(ActorSex instance);
     partial void DeleteActorSex(ActorSex instance);
+    partial void InsertBudgetFilter(BudgetFilter instance);
+    partial void UpdateBudgetFilter(BudgetFilter instance);
+    partial void DeleteBudgetFilter(BudgetFilter instance);
     partial void InsertResource(Resource instance);
     partial void UpdateResource(Resource instance);
     partial void DeleteResource(Resource instance);
-    partial void InsertQuotePriceCategory(QuotePriceCategory instance);
-    partial void UpdateQuotePriceCategory(QuotePriceCategory instance);
-    partial void DeleteQuotePriceCategory(QuotePriceCategory instance);
     #endregion
 		
 		public LinqToShtsDataContext() : 
@@ -189,19 +189,19 @@ namespace Witbird.SHTS.DAL.New
 			}
 		}
 		
+		public System.Data.Linq.Table<BudgetFilter> BudgetFilters
+		{
+			get
+			{
+				return this.GetTable<BudgetFilter>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Resource> Resources
 		{
 			get
 			{
 				return this.GetTable<Resource>();
-			}
-		}
-		
-		public System.Data.Linq.Table<QuotePriceCategory> QuotePriceCategories
-		{
-			get
-			{
-				return this.GetTable<QuotePriceCategory>();
 			}
 		}
 	}
@@ -1848,6 +1848,164 @@ namespace Witbird.SHTS.DAL.New
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BudgetFilters")]
+	public partial class BudgetFilter : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Condition;
+		
+		private string _DisplayName;
+		
+		private int _DisplayOrder;
+		
+		private bool _IsActive;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnConditionChanging(string value);
+    partial void OnConditionChanged();
+    partial void OnDisplayNameChanging(string value);
+    partial void OnDisplayNameChanged();
+    partial void OnDisplayOrderChanging(int value);
+    partial void OnDisplayOrderChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public BudgetFilter()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Condition", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Condition
+		{
+			get
+			{
+				return this._Condition;
+			}
+			set
+			{
+				if ((this._Condition != value))
+				{
+					this.OnConditionChanging(value);
+					this.SendPropertyChanging();
+					this._Condition = value;
+					this.SendPropertyChanged("Condition");
+					this.OnConditionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayName", DbType="NChar(10) NOT NULL", CanBeNull=false)]
+		public string DisplayName
+		{
+			get
+			{
+				return this._DisplayName;
+			}
+			set
+			{
+				if ((this._DisplayName != value))
+				{
+					this.OnDisplayNameChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayName = value;
+					this.SendPropertyChanged("DisplayName");
+					this.OnDisplayNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Resource")]
 	public partial class Resource : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1932,7 +2090,7 @@ namespace Witbird.SHTS.DAL.New
 		
 		private string _UserName;
 		
-		private System.Nullable<int> _QuotePrice;
+		private System.Nullable<int> _Budget;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2016,8 +2174,8 @@ namespace Witbird.SHTS.DAL.New
     partial void OnClickTimeChanged();
     partial void OnUserNameChanging(string value);
     partial void OnUserNameChanged();
-    partial void OnQuotePriceChanging(System.Nullable<int> value);
-    partial void OnQuotePriceChanged();
+    partial void OnBudgetChanging(System.Nullable<int> value);
+    partial void OnBudgetChanged();
     #endregion
 		
 		public Resource()
@@ -2805,180 +2963,22 @@ namespace Witbird.SHTS.DAL.New
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuotePrice", DbType="Int")]
-		public System.Nullable<int> QuotePrice
-		{
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Budget", DbType="Int")]
+		public System.Nullable<int> Budget
+        {
 			get
 			{
-				return this._QuotePrice;
+				return this._Budget;
 			}
 			set
 			{
-				if ((this._QuotePrice != value))
+				if ((this._Budget != value))
 				{
-					this.OnQuotePriceChanging(value);
+					this.OnBudgetChanging(value);
 					this.SendPropertyChanging();
-					this._QuotePrice = value;
-					this.SendPropertyChanged("QuotePrice");
-					this.OnQuotePriceChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuotePriceCategory")]
-	public partial class QuotePriceCategory : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Condition;
-		
-		private string _DisplayName;
-		
-		private int _DisplayOrder;
-		
-		private bool _IsActive;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnConditionChanging(string value);
-    partial void OnConditionChanged();
-    partial void OnDisplayNameChanging(string value);
-    partial void OnDisplayNameChanged();
-    partial void OnDisplayOrderChanging(int value);
-    partial void OnDisplayOrderChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    #endregion
-		
-		public QuotePriceCategory()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Condition", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
-		public string Condition
-		{
-			get
-			{
-				return this._Condition;
-			}
-			set
-			{
-				if ((this._Condition != value))
-				{
-					this.OnConditionChanging(value);
-					this.SendPropertyChanging();
-					this._Condition = value;
-					this.SendPropertyChanged("Condition");
-					this.OnConditionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayName", DbType="NChar(10) NOT NULL", CanBeNull=false)]
-		public string DisplayName
-		{
-			get
-			{
-				return this._DisplayName;
-			}
-			set
-			{
-				if ((this._DisplayName != value))
-				{
-					this.OnDisplayNameChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayName = value;
-					this.SendPropertyChanged("DisplayName");
-					this.OnDisplayNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
-		public int DisplayOrder
-		{
-			get
-			{
-				return this._DisplayOrder;
-			}
-			set
-			{
-				if ((this._DisplayOrder != value))
-				{
-					this.OnDisplayOrderChanging(value);
-					this.SendPropertyChanging();
-					this._DisplayOrder = value;
-					this.SendPropertyChanged("DisplayOrder");
-					this.OnDisplayOrderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
+					this._Budget = value;
+					this.SendPropertyChanged("Budget");
+					this.OnBudgetChanged();
 				}
 			}
 		}

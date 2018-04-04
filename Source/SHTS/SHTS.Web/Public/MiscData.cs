@@ -135,7 +135,7 @@ namespace Witbird.SHTS.Web.Public
         /// <summary>
         /// 其他类别
         /// </summary>
-        public static List<QuotePriceCategory> BudgetFilters { get; } = manager.GetBudgetFilters();
+        public static List<BudgetFilter> BudgetFilters { get; } = manager.GetBudgetFilters();
 
         public static SpaceType GetSpaceTypeById(string id)
         {

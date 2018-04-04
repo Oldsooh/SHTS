@@ -54,7 +54,7 @@ namespace Witbird.SHTS.Model.Extensions
         /// <summary>
         /// 报价范围
         /// </summary>
-        public string QuotePriceCondition { get; set; }
+        public string BudgetCondition { get; set; }
         #endregion
 
         #region Space

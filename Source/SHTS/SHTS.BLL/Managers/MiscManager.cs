@@ -57,9 +57,9 @@ namespace Witbird.SHTS.BLL.Managers
             return context.OtherTypes.Where(item => item != null && !item.MarkForDelete).ToList();
         }
 
-        public List<QuotePriceCategory> GetBudgetFilters()
+        public List<BudgetFilter> GetBudgetFilters()
         {
-            return context.QuotePriceCategories.Where(item => item != null && item.IsActive).OrderBy(item => item.DisplayOrder).ToList();
+            return context.BudgetFilters.Where(item => item != null && item.IsActive).OrderBy(item => item.DisplayOrder).ToList();
         }
         #endregion
 

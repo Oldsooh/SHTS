@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE [dbo].[sp_GetResourceByFilter]
+﻿CREATE PROCEDURE [dbo].[sp_GetResourceByFilter]
 (
         @state INT,
         @cityId NVARCHAR(50),
