@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[QuotePriceCategory]
+﻿CREATE TABLE [dbo].[BudgetFilters]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Condition] NVARCHAR(500) NOT NULL, 

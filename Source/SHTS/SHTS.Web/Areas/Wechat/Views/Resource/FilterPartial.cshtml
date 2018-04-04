@@ -758,11 +758,11 @@
     @if (Model.SelectedFilter.ContainsKey("qpc") || Model.UnselectFilter.ContainsKey("qpc"))
     {
         var name = "报价范围";
-        var quotePriceCategories = Witbird.SHTS.Web.Public.MiscData.QuotePriceCategories;
+        var BudgetFilters = Witbird.SHTS.Web.Public.MiscData.BudgetFilters;
 
         if (Model.SelectedFilter.ContainsKey("qpc"))
         {
-            var first = quotePriceCategories.FirstOrDefault(x => x.Condition.ToString().Equals(Model.SelectedFilter["qpc"]));
+            var first = BudgetFilters.FirstOrDefault(x => x.Condition.ToString().Equals(Model.SelectedFilter["qpc"]));
             if (first != null)
             {
                 name = first.DisplayName;
@@ -784,7 +784,7 @@
                         @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary, noClass)
                     }
                 </li>
-                @foreach (var item in quotePriceCategories)
+                @foreach (var item in BudgetFilters)
                 {
                     QuotePriceCategoryDictionary.Add("qpc", item.Condition);
                     if (Model.SelectedFilter.ContainsKey("qpc") && Model.SelectedFilter["qpc"].Equals(item.Condition))

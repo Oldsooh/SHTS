@@ -29,6 +29,8 @@ namespace Witbird.SHTS.Web.Models
 
         public string EndTime { get; set; }
 
+        public string BudgetFilterCondition { get; set; }
+
         /// <summary>
         /// 是否为会员, 会员可能查询详情
         /// </summary>

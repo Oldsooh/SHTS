@@ -46,7 +46,7 @@
 
 	[ClickTime] DATETIME NOT NULL,-- 最后一次签到时间
     [UserName] NVARCHAR(50) NOT NULL, 
-	[QuotePrice] INT NULL, 
+	[Budget] INT NULL, 
     --用户名，与UserId对应
 
     CONSTRAINT PK_Resource PRIMARY KEY([Id] ASC)

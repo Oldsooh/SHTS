@@ -17,7 +17,7 @@
         @pageSize INT,
         @actorFromId INT,
         @actorSex INT,
-		@quotePrice NVARCHAR(200)
+		@budgetCondition NVARCHAR(200)
 )
 AS
 BEGIN
@@ -41,10 +41,10 @@ BEGIN
         AND (@actorFromId = 0 OR Res.[ActorFromId] = @actorFromId)
         AND (@actorSex = 0 OR Res.[ActorSex] = @actorSex) '
 	
-	IF (@quotePrice <> '')
+	IF (@budgetCondition <> '')
 	BEGIN
 		SET @sqlText += N'
-		AND ' + @quotePrice
+		AND ' + @budgetCondition
 	END
 	
 	SET @sqlText +=N'
@@ -67,10 +67,10 @@ BEGIN
         AND (@otherTypeId = 0 OR Res.[OtherTypeId] = @otherTypeId)
         AND (@actorFromId = 0 OR Res.[ActorFromId] = @actorFromId)
         AND (@actorSex = 0 OR Res.[ActorSex] = @actorSex) '
-	IF (@quotePrice <> '')
+	IF (@budgetCondition <> '')
 	BEGIN
 		SET @sqlText += N'
-		AND ' + @quotePrice
+		AND ' + @budgetCondition
 	END
 
 	SET @sqlText +=	N')
@@ -97,7 +97,7 @@ BEGIN
         @pageSize INT,
         @actorFromId INT,
         @actorSex INT,
-		@quotePrice NVARCHAR(200)', 
+		@budgetCondition NVARCHAR(200)', 
 		@state,
         @cityId,
         @areaId,
@@ -115,6 +115,6 @@ BEGIN
         @pageSize,
         @actorFromId,
         @actorSex,
-		@quotePrice
+		@budgetCondition
 END
 GO

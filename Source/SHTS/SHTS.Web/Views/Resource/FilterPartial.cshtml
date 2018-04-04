@@ -156,14 +156,14 @@
         }*@
 
     //不限制报价范围
-    RouteValueDictionary QuotePriceCategoryDictionary = new RouteValueDictionary();
+    RouteValueDictionary budgetConditionDictionary = new RouteValueDictionary();
     foreach (var item in Model.SelectedFilter)
     {
         if (item.Key == "page" || item.Key == "qpc")
         {
             continue;
         }
-        QuotePriceCategoryDictionary.Add(item.Key, (object)item.Value);
+        budgetConditionDictionary.Add(item.Key, (object)item.Value);
     }
 
     Dictionary<string, object> zindex77 = new Dictionary<string, object>();
@@ -837,25 +837,25 @@
                 <li>
                     @if (Model.SelectedFilter.ContainsKey("qpc"))
                     {
-                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary)
+                        @Html.ActionLink("不限", Model.ActionName, budgetConditionDictionary)
                     }
                     else
                     {
-                        @Html.ActionLink("不限", Model.ActionName, QuotePriceCategoryDictionary, noClass)
+                        @Html.ActionLink("不限", Model.ActionName, budgetConditionDictionary, noClass)
                     }
                 </li>
-                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.QuotePriceCategories)
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.BudgetFilters)
                 {
-                    QuotePriceCategoryDictionary.Add("qpc", item.Condition);
+                    budgetConditionDictionary.Add("qpc", item.Condition);
                     if (Model.SelectedFilter.ContainsKey("qpc") && Model.SelectedFilter["qpc"].Equals(item.Condition.ToString()))
                     {
-                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary, noClass)</li>
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, budgetConditionDictionary, noClass)</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, QuotePriceCategoryDictionary)</li>
+                        <li>@Html.ActionLink(item.DisplayName, Model.ActionName, budgetConditionDictionary)</li>
                     }
-                    QuotePriceCategoryDictionary.Remove("qpc");
+                    budgetConditionDictionary.Remove("qpc");
                 }
             </ul>
         </div>
