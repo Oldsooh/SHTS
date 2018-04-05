@@ -5,12 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="shtsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__RefactorLog">
-          <Key>
-            <PropertyRef Name="OperationKey" />
-          </Key>
-          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="AccessAnalytics">
           <Key>
             <PropertyRef Name="Id" />
@@ -87,11 +81,15 @@
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.Actor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Actor">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="ActorTypeId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="ActorTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -123,6 +121,47 @@
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
           <Property Name="DisplayOrder" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.ActorView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ActorView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceType" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CanFriendlyLink" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="LastUpdatedTime" />
+            <PropertyRef Name="State" />
+            <PropertyRef Name="ActorTypeId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ResourceType" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProvinceId" Type="nvarchar(max)" />
+          <Property Name="CityId" Type="nvarchar(max)" />
+          <Property Name="AreaId" Type="nvarchar(max)" />
+          <Property Name="DetailAddress" Type="nvarchar(max)" />
+          <Property Name="CanFriendlyLink" Type="bit" Nullable="false" />
+          <Property Name="Href" Type="nvarchar(max)" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="ShortDesc" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ImageUrls" Type="nvarchar" MaxLength="400" />
+          <Property Name="Contract" Type="nvarchar(max)" />
+          <Property Name="QQ" Type="varchar(max)" />
+          <Property Name="Telephone" Type="nvarchar(max)" />
+          <Property Name="Mobile" Type="varchar(max)" />
+          <Property Name="WeChat" Type="varchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="ActorTypeId" Type="int" Nullable="false" />
+          <Property Name="ReadCount" Type="int" />
+        </EntityType>
         <EntityType Name="AdminRole">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -144,6 +183,16 @@
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="BudgetFilters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Condition" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -280,11 +329,31 @@
           <Property Name="SubscriptionValue" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="Equipment">
+        <EntityType Name="DemandSubscriptionPushHistory">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WechatUserId" Type="int" Nullable="false" />
+          <Property Name="OpenId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsMailSubscribed" Type="bit" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="DemandId" Type="int" Nullable="false" />
+          <Property Name="WechatStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WechatExceptionMessage" Type="nvarchar" MaxLength="500" />
+          <Property Name="EmailStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailExceptionMessage" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.Equipment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="EquipTypeId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="EquipTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -297,11 +366,15 @@
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.Facility' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Facility">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MarkForDelete" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
@@ -364,11 +437,15 @@
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.Other' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Other">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="OtherTypeId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="OtherTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -390,6 +467,23 @@
           <Property Name="ConfigValue" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.RentSection' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RentSection">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MinCount" />
+            <PropertyRef Name="MaxCount" />
+            <PropertyRef Name="MarkForDelete" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MinCount" Type="int" Nullable="false" />
+          <Property Name="MaxCount" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -434,6 +528,7 @@
           <Property Name="ActorSex" Type="int" Nullable="false" />
           <Property Name="ClickTime" Type="datetime" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Budget" Type="int" />
         </EntityType>
         <EntityType Name="ShortMessage">
           <Key>
@@ -465,27 +560,20 @@
           <Property Name="ViewCount" Type="int" />
           <Property Name="InsertTime" Type="datetime" />
         </EntityType>
-        <EntityType Name="SmsRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Content" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Userid" Type="int" />
-          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
-          <Property Name="Ip" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Hascheck" Type="tinyint" />
-          <Property Name="CheckTime" Type="datetime" />
-          <Property Name="TplId" Type="nvarchar" MaxLength="10" />
-          <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Value" Type="nchar" MaxLength="100" />
-          <Property Name="AddTime" Type="datetime" Nullable="false" />
-        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'shts_test.dbo.Space' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Space">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="SpaceTypeId" />
+            <PropertyRef Name="SpaceFeatureValue" />
+            <PropertyRef Name="SpaceFacilityValue" />
+            <PropertyRef Name="SpaceSizeId" />
+            <PropertyRef Name="SpacePeopleId" />
+            <PropertyRef Name="SpaceTreat" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="SpaceTypeId" Type="int" Nullable="false" />
           <Property Name="SpaceFeatureValue" Type="int" Nullable="false" />
@@ -701,18 +789,17 @@
           <Property Name="LastRequestTimestamp" Type="datetime" />
         </EntityType>
         <EntityContainer Name="shtsModelStoreContainer">
-          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessAnalytics" EntityType="Self.AccessAnalytics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessRecord" EntityType="Self.AccessRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityVote" EntityType="Self.ActivityVote" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorFrom" EntityType="Self.ActorFrom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorSex" EntityType="Self.ActorSex" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorType" EntityType="Self.ActorType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminRole" EntityType="Self.AdminRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminUser" EntityType="Self.AdminUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BudgetFilters" EntityType="Self.BudgetFilters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
@@ -722,22 +809,18 @@
           <EntitySet Name="DemandQuoteHistory" EntityType="Self.DemandQuoteHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscription" EntityType="Self.DemandSubscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="Self.DemandSubscriptionDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DemandSubscriptionPushHistory" EntityType="Self.DemandSubscriptionPushHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceBalance" EntityType="Self.FinanceBalance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceRecord" EntityType="Self.FinanceRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceWithdrawRecord" EntityType="Self.FinanceWithdrawRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GuestBook" EntityType="Self.GuestBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OtherType" EntityType="Self.OtherType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PublicConfig" EntityType="Self.PublicConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShortMessage" EntityType="Self.ShortMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SinglePage" EntityType="Self.SinglePage" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SmsRecord" EntityType="Self.SmsRecord" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Space" EntityType="Self.Space" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFacility" EntityType="Self.SpaceFacility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFeature" EntityType="Self.SpaceFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpacePeople" EntityType="Self.SpacePeople" Schema="dbo" store:Type="Tables" />
@@ -752,6 +835,87 @@
           <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeChatUser" EntityType="Self.WeChatUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Actor" EntityType="Self.Actor" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Actor].[Id] AS [Id], 
+[Actor].[ResourceId] AS [ResourceId], 
+[Actor].[ActorTypeId] AS [ActorTypeId]
+FROM [dbo].[Actor] AS [Actor]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ActorView" EntityType="Self.ActorView" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[ActorView].[Id] AS [Id], 
+[ActorView].[ResourceType] AS [ResourceType], 
+[ActorView].[Title] AS [Title], 
+[ActorView].[UserId] AS [UserId], 
+[ActorView].[ProvinceId] AS [ProvinceId], 
+[ActorView].[CityId] AS [CityId], 
+[ActorView].[AreaId] AS [AreaId], 
+[ActorView].[DetailAddress] AS [DetailAddress], 
+[ActorView].[CanFriendlyLink] AS [CanFriendlyLink], 
+[ActorView].[Href] AS [Href], 
+[ActorView].[StartDate] AS [StartDate], 
+[ActorView].[EndDate] AS [EndDate], 
+[ActorView].[ShortDesc] AS [ShortDesc], 
+[ActorView].[Description] AS [Description], 
+[ActorView].[ImageUrls] AS [ImageUrls], 
+[ActorView].[Contract] AS [Contract], 
+[ActorView].[QQ] AS [QQ], 
+[ActorView].[Telephone] AS [Telephone], 
+[ActorView].[Mobile] AS [Mobile], 
+[ActorView].[WeChat] AS [WeChat], 
+[ActorView].[Email] AS [Email], 
+[ActorView].[CreateTime] AS [CreateTime], 
+[ActorView].[LastUpdatedTime] AS [LastUpdatedTime], 
+[ActorView].[State] AS [State], 
+[ActorView].[ActorTypeId] AS [ActorTypeId], 
+[ActorView].[ReadCount] AS [ReadCount]
+FROM [dbo].[ActorView] AS [ActorView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Equipment].[Id] AS [Id], 
+[Equipment].[ResourceId] AS [ResourceId], 
+[Equipment].[EquipTypeId] AS [EquipTypeId]
+FROM [dbo].[Equipment] AS [Equipment]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Facility" EntityType="Self.Facility" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Facility].[Id] AS [Id], 
+[Facility].[Name] AS [Name], 
+[Facility].[Description] AS [Description], 
+[Facility].[MarkForDelete] AS [MarkForDelete]
+FROM [dbo].[Facility] AS [Facility]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Other" EntityType="Self.Other" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Other].[Id] AS [Id], 
+[Other].[ResourceId] AS [ResourceId], 
+[Other].[OtherTypeId] AS [OtherTypeId]
+FROM [dbo].[Other] AS [Other]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="RentSection" EntityType="Self.RentSection" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[RentSection].[Id] AS [Id], 
+[RentSection].[Name] AS [Name], 
+[RentSection].[MinCount] AS [MinCount], 
+[RentSection].[MaxCount] AS [MaxCount], 
+[RentSection].[Description] AS [Description], 
+[RentSection].[MarkForDelete] AS [MarkForDelete]
+FROM [dbo].[RentSection] AS [RentSection]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Space" EntityType="Self.Space" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Space].[Id] AS [Id], 
+[Space].[ResourceId] AS [ResourceId], 
+[Space].[SpaceTypeId] AS [SpaceTypeId], 
+[Space].[SpaceFeatureValue] AS [SpaceFeatureValue], 
+[Space].[SpaceFacilityValue] AS [SpaceFacilityValue], 
+[Space].[SpaceSizeId] AS [SpaceSizeId], 
+[Space].[SpacePeopleId] AS [SpacePeopleId], 
+[Space].[SpaceTreat] AS [SpaceTreat]
+FROM [dbo].[Space] AS [Space]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -759,29 +923,37 @@
       <Schema Namespace="shtsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="shtsEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="AccessAnalytics" EntityType="shtsModel.AccessAnalytics" />
+          <EntitySet Name="AccessRecord" EntityType="shtsModel.AccessRecord" />
           <EntitySet Name="Activity" EntityType="shtsModel.Activity" />
           <EntitySet Name="ActivityType" EntityType="shtsModel.ActivityType" />
-          <EntitySet Name="Actor" EntityType="shtsModel.Actor" />
+          <EntitySet Name="ActivityVote" EntityType="shtsModel.ActivityVote" />
+          <EntitySet Name="ActorFrom" EntityType="shtsModel.ActorFrom" />
+          <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
           <EntitySet Name="ActorType" EntityType="shtsModel.ActorType" />
           <EntitySet Name="AdminRole" EntityType="shtsModel.AdminRole" />
           <EntitySet Name="AdminUser" EntityType="shtsModel.AdminUser" />
+          <EntitySet Name="BudgetFilters" EntityType="shtsModel.BudgetFilters" />
           <EntitySet Name="City" EntityType="shtsModel.City" />
           <EntitySet Name="Comment" EntityType="shtsModel.Comment" />
           <EntitySet Name="Config" EntityType="shtsModel.Config" />
           <EntitySet Name="Demand" EntityType="shtsModel.Demand" />
           <EntitySet Name="DemandCategory" EntityType="shtsModel.DemandCategory" />
-          <EntitySet Name="Equipment" EntityType="shtsModel.Equipment" />
+          <EntitySet Name="DemandQuote" EntityType="shtsModel.DemandQuote" />
+          <EntitySet Name="DemandQuoteHistory" EntityType="shtsModel.DemandQuoteHistory" />
+          <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
+          <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
+          <EntitySet Name="DemandSubscriptionPushHistory" EntityType="shtsModel.DemandSubscriptionPushHistory" />
           <EntitySet Name="EquipType" EntityType="shtsModel.EquipType" />
-          <EntitySet Name="Facility" EntityType="shtsModel.Facility" />
+          <EntitySet Name="FinanceBalance" EntityType="shtsModel.FinanceBalance" />
+          <EntitySet Name="FinanceRecord" EntityType="shtsModel.FinanceRecord" />
+          <EntitySet Name="FinanceWithdrawRecord" EntityType="shtsModel.FinanceWithdrawRecord" />
           <EntitySet Name="GuestBook" EntityType="shtsModel.GuestBook" />
           <EntitySet Name="Image" EntityType="shtsModel.Image" />
-          <EntitySet Name="Other" EntityType="shtsModel.Other" />
           <EntitySet Name="OtherType" EntityType="shtsModel.OtherType" />
           <EntitySet Name="PublicConfig" EntityType="shtsModel.PublicConfig" />
           <EntitySet Name="Resource" EntityType="shtsModel.Resource" />
           <EntitySet Name="ShortMessage" EntityType="shtsModel.ShortMessage" />
           <EntitySet Name="SinglePage" EntityType="shtsModel.SinglePage" />
-          <EntitySet Name="Space" EntityType="shtsModel.Space" />
           <EntitySet Name="SpaceFacility" EntityType="shtsModel.SpaceFacility" />
           <EntitySet Name="SpaceFeature" EntityType="shtsModel.SpaceFeature" />
           <EntitySet Name="SpacePeople" EntityType="shtsModel.SpacePeople" />
@@ -791,61 +963,64 @@
           <EntitySet Name="TradeHistory" EntityType="shtsModel.TradeHistory" />
           <EntitySet Name="TradeOrder" EntityType="shtsModel.TradeOrder" />
           <EntitySet Name="User" EntityType="shtsModel.User" />
+          <EntitySet Name="UserBankInfo" EntityType="shtsModel.UserBankInfo" />
           <EntitySet Name="UserProfile" EntityType="shtsModel.UserProfile" />
           <EntitySet Name="UserVip" EntityType="shtsModel.UserVip" />
           <EntitySet Name="Video" EntityType="shtsModel.Video" />
-          <EntitySet Name="UserBankInfo" EntityType="shtsModel.UserBankInfo" />
-          <EntitySet Name="ActorFrom" EntityType="shtsModel.ActorFrom" />
-          <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
           <EntitySet Name="WeChatUser" EntityType="shtsModel.WeChatUser" />
-          <EntitySet Name="DemandQuoteHistory" EntityType="shtsModel.DemandQuoteHistory" />
-          <EntitySet Name="C__RefactorLog" EntityType="shtsModel.C__RefactorLog" />
-          <EntitySet Name="DemandQuote" EntityType="shtsModel.DemandQuote" />
-          <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
-          <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
-          <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
-          <EntitySet Name="ActivityVote" EntityType="shtsModel.ActivityVote" />
-          <EntitySet Name="FinanceBalance" EntityType="shtsModel.FinanceBalance" />
-          <EntitySet Name="FinanceRecord" EntityType="shtsModel.FinanceRecord" />
-          <EntitySet Name="FinanceWithdrawRecord" EntityType="shtsModel.FinanceWithdrawRecord" />
-          <EntitySet Name="AccessRecord" EntityType="shtsModel.AccessRecord" />
+          <EntitySet Name="Actor" EntityType="shtsModel.Actor" />
+          <EntitySet Name="ActorView" EntityType="shtsModel.ActorView" />
+          <EntitySet Name="Equipment" EntityType="shtsModel.Equipment" />
+          <EntitySet Name="Facility" EntityType="shtsModel.Facility" />
+          <EntitySet Name="Other" EntityType="shtsModel.Other" />
+          <EntitySet Name="RentSection" EntityType="shtsModel.RentSection" />
+          <EntitySet Name="Space" EntityType="shtsModel.Space" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="AccessUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="ReferrerUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Operation" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="PageTitle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="IP" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AccessUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReferrerUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Operation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PageTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="Agent" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Device" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Agent" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AccessRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserIP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessUrl" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="ActivityType" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="LocationId" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Adress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="ActivityType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="HoldBy" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Jingdu" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Weidu" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="ImageUrl" Type="String" MaxLength="3000" Unicode="true" FixedLength="false" />
-          <Property Name="Link" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="HoldBy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Jingdu" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Weidu" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="Int32" />
           <Property Name="ViewCount" Type="Int32" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
@@ -856,485 +1031,26 @@
           <Key>
             <PropertyRef Name="ActivityTypeId" />
           </Key>
-          <Property Name="ActivityTypeId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ActivityTypeName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
-          <Property Name="ImageUrl" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="ActivityTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivityTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ViewCount" Type="Int32" />
           <Property Name="State" Type="Int32" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="Actor">
+        <EntityType Name="ActivityVote">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="VoteId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ActorType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-          <Property Name="DisplayOrder" Type="Int32" />
-        </EntityType>
-        <EntityType Name="AdminRole">
-          <Key>
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleNmae" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="State" Type="Int32" />
-          <Property Name="Permission" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="LastUpdateTime" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="AdminUser">
-          <Key>
-            <PropertyRef Name="AdminId" />
-          </Key>
-          <Property Name="AdminId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Role" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="City">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="EntityType" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="ParentId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Sort" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="Config">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="Tel" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Domain" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="QQ1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="QQ2" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="QQ3" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Address" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="Company" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Weixin" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="ICP" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="StatisticalCode" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
-        </EntityType>
-        <EntityType Name="Demand">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="ResourceType" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="Province" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="City" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Area" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Address" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="StartTime" Type="DateTime" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="TimeLength" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="PeopleNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Budget" Type="Int32" />
-          <Property Name="ViewCount" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Type="String" Name="QQWeixin" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WeixinBuyFee" Type="Int32" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="ResourceTypeId" Type="Int32" />
-          <Property Name="ImageUrls" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="DemandCategory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Equipment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EquipType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Facility">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="GuestBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Other">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="OtherType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="PublicConfig">
-          <Key>
-            <PropertyRef Name="ConfigId" />
-          </Key>
-          <Property Name="ConfigId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="Resource">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceType" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="ProvinceId" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CityId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="AreaId" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="DetailAddress" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CanFriendlyLink" Type="Boolean" Nullable="false" />
-          <Property Name="Href" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="ShortDesc" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="ImageUrls" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Contract" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="StartDate" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="QQ" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="Telephone" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Mobile" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="WeChat" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReadCount" Type="Int32" Nullable="false" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="ClickCount" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
-          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
-          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
-          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
-          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
-          <Property Name="ActorFromId" Type="Int32" Nullable="false" />
-          <Property Name="ActorSex" Type="Int32" Nullable="false" />
-          <Property Name="ClickTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ShortMessage">
-          <Key>
-            <PropertyRef Name="MessageId" />
-          </Key>
-          <Property Name="MessageId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Cellphone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Provider" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="SinglePage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="VoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="EntityType" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="Category" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Keywords" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="ContentStyle" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="ContentText" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="ImageUrl" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="Link" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="ViewCount" Type="Int32" />
-          <Property Name="InsertTime" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="Space">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
-          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SpaceFacility">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Value" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SpaceFeature">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SpacePeople">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MinCount" Type="Int32" Nullable="false" />
-          <Property Name="MaxCount" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SpaceSize">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MinSize" Type="Int32" Nullable="false" />
-          <Property Name="MaxSize" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SpaceType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Trade">
-          <Key>
-            <PropertyRef Name="TradeId" />
-          </Key>
-          <Property Name="TradeId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="UserQQ" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="UserCellPhone" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="UserBankInfo" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="UserAddress" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="SellerId" Type="Int32" Nullable="false" />
-          <Property Name="BuyerId" Type="Int32" Nullable="false" />
-          <Property Name="TradeAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TradeSubject" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="TradeBody" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Payer" Type="Int32" Nullable="false" />
-          <Property Name="PayCommission" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PayCommissionPercent" Type="Double" Nullable="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="BuyerPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="SellerGet" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="ViewCount" Type="Int32" Nullable="false" />
-          <Property Name="ResourceUrl" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="IsBuyerPaid" Type="Boolean" Nullable="false" />
-          <Property Name="TradeOrderId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="TradeHistory">
-          <Key>
-            <PropertyRef Name="HistoryId" />
-          </Key>
-          <Property Name="HistoryId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="HistorySubject" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="HistoryBody" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="TradeId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="IsAdminUpdate" Type="Boolean" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="TradeState" Type="Int32" Nullable="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="TradeOrder">
-          <Key>
-            <PropertyRef Name="OrderId" />
-          </Key>
-          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
-          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="ResourceUrl" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
-          <Property Name="OrderType" Type="Int32" />
-          <Property Name="ResourceId" Type="Int32" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="UserType" Type="Int32" />
-          <Property Name="Adress" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="LocationId" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Cellphone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="QQ" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
-          <Property Name="UCard" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="SiteUrl" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="LoginIdentiy" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="IdentiyImg" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="Photo" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Vip" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="UserProfile">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
-          <Property Name="ProfileType" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Value" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="UserVip">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="OrderId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="IdentifyImg" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="StartTime" Type="DateTime" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="Duration" Type="Int32" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="State" Type="Int32" />
-          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="Video">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="Href" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="Int32" />
-        </EntityType>
-        <EntityType Name="UserBankInfo">
-          <Key>
-            <PropertyRef Name="BankId" />
-          </Key>
-          <Property Type="Int32" Name="BankId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="UserId" Nullable="false" />
-          <Property Type="String" Name="BankName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="BankAccount" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="BankUserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="BankAddress" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsDefault" Nullable="false" />
-          <Property Type="DateTime" Name="CreatedTime" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastUpdatedTime" Nullable="false" Precision="3" />
+          <Property Name="WechatUserOpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityId" Type="Int32" Nullable="false" />
+          <Property Name="IsVoted" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="ActorFrom">
           <Key>
@@ -1354,44 +1070,131 @@
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="WeChatUser">
+        <EntityType Name="ActorType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="OpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sex" Type="Int32" />
-          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccessTokenExpired" Type="Boolean" />
-          <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
-          <Property Name="HasSubscribed" Type="Boolean" />
-          <Property Name="HasAuthorized" Type="Boolean" />
-          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
-          <Property Name="LastRequestTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int32" />
         </EntityType>
-        <EntityType Name="DemandQuoteHistory">
+        <EntityType Name="AdminRole">
           <Key>
-            <PropertyRef Name="HistoryId" />
+            <PropertyRef Name="RoleId" />
           </Key>
-          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuoteId" Type="Int32" Nullable="false" />
-          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
-          <Property Name="Comments" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="HasRead" Type="Boolean" Nullable="false" />
-          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleNmae" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="Permission" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AdminUser">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BudgetFilters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Condition" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="C__RefactorLog">
+        <EntityType Name="City">
           <Key>
-            <PropertyRef Name="OperationKey" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntityType" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Tel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QQ1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QQ2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QQ3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Weixin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ICP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatisticalCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Demand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ResourceType" Type="Int32" Nullable="false" />
+          <Property Name="ResourceTypeId" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="TimeLength" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PeopleNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Budget" Type="Int32" />
+          <Property Name="QQWeixin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WeixinBuyFee" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ImageUrls" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DemandCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandQuote">
           <Key>
@@ -1407,6 +1210,18 @@
           <Property Name="AcceptStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DemandQuoteHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteId" Type="Int32" Nullable="false" />
+          <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="HasRead" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="DemandSubscription">
@@ -1432,33 +1247,30 @@
           <Property Name="SubscriptionValue" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="SmsRecord">
+        <EntityType Name="DemandSubscriptionPushHistory">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Userid" Type="Int32" />
-          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Hascheck" Type="Byte" />
-          <Property Name="CheckTime" Type="DateTime" Precision="3" />
-          <Property Name="TplId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WechatUserId" Type="Int32" Nullable="false" />
+          <Property Name="OpenId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsMailSubscribed" Type="Boolean" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DemandId" Type="Int32" Nullable="false" />
+          <Property Name="WechatStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WechatExceptionMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmailStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailExceptionMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="ActivityVote">
+        <EntityType Name="EquipType">
           <Key>
-            <PropertyRef Name="VoteId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="VoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="WechatUserOpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ActivityId" Type="Int32" Nullable="false" />
-          <Property Name="IsVoted" Type="Boolean" Nullable="false" />
-          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FinanceBalance">
           <Key>
@@ -1496,16 +1308,444 @@
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="AccessRecord">
+        <EntityType Name="GuestBook">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserIP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccessUrl" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
         </EntityType>
-      </Schema>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="OtherType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PublicConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceType" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProvinceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DetailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CanFriendlyLink" Type="Boolean" Nullable="false" />
+          <Property Name="Href" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShortDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrls" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Contract" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="QQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="WeChat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReadCount" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="ClickCount" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
+          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
+          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ActorFromId" Type="Int32" Nullable="false" />
+          <Property Name="ActorSex" Type="Int32" Nullable="false" />
+          <Property Name="ClickTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Budget" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ShortMessage">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cellphone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Provider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SinglePage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="EntityType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ContentStyle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContentText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="ViewCount" Type="Int32" />
+          <Property Name="InsertTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SpaceFacility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceFeature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpacePeople">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MinCount" Type="Int32" Nullable="false" />
+          <Property Name="MaxCount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceSize">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MinSize" Type="Int32" Nullable="false" />
+          <Property Name="MaxSize" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpaceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="TradeId" />
+          </Key>
+          <Property Name="TradeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserQQ" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserCellPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserBankInfo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserAddress" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SellerId" Type="Int32" Nullable="false" />
+          <Property Name="BuyerId" Type="Int32" Nullable="false" />
+          <Property Name="TradeAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TradeSubject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TradeBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Payer" Type="Int32" Nullable="false" />
+          <Property Name="PayCommission" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PayCommissionPercent" Type="Double" Nullable="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="BuyerPay" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SellerGet" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ViewCount" Type="Int32" Nullable="false" />
+          <Property Name="ResourceUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsBuyerPaid" Type="Boolean" Nullable="false" />
+          <Property Name="TradeOrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TradeHistory">
+          <Key>
+            <PropertyRef Name="HistoryId" />
+          </Key>
+          <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HistorySubject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HistoryBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TradeId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IsAdminUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TradeState" Type="Int32" Nullable="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="TradeOrder">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="ResourceUrl" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="OrderType" Type="Int32" />
+          <Property Name="ResourceId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EncryptedPassword" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="Adress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Cellphone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UCard" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SiteUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LoginIdentiy" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdentiyImg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Vip" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserBankInfo">
+          <Key>
+            <PropertyRef Name="BankId" />
+          </Key>
+          <Property Name="BankId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BankName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BankAccount" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BankUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BankAddress" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ProfileType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserVip">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OrderId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdentifyImg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="Href" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="Int32" />
+        </EntityType>
+        <EntityType Name="WeChatUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="OpenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="Int32" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessTokenExpired" Type="Boolean" />
+          <Property Name="AccessTokenExpireTime" Type="DateTime" Precision="3" />
+          <Property Name="HasSubscribed" Type="Boolean" />
+          <Property Name="HasAuthorized" Type="Boolean" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastRequestTimestamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="ActorTypeId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorView">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceType" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CanFriendlyLink" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="LastUpdatedTime" />
+            <PropertyRef Name="State" />
+            <PropertyRef Name="ActorTypeId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceType" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProvinceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DetailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CanFriendlyLink" Type="Boolean" Nullable="false" />
+          <Property Name="Href" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="ShortDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrls" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Contract" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="WeChat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ReadCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="EquipTypeId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MarkForDelete" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Other">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="OtherTypeId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentSection">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="MinCount" />
+            <PropertyRef Name="MaxCount" />
+            <PropertyRef Name="MarkForDelete" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MinCount" Type="Int32" Nullable="false" />
+          <Property Name="MaxCount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Space">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="SpaceTypeId" />
+            <PropertyRef Name="SpaceFeatureValue" />
+            <PropertyRef Name="SpaceFacilityValue" />
+            <PropertyRef Name="SpaceSizeId" />
+            <PropertyRef Name="SpacePeopleId" />
+            <PropertyRef Name="SpaceTreat" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1514,563 +1754,81 @@
           <EntitySetMapping Name="AccessAnalytics">
             <EntityTypeMapping TypeName="shtsModel.AccessAnalytics">
               <MappingFragment StoreEntitySet="AccessAnalytics">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
-                <ScalarProperty Name="ReferrerUrl" ColumnName="ReferrerUrl" />
-                <ScalarProperty Name="Operation" ColumnName="Operation" />
-                <ScalarProperty Name="PageTitle" ColumnName="PageTitle" />
-                <ScalarProperty Name="IP" ColumnName="IP" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Agent" ColumnName="Agent" />
                 <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="Agent" ColumnName="Agent" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="PageTitle" ColumnName="PageTitle" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="ReferrerUrl" ColumnName="ReferrerUrl" />
+                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccessRecord">
+            <EntityTypeMapping TypeName="shtsModel.AccessRecord">
+              <MappingFragment StoreEntitySet="AccessRecord">
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
+                <ScalarProperty Name="UserIP" ColumnName="UserIP" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="shtsModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="Adress" ColumnName="Adress" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="HoldBy" ColumnName="HoldBy" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
-                <ScalarProperty Name="Jingdu" ColumnName="Jingdu" />
-                <ScalarProperty Name="Weidu" ColumnName="Weidu" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
-                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Link" ColumnName="Link" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
                 <ScalarProperty Name="IsFromMobile" ColumnName="IsFromMobile" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Weidu" ColumnName="Weidu" />
+                <ScalarProperty Name="Jingdu" ColumnName="Jingdu" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="HoldBy" ColumnName="HoldBy" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ActivityType">
             <EntityTypeMapping TypeName="shtsModel.ActivityType">
               <MappingFragment StoreEntitySet="ActivityType">
-                <ScalarProperty Name="ActivityTypeId" ColumnName="ActivityTypeId" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ActivityTypeName" ColumnName="ActivityTypeName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="ActivityTypeId" ColumnName="ActivityTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Actor">
-            <EntityTypeMapping TypeName="shtsModel.Actor">
-              <MappingFragment StoreEntitySet="Actor">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ActorType">
-            <EntityTypeMapping TypeName="shtsModel.ActorType">
-              <MappingFragment StoreEntitySet="ActorType">
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AdminRole">
-            <EntityTypeMapping TypeName="shtsModel.AdminRole">
-              <MappingFragment StoreEntitySet="AdminRole">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="RoleNmae" ColumnName="RoleNmae" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Permission" ColumnName="Permission" />
-                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AdminUser">
-            <EntityTypeMapping TypeName="shtsModel.AdminUser">
-              <MappingFragment StoreEntitySet="AdminUser">
-                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="City">
-            <EntityTypeMapping TypeName="shtsModel.City">
-              <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="Sort" ColumnName="Sort" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Comment">
-            <EntityTypeMapping TypeName="shtsModel.Comment">
-              <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+          <EntitySetMapping Name="ActivityVote">
+            <EntityTypeMapping TypeName="shtsModel.ActivityVote">
+              <MappingFragment StoreEntitySet="ActivityVote">
+                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="IsVoted" ColumnName="IsVoted" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="WechatUserOpenId" ColumnName="WechatUserOpenId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Config">
-            <EntityTypeMapping TypeName="shtsModel.Config">
-              <MappingFragment StoreEntitySet="Config">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Tel" ColumnName="Tel" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Domain" ColumnName="Domain" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="QQ1" ColumnName="QQ1" />
-                <ScalarProperty Name="QQ2" ColumnName="QQ2" />
-                <ScalarProperty Name="QQ3" ColumnName="QQ3" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Company" ColumnName="Company" />
-                <ScalarProperty Name="Weixin" ColumnName="Weixin" />
-                <ScalarProperty Name="ICP" ColumnName="ICP" />
-                <ScalarProperty Name="StatisticalCode" ColumnName="StatisticalCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Demand">
-            <EntityTypeMapping TypeName="shtsModel.Demand">
-              <MappingFragment StoreEntitySet="Demand">
-                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
-                <ScalarProperty Name="ResourceTypeId" ColumnName="ResourceTypeId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="WeixinBuyFee" ColumnName="WeixinBuyFee" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="QQWeixin" ColumnName="QQWeixin" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
-                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="TimeLength" ColumnName="TimeLength" />
-                <ScalarProperty Name="PeopleNumber" ColumnName="PeopleNumber" />
-                <ScalarProperty Name="Budget" ColumnName="Budget" />
-                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DemandCategory">
-            <EntityTypeMapping TypeName="shtsModel.DemandCategory">
-              <MappingFragment StoreEntitySet="DemandCategory">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Equipment">
-            <EntityTypeMapping TypeName="shtsModel.Equipment">
-              <MappingFragment StoreEntitySet="Equipment">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EquipType">
-            <EntityTypeMapping TypeName="shtsModel.EquipType">
-              <MappingFragment StoreEntitySet="EquipType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Facility">
-            <EntityTypeMapping TypeName="shtsModel.Facility">
-              <MappingFragment StoreEntitySet="Facility">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="GuestBook">
-            <EntityTypeMapping TypeName="shtsModel.GuestBook">
-              <MappingFragment StoreEntitySet="GuestBook">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Image">
-            <EntityTypeMapping TypeName="shtsModel.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Other">
-            <EntityTypeMapping TypeName="shtsModel.Other">
-              <MappingFragment StoreEntitySet="Other">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OtherType">
-            <EntityTypeMapping TypeName="shtsModel.OtherType">
-              <MappingFragment StoreEntitySet="OtherType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PublicConfig">
-            <EntityTypeMapping TypeName="shtsModel.PublicConfig">
-              <MappingFragment StoreEntitySet="PublicConfig">
-                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
-                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
-                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Resource">
-            <EntityTypeMapping TypeName="shtsModel.Resource">
-              <MappingFragment StoreEntitySet="Resource">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="ClickTime" ColumnName="ClickTime" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
-                <ScalarProperty Name="CanFriendlyLink" ColumnName="CanFriendlyLink" />
-                <ScalarProperty Name="Href" ColumnName="Href" />
-                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
-                <ScalarProperty Name="Contract" ColumnName="Contract" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="QQ" ColumnName="QQ" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="WeChat" ColumnName="WeChat" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
-                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
-                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
-                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
-                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
-                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
-                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
-                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
-                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
-                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
-                <ScalarProperty Name="ActorFromId" ColumnName="ActorFromId" />
-                <ScalarProperty Name="ActorSex" ColumnName="ActorSex" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ShortMessage">
-            <EntityTypeMapping TypeName="shtsModel.ShortMessage">
-              <MappingFragment StoreEntitySet="ShortMessage">
-                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
-                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
-                <ScalarProperty Name="Provider" ColumnName="Provider" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SinglePage">
-            <EntityTypeMapping TypeName="shtsModel.SinglePage">
-              <MappingFragment StoreEntitySet="SinglePage">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
-                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Link" ColumnName="Link" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
-                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Space">
-            <EntityTypeMapping TypeName="shtsModel.Space">
-              <MappingFragment StoreEntitySet="Space">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
-                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
-                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
-                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
-                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
-                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SpaceFacility">
-            <EntityTypeMapping TypeName="shtsModel.SpaceFacility">
-              <MappingFragment StoreEntitySet="SpaceFacility">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SpaceFeature">
-            <EntityTypeMapping TypeName="shtsModel.SpaceFeature">
-              <MappingFragment StoreEntitySet="SpaceFeature">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SpacePeople">
-            <EntityTypeMapping TypeName="shtsModel.SpacePeople">
-              <MappingFragment StoreEntitySet="SpacePeople">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
-                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SpaceSize">
-            <EntityTypeMapping TypeName="shtsModel.SpaceSize">
-              <MappingFragment StoreEntitySet="SpaceSize">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="MinSize" ColumnName="MinSize" />
-                <ScalarProperty Name="MaxSize" ColumnName="MaxSize" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SpaceType">
-            <EntityTypeMapping TypeName="shtsModel.SpaceType">
-              <MappingFragment StoreEntitySet="SpaceType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Trade">
-            <EntityTypeMapping TypeName="shtsModel.Trade">
-              <MappingFragment StoreEntitySet="Trade">
-                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserQQ" ColumnName="UserQQ" />
-                <ScalarProperty Name="UserCellPhone" ColumnName="UserCellPhone" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="UserBankInfo" ColumnName="UserBankInfo" />
-                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
-                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
-                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
-                <ScalarProperty Name="TradeAmount" ColumnName="TradeAmount" />
-                <ScalarProperty Name="TradeSubject" ColumnName="TradeSubject" />
-                <ScalarProperty Name="TradeBody" ColumnName="TradeBody" />
-                <ScalarProperty Name="Payer" ColumnName="Payer" />
-                <ScalarProperty Name="PayCommission" ColumnName="PayCommission" />
-                <ScalarProperty Name="PayCommissionPercent" ColumnName="PayCommissionPercent" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="BuyerPay" ColumnName="BuyerPay" />
-                <ScalarProperty Name="SellerGet" ColumnName="SellerGet" />
-                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
-                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
-                <ScalarProperty Name="IsBuyerPaid" ColumnName="IsBuyerPaid" />
-                <ScalarProperty Name="TradeOrderId" ColumnName="TradeOrderId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TradeHistory">
-            <EntityTypeMapping TypeName="shtsModel.TradeHistory">
-              <MappingFragment StoreEntitySet="TradeHistory">
-                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
-                <ScalarProperty Name="HistorySubject" ColumnName="HistorySubject" />
-                <ScalarProperty Name="HistoryBody" ColumnName="HistoryBody" />
-                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="IsAdminUpdate" ColumnName="IsAdminUpdate" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="TradeState" ColumnName="TradeState" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TradeOrder">
-            <EntityTypeMapping TypeName="shtsModel.TradeOrder">
-              <MappingFragment StoreEntitySet="TradeOrder">
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
-                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User">
-            <EntityTypeMapping TypeName="shtsModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="Adress" ColumnName="Adress" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="QQ" ColumnName="QQ" />
-                <ScalarProperty Name="UCard" ColumnName="UCard" />
-                <ScalarProperty Name="SiteUrl" ColumnName="SiteUrl" />
-                <ScalarProperty Name="LoginIdentiy" ColumnName="LoginIdentiy" />
-                <ScalarProperty Name="IdentiyImg" ColumnName="IdentiyImg" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-                <ScalarProperty Name="Vip" ColumnName="Vip" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserProfile">
-            <EntityTypeMapping TypeName="shtsModel.UserProfile">
-              <MappingFragment StoreEntitySet="UserProfile">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProfileType" ColumnName="ProfileType" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserVip">
-            <EntityTypeMapping TypeName="shtsModel.UserVip">
-              <MappingFragment StoreEntitySet="UserVip">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="IdentifyImg" ColumnName="IdentifyImg" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Video">
-            <EntityTypeMapping TypeName="shtsModel.Video">
-              <MappingFragment StoreEntitySet="Video">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Href" ColumnName="Href" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="State" ColumnName="State" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserBankInfo">
-            <EntityTypeMapping TypeName="shtsModel.UserBankInfo">
-              <MappingFragment StoreEntitySet="UserBankInfo">
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
-                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
-                <ScalarProperty Name="BankUserName" ColumnName="BankUserName" />
-                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
-                <ScalarProperty Name="BankName" ColumnName="BankName" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="BankId" ColumnName="BankId" />
+                <ScalarProperty Name="VoteId" ColumnName="VoteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2094,45 +1852,138 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="WeChatUser">
-            <EntityTypeMapping TypeName="shtsModel.WeChatUser">
-              <MappingFragment StoreEntitySet="WeChatUser">
-                <ScalarProperty Name="LastRequestTimestamp" ColumnName="LastRequestTimestamp" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="HasAuthorized" ColumnName="HasAuthorized" />
-                <ScalarProperty Name="HasSubscribed" ColumnName="HasSubscribed" />
-                <ScalarProperty Name="AccessTokenExpireTime" ColumnName="AccessTokenExpireTime" />
-                <ScalarProperty Name="AccessTokenExpired" ColumnName="AccessTokenExpired" />
-                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-                <ScalarProperty Name="County" ColumnName="County" />
+          <EntitySetMapping Name="ActorType">
+            <EntityTypeMapping TypeName="shtsModel.ActorType">
+              <MappingFragment StoreEntitySet="ActorType">
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminRole">
+            <EntityTypeMapping TypeName="shtsModel.AdminRole">
+              <MappingFragment StoreEntitySet="AdminRole">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="RoleNmae" ColumnName="RoleNmae" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminUser">
+            <EntityTypeMapping TypeName="shtsModel.AdminUser">
+              <MappingFragment StoreEntitySet="AdminUser">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BudgetFilters">
+            <EntityTypeMapping TypeName="shtsModel.BudgetFilters">
+              <MappingFragment StoreEntitySet="BudgetFilters">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Condition" ColumnName="Condition" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="shtsModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="shtsModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Config">
+            <EntityTypeMapping TypeName="shtsModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="StatisticalCode" ColumnName="StatisticalCode" />
+                <ScalarProperty Name="ICP" ColumnName="ICP" />
+                <ScalarProperty Name="Weixin" ColumnName="Weixin" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="QQ3" ColumnName="QQ3" />
+                <ScalarProperty Name="QQ2" ColumnName="QQ2" />
+                <ScalarProperty Name="QQ1" ColumnName="QQ1" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Demand">
+            <EntityTypeMapping TypeName="shtsModel.Demand">
+              <MappingFragment StoreEntitySet="Demand">
+                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="WeixinBuyFee" ColumnName="WeixinBuyFee" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQWeixin" ColumnName="QQWeixin" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="PeopleNumber" ColumnName="PeopleNumber" />
+                <ScalarProperty Name="TimeLength" ColumnName="TimeLength" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="NickName" ColumnName="NickName" />
-                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ResourceTypeId" ColumnName="ResourceTypeId" />
+                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DemandQuoteHistory">
-            <EntityTypeMapping TypeName="shtsModel.DemandQuoteHistory">
-              <MappingFragment StoreEntitySet="DemandQuoteHistory">
+          <EntitySetMapping Name="DemandCategory">
+            <EntityTypeMapping TypeName="shtsModel.DemandCategory">
+              <MappingFragment StoreEntitySet="DemandCategory">
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
-                <ScalarProperty Name="HasRead" ColumnName="HasRead" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
-                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
-                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C__RefactorLog">
-            <EntityTypeMapping TypeName="shtsModel.C__RefactorLog">
-              <MappingFragment StoreEntitySet="__RefactorLog">
-                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2150,6 +2001,19 @@
                 <ScalarProperty Name="DemandId" ColumnName="DemandId" />
                 <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
                 <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DemandQuoteHistory">
+            <EntityTypeMapping TypeName="shtsModel.DemandQuoteHistory">
+              <MappingFragment StoreEntitySet="DemandQuoteHistory">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
+                <ScalarProperty Name="HasRead" ColumnName="HasRead" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2178,33 +2042,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SmsRecord">
-            <EntityTypeMapping TypeName="shtsModel.SmsRecord">
-              <MappingFragment StoreEntitySet="SmsRecord">
-                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
-                <ScalarProperty Name="TplId" ColumnName="TplId" />
-                <ScalarProperty Name="CheckTime" ColumnName="CheckTime" />
-                <ScalarProperty Name="Hascheck" ColumnName="Hascheck" />
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Userid" ColumnName="Userid" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
+          <EntitySetMapping Name="DemandSubscriptionPushHistory">
+            <EntityTypeMapping TypeName="shtsModel.DemandSubscriptionPushHistory">
+              <MappingFragment StoreEntitySet="DemandSubscriptionPushHistory">
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="EmailExceptionMessage" ColumnName="EmailExceptionMessage" />
+                <ScalarProperty Name="EmailStatus" ColumnName="EmailStatus" />
+                <ScalarProperty Name="WechatExceptionMessage" ColumnName="WechatExceptionMessage" />
+                <ScalarProperty Name="WechatStatus" ColumnName="WechatStatus" />
+                <ScalarProperty Name="DemandId" ColumnName="DemandId" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="IsMailSubscribed" ColumnName="IsMailSubscribed" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="WechatUserId" ColumnName="WechatUserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ActivityVote">
-            <EntityTypeMapping TypeName="shtsModel.ActivityVote">
-              <MappingFragment StoreEntitySet="ActivityVote">
-                <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
-                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
-                <ScalarProperty Name="IsVoted" ColumnName="IsVoted" />
-                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
-                <ScalarProperty Name="WechatUserOpenId" ColumnName="WechatUserOpenId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="VoteId" ColumnName="VoteId" />
+          <EntitySetMapping Name="EquipType">
+            <EntityTypeMapping TypeName="shtsModel.EquipType">
+              <MappingFragment StoreEntitySet="EquipType">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2247,12 +2108,440 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AccessRecord">
-            <EntityTypeMapping TypeName="shtsModel.AccessRecord">
-              <MappingFragment StoreEntitySet="AccessRecord">
-                <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
-                <ScalarProperty Name="AccessUrl" ColumnName="AccessUrl" />
-                <ScalarProperty Name="UserIP" ColumnName="UserIP" />
+          <EntitySetMapping Name="GuestBook">
+            <EntityTypeMapping TypeName="shtsModel.GuestBook">
+              <MappingFragment StoreEntitySet="GuestBook">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="shtsModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OtherType">
+            <EntityTypeMapping TypeName="shtsModel.OtherType">
+              <MappingFragment StoreEntitySet="OtherType">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PublicConfig">
+            <EntityTypeMapping TypeName="shtsModel.PublicConfig">
+              <MappingFragment StoreEntitySet="PublicConfig">
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resource">
+            <EntityTypeMapping TypeName="shtsModel.Resource">
+              <MappingFragment StoreEntitySet="Resource">
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ClickTime" ColumnName="ClickTime" />
+                <ScalarProperty Name="ActorSex" ColumnName="ActorSex" />
+                <ScalarProperty Name="ActorFromId" ColumnName="ActorFromId" />
+                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
+                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
+                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
+                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
+                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
+                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
+                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
+                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="WeChat" ColumnName="WeChat" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Contract" ColumnName="Contract" />
+                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="Href" ColumnName="Href" />
+                <ScalarProperty Name="CanFriendlyLink" ColumnName="CanFriendlyLink" />
+                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShortMessage">
+            <EntityTypeMapping TypeName="shtsModel.ShortMessage">
+              <MappingFragment StoreEntitySet="ShortMessage">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SinglePage">
+            <EntityTypeMapping TypeName="shtsModel.SinglePage">
+              <MappingFragment StoreEntitySet="SinglePage">
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+                <ScalarProperty Name="ContentStyle" ColumnName="ContentStyle" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceFacility">
+            <EntityTypeMapping TypeName="shtsModel.SpaceFacility">
+              <MappingFragment StoreEntitySet="SpaceFacility">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceFeature">
+            <EntityTypeMapping TypeName="shtsModel.SpaceFeature">
+              <MappingFragment StoreEntitySet="SpaceFeature">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpacePeople">
+            <EntityTypeMapping TypeName="shtsModel.SpacePeople">
+              <MappingFragment StoreEntitySet="SpacePeople">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceSize">
+            <EntityTypeMapping TypeName="shtsModel.SpaceSize">
+              <MappingFragment StoreEntitySet="SpaceSize">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaxSize" ColumnName="MaxSize" />
+                <ScalarProperty Name="MinSize" ColumnName="MinSize" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SpaceType">
+            <EntityTypeMapping TypeName="shtsModel.SpaceType">
+              <MappingFragment StoreEntitySet="SpaceType">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade">
+            <EntityTypeMapping TypeName="shtsModel.Trade">
+              <MappingFragment StoreEntitySet="Trade">
+                <ScalarProperty Name="TradeOrderId" ColumnName="TradeOrderId" />
+                <ScalarProperty Name="IsBuyerPaid" ColumnName="IsBuyerPaid" />
+                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
+                <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+                <ScalarProperty Name="SellerGet" ColumnName="SellerGet" />
+                <ScalarProperty Name="BuyerPay" ColumnName="BuyerPay" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="PayCommissionPercent" ColumnName="PayCommissionPercent" />
+                <ScalarProperty Name="PayCommission" ColumnName="PayCommission" />
+                <ScalarProperty Name="Payer" ColumnName="Payer" />
+                <ScalarProperty Name="TradeBody" ColumnName="TradeBody" />
+                <ScalarProperty Name="TradeSubject" ColumnName="TradeSubject" />
+                <ScalarProperty Name="TradeAmount" ColumnName="TradeAmount" />
+                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserBankInfo" ColumnName="UserBankInfo" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserCellPhone" ColumnName="UserCellPhone" />
+                <ScalarProperty Name="UserQQ" ColumnName="UserQQ" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TradeHistory">
+            <EntityTypeMapping TypeName="shtsModel.TradeHistory">
+              <MappingFragment StoreEntitySet="TradeHistory">
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="TradeState" ColumnName="TradeState" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IsAdminUpdate" ColumnName="IsAdminUpdate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+                <ScalarProperty Name="HistoryBody" ColumnName="HistoryBody" />
+                <ScalarProperty Name="HistorySubject" ColumnName="HistorySubject" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TradeOrder">
+            <EntityTypeMapping TypeName="shtsModel.TradeOrder">
+              <MappingFragment StoreEntitySet="TradeOrder">
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="ResourceUrl" ColumnName="ResourceUrl" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="shtsModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Vip" ColumnName="Vip" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IdentiyImg" ColumnName="IdentiyImg" />
+                <ScalarProperty Name="LoginIdentiy" ColumnName="LoginIdentiy" />
+                <ScalarProperty Name="SiteUrl" ColumnName="SiteUrl" />
+                <ScalarProperty Name="UCard" ColumnName="UCard" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserBankInfo">
+            <EntityTypeMapping TypeName="shtsModel.UserBankInfo">
+              <MappingFragment StoreEntitySet="UserBankInfo">
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="BankAddress" ColumnName="BankAddress" />
+                <ScalarProperty Name="BankUserName" ColumnName="BankUserName" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfile">
+            <EntityTypeMapping TypeName="shtsModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ProfileType" ColumnName="ProfileType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserVip">
+            <EntityTypeMapping TypeName="shtsModel.UserVip">
+              <MappingFragment StoreEntitySet="UserVip">
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="IdentifyImg" ColumnName="IdentifyImg" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Video">
+            <EntityTypeMapping TypeName="shtsModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Href" ColumnName="Href" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeChatUser">
+            <EntityTypeMapping TypeName="shtsModel.WeChatUser">
+              <MappingFragment StoreEntitySet="WeChatUser">
+                <ScalarProperty Name="LastRequestTimestamp" ColumnName="LastRequestTimestamp" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="HasAuthorized" ColumnName="HasAuthorized" />
+                <ScalarProperty Name="HasSubscribed" ColumnName="HasSubscribed" />
+                <ScalarProperty Name="AccessTokenExpireTime" ColumnName="AccessTokenExpireTime" />
+                <ScalarProperty Name="AccessTokenExpired" ColumnName="AccessTokenExpired" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Actor">
+            <EntityTypeMapping TypeName="shtsModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorView">
+            <EntityTypeMapping TypeName="shtsModel.ActorView">
+              <MappingFragment StoreEntitySet="ActorView">
+                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="WeChat" ColumnName="WeChat" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Contract" ColumnName="Contract" />
+                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Href" ColumnName="Href" />
+                <ScalarProperty Name="CanFriendlyLink" ColumnName="CanFriendlyLink" />
+                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipment">
+            <EntityTypeMapping TypeName="shtsModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facility">
+            <EntityTypeMapping TypeName="shtsModel.Facility">
+              <MappingFragment StoreEntitySet="Facility">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Other">
+            <EntityTypeMapping TypeName="shtsModel.Other">
+              <MappingFragment StoreEntitySet="Other">
+                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentSection">
+            <EntityTypeMapping TypeName="shtsModel.RentSection">
+              <MappingFragment StoreEntitySet="RentSection">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Space">
+            <EntityTypeMapping TypeName="shtsModel.Space">
+              <MappingFragment StoreEntitySet="Space">
+                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
+                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
+                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
+                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
+                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
+                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

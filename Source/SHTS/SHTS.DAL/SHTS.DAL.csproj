@@ -94,6 +94,7 @@
     <Compile Include="Repositories\DemandQuoteRepository.cs" />
     <Compile Include="Repositories\DemandRepository.cs" />
     <Compile Include="Repositories\DemandSubscriptionDetailRepository.cs" />
+    <Compile Include="Repositories\DemandSubscriptionPushHistoryRepository.cs" />
     <Compile Include="Repositories\DemandSubscriptionRepository.cs" />
     <Compile Include="Repositories\PublicConfigRepository.cs" />
     <Compile Include="Repositories\SinglePageRepository.cs" />

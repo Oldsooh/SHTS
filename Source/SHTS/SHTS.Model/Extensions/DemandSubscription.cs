@@ -59,5 +59,20 @@ namespace Witbird.SHTS.Model
                 return this.subscriptionDetails.Where(x => x.SubscriptionType == DemandSubscriptionType.Keywords.ToString()).ToList();
             }
         }
+
+        public string SubscribedBudgetCondtion
+        {
+            get
+            {
+                var budgetCondition = this.subscriptionDetails.FirstOrDefault(item =>
+                    item.SubscriptionType == DemandSubscriptionType.Budget.ToString());
+                if (budgetCondition != null)
+                {
+                    return budgetCondition.SubscriptionValue;
+                }
+
+                return string.Empty;
+            }
+        }
     }
 }

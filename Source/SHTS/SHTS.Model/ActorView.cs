@@ -12,7 +12,7 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Resource
+    public partial class ActorView
     {
         public int Id { get; set; }
         public int ResourceType { get; set; }
@@ -24,12 +24,12 @@ namespace Witbird.SHTS.Model
         public string DetailAddress { get; set; }
         public bool CanFriendlyLink { get; set; }
         public string Href { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
         public string ShortDesc { get; set; }
         public string Description { get; set; }
         public string ImageUrls { get; set; }
         public string Contract { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
         public string QQ { get; set; }
         public string Telephone { get; set; }
         public string Mobile { get; set; }
@@ -37,22 +37,8 @@ namespace Witbird.SHTS.Model
         public string Email { get; set; }
         public System.DateTime CreateTime { get; set; }
         public System.DateTime LastUpdatedTime { get; set; }
-        public int ReadCount { get; set; }
         public int State { get; set; }
-        public int ClickCount { get; set; }
-        public int SpaceTypeId { get; set; }
-        public int SpaceFeatureValue { get; set; }
-        public int SpaceFacilityValue { get; set; }
-        public int SpaceSizeId { get; set; }
-        public int SpacePeopleId { get; set; }
-        public int SpaceTreat { get; set; }
         public int ActorTypeId { get; set; }
-        public int EquipTypeId { get; set; }
-        public int OtherTypeId { get; set; }
-        public int ActorFromId { get; set; }
-        public int ActorSex { get; set; }
-        public System.DateTime ClickTime { get; set; }
-        public string UserName { get; set; }
-        public Nullable<int> Budget { get; set; }
+        public Nullable<int> ReadCount { get; set; }
     }
 }

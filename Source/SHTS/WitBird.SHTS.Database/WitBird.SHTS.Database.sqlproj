@@ -267,6 +267,7 @@
     <Build Include="StoredProcedure\Trade\sp_SelectTradeOrderByOpenIdAndDemandId.sql" />
     <Build Include="StoredProcedure\Trade\sp_SelectTradeOrderForWeChatShare.sql" />
     <Build Include="Table\BudgetFilters.sql" />
+    <Build Include="Table\Demand\DemandSubscriptionPushHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WitBird.SHTS.Database.sqlproj.user" />

@@ -585,7 +585,7 @@
         }
 
         function onBudgetConditionChange() {
-            $("#subscriedBudget").val("#budgetCondition").val());
+            $("#subscriedBudget").val($("#BudgetCondition").val());
         }
 
         function submit() {
@@ -801,8 +801,7 @@
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置需求预算范围：</h3>
                     @{
-                        var subscriedBudget = string.Empty;
-                        <input type="hidden" id="subscriedBudget" name="subscriedBudget" value="@subscriedBudget">
+                        <input type="hidden" id="subscriedBudget" name="subscriedBudget" value="@Model.SubscribedBudgetCondtion">
 
                         <div class="cell">
                             <select name="BudgetCondition" class="text candisabled" style="width:95%;" id="BudgetCondition" onchange="onBudgetConditionChange()">

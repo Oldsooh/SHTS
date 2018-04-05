@@ -12,8 +12,13 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class C__RefactorLog
+    public partial class RentSection
     {
-        public System.Guid OperationKey { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int MinCount { get; set; }
+        public int MaxCount { get; set; }
+        public string Description { get; set; }
+        public bool MarkForDelete { get; set; }
     }
 }

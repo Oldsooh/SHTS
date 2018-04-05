@@ -539,4 +539,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Budget" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="244a9acb-cd32-47bb-af3d-7ff4d96fdf3b" ChangeDateTime="04/05/2018 11:53:54">
+    <Property Name="ElementName" Value="[dbo].[DemandSubscriptionPushHistory].[CreatedDateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandSubscriptionPushHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WechatPushStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7f623c00-3285-416e-b712-ebb107cecbc2" ChangeDateTime="04/05/2018 11:54:01">
+    <Property Name="ElementName" Value="[dbo].[DemandSubscriptionPushHistory].[CreatedDateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandSubscriptionPushHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EmailStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e65ab37b-c051-47f3-b00b-f323eb2ebb17" ChangeDateTime="04/05/2018 11:54:07">
+    <Property Name="ElementName" Value="[dbo].[DemandSubscriptionPushHistory].[WechatPushStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DemandSubscriptionPushHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WechatStatus" />
+  </Operation>
 </Operations>

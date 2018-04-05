@@ -12,18 +12,18 @@ namespace Witbird.SHTS.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SmsRecord
+    public partial class DemandSubscriptionPushHistory
     {
         public int Id { get; set; }
-        public string Content { get; set; }
-        public Nullable<int> Userid { get; set; }
-        public string Mobile { get; set; }
-        public string Ip { get; set; }
-        public Nullable<byte> Hascheck { get; set; }
-        public Nullable<System.DateTime> CheckTime { get; set; }
-        public string TplId { get; set; }
-        public string TypeName { get; set; }
-        public string Value { get; set; }
-        public System.DateTime AddTime { get; set; }
+        public int WechatUserId { get; set; }
+        public string OpenId { get; set; }
+        public bool IsMailSubscribed { get; set; }
+        public string EmailAddress { get; set; }
+        public int DemandId { get; set; }
+        public string WechatStatus { get; set; }
+        public string WechatExceptionMessage { get; set; }
+        public string EmailStatus { get; set; }
+        public string EmailExceptionMessage { get; set; }
+        public System.DateTime CreatedDateTime { get; set; }
     }
 }

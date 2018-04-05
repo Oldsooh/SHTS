@@ -197,6 +197,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                 try
                 {
                     AccessTokenContainer.Register(App.AppId, App.AppSecret);
+                    
                     var topcolor = "";
                     var sendResult = TemplateApi.SendTemplateMessage(App.AppId, openId, templateId, topcolor, url, data);
                     if (sendResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
