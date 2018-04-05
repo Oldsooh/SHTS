@@ -135,8 +135,26 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
             }
 
+            ProcessFilters(model);
+
             return View(model);
         }
+
+        private void ProcessFilters(DemandModel model)
+        {
+            StringBuilder routeBuilder = new StringBuilder();
+            routeBuilder.Append($"{nameof(model.ResourceType)}={model.ResourceType}").Append("&");
+            routeBuilder.Append($"{nameof(model.ResourceTypeId)}={model.ResourceTypeId}").Append("&");
+            routeBuilder.Append($"{nameof(model.City)}={model.City}").Append("&");
+            routeBuilder.Append($"{nameof(model.Area)}={model.Area}").Append("&");
+            routeBuilder.Append($"{nameof(model.StartBudget)}={model.StartBudget}").Append("&");
+            routeBuilder.Append($"{nameof(model.EndBudget)}={model.EndBudget}").Append("&");
+            routeBuilder.Append($"{nameof(model.StartTime)}={model.StartTime}").Append("&");
+            routeBuilder.Append($"{nameof(model.EndTime)}={model.EndTime}");
+
+            model.RouteFilters = routeBuilder.ToString();
+        }
+
 
         public ActionResult Show(string id)
         {

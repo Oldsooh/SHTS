@@ -25,6 +25,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
 
         public string ActionName { get; set; }
 
+        public string RouteFilters { get; set; }
+
         public WechatParameters WechatShareParameters { get; set; }
     }
 

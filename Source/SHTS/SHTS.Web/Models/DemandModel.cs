@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Model.Extensions;
 
 namespace Witbird.SHTS.Web.Models
 {

@@ -190,7 +190,7 @@
                 urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
                 urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
 
-                var amountName = "预算范围";
+                var amountName = "预算金额";
                 if (Model.StartBudget.Equals("1"))
                 {
                     amountName = "1000元以下";

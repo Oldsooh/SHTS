@@ -13,7 +13,6 @@ namespace Witbird.SHTS.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-
             //Detail页面
             routes.MapRoute(
                 name: "Detail",
