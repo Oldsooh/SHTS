@@ -1,21 +1,18 @@
-﻿using System;
+﻿using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
+using Senparc.Weixin.MP.Entities;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Web;
-using Witbird.SHTS.Common;
-using Witbird.SHTS.BLL.Services;
-using Witbird.SHTS.Model;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Senparc.Weixin.MP.AdvancedAPIs;
-using Senparc.Weixin.MP.CommonAPIs;
-using Senparc.Weixin.MP.Entities;
-using System.Configuration;
+using System.Web.Mvc;
+using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.Common;
+using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Public;
-using System.Web.Mvc;
-using System.Text;
-using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
 
 namespace Witbird.SHTS.Web.Subscription
 {
@@ -30,6 +27,7 @@ namespace Witbird.SHTS.Web.Subscription
         DemandSubscriptionService subscriptionService = null;
         UserService userService = null;
         DemandService demandService = null;
+        private static object locker = new object();
 
         public WorkingThread()
         {
@@ -44,13 +42,23 @@ namespace Witbird.SHTS.Web.Subscription
             {
                 if (instance == null)
                 {
-                    instance = new WorkingThread();
+                    lock (locker)
+                    {
+                        if (instance == null)
+                        {
+                            instance = new WorkingThread();
+                        }
+                    }
                 }
 
                 return instance;
             }
         }
 
+        /// <summary>
+        /// 用户输入关键字主动获取
+        /// </summary>
+        /// <param name="openId"></param>
         public void SendSubscribedDemandManually(string openId)
         {
             Task.Factory.StartNew(() =>
@@ -107,6 +115,8 @@ namespace Witbird.SHTS.Web.Subscription
         /// <summary>
         /// Starts to dequeue demands and push to wechat user client according to user's subscription rules.
         /// </summary>
+        /// 定时任务推送，已未使用
+        [Obsolete]
         public void Run()
         {
             Task.Factory.StartNew(() =>
@@ -183,6 +193,10 @@ namespace Witbird.SHTS.Web.Subscription
             });
         }
 
+        /// <summary>
+        /// 需求发布时推送
+        /// </summary>
+        /// <param name="demandId"></param>
         public void SendDemandToSubscribers(int demandId)
         {
             Task.Factory.StartNew(() =>
@@ -223,7 +237,7 @@ namespace Witbird.SHTS.Web.Subscription
                                 {
                                     isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
                                 }
-                                
+
                                 if (isDemandMatchWithSubscription)
                                 {
                                     // 如果启用了邮箱推送并邮箱不为空，则同时推送到邮箱
@@ -296,7 +310,7 @@ namespace Witbird.SHTS.Web.Subscription
                             {
                                 WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
                             }
-                            
+
                             #endregion
                         }
                     }
@@ -339,32 +353,70 @@ namespace Witbird.SHTS.Web.Subscription
             bool isLocationMatch = false;
             bool isDemandTypeMatch = false;
             bool isKeywordMatch = false;
+            bool isBudgetMatch = false;
 
             if (subscription == null || demand == null)
             {
                 return false;
             }
-            
-            List<Location> subscribedLocations = new List<Location>();
-            List<DemandType> subscribedTypes = new List<DemandType>();
-            List<Keyword> subscribedKeywords = new List<Keyword>();
 
+            var subscribedLocations = new List<Location>();
+            var subscribedTypes = new List<DemandType>();
+            var subscribedKeywords = new List<Keyword>();
+            var subscribedBudgetCondition = "-1"; // 不限制
+
+            // 获取用户订阅设置详情
             foreach (DemandSubscriptionDetail item in subscription.SubscriptionDetails)
             {
-                if (item.SubscriptionType.Equals(DemandSubscriptionType.Area.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                if (item.SubscriptionType.Equals(DemandSubscriptionType.Area.ToString(),
+                    StringComparison.CurrentCultureIgnoreCase))
                 {
                     subscribedLocations.Add(new Location(item.SubscriptionValue));
                 }
-                else if (item.SubscriptionType.Equals(DemandSubscriptionType.Category.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                else if (item.SubscriptionType.Equals(DemandSubscriptionType.Category.ToString(),
+                    StringComparison.CurrentCultureIgnoreCase))
                 {
                     subscribedTypes.Add(new DemandType(item.SubscriptionValue));
                 }
-                else
+                else if (item.SubscriptionType.Equals(DemandSubscriptionType.Keywords.ToString(),
+                    StringComparison.CurrentCultureIgnoreCase))
                 {
                     subscribedKeywords.Add(new Keyword(item.SubscriptionValue));
                 }
+                else if (item.SubscriptionType.Equals(DemandSubscriptionType.Budget.ToString(),
+                    StringComparison.CurrentCultureIgnoreCase))
+                {
+                    subscribedBudgetCondition = item.SubscriptionValue;
+                }
             }
 
+            // 预算金额是否符合
+            if (subscribedBudgetCondition.Equals("-1", StringComparison.CurrentCultureIgnoreCase))
+            {
+                isBudgetMatch = true;
+            }
+            else
+            {
+                using (var demandTable = new DataTable("Demand"))
+                {
+                    demandTable.Columns.Add("Budget", typeof(int));
+                    var row = demandTable.NewRow();
+                    row[0] = demand.Budget;
+
+                    var matchedDemand = demandTable.Select(subscribedBudgetCondition);
+                    if (matchedDemand.Any())
+                    {
+                        isBudgetMatch = true;
+                    }
+                }
+            }
+
+            if (!isBudgetMatch)
+            {
+                return false;
+            }
+
+            // 区域位置是否符合
             if (subscribedLocations.Count == 0)
             {
                 isLocationMatch = true;
@@ -373,54 +425,54 @@ namespace Witbird.SHTS.Web.Subscription
             {
                 foreach (var location in subscribedLocations)
                 {
-                    if (location.IsMatch(demand.Province, demand.City, demand.Area))
+                    if (!location.IsMatch(demand.Province, demand.City, demand.Area)) continue;
+                    isLocationMatch = true;
+                    break;
+                }
+            }
+
+            if (!isLocationMatch)
+            {
+                return false;
+            }
+
+            // 需求类型是否符合
+            if (subscribedTypes.Count == 0)
+            {
+                isDemandTypeMatch = true;
+            }
+            else
+            {
+                foreach (var type in subscribedTypes)
+                {
+                    if (type.IsMatch(demand.ResourceType, demand.ResourceTypeId))
                     {
-                        isLocationMatch = true;
+                        isDemandTypeMatch = true;
                         break;
                     }
                 }
             }
 
-            if (isLocationMatch)
-            {
+            if (!isDemandTypeMatch)
+                return false;
 
-                if (subscribedTypes.Count == 0)
-                {
-                    isDemandTypeMatch = true;
-                }
-                else
-                {
-                    foreach (var type in subscribedTypes)
-                    {
-                        if (type.IsMatch(demand.ResourceType, demand.ResourceTypeId))
-                        {
-                            isDemandTypeMatch = true;
-                            break;
-                        }
-                    }
-                }
+            // 关键字订阅是否符合
+            if (subscribedKeywords.Count == 0)
+            {
+                isKeywordMatch = true;
             }
-
-            if (isLocationMatch && isDemandTypeMatch)
+            else
             {
-                if (subscribedKeywords.Count == 0)
+                foreach (var keyword in subscribedKeywords)
                 {
+                    if (!keyword.IsMatch(demand.Title))
+                        continue;
                     isKeywordMatch = true;
-                }
-                else
-                {
-                    foreach (var keyword in subscribedKeywords)
-                    {
-                        if (keyword.IsMatch(demand.Title))
-                        {
-                            isKeywordMatch = true;
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
 
-            return isLocationMatch && isDemandTypeMatch && isKeywordMatch;
+            return isKeywordMatch;
         }
 
         private bool IsLastRequestTimeExceed48Hours(WeChatUser wechatUser)

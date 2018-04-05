@@ -212,7 +212,11 @@ namespace Witbird.SHTS.Model
         /// <summary>
         /// By specified keywords
         /// </summary>
-        Keywords
+        Keywords,
+        /// <summary>
+        /// By specified budget condition
+        /// </summary>
+        Budget
     }
 
     /// <summary>

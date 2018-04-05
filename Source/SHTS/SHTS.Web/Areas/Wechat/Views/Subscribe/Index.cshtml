@@ -1,4 +1,5 @@
-﻿@model Witbird.SHTS.Model.DemandSubscription
+﻿@using Witbird.SHTS.Web.Public
+@model Witbird.SHTS.Model.DemandSubscription
 @{
     ViewBag.Title = "需求订阅设置";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
@@ -470,8 +471,8 @@
 
                 // Appends new added type into page.
                 var newTypeHtml = '<div id="' + newKey + '" class="cell"><input type="text" disabled="disabled" class="text" value="'
-                + displayValue + '"><span class="closebtn" title="删除"><img src="/Content/images/button_grey_close.png"  class="candisabled"  onclick="deleteType(\''
-                + newKey + '\')" /></span></div>';
+                    + displayValue + '"><span class="closebtn" title="删除"><img src="/Content/images/button_grey_close.png"  class="candisabled"  onclick="deleteType(\''
+                    + newKey + '\')" /></span></div>';
 
                 $('#selectedTypes').append(newTypeHtml);
 
@@ -565,22 +566,26 @@
         }
 
         function isEmailAddressValid() {
-            if (isEmailSubscriptionEnabled()){
+            if (isEmailSubscriptionEnabled()) {
                 var inputEmail = $('#emailAddress').val();
-                if (inputEmail == ''){
+                if (inputEmail == '') {
                     return false;
                 }
-                else{
+                else {
                     return isEmailValid(inputEmail);
                 }
             }
-            else{
+            else {
                 return true;
             }
         }
 
         function doEmailTextOnChange() {
             $('#emailAddress').val($('#emailText').val());
+        }
+
+        function onBudgetConditionChange() {
+            $("#subscriedBudget").val("#budgetCondition").val());
         }
 
         function submit() {
@@ -794,6 +799,23 @@
                     }
                 </div>
                 <div class="subscribe">
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置需求预算范围：</h3>
+                    @{
+                        var subscriedBudget = string.Empty;
+                        <input type="hidden" id="subscriedBudget" name="subscriedBudget" value="@subscriedBudget">
+
+                        <div class="cell">
+                            <select name="BudgetCondition" class="text candisabled" style="width:95%;" id="BudgetCondition" onchange="onBudgetConditionChange()">
+                                <option value="-1">不限制预算金额</option>
+                                @foreach (var item in MiscData.BudgetFilters)
+                                {
+                                    <option value="@item.Condition">@item.DisplayName</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                </div>
+                <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置区域位置：</h3>
                     @{
                         var areaIds = string.Empty;
@@ -866,7 +888,7 @@
                         </select>
                     </div>
                     <div class="">
-                        <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();"  style="font-weight:bold;">添加</a>
+                        <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();" style="font-weight:bold;">添加</a>
                         <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完区域位置后点击添加按钮！</span>
                     </div>
                 </div>
@@ -914,7 +936,7 @@
                     </div>
 
                     <div class="">
-                        <a href="javascript:void(0);" title="添加关键字" class="candisabled" onclick="addKeyword();"  style="font-weight:bold;">添加</a>
+                        <a href="javascript:void(0);" title="添加关键字" class="candisabled" onclick="addKeyword();" style="font-weight:bold;">添加</a>
                         <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;输入关键词后点击添加关键字！</span>
                     </div>
                 </div>

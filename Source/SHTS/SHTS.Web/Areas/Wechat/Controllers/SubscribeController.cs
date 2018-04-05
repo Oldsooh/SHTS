@@ -56,7 +56,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, string subscribedKeywords, bool emailEnabled, string emailAddress)
+        public ActionResult Update(bool enable, string subscriedTypes, string subscribedAreas, 
+            string subscribedKeywords, bool emailEnabled, string emailAddress, string subscriedBudget)
         {
             DemandSubscription subscription = subscriptionService.GetSubscription(CurrentWeChatUser.Id);
             var errorMessage = string.Empty;
@@ -65,6 +66,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             try
             {
                 subscriedTypes = subscriedTypes ?? string.Empty;
+                subscriedBudget = subscriedBudget ?? string.Empty;
                 subscribedAreas = subscribedAreas ?? string.Empty;
                 subscribedKeywords = subscribedKeywords ?? string.Empty;
                 emailAddress = emailAddress ?? string.Empty;
@@ -146,6 +148,22 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         subscription.SubscriptionDetails.Add(detail);
 
                     }
+                }
+
+                #endregion
+
+                #region Handle subscribed budget condition
+                if (isValid && subscriedBudget.Length > 0)
+                {
+                    var detail = new DemandSubscriptionDetail()
+                    {
+                        SubscriptionId = subscription.SubscriptionId,
+                        SubscriptionType = DemandSubscriptionType.Budget.ToString(),
+                        InsertedTimestamp = DateTime.Now,
+                        SubscriptionValue = subscriedBudget
+                    };
+
+                    subscription.SubscriptionDetails.Add(detail);
                 }
 
                 #endregion
