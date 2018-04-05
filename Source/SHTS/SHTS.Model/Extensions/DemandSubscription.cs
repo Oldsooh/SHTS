@@ -12,6 +12,10 @@ namespace Witbird.SHTS.Model
         /// </summary>
         public string WeChatUserName { get; set; }
 
+        public string OpenId { get; set; }
+
+        public int? UserId { get; set; }
+
         /// <summary>
         /// 用户订阅内容详细集合
         /// </summary>

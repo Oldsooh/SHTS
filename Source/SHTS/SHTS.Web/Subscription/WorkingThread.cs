@@ -211,8 +211,6 @@ namespace Witbird.SHTS.Web.Subscription
 
                     // Get all subscribed details.
                     var subscriptions = subscriptionService.GetSubscriptionsOnlySubscribed();
-                    // Get all subscribed wechat users. Performance Issue TODO ??? 
-                    var subscribedWeChatUsers = userService.GetWeChatUserOnlySubscribed();
                     // Get email subscription format.
                     PublicConfigService configService = new PublicConfigService();
                     // {0}:取消订阅链接， {1}：需求标题，{2}：需求类型，{3}：需求类别，{4}：需求预算，{5}：需求开始时间和结束时间，{6}：区域位置，{7}：需求详情，{8}：查看需求链接
@@ -221,19 +219,14 @@ namespace Witbird.SHTS.Web.Subscription
                     // 等待被推送的用户, key: openId, value: email address
                     var matchedSubscribers = new Dictionary<string, string>();
 
-                    if (subscriptions.HasItem() && subscribedWeChatUsers.HasItem())
+                    if (subscriptions.HasItem())
                     {
                         foreach (var subscription in subscriptions)
                         {
-                            var wechatUser = subscribedWeChatUsers.FirstOrDefault(x => x.Id == subscription.WeChatUserId);
-
-                            // Make sure user has continue subscribed our wechat account.
-                            if (wechatUser.IsNotNull())
-                            {
                                 bool isDemandMatchWithSubscription = false;
 
-                                // if demand was posted by himself.
-                                if (wechatUser.UserId.HasValue && demand.UserId != wechatUser.UserId.Value)
+                                // if demand was posted by himself, then execlue.
+                                if (subscription.UserId.HasValue && demand.UserId != subscription.UserId.Value)
                                 {
                                     isDemandMatchWithSubscription = IsDemandMatchWithSubscription(subscription, demand);
                                 }
@@ -245,14 +238,13 @@ namespace Witbird.SHTS.Web.Subscription
                                     subscription.IsEnableEmailSubscription.Value &&
                                     !string.IsNullOrEmpty(subscription.EmailAddress))
                                     {
-                                        matchedSubscribers.Add(wechatUser.OpenId, subscription.EmailAddress);
+                                        matchedSubscribers.Add(subscription.OpenId, subscription.EmailAddress);
                                     }
                                     else
                                     {
-                                        matchedSubscribers.Add(wechatUser.OpenId, string.Empty);
+                                        matchedSubscribers.Add(subscription.OpenId, string.Empty);
                                     }
                                 }
-                            }
                         }
 
                         if (matchedSubscribers.Count > 0)
@@ -280,8 +272,8 @@ namespace Witbird.SHTS.Web.Subscription
                                 }
                                 else
                                 {
-                                    logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString()).Append("\r\n");
                                     LogService.LogWexin("邮箱推送需求失败", logBuilder.ToString());
+                                    logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString()).Append("\r\n");
                                 }
                             }
                             catch (Exception ex)

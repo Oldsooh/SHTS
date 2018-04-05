@@ -206,7 +206,9 @@ namespace Witbird.SHTS.DAL.Daos
                 SubscriptionId = reader["SubscriptionId"].DBToInt32(),
                 WeChatUserId = reader["WeChatUserId"].DBToInt32(),
                 IsEnableEmailSubscription = reader["IsEnableEmailSubscription"].DBToBoolean(false),
-                EmailAddress = reader["EmailAddress"].DBToString()
+                EmailAddress = reader["EmailAddress"].DBToString(),
+                OpenId = reader["OpenId"].DBToString(),
+                UserId = reader["UserId"].DBToNullableInt32()
             };
         }
 
