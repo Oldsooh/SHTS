@@ -4,8 +4,8 @@
     var CurrentWeChatUser = ViewData["CurrentWeChatUser"] as Witbird.SHTS.Model.WeChatUser;
 }
 
-<li>
-    场地类型:
+<li class="connector">
+    <span>场地类型:</span>
     @{
         var property = HtmlHelperExtension.SpaceTypeListProperty.Find(t => t.Id == Model.SpaceTypeId);
         if (property != null)
@@ -13,7 +13,6 @@
             <span class="yellow2">
                 @property.Name
             </span>
-
         }
         else
         {
@@ -23,8 +22,10 @@
         }
     }
 </li>
-<li>
-    场地面积:
+<li class="connector">
+    <span>
+        场地面积:
+    </span>
     @{
         var spaceSize = HtmlHelperExtension.SpaceSizeListProperty.Find(t => t.Id == Model.SpaceSizeId);
         if (spaceSize != null)
@@ -42,7 +43,9 @@
     }
 </li>
 <li>
-    配置设备: <span class="yellow2">
+    <span>
+        配置设备:
+    </span><span class="yellow2">
         @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList)
         {
             if ((Model.SpaceFacilityValue & (int)Math.Pow(2, item.Id - 1)) > 0)
@@ -53,7 +56,9 @@
     </span>
 </li>
 <li>
-    场地特点: <span class="yellow2">
+    <span>
+        场地特点:
+    </span><span class="yellow2">
         @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList)
         {
             if ((Model.SpaceFeatureValue & (int)Math.Pow(2, item.Id - 1)) > 0)
@@ -64,73 +69,23 @@
     </span>
 </li>
 <li>
-    容纳人数: <span class="yellow2">
-              @{
-                  var spacePeople = HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpacePeopleId);
-                  if (spacePeople != null)
-                  {
-                      <span class="yellow2">
-                          @(new HtmlString(spacePeople.Name))（人数可根据具体活动人数调整）
-                      </span>
-                  }
-                  else
-                  {
-                      <span class="yellow2">
-                          不确定（人数可根据具体活动人数调整）
-                      </span>
-                  }
-              }
-    </span>
-</li>
-<li>
-    联&nbsp;&nbsp;系&nbsp;&nbsp;人: <span class="yellow2">
-        @(new HtmlString(Model.Contract))
-    </span>
-</li>
-
-<li>
-    座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-        @if (!CurrentWeChatUser.IsUserIdentified)
-        {
-            @(new HtmlString(Model.Telephone))
+    <span>
+        容纳人数:
+    </span><span class="yellow2">
+        @{
+            var spacePeople = HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpacePeopleId);
+            if (spacePeople != null)
+            {
+                <span class="yellow2">
+                    @(new HtmlString(spacePeople.Name))（人数可根据具体活动人数调整）
+                </span>
+            }
+            else
+            {
+                <span class="yellow2">
+                    不确定（人数可根据具体活动人数调整）
+                </span>
+            }
         }
-        else
-        {
-            <a href="tel:@Model.Telephone">@Model.Telephone</a>
-        }
-    </span>
-</li>
-<li>
-    手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机: <span class="yellow2">
-        @if (!CurrentWeChatUser.IsUserIdentified)
-        {
-            @(new HtmlString(Model.Mobile))
-        }
-        else
-        {
-            <a href="tel:@Model.Mobile">@Model.Mobile</a>
-        }
-    </span>
-</li>
-<li>
-    微信/QQ: <span class="yellow2">
-        @(new HtmlString(string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)))
-    </span>
-</li>
-<li>
-    邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱: <span class="yellow2">
-        @if (!CurrentWeChatUser.IsUserIdentified)
-        {
-            @(new HtmlString(@Model.Email))
-        }
-        else
-        {
-            <a href="mailto:@(Model.Email)">@Model.Email</a>
-        }
-    </span>
-</li>
-<li>
-    详细地址: <span class="yellow2">
-        @(new HtmlString(Model.DetailAddress))
     </span>
 </li>

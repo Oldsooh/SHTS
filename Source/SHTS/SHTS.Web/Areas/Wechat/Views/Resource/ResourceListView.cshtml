@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "ResourceListView";
     var xx = "space";
+
     switch (Model.ResourceType)
     {
         case 1:
@@ -164,7 +165,48 @@
                     <span class="state blue">@item.CreateTime.ToString("MM-dd")</span>
                     <a href="/Wechat/resource/show/@item.Id" style="margin-right: 10px;">@item.Title</a>
                 </li>
-                <li>发布者：<span class="yellow2">@item.UserName</span>&nbsp;&nbsp;区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
+                <li>
+                    @{
+                        var subTypeName = "不确定";
+                        switch (item.ResourceType)
+                        {
+                            case 1:
+                                var property1 = HtmlHelperExtension.SpaceTypeListProperty.Find(t => t.Id == item.SpaceTypeId);
+                                if (property1 != null)
+                                {
+                                    subTypeName = property1.Name;
+                                }
+                                break;
+                            case 2:
+                                var property2 = HtmlHelperExtension.ActorTypeListProperty.Find(t => t.Id == item.ActorTypeId);
+                                if (property2 != null)
+                                {
+                                    subTypeName = property2.Name;
+                                }
+                                break;
+                            case 3:
+                                var property3 = HtmlHelperExtension.EquipTypeListProperty.Find(t => t.Id == item.EquipTypeId);
+                                if (property3 != null)
+                                {
+                                    subTypeName = property3.Name;
+                                }
+                                break;
+                            case 4:
+                                var property4 = HtmlHelperExtension.OtherTypeListProperty.Find(t => t.Id == item.OtherTypeId);
+                                if (property4 != null)
+                                {
+                                    subTypeName = property4.Name;
+                                }
+                                break;
+                            default:
+                                break;
+
+                        }
+                    }
+                    资源类别：<span class="yellow2">@subTypeName</span>
+                </li>
+                <li>报价金额：<span class="yellow2">@(item.Budget.HasValue && item.Budget > 0 ? item.Budget + "元" : "面议")</span></li>
+                <li>区域位置：<span class="yellow">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.ProvinceId, item.CityId, item.AreaId)</span></li>
             </ul>
         }
     }
@@ -184,7 +226,7 @@
     <script type="text/javascript">
         $(function () {
             var ie6 = /msie 6/i.test(navigator.userAgent)
-            , dv = $('#fixed-top'), st;
+                , dv = $('#fixed-top'), st;
             dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
             $(window).scroll(function () {
                 st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);

@@ -141,6 +141,7 @@
     <Compile Include="Extensions\Resource\Paging.cs" />
     <Compile Include="Extensions\Resource\QueryResource.cs" />
     <Compile Include="Extensions\Resource\QueryResourceResult.cs" />
+    <Compile Include="Extensions\Resource\Resource.cs" />
     <Compile Include="Extensions\Resource\UserFilter.cs" />
     <Compile Include="Extensions\Right.cs" />
     <Compile Include="Extensions\SinglePage.cs" />

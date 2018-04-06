@@ -89,7 +89,7 @@
     margin-top: 6px;
     font-size: 14px;
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .customize-plan {
@@ -260,7 +260,7 @@
 }
 
 .connectioninfo {
-    float: left;
+    display: inline-block;
     width: 220px;
 }
 

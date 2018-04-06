@@ -4,7 +4,23 @@
     var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
 }
 <div class="fLeft" id="hotel_info_wrappper">
-    <div class="hotel_same_box">
+    @if (Model.OtherTypeId != 0)
+    {
+        <div class="hotel_same_box connectioninfo">
+            <font color="black">资源类型</font>&nbsp;&nbsp;&nbsp;&nbsp;
+            @HtmlHelperExtension.OtherTypeListProperty.Find(t => t.Id == Model.OtherTypeId).Name
+        </div>
+    }
+    else
+    {
+        <div class="hotel_same_box connectioninfo">
+            <font color="black">资源类别</font>&nbsp;&nbsp;&nbsp;&nbsp;活动设备
+        </div>
+    }
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">资源报价</font>&nbsp;&nbsp;&nbsp;&nbsp;@(Model.Budget.HasValue && Model.Budget > 0 ? Model.Budget + "元" : "面议")
+    </div>
+    <div class="hotel_same_box connectioninfo">
         <font color="black">联&nbsp;系&nbsp;&nbsp;人</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Contract
     </div>
     <div class="hotel_same_box connectioninfo">
@@ -19,7 +35,7 @@
     <div class="hotel_same_box connectioninfo">
         <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
     </div>
-    <div class="hotel_same_box" style="display: inline-block;">
+    <div class="hotel_same_box">
         <font color="black">详细地址</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.DetailAddress
     </div>
 </div>

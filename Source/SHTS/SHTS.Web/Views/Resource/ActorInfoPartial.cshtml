@@ -4,15 +4,25 @@
     var UserInfo = ViewData["UserInfo"] as Witbird.SHTS.Model.User;
 }
 <div class="fLeft" id="hotel_info_wrappper">
+
     @if (Model.ActorTypeId != 0)
     {
-        <div class="hotel_same_box">
-            <font color="black">演员类型</font>&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="hotel_same_box connectioninfo">
+            <font color="black">资源类型</font>&nbsp;&nbsp;&nbsp;&nbsp;
             @HtmlHelperExtension.ActorTypeListProperty.Find(t => t.Id == Model.ActorTypeId).Name
         </div>
     }
-    <div class="hotel_same_box">
-        <font color="black">联系人&nbsp;&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Contract
+    else
+    {
+        <div class="hotel_same_box connectioninfo">
+            <font color="black">资源类别</font>&nbsp;&nbsp;&nbsp;&nbsp;演艺人员
+        </div>
+    }
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">资源报价</font>&nbsp;&nbsp;&nbsp;&nbsp;@(Model.Budget.HasValue && Model.Budget > 0 ? Model.Budget + "元" : "面议")
+    </div>
+    <div class="hotel_same_box connectioninfo">
+        <font color="black">联&nbsp;&nbsp;系&nbsp;&nbsp;人</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Contract
     </div>
     <div class="hotel_same_box connectioninfo">
         <font color="black">座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Telephone
@@ -21,12 +31,12 @@
         <font color="black">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Mobile
     </div>
     <div class="hotel_same_box connectioninfo">
-        <font color="black">微信/QQ</font>&nbsp;&nbsp;&nbsp;&nbsp;@string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
+        <font color="black">微信&nbsp;/&nbsp;QQ</font>&nbsp;&nbsp;&nbsp;&nbsp;@string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
     </div>
-    <div class="hotel_same_box connectioninfo">
+    <div class="hotel_same_box">
         <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
     </div>
-    <div class="hotel_same_box" style="display: inline-block;">
+    <div class="hotel_same_box">
         <font color="black">演出视频</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Href
     </div>
     <div class="hotel_same_box">

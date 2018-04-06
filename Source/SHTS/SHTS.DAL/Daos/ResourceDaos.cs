@@ -113,11 +113,14 @@ namespace Witbird.SHTS.DAL.Daos
                     resource.Mobile = reader["Mobile"].DBToString();
                     resource.ImageUrls = reader["ImageUrls"].DBToString();
                     resource.ActorTypeId = reader["ActorTypeId"].DBToInt32();
+                    resource.SpaceTypeId = reader["SpaceTypeId"].DBToInt32();
+                    resource.OtherTypeId = reader["OtherTypeId"].DBToInt32();
+                    resource.EquipTypeId = reader["EquipTypeId"].DBToInt32();
                     resource.ClickTime = reader["ClickTime"].DBToDateTime().Value;
                     resource.UserName = reader["UserName"].DBToString();
                     resource.Budget = reader["Budget"].DBToNullableInt32();
                     //还有一些字段没有添加
-
+                    
                     result.Items.Add(resource);
                 }
             }
