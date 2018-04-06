@@ -57,7 +57,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         DemandQuoteService quoteService = new DemandQuoteService();
         TradeService tradeService = new TradeService();
 
-        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, string area, string starttime, string endtime, string startbudget, string endbudget)
+        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, 
+            string area, string starttime, string endtime, string budgetCondition) // string startbudget, string endbudget)
         {
             DemandModel model = new DemandModel();
 
@@ -90,8 +91,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             model.ResourceTypeId = ResourceTypeId ?? string.Empty;
             model.City = city;
             model.Area = area ?? string.Empty;
-            model.StartBudget = startbudget ?? string.Empty;
-            model.EndBudget = endbudget ?? string.Empty;
+            //model.StartBudget = startbudget ?? string.Empty;
+            //model.EndBudget = endbudget ?? string.Empty;
+            model.BudgetCondition = budgetCondition;
             model.StartTime = starttime ?? string.Empty;
             model.EndTime = endtime ?? string.Empty;
 
@@ -104,10 +106,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             parameters.ResourceTypeId = model.ResourceTypeId;
             parameters.City = model.City;
             parameters.Area = model.Area;
-            parameters.StartBudget = model.StartBudget;
-            parameters.EndBudget = model.EndBudget;
+            //parameters.StartBudget = model.StartBudget;
+            //parameters.EndBudget = model.EndBudget;
             parameters.StartTime = model.StartTime;
             parameters.EndTime = model.EndTime;
+            parameters.BudgetCondition = model.BudgetCondition;
 
             if (!string.IsNullOrEmpty(city))
             {
@@ -135,24 +138,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
             }
 
-            ProcessFilters(model);
-
             return View(model);
-        }
-
-        private void ProcessFilters(DemandModel model)
-        {
-            StringBuilder routeBuilder = new StringBuilder();
-            routeBuilder.Append($"{nameof(model.ResourceType)}={model.ResourceType}").Append("&");
-            routeBuilder.Append($"{nameof(model.ResourceTypeId)}={model.ResourceTypeId}").Append("&");
-            routeBuilder.Append($"{nameof(model.City)}={model.City}").Append("&");
-            routeBuilder.Append($"{nameof(model.Area)}={model.Area}").Append("&");
-            routeBuilder.Append($"{nameof(model.StartBudget)}={model.StartBudget}").Append("&");
-            routeBuilder.Append($"{nameof(model.EndBudget)}={model.EndBudget}").Append("&");
-            routeBuilder.Append($"{nameof(model.StartTime)}={model.StartTime}").Append("&");
-            routeBuilder.Append($"{nameof(model.EndTime)}={model.EndTime}");
-
-            model.RouteFilters = routeBuilder.ToString();
         }
 
 

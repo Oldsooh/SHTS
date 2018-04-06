@@ -22,9 +22,11 @@ namespace Witbird.SHTS.Model
 
         public string ResourceTypeId { get; set; }
 
-        public string StartBudget { get; set; }
+        //public string StartBudget { get; set; }
 
-        public string EndBudget { get; set; }
+        //public string EndBudget { get; set; }
+
+        public string BudgetCondition { get; set; }
 
         public string StartTime { get; set; }
 

@@ -81,14 +81,7 @@
 
             @{
 
-                string urlArea = "/wechat/demand/index?page=1";
-                urlArea = string.IsNullOrEmpty(Model.LastResourceType) ? urlArea : urlArea + "&LastResourceType=" + Model.LastResourceType;
-                urlArea = string.IsNullOrEmpty(Model.ResourceType) ? urlArea : urlArea + "&ResourceType=" + Model.ResourceType;
-                urlArea = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlArea : urlArea + "&ResourceTypeId=" + Model.ResourceTypeId;
-                urlArea = string.IsNullOrEmpty(Model.StartBudget) ? urlArea : urlArea + "&startbudget=" + Model.StartBudget;
-                urlArea = string.IsNullOrEmpty(Model.EndBudget) ? urlArea : urlArea + "&endbudget=" + Model.EndBudget;
-                urlArea = string.IsNullOrEmpty(Model.StartTime) ? urlArea : urlArea + "&starttime=" + Model.StartTime;
-                urlArea = string.IsNullOrEmpty(Model.EndTime) ? urlArea : urlArea + "&endtime=" + Model.EndTime;
+                string urlArea = "/wechat/demand/index?page=1&" + Model.GetRouteFilters("Area");
 
                 var areaName = "区域位置";
                 var firstArea = Model.Areas.FirstOrDefault(x => x.Id.ToString().Equals(Model.Area));
@@ -140,14 +133,7 @@
                 name = first.Text;
             }
 
-            string urlResourceType = "/wechat/demand/index?page=1";
-            urlResourceType = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceType : urlResourceType + "&LastResourceType=" + Model.LastResourceType;
-            urlResourceType = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlResourceType : urlResourceType + "&ResourceTypeId=" + Model.ResourceTypeId;
-            urlResourceType = string.IsNullOrEmpty(Model.Area) ? urlResourceType : urlResourceType + "&area=" + Model.Area;
-            urlResourceType = string.IsNullOrEmpty(Model.StartBudget) ? urlResourceType : urlResourceType + "&startbudget=" + Model.StartBudget;
-            urlResourceType = string.IsNullOrEmpty(Model.EndBudget) ? urlResourceType : urlResourceType + "&endbudget=" + Model.EndBudget;
-            urlResourceType = string.IsNullOrEmpty(Model.StartTime) ? urlResourceType : urlResourceType + "&starttime=" + Model.StartTime;
-            urlResourceType = string.IsNullOrEmpty(Model.EndTime) ? urlResourceType : urlResourceType + "&endtime=" + Model.EndTime;
+            string urlResourceType = "/wechat/demand/index?page=1&" + Model.GetRouteFilters("ResourceType");
 
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @name
@@ -184,66 +170,39 @@
     <div class="btn-group" role="group">
 
             @{
-                string urlBudget = "/wechat/demand/index?page=1";
-                urlBudget = string.IsNullOrEmpty(Model.ResourceType) ? urlBudget : urlBudget + "&ResourceType=" + Model.ResourceType;
-                urlBudget = string.IsNullOrEmpty(Model.Area) ? urlBudget : urlBudget + "&area=" + Model.Area;
-                urlBudget = string.IsNullOrEmpty(Model.StartTime) ? urlBudget : urlBudget + "&starttime=" + Model.StartTime;
-                urlBudget = string.IsNullOrEmpty(Model.EndTime) ? urlBudget : urlBudget + "&endtime=" + Model.EndTime;
-
-                var amountName = "预算金额";
-                if (Model.StartBudget.Equals("1"))
-                {
-                    amountName = "1000元以下";
-                }
-                else if (Model.StartBudget.Equals("1001"))
-                {
-                    amountName = "1000至2000元";
-                }
-                else if (Model.StartBudget.Equals("2001"))
-                {
-                    amountName = "2000至5000元";
-                }
-                else if (Model.StartBudget.Equals("5001"))
-                {
-                    amountName = "5000至1万元  ";
-                }
-                else if (Model.StartBudget.Equals("10001"))
-                {
-                    amountName = "1万元以上     ";
-                }
-                else
-                {
-                    //nothing
-                }
-
+                string urlBudget = "/wechat/demand/index?page=1&" + Model.GetRouteFilters("BudgetCondition");
+                
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @amountName
+                    @Model.BudgetConditionDisplayName
                     <span class="caret"></span>
                 </button>
             }
             <ul class="dropdown-menu">
-                <li><a id="budgetid" href="@urlBudget">不限</a></li>
-                <li><a id="budgetid1" href="@urlBudget&startbudget=1&endbudget=1000">1000元以下</a></li>
-                <li><a id="budgetid1001" href="@urlBudget&startbudget=1001&endbudget=2000">1000至2000元</a></li>
-                <li><a id="budgetid5001" href="@urlBudget&startbudget=2001&endbudget=5000">2000至5000元</a></li>
-                <li><a id="budgetid10001" href="@urlBudget&startbudget=5001&endbudget=10000">5000至1万元</a></li>
-                <li><a id="budgetid50001" href="@urlBudget&startbudget=10001&endbudget=1000000000">1万元以上</a></li>
+                @if (string.IsNullOrWhiteSpace(Model.BudgetCondition))
+                {
+                    <li><a id="budgetid" href="@urlBudget" class="no">不限</a></li>
+                }
+                else
+                {
+                    <li><a id="budgetid" href="@urlBudget" class="">不限</a></li>
+                }
+                @foreach (var item in Witbird.SHTS.Web.Public.MiscData.BudgetFilters)
+                {
+                    if (item.Condition.Trim().Equals(Model.BudgetCondition.Trim(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        <li><a id="budgetCondition_" + @item.Id href="@urlBudget&budgetCondition=@item.Condition" class="no">@item.DisplayName</a></li>
+                    }
+                    else
+                    {
+                        <li><a id="budgetCondition_" + @item.Id href="@urlBudget&budgetCondition=@item.Condition">@item.DisplayName</a></li>
+                    }
+
+                }
             </ul>
-            <script type="text/javascript">
-                        @{ string budgetid = "budgetid" + Model.StartBudget;}
-                document.getElementById("@budgetid").setAttribute("class", "no");
-            </script>
         </div>
     @if (!string.IsNullOrEmpty(Model.ResourceType))
     {
-        string urlResourceTypeId = "/wechat/demand/index?page=1";
-        urlResourceTypeId = string.IsNullOrEmpty(Model.LastResourceType) ? urlResourceTypeId : urlResourceTypeId + "&LastResourceType=" + Model.LastResourceType;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.ResourceType) ? urlResourceTypeId : urlResourceTypeId + "&ResourceType=" + Model.ResourceType;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.Area) ? urlResourceTypeId : urlResourceTypeId + "&area=" + Model.Area;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.StartBudget) ? urlResourceTypeId : urlResourceTypeId + "&startbudget=" + Model.StartBudget;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.EndBudget) ? urlResourceTypeId : urlResourceTypeId + "&endbudget=" + Model.EndBudget;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.StartTime) ? urlResourceTypeId : urlResourceTypeId + "&starttime=" + Model.StartTime;
-        urlResourceTypeId = string.IsNullOrEmpty(Model.EndTime) ? urlResourceTypeId : urlResourceTypeId + "&endtime=" + Model.EndTime;
+        string urlResourceTypeId = "/wechat/demand/index?page=1&" + Model.GetRouteFilters("ResourceTypeId");
 
         var resourceSubTypeList = new List<SelectListItem>();
         var resourceType = Convert.ToInt32(Model.ResourceType);
@@ -322,14 +281,7 @@
 
     <div class="input-group">
         @{
-            string urlTime = "/wechat/demand/index?page=1";
-
-            urlTime = string.IsNullOrEmpty(Model.LastResourceType) ? urlTime : urlTime + "&LastResourceType=" + Model.LastResourceType;
-            urlTime = string.IsNullOrEmpty(Model.ResourceType) ? urlTime : urlTime + "&ResourceType=" + Model.ResourceType;
-            urlTime = string.IsNullOrEmpty(Model.ResourceTypeId) ? urlTime : urlTime + "&ResourceTypeId=" + Model.ResourceTypeId;
-            urlTime = string.IsNullOrEmpty(Model.Area) ? urlTime : urlTime + "&area=" + Model.Area;
-            urlTime = string.IsNullOrEmpty(Model.StartBudget) ? urlTime : urlTime + "&startbudget=" + Model.StartBudget;
-            urlTime = string.IsNullOrEmpty(Model.EndBudget) ? urlTime : urlTime + "&endbudget=" + Model.EndBudget;
+            string urlTime = "/wechat/demand/index?page=1&" + Model.GetRouteFilters("StartTime");
 
         }
         <input id="starttime" type="text" class="form-control Wdate" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" onchange="timeRedirect();"

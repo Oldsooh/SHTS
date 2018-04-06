@@ -10,12 +10,12 @@
                 //上一页
                 if (Model.PageIndex > 1)
                 {
-                    <span><a href="\wechat\demand?page=@(Model.PageIndex -1)&@Model.RouteFilters" class="prv">上一页</a> </span>
+                    <span><a href="\wechat\demand?page=@(Model.PageIndex -1)&@Model.GetRouteFilters()" class="prv">上一页</a> </span>
                 }
                 //首页
                 if (Model.PageStep < Model.PageIndex)
                 {
-                    <span><a href="\wechat\demand?page=1&@Model.RouteFilters">1</a></span><span>.</span>
+                    <span><a href="\wechat\demand?page=1&@Model.GetRouteFilters()">1</a></span><span>.</span>
                 }
                 //分页
                 for (int i = step; i < step + Model.PageStep; i++)
@@ -24,23 +24,23 @@
                     {
                         if (i == Model.PageIndex)
                         {
-                            <span><a href="\wechat\demand?page=@i&@Model.RouteFilters" class="no">@i</a></span>
+                            <span><a href="\wechat\demand?page=@i&@Model.GetRouteFilters()" class="no">@i</a></span>
                         }
                         else
                         {
-                            <span><a href="\wechat\demand?page=@i&@Model.RouteFilters" class="">@i</a></span>
+                            <span><a href="\wechat\demand?page=@i&@Model.GetRouteFilters()" class="">@i</a></span>
                         }
                     }
                 }
                 //末页
                 if (step + Model.PageStep <= Model.PageCount)
                 {
-                            <span><a href="\wechat\demand?page=@(Model.PageCount)&@Model.RouteFilters">@Model.PageCount</a> </span>
+                            <span><a href="\wechat\demand?page=@(Model.PageCount)&@Model.GetRouteFilters()">@Model.PageCount</a> </span>
                 }
                 //下一页
                 if (Model.PageIndex < Model.PageCount)
                 {
-                    <span><a href="\wechat\demand?page=@(Model.PageIndex + 1)&@Model.RouteFilters" class="next">下一页</a> </span>
+                    <span><a href="\wechat\demand?page=@(Model.PageIndex + 1)&@Model.GetRouteFilters()" class="next">下一页</a> </span>
                 }
             }
         }

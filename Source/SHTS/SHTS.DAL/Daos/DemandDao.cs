@@ -49,8 +49,7 @@ namespace Witbird.SHTS.DAL.Daos
             object Area = DBNull.Value;
             object ResourceType = DBNull.Value;
             object ResourceTypeId = DBNull.Value;
-            object StartBudget = DBNull.Value;
-            object EndBudget = DBNull.Value;
+            object BugetCondition = DBNull.Value;
             object StartTime = DBNull.Value;
             object EndTime = DBNull.Value;
 
@@ -75,14 +74,7 @@ namespace Witbird.SHTS.DAL.Daos
             {
                 ResourceTypeId = parameters.ResourceTypeId;
             }
-            if (!string.IsNullOrEmpty(parameters.StartBudget))
-            {
-                StartBudget = parameters.StartBudget;
-            }
-            if (!string.IsNullOrEmpty(parameters.EndBudget))
-            {
-                EndBudget = parameters.EndBudget;
-            }
+            BugetCondition = parameters.BudgetCondition ?? string.Empty;
             if (!string.IsNullOrEmpty(parameters.StartTime))
             {
                 StartTime = parameters.StartTime;
@@ -102,8 +94,8 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter("@Area", Area),
                 new SqlParameter("@ResourceType", ResourceType),
                 new SqlParameter("@ResourceTypeId", ResourceTypeId),
-                new SqlParameter("@StartBudget", StartBudget),
-                new SqlParameter("@EndBudget", EndBudget),
+                new SqlParameter("@budgetCondition", BugetCondition),
+                //new SqlParameter("@EndBudget", EndBudget),
                 new SqlParameter("@StartTime", StartTime),
                 new SqlParameter("@EndTime", EndTime)
             };

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Model.Extensions;
+using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Models
 {
@@ -22,15 +24,88 @@ namespace Witbird.SHTS.Web.Models
         public string ResourceType { get; set; }
         public string ResourceTypeId { get; set; }
 
-        public string StartBudget { get; set; }
+        //public string StartBudget { get; set; }
 
-        public string EndBudget { get; set; }
+        //public string EndBudget { get; set; }
 
         public string StartTime { get; set; }
 
         public string EndTime { get; set; }
 
-        public string BudgetFilterCondition { get; set; }
+        public string BudgetCondition { get; set; }
+
+        public string BudgetConditionDisplayName
+        {
+            get
+            {
+                BudgetCondition = BudgetCondition ?? string.Empty;
+
+                var matchedCondition = MiscData.BudgetFilters.FirstOrDefault(item =>
+                    item.Condition.Trim().Equals(BudgetCondition.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                return matchedCondition != null ? matchedCondition.DisplayName : "预算金额";
+            }
+        }
+
+        private Dictionary<string, string> _routeFilters = new Dictionary<string, string>();
+
+        public string GetRouteFilters(params string [] execludeRoutes)
+        {
+            _routeFilters.Clear();
+
+            if (!string.IsNullOrWhiteSpace(ResourceType))
+            {
+                _routeFilters.Add(nameof(ResourceType), ResourceType);
+            }
+            if (!string.IsNullOrWhiteSpace(LastResourceType))
+            {
+                _routeFilters.Add(nameof(LastResourceType), LastResourceType);
+            }
+            if (!string.IsNullOrWhiteSpace(ResourceTypeId))
+            {
+                _routeFilters.Add(nameof(ResourceTypeId), ResourceTypeId);
+            }
+            if (!string.IsNullOrWhiteSpace(City))
+            {
+                _routeFilters.Add(nameof(City), City);
+            }
+            if (!string.IsNullOrWhiteSpace(Area))
+            {
+                _routeFilters.Add(nameof(Area), Area);
+            }
+            if (!string.IsNullOrWhiteSpace(BudgetCondition))
+            {
+                _routeFilters.Add(nameof(BudgetCondition), BudgetCondition);
+            }
+            if (!string.IsNullOrWhiteSpace(StartTime))
+            {
+                _routeFilters.Add(nameof(StartTime), StartTime);
+            }
+            if (!string.IsNullOrWhiteSpace(EndTime))
+            {
+                _routeFilters.Add(nameof(EndTime), EndTime);
+            }
+
+            //_routeFilters.Add(nameof(StartBudget), StartBudget};
+            //_routeFilters.Add(nameof(EndBudget), EndBudget};
+
+            if (execludeRoutes != null && execludeRoutes.Length > 0)
+            {
+                foreach (var execludeKey in execludeRoutes)
+                {
+                    if (_routeFilters.ContainsKey(execludeKey))
+                    {
+                        _routeFilters.Remove(execludeKey);
+                    }
+                }
+            }
+
+            var routeBuilder = new StringBuilder();
+            foreach (var item in _routeFilters)
+            {
+                routeBuilder.Append($"{item.Key}={item.Value}&");
+            }
+            return routeBuilder.ToString();
+        }
 
         /// <summary>
         /// 是否为会员, 会员可能查询详情

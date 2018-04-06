@@ -26,7 +26,8 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
         CityService cityService = new CityService();
         DemandQuoteService quoteService = new DemandQuoteService();
 
-        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, string area, string starttime, string endtime, string startbudget, string endbudget)
+        public ActionResult Index(string page, string LastResourceType, string ResourceType, string ResourceTypeId, 
+            string area, string starttime, string endtime, string budgetCondition)//string startbudget, string endbudget)
         {
             DemandModel model = new DemandModel();
 
@@ -59,8 +60,9 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             model.ResourceTypeId = ResourceTypeId ?? string.Empty;
             model.City = city;
             model.Area = area ?? string.Empty;
-            model.StartBudget = startbudget ?? string.Empty;
-            model.EndBudget = endbudget ?? string.Empty;
+            //model.StartBudget = startbudget ?? string.Empty;
+            //model.EndBudget = endbudget ?? string.Empty;
+            model.BudgetCondition = budgetCondition ?? string.Empty;
             model.StartTime = starttime ?? string.Empty;
             model.EndTime = endtime ?? string.Empty;
 
@@ -73,8 +75,9 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
             parameters.ResourceTypeId = model.ResourceTypeId;
             parameters.City = model.City;
             parameters.Area = model.Area;
-            parameters.StartBudget = model.StartBudget;
-            parameters.EndBudget = model.EndBudget;
+            //parameters.StartBudget = model.StartBudget;
+            //parameters.EndBudget = model.EndBudget;
+            parameters.BudgetCondition = model.BudgetCondition;
             parameters.StartTime = model.StartTime;
             parameters.EndTime = model.EndTime;
             

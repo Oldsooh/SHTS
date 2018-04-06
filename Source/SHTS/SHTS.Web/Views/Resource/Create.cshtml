@@ -158,8 +158,8 @@
                 资源报价<span class="red ch">*</span>：
             </div>
             <div class="ur_box">
-                @Html.TextBoxFor(model => model.QuotePrice, new { @class = "ur_txt1", @type = "number", @min = 0, @step = 100, @placeHolder = "请输入该资源的报价", @value = "" })
-                @Html.ValidationMessageFor(model => model.QuotePrice, null, new { @style = "color: #4193ff" })
+                <input type="number" id="QuotePrice" name="QuotePrice" class="ur_txt1" placeHolder = "请输入该资源的报价" min="0" step="100"/>
+                @Html.ValidationMessageFor(model => model.QuotePrice, null, new {@style = "color: #4193ff"})
             </div>
             <div class="clearfix"></div>
             <div class="ur_title lh24">
@@ -174,7 +174,7 @@
             <div class="clearfix"></div>
             <div class="ur_title lh24">详细地址<span class="red ch">*</span>：</div>
             <div class="ur_box">
-                @Html.TextBoxFor(model => model.DetailAddress, new { @class = "ur_txt1", @style = "width:600px;" })
+                @Html.TextBoxFor(model => model.DetailAddress, new { @class = "ur_txt1", @style = "" })
                 @Html.ValidationMessageFor(model => model.DetailAddress, null, new { @style = "color: #4193ff" })
             </div>
             <div class="clearfix"></div>

@@ -115,6 +115,7 @@ namespace Witbird.SHTS.DAL.Daos
                     resource.ActorTypeId = reader["ActorTypeId"].DBToInt32();
                     resource.ClickTime = reader["ClickTime"].DBToDateTime().Value;
                     resource.UserName = reader["UserName"].DBToString();
+                    resource.Budget = reader["Budget"].DBToNullableInt32();
                     //还有一些字段没有添加
 
                     result.Items.Add(resource);

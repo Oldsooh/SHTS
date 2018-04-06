@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Witbird.SHTS.Model;
 
@@ -24,9 +25,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
         public List<TradeOrder> PaidDemandOrders { get; set; }
 
         public string ActionName { get; set; }
-
-        public string RouteFilters { get; set; }
-
+        
         public WechatParameters WechatShareParameters { get; set; }
     }
 
