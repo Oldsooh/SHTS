@@ -124,9 +124,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <param name="openId">用户OpenId</param>
             /// <param name="articles">图文消息，最多8条，否则发送失败</param>
             /// <returns></returns>
-            public static bool SendArticles(string openId, List<Article> articles)
+            public static OperationResult SendArticles(string openId, List<Article> articles)
             {
-                bool isSuccessFul = false;
+                var result = new OperationResult();
                 AccessTokenContainer.Register(App.AppId, App.AppSecret);
 
                 try
@@ -134,20 +134,24 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     var wxResult = CustomApi.SendNews(App.AppId, openId, articles);
                     if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
                     {
-                        isSuccessFul = true;
+                        result.IsSuccessful = true;
                     }
                     else
                     {
+                        result.IsSuccessful = false;
+                        result.ErrorMessage = wxResult.errmsg;
                         var paramsData = new { openId = openId, errorMessage = wxResult.errmsg };
                         LogService.LogWexin("Failed to send SendArticles message to user, parameters info: ", paramsData.ToString());
                     }
                 }
                 catch (Exception ex)
                 {
+                    result.IsSuccessful = false;
+                    result.ErrorMessage = ex.ToString();
                     LogService.LogWexin("Failed to send articles to user " + openId, ex.ToString());
                 }
 
-                return isSuccessFul;
+                return result;
             }
 
             /// <summary>
@@ -156,29 +160,33 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <param name="openId">用户OpenId</param>
             /// <param name="message">消息内容</param>
             /// <returns></returns>
-            public static bool SendText(string openId, string message)
+            public static OperationResult SendText(string openId, string message)
             {
-                bool isSuccessFul = false;
+                var result = new OperationResult();
                 try
                 {
                     AccessTokenContainer.Register(App.AppId, App.AppSecret);
                     var wxResult = CustomApi.SendText(App.AppId, openId, message);
                     if (wxResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
                     {
-                        isSuccessFul = true;
+                        result.IsSuccessful = true;
                     }
                     else
                     {
+                        result.IsSuccessful = false;
+                        result.ErrorMessage = wxResult.errmsg;
                         var paramsData = new { openId = openId, message = message, errorMessage = wxResult.errmsg };
                         LogService.LogWexin("Failed to send SendText message to user, parameters info: ", paramsData.ToString());
                     }
                 }
                 catch (Exception ex)
                 {
+                    result.IsSuccessful = false;
+                    result.ErrorMessage = ex.ToString();
                     LogService.LogWexin("Failed to send text message to user " + openId, ex.ToString());
                 }
 
-                return isSuccessFul;
+                return result;
             }
 
             /// <summary>
@@ -190,9 +198,9 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             /// <param name="url"></param>
             /// <param name="data"></param>
             /// <returns></returns>
-            public static bool SendTemplateMessage(string openId, string templateId, object data = null, string url = "")
+            public static OperationResult SendTemplateMessage(string openId, string templateId, object data = null, string url = "")
             {
-                var isSuccessFul = false;
+                var result = new OperationResult();
 
                 try
                 {
@@ -202,21 +210,25 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     var sendResult = TemplateApi.SendTemplateMessage(App.AppId, openId, templateId, topcolor, url, data);
                     if (sendResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
                     {
-                        isSuccessFul = true;
+                        result.IsSuccessful = true;
                     }
                     else
                     {
+                        result.IsSuccessful = false;
+                        result.ErrorMessage = sendResult.errmsg;
                         var paramsData = new { openId = openId, templateId = templateId, url = url, sendResult = sendResult.errmsg };
                         LogService.LogWexin("Failed to send template message to user, parameters info: ", paramsData.ToString());
                     }
                 }
                 catch(Exception ex)
                 {
+                    result.IsSuccessful = false;
+                    result.ErrorMessage = ex.ToString();
                     var paramsData = new { openId = openId, templateId = templateId, url = url, data = data};
                     LogService.LogWexin("Failed to send template message to user, parameters info: " + paramsData.ToString(), ex.ToString());
                 }
 
-                return isSuccessFul;
+                return result;
             }
         }
     }

@@ -14,6 +14,7 @@ using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Common;
 using Witbird.SHTS.Web.Public;
+using WitBird.Com.SMS;
 
 namespace Witbird.SHTS.Web.Subscription
 {
@@ -87,18 +88,18 @@ namespace Witbird.SHTS.Web.Subscription
                                     var lastPushTime = subscription.LastPushTimestamp ?? DateTime.Now.AddDays(-2);
                                     var demands = demandService.SelectDemandsForWeChatPush(subscription.SubscriptionDetails, lastPushTime);
 
-                                    var isSendSuccessFul = false;
+                                    OperationResult sendMessageResult;
                                     if (demands.HasItem())
                                     {
                                         var articles = ConstructArticles(demands);
-                                        isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
+                                        sendMessageResult = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
                                     }
                                     else
                                     {
-                                        isSendSuccessFul = WeChatClient.Sender.SendText(wechatUser.OpenId, WeChatClient.Constant.NoSubcribedDemansFound);
+                                        sendMessageResult = WeChatClient.Sender.SendText(wechatUser.OpenId, WeChatClient.Constant.NoSubcribedDemansFound);
                                     }
 
-                                    if (isSendSuccessFul)
+                                    if (sendMessageResult.IsSuccessful)
                                     {
                                         // Update last push time
                                         subscriptionService.UpdateLastPushTimestamp(wechatUser.Id);
@@ -158,9 +159,9 @@ namespace Witbird.SHTS.Web.Subscription
                                         if (demands.HasItem())
                                         {
                                             var articles = ConstructArticles(demands);
-                                            var isSendSuccessFul = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
+                                            var result = WeChatClient.Sender.SendArticles(wechatUser.OpenId, articles);
 
-                                            if (isSendSuccessFul)
+                                            if (result.IsSuccessful)
                                             {
                                                 // Update last push time
                                                 subscriptionService.UpdateLastPushTimestamp(wechatUser.Id);
@@ -247,7 +248,7 @@ namespace Witbird.SHTS.Web.Subscription
                                            !string.IsNullOrEmpty(item.EmailAddress))
                             .Select(item => item.EmailAddress).ToList();
                         var matchOpenIds = matchedSubscriptions.Select(item => item.OpenId).ToList();
-                        var isEmailPushSuccess = false;
+                        SMSResponse emailPushResult = new SMSResponse();
 
                         if (matchedEmails.Any())
                         {
@@ -257,7 +258,7 @@ namespace Witbird.SHTS.Web.Subscription
                                 var mailSubject = "【活动在线网】【需求订阅】" + demand.Title;
                                 var mailBody = GetEmailSubscriptionContent(emailSubscriptionContentFormat, demand);
                                 var mailEntity = StaticUtility.EmailManager.CreateMailMessage(matchedEmails, displayName, mailSubject, mailBody);
-                                var response = StaticUtility.EmailManager.Send(mailEntity);
+                                emailPushResult = StaticUtility.EmailManager.Send(mailEntity);
 
                                 StringBuilder logBuilder = new StringBuilder();
                                 foreach (var item in mailEntity.To)
@@ -265,14 +266,13 @@ namespace Witbird.SHTS.Web.Subscription
                                     logBuilder.Append(" 邮箱帐号: ").Append(item.Address).Append(", ");
                                 }
 
-                                if (response.IsSuccess)
+                                if (emailPushResult.IsSuccess)
                                 {
-                                    isEmailPushSuccess = true;
                                     LogService.LogWexin("邮箱推送需求成功", logBuilder.ToString());
                                 }
                                 else
                                 {
-                                    logBuilder.Append("失败原因为: ").Append(response.InnerException.ToString())
+                                    logBuilder.Append("失败原因为: ").Append(emailPushResult.InnerException.ToString())
                                         .Append("\r\n");
                                     LogService.LogWexin("邮箱推送需求失败", logBuilder.ToString());
                                 }
@@ -290,17 +290,22 @@ namespace Witbird.SHTS.Web.Subscription
                         var pushHistories = new List<DemandSubscriptionPushHistory>();
 
                         foreach (var item in matchedSubscriptions)
-                        {
-                            pushHistories.Add(new DemandSubscriptionPushHistory()
+                        { 
+                            var history = new DemandSubscriptionPushHistory()
                             {
                                 CreatedDateTime = DateTime.Now,
                                 DemandId = demand.Id,
-                                EmailAddress = item.EmailAddress,
-                                EmailStatus = isEmailPushSuccess ? "邮箱推送成功" : "邮箱推送失败",
                                 IsMailSubscribed = item.IsEnableEmailSubscription.GetValueOrDefault(),
                                 OpenId = item.OpenId,
                                 WechatUserId = item.WeChatUserId
-                            });
+                            };
+
+                            if (history.IsMailSubscribed)
+                            {
+                                history.EmailAddress = item.EmailAddress;
+                                history.EmailStatus = emailPushResult.IsSuccess ? "邮箱推送成功" : "邮箱推送失败";
+                                history.EmailExceptionMessage = emailPushResult.InnerException?.ToString();
+                            }
                         }
 
                         #endregion
@@ -325,12 +330,13 @@ namespace Witbird.SHTS.Web.Subscription
 
                             foreach (var openId in matchOpenIds)
                             {
-                                var isSuccess = WeChatClient.Sender.SendTemplateMessage(openId,
+                                var sendResult = WeChatClient.Sender.SendTemplateMessage(openId,
                                     WeChatClient.Constant.TemplateMessage.DemandRemind, messageData, viewUrl);
                                 var history = pushHistories.FirstOrDefault(item => item.OpenId == openId);
                                 if (history != null)
                                 {
-                                    history.WechatStatus = isSuccess ? "微信推送成功" : "微信推送失败";
+                                    history.WechatStatus = sendResult.IsSuccessful ? "微信推送成功" : "微信推送失败";
+                                    history.WechatExceptionMessage = sendResult.ErrorMessage ?? string.Empty;
                                 }
                             }
                         }
