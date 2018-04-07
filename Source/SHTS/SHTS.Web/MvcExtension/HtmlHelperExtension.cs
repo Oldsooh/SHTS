@@ -116,7 +116,7 @@ namespace System.Web.Mvc
         {
             var equip = EquipTypeListProperty.FirstOrDefault(v => v.Id == equipTypeId);
 
-            return equip == null ? "不确定" : equip.Name;
+            return equip == null ? "不限类型" : equip.Name;
         }
 
         /// <summary>

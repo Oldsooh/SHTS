@@ -306,6 +306,8 @@ namespace Witbird.SHTS.Web.Subscription
                                 history.EmailStatus = emailPushResult.IsSuccess ? "邮箱推送成功" : "邮箱推送失败";
                                 history.EmailExceptionMessage = emailPushResult.InnerException?.ToString();
                             }
+
+                            pushHistories.Add(history);
                         }
 
                         #endregion
