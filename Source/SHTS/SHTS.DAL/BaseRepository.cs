@@ -10,15 +10,15 @@ namespace Witbird.SHTS.DAL
 {
     public class BaseRepository<T> where T : class,new()
     {
-        DbContext db = GetDbContext();
+        shtsEntities db = GetDbContext();
 
         /// <summary>
         /// 获取当前线程的 DbContext 实例
         /// </summary>
         /// <returns>DbContext 实例</returns>
-        public static DbContext GetDbContext()
+        public static shtsEntities GetDbContext()
         {
-            DbContext context = (DbContext)CallContext.GetData("DbContext");
+            shtsEntities context = (shtsEntities)CallContext.GetData("DbContext");
             if (context == null)
             {
                 context = new shtsEntities();

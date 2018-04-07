@@ -134,6 +134,7 @@
     <Compile Include="Extensions\Demand.cs" />
     <Compile Include="Extensions\DemandQuote.cs" />
     <Compile Include="Extensions\DemandQuoteHistory.cs" />
+    <Compile Include="Extensions\DemandSubscriptionDetail.cs" />
     <Compile Include="Extensions\DemandSubscription.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\FinanceWithdrawRecord.cs" />

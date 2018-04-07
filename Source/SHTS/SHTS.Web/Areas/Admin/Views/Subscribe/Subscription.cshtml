@@ -1,0 +1,275 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.SubscriptionModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".tiptop a").click(function () {
+                $(".tip").fadeOut(200);
+            });
+
+            $(".sure").click(function () {
+                $(".tip").fadeOut(100);
+            });
+
+            $(".cancel").click(function () {
+                $(".tip").fadeOut(100);
+            });
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+
+    </script>
+    <style>
+        .tablelist td, .tablelist th {
+            max-width:100px!important;
+            text-overflow : ellipsis; 
+            white-space : nowrap; 
+            overflow : hidden; 
+        }
+
+        .on {
+            color: green;
+        }
+
+        .off {
+            color: firebrick;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/subscribe/subscription?id=1">业务订阅列表</a></li>
+        </ul>
+    </div>
+
+    <div class="rightinfo">
+
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>微信昵称</th>
+                    <th>会员昵称</th>
+                    <th>是否开启订阅</th>
+                    <th style="max-width:350px!important">订阅规则</th>
+                    <th>是否开启邮箱订阅</th>
+                    <th>邮箱账号</th>
+                    <th>最近一次推送时间</th>
+                    <th>订阅规则更新时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Subscriptions != null && Model.Subscriptions.Count > 0)
+                {
+                    foreach (var item in Model.Subscriptions)
+                    {
+                        <tr>
+                            <td>
+                                @item.SubscriptionId
+                            </td>
+                            <td>
+                                @item.WeChatUserName
+                            </td>
+                            <td>
+                                @if (item.UserId.HasValue)
+                                {
+                                    <a href="/admin/member/editUser/@item.UserId.Value" title="点击查看会员详情" style="color: #3858FA;">@item.UserName</a>
+                                }
+                                else
+                                {
+                                    <span class="off">未绑定</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsSubscribed)
+                                {
+                                    <span class="on">已开启</span>
+                                }
+                                else
+                                {
+                                    <span class="off">已关闭</span>
+                                }
+                            </td>
+                            <td style="max-width:350px!important">
+                                @{
+                                    var types = new List<string>();
+                                    foreach (var category in item.SubscribedTypes)
+                                    {
+                                        var subcribedTypeId = category.SubscriptionValue;
+                                        var typeIdArray = category.SubscriptionValue.Split('_');
+                                        var typeId = -1;
+                                        var subTypeId = -1;
+
+                                        if (typeIdArray.Length == 1)
+                                        {
+                                            typeId = Convert.ToInt32(typeIdArray[0]);
+                                        }
+                                        else if (typeIdArray.Length == 2)
+                                        {
+                                            typeId = Convert.ToInt32(typeIdArray[0]);
+                                            subTypeId = Convert.ToInt32(typeIdArray[1]);
+                                        }
+
+                                        var displayName = Html.GetResourceTypeNameById(typeId, subTypeId);
+                                        types.Add(displayName);
+                                    }
+
+                                    var areas = new List<string>();
+                                    foreach (var area in item.SubscribedAreas)
+                                    {
+                                        var areaId = area.SubscriptionValue;
+                                        if (areaId.StartsWith("zhixiashi"))
+                                        {
+                                            var ids = areaId.Split('_');
+                                            ids[0] = ids[1];
+                                            if (!ids[1].EndsWith("shi"))
+                                            {
+                                                ids[1] = ids[1] + "shi";
+                                            }
+                                            areaId = ids[0] + "_" + ids[1] + "_" + ids[2];
+                                        }
+                                        var areaName = Witbird.SHTS.Web.Public.StaticUtility.GetLocationName(areaId);
+                                        areas.Add(areaName);
+                                    }
+
+                                    var keywords = new List<string>();
+                                    foreach (var keyword in item.SubscribedKeywords)
+                                    {
+                                        keywords.Add(keyword.SubscriptionValue);
+                                    }
+                                    if (types.Any())
+                                    {
+                                        <span title="@string.Join(",", types)">订阅类型：@string.Join(",", types)</span>
+                                        <br />
+                                    }
+                                    if (!string.IsNullOrWhiteSpace(item.SubscribedBudgetCondtionDisplayName))
+                                    {
+                                        <span title="@item.SubscribedBudgetCondtionDisplayName">金额预算：@item.SubscribedBudgetCondtionDisplayName</span>
+                                        <br />
+                                    }
+                                    if (areas.Any())
+                                    {
+                                        <span title="@string.Join(",", areas)">区域位置：@string.Join(",", areas)</span>
+                                        <br />
+                                    }
+                                    if (keywords.Any())
+                                    {
+                                        <span title="@string.Join(",", keywords)">关键词语：@string.Join(",", keywords)</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsEnableEmailSubscription.GetValueOrDefault())
+                                {
+                                    <span class="on">已开启</span>
+                                }
+                                else
+                                {
+                                    <span class="off">已关闭</span>
+                                }
+                            </td>
+                            <td>
+                                <span>@(item.EmailAddress ?? "")</span>
+                            </td>
+                            <td>
+                                <span>@(!item.LastPushTimestamp.HasValue ? "" : item.LastPushTimestamp.Value.ToString("yyyy-MM-dd HH:mm:ss"))</span>
+                            </td>
+                            <td>
+                                <span>@(item.LastUpdatedTimestamp.ToString("yyyy-MM-dd HH:mm:ss"))</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div style="height:30px;"></div>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                            <span><a href="/admin/subscribe/subscription?id=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                            <span><a href="/admin/subscribe/subscription?id=1">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                                    <span><a href="/admin/subscribe/subscription?id=@i&" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                                    <span><a href="/admin/subscribe/subscription?id=@i">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                            <span><a href="/admin/subscribe/subscription?id=@(Model.PageCount)">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                            <span><a href="/admin/subscribe/subscription?id=@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        }
+                    }
+                }
+            }
+        </div>
+        <!--分页结束-->
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+    </div>
+
+</body>
+
+</html>

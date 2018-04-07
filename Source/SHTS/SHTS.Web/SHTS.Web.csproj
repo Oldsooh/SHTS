@@ -160,6 +160,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\ActivityController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SubscribeController.cs" />
     <Compile Include="Areas\Admin\Controllers\FinanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\Admin\Controllers\ConfigController.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Areas\Admin\Models\Resource\AjaxResponse.cs" />
     <Compile Include="Areas\Admin\Models\SinglePageModel.cs" />
     <Compile Include="Areas\Admin\Models\SiteBIViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\SubscriptionModel.cs" />
     <Compile Include="Areas\M\Common\MobileHttpContext.cs" />
     <Compile Include="Areas\M\Controllers\AccountController.cs" />
     <Compile Include="Areas\M\Controllers\ActivityController.cs" />
@@ -1221,6 +1223,8 @@
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\doc\examples\Makefile" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\doc\examples\README" />
     <Content Include="Areas\Wechat\Views\Demand\TestWXShare.cshtml" />
+    <Content Include="Areas\Admin\Views\Subscribe\Subscription.cshtml" />
+    <Content Include="Areas\Admin\Views\Subscribe\PushHistory.cshtml" />
     <None Include="VideoConverter\ffmpeg-3.2.4-win64-shared\presets\ffprobe.xsd">
       <SubType>Designer</SubType>
     </None>

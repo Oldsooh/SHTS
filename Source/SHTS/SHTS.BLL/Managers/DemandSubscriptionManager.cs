@@ -17,7 +17,10 @@ namespace Witbird.SHTS.BLL.Managers
         private DemandSubscriptionPushHistoryRepository pushHistoryRepository =
             new DemandSubscriptionPushHistoryRepository();
 
-
+        /// <summary>
+        /// 添加推送历史记录
+        /// </summary>
+        /// <param name="histories"></param>
         public void AddSubscriptionPushHistories(List<DemandSubscriptionPushHistory> histories)
         {
             try
@@ -35,6 +38,13 @@ namespace Witbird.SHTS.BLL.Managers
             }
         }
 
+        /// <summary>
+        /// 获取推送历史记录
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
         public List<DemandSubscriptionPushHistory> GetSubscriptionPushHistories(int pageSize, int pageIndex,
             out int totalCount)
         {
@@ -59,6 +69,7 @@ namespace Witbird.SHTS.BLL.Managers
         /// </summary>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
+        /// <param name="totalSubscriptionCount"></param>
         /// <returns></returns>
         public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int totalSubscriptionCount)
         {
@@ -67,27 +78,25 @@ namespace Witbird.SHTS.BLL.Managers
 
             try
             {
-                var tempResult = subscriptionRepository.FindPage(pageSize, pageIndex, out totalSubscriptionCount,
-                    (x => true), (x => x.SubscriptionId), false);
+                var tempResult = subscriptionRepository.GetSubscriptions(pageSize, pageIndex, out totalSubscriptionCount);
+                subscriptions.AddRange(tempResult);
 
-                if (tempResult.HasItem())
-                {
-                    subscriptions = tempResult.ToList();
-
-                    // 获取订阅详细信息
-                    foreach (var item in subscriptions)
-                    {
-                        if (item.IsNotNull())
-                        {
-                            var details = subscriptionDetailRepository.FindAll(
-                                (x => x.SubscriptionId == item.SubscriptionId), (x => x.InsertedTimestamp), true);
-                            if (details.HasItem())
-                            {
-                                item.SubscriptionDetails.AddRange(details);
-                            }
-                        }
-                    }
-                }
+                //if (subscriptions.HasItem())
+                //{
+                //    // 获取订阅详细信息
+                //    foreach (var item in subscriptions)
+                //    {
+                //        if (item.IsNotNull())
+                //        {
+                //            var details = subscriptionDetailRepository.FindAll(
+                //                (x => x.SubscriptionId == item.SubscriptionId), (x => x.InsertedTimestamp), true);
+                //            if (details.HasItem())
+                //            {
+                //                item.SubscriptionDetails.AddRange(details);
+                //            }
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {

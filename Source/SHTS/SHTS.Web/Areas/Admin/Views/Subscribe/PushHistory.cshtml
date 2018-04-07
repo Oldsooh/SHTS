@@ -1,0 +1,204 @@
+﻿@model Witbird.SHTS.Web.Areas.Admin.Models.SubscriptionModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="/areas/admin/content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/areas/admin/content/css/select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/jquery.idTabs.min.js"></script>
+    <script type="text/javascript" src="/areas/admin/content/js/select-ui.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(".tiptop a").click(function () {
+                $(".tip").fadeOut(200);
+            });
+
+            $(".sure").click(function () {
+                $(".tip").fadeOut(100);
+            });
+
+            $(".cancel").click(function () {
+                $(".tip").fadeOut(100);
+            });
+            $(".select1").uedSelect({
+                width: 345
+            });
+            $(".select2").uedSelect({
+                width: 150
+            });
+            $(".select3").uedSelect({
+                width: 100
+            });
+        });
+
+    </script>
+    <style>
+        .tablelist td, .tablelist th {
+            max-width:100px!important;
+            text-overflow : ellipsis; 
+            white-space : nowrap; 
+            overflow : hidden; 
+        }
+
+        .on {
+            color: green;
+        }
+
+        .off {
+            color: firebrick;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/subscribe/pushhistory?id=1">业务推送历史</a></li>
+        </ul>
+    </div>
+
+    <div class="rightinfo">
+
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>微信ID</th>
+                    <th>OpenId</th>
+                    <th>是否开启邮箱推送</th>
+                    <th>订阅邮箱</th>
+                    <th>需求连接</th>
+                    <th>微信推送状态</th>
+                    <th  style="max-width:200px!important">微信推送失败原因</th>
+                    <th>邮箱推送状态</th>
+                    <th  style="max-width:200px!important">邮箱推送失败原因</th>
+                    <th>推送时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.PushHistories != null && Model.PushHistories.Count > 0)
+                {
+                    foreach (var item in Model.PushHistories)
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.WechatUserId
+                            </td>
+                            <td>
+                                @item.OpenId
+                            </td>
+                            <td>
+                                @if (item.IsMailSubscribed)
+                                {
+                                    <span class="on">已开启</span>
+                                }
+                                else
+                                {
+                                    <span class="off">已关闭</span>
+                                }
+                            </td>
+                            <td>
+                                @item.EmailAddress
+                            </td>
+                            <td>
+                                <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">点击查看需求</a>
+                            </td>
+                            <td>
+                                @item.WechatStatus
+                            </td>
+                            <td style="max-width: 200px !important">
+                                @item.WechatExceptionMessage
+                            </td>
+                            <td>
+                                @item.EmailStatus
+                            </td>
+                            <td style="max-width: 200px !important">
+                                @item.EmailExceptionMessage
+                            </td>
+                            <td>
+                                <span>@(item.CreatedDateTime.ToString("yyyy-MM-dd HH:mm:ss"))</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div style="height:30px;"></div>
+
+        <!--分页开始-->
+        <div class="fenye" style="margin: 0 auto;">
+            @if (Model.PageCount > 1)
+            {
+                for (int step = 1; step <= Model.PageCount; step = step + Model.PageStep)
+                {
+                    if (Model.PageIndex >= step && Model.PageIndex < step + Model.PageStep)
+                    {
+                        //上一页
+                        if (Model.PageIndex > 1)
+                        {
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                        }
+                        //首页
+                        if (Model.PageStep < Model.PageIndex)
+                        {
+                            <span><a href="/admin/subscribe/pushhistory?id=1">首页</a></span>
+                        }
+                        //分页
+                        for (int i = step; i < step + Model.PageStep; i++)
+                        {
+                            if (i <= Model.PageCount)
+                            {
+                                if (i == Model.PageIndex)
+                                {
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i&" class="no">@i</a></span>
+                                }
+                                else
+                                {
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i">@i</a></span>
+                                }
+                            }
+                        }
+                        //末页
+                        if (step + Model.PageStep <= Model.PageCount)
+                        {
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageCount)">末页</a></span>
+                        }
+                        //下一页
+                        if (Model.PageIndex < Model.PageCount)
+                        {
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                        }
+                    }
+                }
+            }
+        </div>
+        <!--分页结束-->
+
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+        </script>
+
+    </div>
+
+</body>
+
+</html>

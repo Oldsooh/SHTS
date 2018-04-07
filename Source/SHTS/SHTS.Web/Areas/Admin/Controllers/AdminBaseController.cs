@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Admin.Authorize;
 
@@ -12,6 +14,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
     public class AdminBaseController : Controller
     {
         public const string USERINFO = "AdminUserInfo";
+        protected bool IsDebugModel = ConfigurationManager.AppSettings["IsDebugModel"].ToBoolean();
 
         #region 登陆用户信息
 
@@ -19,6 +22,21 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         {
             get
             {
+                if (IsDebugModel)
+                {
+                    if (Session[USERINFO] == null)
+                    {
+                        AdminUser adminUser = new AdminUser()
+                        {
+                            AdminId = 4,
+                            Role = 4,
+                            State = 0,
+                            UserName = "barron"
+                        };
+
+                        Session[USERINFO] = adminUser;
+                    }
+                }
                 return Session[USERINFO] as AdminUser;
             }
         }

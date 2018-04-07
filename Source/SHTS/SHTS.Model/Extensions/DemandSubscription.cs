@@ -16,6 +16,8 @@ namespace Witbird.SHTS.Model
 
         public int? UserId { get; set; }
 
+        public string UserName { get; set; }
+
         /// <summary>
         /// 用户订阅内容详细集合
         /// </summary>
@@ -60,7 +62,16 @@ namespace Witbird.SHTS.Model
             }
         }
 
-        public string SubscribedBudgetCondtion
+        public List<DemandSubscriptionDetail> SubscribedBudgetConditions
+        {
+            get
+            {
+                return this.subscriptionDetails
+                    .Where(x => x.SubscriptionType == DemandSubscriptionType.Budget.ToString()).ToList();
+            }
+        }
+
+        public string SubscribedBudgetCondtionDisplayName
         {
             get
             {
@@ -68,7 +79,7 @@ namespace Witbird.SHTS.Model
                     item.SubscriptionType == DemandSubscriptionType.Budget.ToString());
                 if (budgetCondition != null)
                 {
-                    return budgetCondition.SubscriptionValue;
+                    return budgetCondition.BudgetConditionDisplayName;
                 }
 
                 return string.Empty;

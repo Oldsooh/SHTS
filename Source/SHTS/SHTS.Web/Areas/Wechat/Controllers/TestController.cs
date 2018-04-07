@@ -20,7 +20,8 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             else
             {
                 var templateMsgData = new { first = new TemplateDataItem(first), keyword1 = new TemplateDataItem(key1), keyword2 = new TemplateDataItem(key2) };
-                if (WeChatClient.Sender.SendTemplateMessage(openId, templateId, templateMsgData))
+                var result = WeChatClient.Sender.SendTemplateMessage(openId, templateId, templateMsgData);
+                if (result.IsSuccessful)
                 {
                     status = "ok";
                     message = "success";
@@ -28,13 +29,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 else
                 {
                     status = "fail";
-                    message = "failed to send template message to user";
+                    message = $"Send failed. Error: {result.ErrorMessage}";
                 }
 
             }
 
-            var result = new { Status = status, Message = message };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var data = new { Status = status, Message = message };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }
