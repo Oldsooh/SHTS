@@ -801,14 +801,14 @@
                 <div class="subscribe">
                     <h3 class="" style="font-size:14px; padding: 5px;">设置需求预算范围：</h3>
                     @{
-                        <input type="hidden" id="subscriedBudget" name="subscriedBudget" value="@Model.SubscribedBudgetCondtion">
+                        <input type="hidden" id="subscriedBudget" name="subscriedBudget" value="@Model.SubscribedBudgetCondition">
 
                         <div class="cell">
                             <select name="BudgetCondition" class="text candisabled" style="width:95%;" id="BudgetCondition" onchange="onBudgetConditionChange()">
                                 <option value="-1">不限制预算金额</option>
                                 @foreach (var item in MiscData.BudgetFilters)
                                 {
-                                    if (item.Condition.Trim() == (Model.SubscribedBudgetCondtion ?? string.Empty).Trim())
+                                    if (item.Condition.Trim() == (Model.SubscribedBudgetCondition ?? string.Empty).Trim())
                                     {
                                         <option value="@item.Condition" selected="selected">@item.DisplayName</option>
                                     }

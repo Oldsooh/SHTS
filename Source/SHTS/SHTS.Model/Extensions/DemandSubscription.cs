@@ -62,16 +62,23 @@ namespace Witbird.SHTS.Model
             }
         }
 
-        public List<DemandSubscriptionDetail> SubscribedBudgetConditions
+
+        public string SubscribedBudgetCondition
         {
             get
             {
-                return this.subscriptionDetails
-                    .Where(x => x.SubscriptionType == DemandSubscriptionType.Budget.ToString()).ToList();
+                var budgetCondition = this.subscriptionDetails.FirstOrDefault(item =>
+                    item.SubscriptionType == DemandSubscriptionType.Budget.ToString());
+                if (budgetCondition != null)
+                {
+                    return budgetCondition.SubscriptionValue;
+                }
+
+                return string.Empty;
             }
         }
 
-        public string SubscribedBudgetCondtionDisplayName
+        public string SubscribedBudgetConditionDisplayName
         {
             get
             {
