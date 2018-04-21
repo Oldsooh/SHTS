@@ -1,6 +1,8 @@
 ﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.HomeModel
 @{
-    ViewBag.Title = "中国活动在线网";
+    ViewBag.Title = Witbird.SHTS.Web.Public.StaticUtility.Config.Title;
+    ViewBag.Keywords = Witbird.SHTS.Web.Public.StaticUtility.Config.Keywords;
+    ViewBag.Description = Witbird.SHTS.Web.Public.StaticUtility.Config.Description;
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
 }
 @section head

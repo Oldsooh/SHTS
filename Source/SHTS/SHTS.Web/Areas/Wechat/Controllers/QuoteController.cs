@@ -40,6 +40,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         DemandQuoteService quoteService = new DemandQuoteService();
         DemandService demandService = new DemandService();
         UserService userService = new UserService();
+        private ResourceService resourceService = new ResourceService();
 
         //
         // GET: /Wechat/Qoute/
@@ -52,16 +53,29 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         [HttpGet]
         public ActionResult Quote(int demandId)
         {
-            Demand demand = demandService.GetDemandById(demandId);
-            if (demand.IsNotNull() && demand.UserId != (CurrentWeChatUser.UserId ?? -1))
+            DemandQuoteModel model = new DemandQuoteModel();
+
+            // Gets demand
+            model.Demand = demandService.GetDemandById(demandId);
+
+            // Gets quote history
+            if (model.Demand.IsNotNull() && model.Demand.UserId != (CurrentWeChatUser.UserId ?? -1))
             {
-                var quote = quoteService.SelectDemandQuoteByDemandIdAndWeChatUserId(demand.Id, CurrentWeChatUser.Id);
+                var quote = quoteService.SelectDemandQuoteByDemandIdAndWeChatUserId(model.Demand.Id, CurrentWeChatUser.Id);
                 if (quote.IsNotNull())
                 {
-                    demand.QuoteEntities.Add(quote);
+                    model.Demand.QuoteEntities.Add(quote);
                 }
             }
-            return View(demand);
+
+            // Gets posted resouces for current user
+            if (CurrentWeChatUser.IsUserLoggedIn)
+            {
+                model.PostedResources.AddRange(resourceService
+                    .GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
+            }
+
+            return View(model);
         }
 
         [HttpPost]

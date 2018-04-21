@@ -63,7 +63,7 @@ button.button{height:40px;padding:0 10px;line-height:normal;}
 .reg-tab span.current{background:none;cursor:default;}
 .reg-slogan{height:50px;line-height:50px;text-align:center;font-size:16px;}
 .reg-form{width:328px;height:280px;margin:auto;}
-.reg-form .cell{position:relative;height:40px;margin-bottom:22px;zoom:1;}
+.reg-form .cell{position:relative;min-height:40px;margin-bottom:22px;zoom:1;}
 .reg-form .cell label{position:absolute;top:0;left:0;z-index:1;padding:0 12px;line-height:40px;font-size:16px;color:#999;font-weight:bold;cursor:text;}
 .reg-form .cell input{position:absolute;top:0;left:0;width:304px;padding:7px 11px;font-size:16px;background:none;}
 .reg-form .cell .icon-form{top:11px;right:10px;}

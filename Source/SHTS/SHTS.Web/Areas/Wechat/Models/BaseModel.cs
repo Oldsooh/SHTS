@@ -1,4 +1,6 @@
-﻿namespace Witbird.SHTS.Web.Areas.Wechat.Models
+﻿using Witbird.SHTS.Model;
+
+namespace Witbird.SHTS.Web.Areas.Wechat.Models
 {
     public class BaseModel
     {
