@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Web;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;

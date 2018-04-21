@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using System.Text;
 using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.DAL

@@ -23,6 +23,8 @@ namespace Witbird.SHTS.DAL
             return new SqlConnection(connStr);
         }
 
+        public static string GetSqlConnectionString => connStr;
+
         #region DataSet
         /// <summary>
         /// 获取数据集

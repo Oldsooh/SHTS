@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Witbird.SHTS.Web.Areas.Admin.Authorize
+﻿namespace Witbird.SHTS.Web.Areas.Admin.Authorize
 {
     /// <summary>
     /// 权限枚举

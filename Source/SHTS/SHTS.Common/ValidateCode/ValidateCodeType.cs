@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Witbird.SHTS.Common
+﻿namespace Witbird.SHTS.Common
 {
     /// <summary>
     /// 图片验证码抽象类

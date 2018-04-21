@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WitBird.Com.SMS
+﻿namespace WitBird.Com.SMS
 {
     /// <summary>
     /// 自定义标签。

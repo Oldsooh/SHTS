@@ -1,7 +1,6 @@
 ﻿using Senparc.Weixin.MP.AdvancedAPIs.TemplateMessage;
 using System.Web.Mvc;
 using Witbird.SHTS.Web.Areas.Wechat.Common;
-using static Witbird.SHTS.Web.Areas.Wechat.Common.WeChatClient.Constant;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {

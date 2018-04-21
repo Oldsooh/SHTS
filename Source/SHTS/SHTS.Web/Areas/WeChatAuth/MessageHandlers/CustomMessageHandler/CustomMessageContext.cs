@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using Senparc.Weixin.Context;
+﻿using Senparc.Weixin.Context;
 using Senparc.Weixin.MP.Entities;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler

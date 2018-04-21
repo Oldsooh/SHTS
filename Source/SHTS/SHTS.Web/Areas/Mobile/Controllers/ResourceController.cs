@@ -5,9 +5,6 @@ using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
-using Witbird.SHTS.Model;
-using Witbird.SHTS.Web.Controllers;
-using Witbird.SHTS.Web.Models;
 
 namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
 {

@@ -22,7 +22,7 @@ namespace Witbird.SHTS.DAL.New
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="shts_test")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="shts")]
 	public partial class LinqToShtsDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -70,12 +70,6 @@ namespace Witbird.SHTS.DAL.New
     partial void UpdateResource(Resource instance);
     partial void DeleteResource(Resource instance);
     #endregion
-		
-		public LinqToShtsDataContext() : 
-				base(global::Witbird.SHTS.DAL.Properties.Settings.Default.shtsConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
 		
 		public LinqToShtsDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -2965,7 +2959,7 @@ namespace Witbird.SHTS.DAL.New
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Budget", DbType="Int")]
 		public System.Nullable<int> Budget
-        {
+		{
 			get
 			{
 				return this._Budget;

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Web;
 using Witbird.SHTS.Model;
-using Witbird.SHTS.Model.Extensions;
 using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Models

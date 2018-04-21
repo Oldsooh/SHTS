@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Witbird.SHTS.Web.Areas.Admin.Models.Resource
+﻿namespace Witbird.SHTS.Web.Areas.Admin.Models.Resource
 {
     /// <summary>
     /// Ajax请求的返回结果

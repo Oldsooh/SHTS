@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Witbird.SHTS.Common
+﻿namespace Witbird.SHTS.Common
 {
     /// <summary>
     /// Abstract class for Singleton. T should have parameterless public constructor and be sub-class itself.

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.PanGu;
 using Lucene.Net.Analysis.Tokenattributes;

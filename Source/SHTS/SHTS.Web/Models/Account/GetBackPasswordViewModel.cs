@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Witbird.SHTS.Web.Models.Account
+﻿namespace Witbird.SHTS.Web.Models.Account
 {
     /// <summary>
     /// 找回密码模型

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Witbird.SHTS.Common
+﻿namespace Witbird.SHTS.Common
 {
     public static class Constant
 	{

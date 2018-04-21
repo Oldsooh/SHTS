@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Witbird.SHTS.Web.Areas.M.Models
+﻿namespace Witbird.SHTS.Web.Areas.M.Models
 {
     public class BaseModel
     {

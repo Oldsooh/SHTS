@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.Daos;
 using Witbird.SHTS.Model;
-using WitBird.Common;
 
 namespace Witbird.SHTS.BLL.Services
 {

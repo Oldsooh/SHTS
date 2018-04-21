@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Text;
-using System.Web;
 
 namespace WitBird.Com.Pay.Tenpay
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Witbird.SHTS.Model
+﻿namespace Witbird.SHTS.Model
 {
     public class MailConfig
     {

@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-
-
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 
 /**
  * http、https通信类

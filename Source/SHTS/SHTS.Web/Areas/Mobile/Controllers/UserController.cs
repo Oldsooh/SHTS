@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
-using Witbird.SHTS.Web.Areas.Admin.Controllers;
 using Witbird.SHTS.Web.Models.User;
-using Witbird.SHTS.Web.MvcExtension;
 
 namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
 {

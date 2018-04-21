@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using Witbird.SHTS.Common;
-using Witbird.SHTS.Web.Content.upload;
 
 namespace Witbird.SHTS.Web.MvcExtension
 {

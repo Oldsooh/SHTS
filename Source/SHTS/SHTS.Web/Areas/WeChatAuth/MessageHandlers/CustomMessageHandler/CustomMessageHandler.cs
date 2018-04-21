@@ -2,7 +2,6 @@
 using Senparc.Weixin.MP.Entities.Request;
 using Senparc.Weixin.MP.MessageHandlers;
 using System.IO;
-using System.Web.Configuration;
 using System;
 
 namespace WitBird.SHTS.Areas.WeChatAuth.MessageHandlers.CustomMessageHandler

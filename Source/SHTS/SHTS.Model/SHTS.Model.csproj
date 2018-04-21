@@ -252,7 +252,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="packages.config" />
     <EntityDeploy Include="SHTSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -275,7 +274,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SHTS.Common\SHTS.Common.csproj">
+      <Project>{ACCEA7FD-72E4-4BC9-A72A-6ADB56FAC272}</Project>
+      <Name>SHTS.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

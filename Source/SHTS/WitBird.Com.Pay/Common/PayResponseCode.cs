@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WitBird.Com.Pay
+﻿namespace WitBird.Com.Pay
 {
     /// <summary>
     /// Defines some const response text for different online payment service.

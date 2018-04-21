@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Witbird.SHTS.Web.Areas.Admin.Authorize
+﻿namespace Witbird.SHTS.Web.Areas.Admin.Authorize
 {
     public enum EnumBusinessPermission
     {

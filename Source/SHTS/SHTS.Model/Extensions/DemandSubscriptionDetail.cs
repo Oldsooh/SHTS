@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Witbird.SHTS.Model
+﻿namespace Witbird.SHTS.Model
 {
     public partial class DemandSubscriptionDetail
     {

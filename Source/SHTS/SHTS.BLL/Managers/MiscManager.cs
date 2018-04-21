@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.New;
 
 namespace Witbird.SHTS.BLL.Managers
 {
     public class MiscManager
     {
-        LinqToShtsDataContext context = new LinqToShtsDataContext();
+        LinqToShtsDataContext context = new LinqToShtsDataContext(DBHelper.GetSqlConnectionString);
 
         #region 获取杂项列表
         public List<SpaceType> GetSpaceTypeList()

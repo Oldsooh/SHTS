@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
-using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Models.Account;
 using Witbird.SHTS.Web.Models.User;
-using ShortMessage = Witbird.SHTS.Model.ShortMessage;
 
 namespace Witbird.SHTS.Web.Areas.M.Controllers
 {

@@ -1,19 +1,9 @@
-﻿using Senparc.Weixin.MP;
-using Senparc.Weixin.MP.AdvancedAPIs;
-using Senparc.Weixin.MP.TenPayLibV3;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
-using System.Xml.Linq;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
-using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Mobile.Models;
-using Witbird.SHTS.Web.Public;
 using WitBird.Common;
 
 namespace Witbird.SHTS.Web.Areas.Mobile.Controllers

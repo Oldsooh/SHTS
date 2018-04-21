@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL;
-using Witbird.SHTS.DAL.New;
 using Witbird.SHTS.Model;
-using UserProfile = Witbird.SHTS.Model.UserProfile;
 
 namespace Witbird.SHTS.BLL.Managers
 {

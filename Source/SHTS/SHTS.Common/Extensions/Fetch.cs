@@ -1,6 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Web;
+﻿using System.Web;
 using System.Collections.Generic;
 
 namespace Witbird.SHTS.Common

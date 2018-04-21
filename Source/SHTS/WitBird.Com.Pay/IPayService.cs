@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Web.UI.WebControls;
+﻿using System.Collections.Specialized;
 
 namespace WitBird.Com.Pay
 {

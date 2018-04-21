@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="shts" Class="LinqToShtsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=123.56.100.55;Initial Catalog=shts;Persist Security Info=True;User ID=sa" SettingsObjectName="Witbird.SHTS.DAL.Properties.Settings" SettingsPropertyName="shtsConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.SpaceFacility" Member="SpaceFacilities">
     <Type Name="SpaceFacility">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

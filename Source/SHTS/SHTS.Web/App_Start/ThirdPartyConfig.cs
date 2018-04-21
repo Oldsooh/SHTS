@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using Witbird.SHTS.Common;
+﻿using Witbird.SHTS.Common;
 using WitBird.Com.SMS;
 using Newtonsoft.Json;
 

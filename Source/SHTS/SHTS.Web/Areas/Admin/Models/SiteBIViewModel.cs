@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Witbird.SHTS.Model;
 using Witbird.SHTS.Model.DTO;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Models

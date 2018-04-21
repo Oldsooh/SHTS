@@ -11,7 +11,6 @@ using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Web.Areas.Wechat.Models;
-using Witbird.SHTS.Web.Controllers;
 using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Public;
 using WitBird.Com.Pay;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Witbird.SHTS.Common
+﻿namespace Witbird.SHTS.Common
 {
     public class OperationResult<T>
     {

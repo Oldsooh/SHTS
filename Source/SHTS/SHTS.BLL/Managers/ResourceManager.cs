@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.New;
-using Witbird.SHTS.Model.Extensions;
 using WitBird.Common;
 
 namespace Witbird.SHTS.BLL.Managers
 {
     public class ResourceManager
     {
-        LinqToShtsDataContext context = new LinqToShtsDataContext();
+        LinqToShtsDataContext context = new LinqToShtsDataContext(DBHelper.GetSqlConnectionString);
 
         #region 添加资源
         public void CreateResource(Resource resource)

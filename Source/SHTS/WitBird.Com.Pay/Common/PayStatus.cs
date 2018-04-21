@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WitBird.Com.Pay
+﻿namespace WitBird.Com.Pay
 {
     /// <summary>
     /// Defines 4 types indicates the trade result. Includes success, failed, invalid and unknow 4 types.

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Common.Extensions;

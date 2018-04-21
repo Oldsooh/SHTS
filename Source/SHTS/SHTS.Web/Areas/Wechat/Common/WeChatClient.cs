@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
-using Witbird.SHTS.Model;
 using Senparc.Weixin.MP.CommonAPIs;
 using Senparc.Weixin.MP.AdvancedAPIs;
 using Witbird.SHTS.Common;

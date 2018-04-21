@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
+﻿using System.Collections.Generic;
 using Witbird.SHTS.Model;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Models
