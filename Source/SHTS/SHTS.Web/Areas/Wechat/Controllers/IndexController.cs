@@ -94,5 +94,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
             return View(viewModel);
         }
+
+        /// <summary>
+        /// 自定义关注页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SubscribeRequired()
+        {
+            return View();
+        }
     }
 }

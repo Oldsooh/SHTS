@@ -722,6 +722,8 @@
     <Content Include="Areas\Wechat\Content\images\btnAdd.png" />
     <Content Include="Areas\Wechat\Content\images\share_guide1.png" />
     <Content Include="Areas\Wechat\Content\images\share_timeine_icon.png" />
+    <Content Include="Areas\Wechat\Content\images\subscribe-required.png" />
+    <Content Include="Areas\Wechat\Content\images\wechat_share_icon.png" />
     <Content Include="Areas\Wechat\Content\scipts\autoHeightForTextArea.js" />
     <Content Include="Areas\Wechat\Content\scipts\jweixin-1.2.0.js" />
     <Content Include="Areas\Wechat\Content\scipts\uploadImgScript.js" />
@@ -1225,6 +1227,7 @@
     <Content Include="Areas\Wechat\Views\Demand\TestWXShare.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribe\Subscription.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribe\PushHistory.cshtml" />
+    <Content Include="Areas\Wechat\Views\Index\SubscribeRequired.cshtml" />
     <None Include="VideoConverter\ffmpeg-3.2.4-win64-shared\presets\ffprobe.xsd">
       <SubType>Designer</SubType>
     </None>
