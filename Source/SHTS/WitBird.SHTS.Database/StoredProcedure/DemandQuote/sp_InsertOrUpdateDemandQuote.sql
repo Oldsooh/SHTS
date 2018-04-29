@@ -32,7 +32,7 @@ BEGIN
 	BEGIN
 		INSERT INTO dbo.DemandQuote 
 		(AcceptStatus, ContactName, ContactPhoneNumber, DemandId, ResourceId, HandleStatus, InsertedTimestamp, IsActive, LastUpdatedTimestamp, QuotePrice, WeChatUserId)
-		VALUES (@AcceptStatus, @ContactName, @ContactPhoneNumber, @DemandId, @ResourceId @HandleStatus, @InsertedTimestamp, @IsActive, @LastUpdatedTimestamp, @QuotePrice, @WeChatUserId)
+		VALUES (@AcceptStatus, @ContactName, @ContactPhoneNumber, @DemandId, @ResourceId, @HandleStatus, @InsertedTimestamp, @IsActive, @LastUpdatedTimestamp, @QuotePrice, @WeChatUserId)
 
 		SET @QuoteId = (SELECT @@IDENTITY)
 	END
