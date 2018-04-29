@@ -3,6 +3,7 @@
 	[QuoteId] INT NOT NULL  IDENTITY, 
     [WeChatUserId] INT NOT NULL, 
     [DemandId] INT NOT NULL, 
+	[ResourceId] INT NULL,
     [ContactName] NVARCHAR(50) NULL, 
     [ContactPhoneNumber] NVARCHAR(50) NULL, 
     [QuotePrice] DECIMAL(18, 2) NOT NULL, 

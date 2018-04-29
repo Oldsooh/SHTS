@@ -25,5 +25,6 @@ namespace Witbird.SHTS.Model
         public System.DateTime InsertedTimestamp { get; set; }
         public Nullable<System.DateTime> LastUpdatedTimestamp { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<int> ResourceId { get; set; }
     }
 }

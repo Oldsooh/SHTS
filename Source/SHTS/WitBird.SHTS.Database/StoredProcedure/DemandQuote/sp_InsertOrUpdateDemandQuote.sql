@@ -2,6 +2,7 @@
 	@QuoteId int,
 	@WeChatUserId int,
 	@DemandId int,
+	@ResourceId int,
 	@ContactName nvarchar(50),
 	@ContactPhoneNumber nvarchar(50),
 	@QuotePrice decimal(18, 2),
@@ -22,15 +23,16 @@ BEGIN
 			HandleStatus = @HandleStatus,
 			AcceptStatus = @AcceptStatus,
 			LastUpdatedTimestamp = @LastUpdatedTimestamp,
-			IsActive = @IsActive
+			IsActive = @IsActive,
+			ResourceId = @ResourceId
 		WHERE QuoteId = @QuoteId
 	END
 	-- Insert new record
 	ELSE
 	BEGIN
 		INSERT INTO dbo.DemandQuote 
-		(AcceptStatus, ContactName, ContactPhoneNumber, DemandId, HandleStatus, InsertedTimestamp, IsActive, LastUpdatedTimestamp, QuotePrice, WeChatUserId)
-		VALUES (@AcceptStatus, @ContactName, @ContactPhoneNumber, @DemandId, @HandleStatus, @InsertedTimestamp, @IsActive, @LastUpdatedTimestamp, @QuotePrice, @WeChatUserId)
+		(AcceptStatus, ContactName, ContactPhoneNumber, DemandId, ResourceId, HandleStatus, InsertedTimestamp, IsActive, LastUpdatedTimestamp, QuotePrice, WeChatUserId)
+		VALUES (@AcceptStatus, @ContactName, @ContactPhoneNumber, @DemandId, @ResourceId @HandleStatus, @InsertedTimestamp, @IsActive, @LastUpdatedTimestamp, @QuotePrice, @WeChatUserId)
 
 		SET @QuoteId = (SELECT @@IDENTITY)
 	END

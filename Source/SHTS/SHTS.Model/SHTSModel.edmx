@@ -81,15 +81,11 @@
           <Property Name="InsertedTimestamp" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.Actor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Actor">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="ActorTypeId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="ActorTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -120,47 +116,6 @@ warning 6002: The table/view 'shts_test.dbo.Actor' does not have a primary key d
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
           <Property Name="DisplayOrder" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.ActorView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ActorView">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceType" />
-            <PropertyRef Name="Title" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="CanFriendlyLink" />
-            <PropertyRef Name="CreateTime" />
-            <PropertyRef Name="LastUpdatedTime" />
-            <PropertyRef Name="State" />
-            <PropertyRef Name="ActorTypeId" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="ResourceType" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="ProvinceId" Type="nvarchar(max)" />
-          <Property Name="CityId" Type="nvarchar(max)" />
-          <Property Name="AreaId" Type="nvarchar(max)" />
-          <Property Name="DetailAddress" Type="nvarchar(max)" />
-          <Property Name="CanFriendlyLink" Type="bit" Nullable="false" />
-          <Property Name="Href" Type="nvarchar(max)" />
-          <Property Name="StartDate" Type="datetime" />
-          <Property Name="EndDate" Type="datetime" />
-          <Property Name="ShortDesc" Type="nvarchar(max)" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="ImageUrls" Type="nvarchar" MaxLength="400" />
-          <Property Name="Contract" Type="nvarchar(max)" />
-          <Property Name="QQ" Type="varchar(max)" />
-          <Property Name="Telephone" Type="nvarchar(max)" />
-          <Property Name="Mobile" Type="varchar(max)" />
-          <Property Name="WeChat" Type="varchar(max)" />
-          <Property Name="Email" Type="nvarchar(max)" />
-          <Property Name="CreateTime" Type="datetime" Nullable="false" />
-          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
-          <Property Name="State" Type="int" Nullable="false" />
-          <Property Name="ActorTypeId" Type="int" Nullable="false" />
-          <Property Name="ReadCount" Type="int" />
         </EntityType>
         <EntityType Name="AdminRole">
           <Key>
@@ -285,6 +240,7 @@ warning 6002: The table/view 'shts_test.dbo.ActorView' does not have a primary k
           <Property Name="QuoteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="WeChatUserId" Type="int" Nullable="false" />
           <Property Name="DemandId" Type="int" Nullable="false" />
+          <Property Name="ResourceId" Type="int" />
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactPhoneNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="QuotePrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -335,25 +291,21 @@ warning 6002: The table/view 'shts_test.dbo.ActorView' does not have a primary k
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="WechatUserId" Type="int" Nullable="false" />
-          <Property Name="OpenId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OpenId" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IsMailSubscribed" Type="bit" Nullable="false" />
-          <Property Name="EmailAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="200" />
           <Property Name="DemandId" Type="int" Nullable="false" />
-          <Property Name="WechatStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="WechatExceptionMessage" Type="nvarchar" MaxLength="500" />
-          <Property Name="EmailStatus" Type="nvarchar" MaxLength="50" />
-          <Property Name="EmailExceptionMessage" Type="nvarchar" MaxLength="500" />
+          <Property Name="WechatStatus" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="WechatExceptionMessage" Type="nvarchar(max)" />
+          <Property Name="EmailStatus" Type="nvarchar" MaxLength="500" />
+          <Property Name="EmailExceptionMessage" Type="nvarchar(max)" />
           <Property Name="CreatedDateTime" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.Equipment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Equipment">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="EquipTypeId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="EquipTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -366,15 +318,11 @@ warning 6002: The table/view 'shts_test.dbo.Equipment' does not have a primary k
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.Facility' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Facility">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="MarkForDelete" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
@@ -437,15 +385,11 @@ warning 6002: The table/view 'shts_test.dbo.Facility' does not have a primary ke
           <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="State" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.Other' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Other">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="OtherTypeId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="OtherTypeId" Type="int" Nullable="false" />
         </EntityType>
@@ -468,17 +412,11 @@ warning 6002: The table/view 'shts_test.dbo.Other' does not have a primary key d
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.RentSection' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RentSection">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="MinCount" />
-            <PropertyRef Name="MaxCount" />
-            <PropertyRef Name="MarkForDelete" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MinCount" Type="int" Nullable="false" />
           <Property Name="MaxCount" Type="int" Nullable="false" />
@@ -560,20 +498,11 @@ warning 6002: The table/view 'shts_test.dbo.RentSection' does not have a primary
           <Property Name="ViewCount" Type="int" />
           <Property Name="InsertTime" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'shts_test.dbo.Space' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Space">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="SpaceTypeId" />
-            <PropertyRef Name="SpaceFeatureValue" />
-            <PropertyRef Name="SpaceFacilityValue" />
-            <PropertyRef Name="SpaceSizeId" />
-            <PropertyRef Name="SpacePeopleId" />
-            <PropertyRef Name="SpaceTreat" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ResourceId" Type="int" Nullable="false" />
           <Property Name="SpaceTypeId" Type="int" Nullable="false" />
           <Property Name="SpaceFeatureValue" Type="int" Nullable="false" />
@@ -794,6 +723,7 @@ warning 6002: The table/view 'shts_test.dbo.Space' does not have a primary key d
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityVote" EntityType="Self.ActivityVote" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorFrom" EntityType="Self.ActorFrom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorSex" EntityType="Self.ActorSex" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActorType" EntityType="Self.ActorType" Schema="dbo" store:Type="Tables" />
@@ -810,17 +740,22 @@ warning 6002: The table/view 'shts_test.dbo.Space' does not have a primary key d
           <EntitySet Name="DemandSubscription" EntityType="Self.DemandSubscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="Self.DemandSubscriptionDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DemandSubscriptionPushHistory" EntityType="Self.DemandSubscriptionPushHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipType" EntityType="Self.EquipType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceBalance" EntityType="Self.FinanceBalance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceRecord" EntityType="Self.FinanceRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FinanceWithdrawRecord" EntityType="Self.FinanceWithdrawRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GuestBook" EntityType="Self.GuestBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OtherType" EntityType="Self.OtherType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PublicConfig" EntityType="Self.PublicConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentSection" EntityType="Self.RentSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShortMessage" EntityType="Self.ShortMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SinglePage" EntityType="Self.SinglePage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Space" EntityType="Self.Space" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFacility" EntityType="Self.SpaceFacility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFeature" EntityType="Self.SpaceFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpacePeople" EntityType="Self.SpacePeople" Schema="dbo" store:Type="Tables" />
@@ -835,87 +770,6 @@ warning 6002: The table/view 'shts_test.dbo.Space' does not have a primary key d
           <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeChatUser" EntityType="Self.WeChatUser" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Actor" EntityType="Self.Actor" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[Actor].[Id] AS [Id], 
-[Actor].[ResourceId] AS [ResourceId], 
-[Actor].[ActorTypeId] AS [ActorTypeId]
-FROM [dbo].[Actor] AS [Actor]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ActorView" EntityType="Self.ActorView" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[ActorView].[Id] AS [Id], 
-[ActorView].[ResourceType] AS [ResourceType], 
-[ActorView].[Title] AS [Title], 
-[ActorView].[UserId] AS [UserId], 
-[ActorView].[ProvinceId] AS [ProvinceId], 
-[ActorView].[CityId] AS [CityId], 
-[ActorView].[AreaId] AS [AreaId], 
-[ActorView].[DetailAddress] AS [DetailAddress], 
-[ActorView].[CanFriendlyLink] AS [CanFriendlyLink], 
-[ActorView].[Href] AS [Href], 
-[ActorView].[StartDate] AS [StartDate], 
-[ActorView].[EndDate] AS [EndDate], 
-[ActorView].[ShortDesc] AS [ShortDesc], 
-[ActorView].[Description] AS [Description], 
-[ActorView].[ImageUrls] AS [ImageUrls], 
-[ActorView].[Contract] AS [Contract], 
-[ActorView].[QQ] AS [QQ], 
-[ActorView].[Telephone] AS [Telephone], 
-[ActorView].[Mobile] AS [Mobile], 
-[ActorView].[WeChat] AS [WeChat], 
-[ActorView].[Email] AS [Email], 
-[ActorView].[CreateTime] AS [CreateTime], 
-[ActorView].[LastUpdatedTime] AS [LastUpdatedTime], 
-[ActorView].[State] AS [State], 
-[ActorView].[ActorTypeId] AS [ActorTypeId], 
-[ActorView].[ReadCount] AS [ReadCount]
-FROM [dbo].[ActorView] AS [ActorView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Equipment" EntityType="Self.Equipment" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[Equipment].[Id] AS [Id], 
-[Equipment].[ResourceId] AS [ResourceId], 
-[Equipment].[EquipTypeId] AS [EquipTypeId]
-FROM [dbo].[Equipment] AS [Equipment]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Facility" EntityType="Self.Facility" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[Facility].[Id] AS [Id], 
-[Facility].[Name] AS [Name], 
-[Facility].[Description] AS [Description], 
-[Facility].[MarkForDelete] AS [MarkForDelete]
-FROM [dbo].[Facility] AS [Facility]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Other" EntityType="Self.Other" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[Other].[Id] AS [Id], 
-[Other].[ResourceId] AS [ResourceId], 
-[Other].[OtherTypeId] AS [OtherTypeId]
-FROM [dbo].[Other] AS [Other]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="RentSection" EntityType="Self.RentSection" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[RentSection].[Id] AS [Id], 
-[RentSection].[Name] AS [Name], 
-[RentSection].[MinCount] AS [MinCount], 
-[RentSection].[MaxCount] AS [MaxCount], 
-[RentSection].[Description] AS [Description], 
-[RentSection].[MarkForDelete] AS [MarkForDelete]
-FROM [dbo].[RentSection] AS [RentSection]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Space" EntityType="Self.Space" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[Space].[Id] AS [Id], 
-[Space].[ResourceId] AS [ResourceId], 
-[Space].[SpaceTypeId] AS [SpaceTypeId], 
-[Space].[SpaceFeatureValue] AS [SpaceFeatureValue], 
-[Space].[SpaceFacilityValue] AS [SpaceFacilityValue], 
-[Space].[SpaceSizeId] AS [SpaceSizeId], 
-[Space].[SpacePeopleId] AS [SpacePeopleId], 
-[Space].[SpaceTreat] AS [SpaceTreat]
-FROM [dbo].[Space] AS [Space]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1211,6 +1065,7 @@ FROM [dbo].[Space] AS [Space]</DefiningQuery>
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" />
         </EntityType>
         <EntityType Name="DemandQuoteHistory">
           <Key>
@@ -1253,14 +1108,14 @@ FROM [dbo].[Space] AS [Space]</DefiningQuery>
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WechatUserId" Type="Int32" Nullable="false" />
-          <Property Name="OpenId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OpenId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="IsMailSubscribed" Type="Boolean" Nullable="false" />
-          <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DemandId" Type="Int32" Nullable="false" />
-          <Property Name="WechatStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WechatExceptionMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EmailStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailExceptionMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WechatStatus" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WechatExceptionMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmailExceptionMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="EquipType">
@@ -1990,6 +1845,7 @@ FROM [dbo].[Space] AS [Space]</DefiningQuery>
           <EntitySetMapping Name="DemandQuote">
             <EntityTypeMapping TypeName="shtsModel.DemandQuote">
               <MappingFragment StoreEntitySet="DemandQuote">
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
                 <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
@@ -2456,38 +2312,6 @@ FROM [dbo].[Space] AS [Space]</DefiningQuery>
               <MappingFragment StoreEntitySet="Actor">
                 <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
                 <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ActorView">
-            <EntityTypeMapping TypeName="shtsModel.ActorView">
-              <MappingFragment StoreEntitySet="ActorView">
-                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
-                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="WeChat" ColumnName="WeChat" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="QQ" ColumnName="QQ" />
-                <ScalarProperty Name="Contract" ColumnName="Contract" />
-                <ScalarProperty Name="ImageUrls" ColumnName="ImageUrls" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="Href" ColumnName="Href" />
-                <ScalarProperty Name="CanFriendlyLink" ColumnName="CanFriendlyLink" />
-                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
-                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
