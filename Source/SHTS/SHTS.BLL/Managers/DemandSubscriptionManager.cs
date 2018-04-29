@@ -53,8 +53,12 @@ namespace Witbird.SHTS.BLL.Managers
             {
                 var context = DemandSubscriptionPushHistoryRepository.GetDbContext();
 
+                // Selects the total data count out.
                 totalCount = context.DemandSubscriptionPushHistory.Count();
+
+                // Selects detail history joined with wechatuser, user and demand informaion
                 var temp = context.DemandSubscriptionPushHistory.OrderByDescending(item => item.CreatedDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize)
+                    // select wechat user information
                     .Join(context.WeChatUser, history => history.WechatUserId, wechatUser => wechatUser.Id,
                     (history, wechatUser) => new
                     {
@@ -62,19 +66,21 @@ namespace Witbird.SHTS.BLL.Managers
                         WechatUserName = wechatUser.NickName,
                         wechatUser.UserId
                     })
+                    // selects user information
                     .GroupJoin(context.User, history => history.UserId, user => user.UserId,
                     (history, users) => new
                     {
                         history,
                         UserName = (users.Count() > 0) ? users.FirstOrDefault().UserName : ""
                     })
+                    // select demand information
                     .GroupJoin(context.Demand, history => history.history.history.DemandId, demand => demand.Id,
                     (history, demands) => new
                     {
                         history.history.history.Id,
                         history.history.history.DemandId,
                         history.history.history.CreatedDateTime,
-                        DemandTitle = (demands.Count() > 0 )? demands.FirstOrDefault().Title : "",
+                        DemandTitle = (demands.Count() > 0) ? demands.FirstOrDefault().Title : "",
                         history.history.history.EmailAddress,
                         history.history.history.EmailExceptionMessage,
                         history.history.history.EmailStatus,
