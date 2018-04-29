@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.Web.Areas.Admin.Authorize;
@@ -48,7 +49,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         }
 
         [Permission(EnumRole.Normal)]
-        public ActionResult PushHistory(string id)
+        public ActionResult PushHistory(string id, string demandIds="")
         {
             SubscriptionModel model = new SubscriptionModel();
 
@@ -60,8 +61,23 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             int allCount = 0;
 
+            var demandIdList = new List<int>();
+            if (!string.IsNullOrWhiteSpace(demandIds))
+            {
+                var idsArray = demandIds.Split(',');
+                var demandId = -1;
+                foreach (var item in idsArray)
+                {
+                    if (int.TryParse(item, out demandId))
+                    {
+                        demandIdList.Add(demandId);
+                    }
+                }
+            }
 
-            model.PushHistories.AddRange(subscriptionManager.GetSubscriptionPushHistories(15, page, out allCount));
+            model.FilterDemandIdList.AddRange(demandIdList);
+
+            model.PushHistories.AddRange(subscriptionManager.GetSubscriptionPushHistories(15, page, out allCount, demandIdList));
 
             //分页
             if (model.PushHistories != null && model.PushHistories.Count > 0)

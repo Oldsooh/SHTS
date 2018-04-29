@@ -44,7 +44,7 @@ namespace Witbird.SHTS.BLL.Managers
         /// <param name="totalCount"></param>
         /// <returns></returns>
         public List<DemandSubscriptionPushHistory> GetSubscriptionPushHistories(int pageSize, int pageIndex,
-            out int totalCount)
+            out int totalCount, List<int> filterDemandIdList)
         {
             totalCount = 0;
             List<DemandSubscriptionPushHistory> histories = new List<DemandSubscriptionPushHistory>();
@@ -52,12 +52,15 @@ namespace Witbird.SHTS.BLL.Managers
             try
             {
                 var context = DemandSubscriptionPushHistoryRepository.GetDbContext();
-
+                
                 // Selects the total data count out.
-                totalCount = context.DemandSubscriptionPushHistory.Count();
+                totalCount = context.DemandSubscriptionPushHistory.Where((item) => !filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId)).Count();
 
                 // Selects detail history joined with wechatuser, user and demand informaion
-                var temp = context.DemandSubscriptionPushHistory.OrderByDescending(item => item.CreatedDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize)
+                var temp = context.DemandSubscriptionPushHistory
+                    // filters by demand id list
+                    .Where((item) => !filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId))
+                    .OrderByDescending(item => item.CreatedDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize)
                     // select wechat user information
                     .Join(context.WeChatUser, history => history.WechatUserId, wechatUser => wechatUser.Id,
                     (history, wechatUser) => new

@@ -151,12 +151,12 @@
                         //上一页
                         if (Model.PageIndex > 1)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex - 1)" class="prv">上一页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex - 1)&@Model.FilterDemandIdString" class="prv">上一页</a></span>
                         }
                         //首页
                         if (Model.PageStep < Model.PageIndex)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=1">首页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=1&@Model.FilterDemandIdString">首页</a></span>
                         }
                         //分页
                         for (int i = step; i < step + Model.PageStep; i++)
@@ -165,23 +165,23 @@
                             {
                                 if (i == Model.PageIndex)
                                 {
-                                    <span><a href="/admin/subscribe/pushhistory?id=@i&" class="no">@i</a></span>
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterDemandIdString" class="no">@i</a></span>
                                 }
                                 else
                                 {
-                                    <span><a href="/admin/subscribe/pushhistory?id=@i">@i</a></span>
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterDemandIdString">@i</a></span>
                                 }
                             }
                         }
                         //末页
                         if (step + Model.PageStep <= Model.PageCount)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageCount)">末页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageCount)&@Model.FilterDemandIdString">末页</a></span>
                         }
                         //下一页
                         if (Model.PageIndex < Model.PageCount)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex + 1)" class="next">下一页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex + 1)&@Model.FilterDemandIdString" class="next">下一页</a></span>
                         }
                     }
                 }
