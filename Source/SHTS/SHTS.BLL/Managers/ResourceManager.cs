@@ -157,13 +157,16 @@ namespace Witbird.SHTS.BLL.Managers
         #endregion
 
         #region 根据Id查找资源信息
-        public Resource GetResourceById(int id, bool filterSensitiveWords = true)
+        public Resource GetResourceById(int id, bool selectComments = true, bool filterSensitiveWords = true)
         {
             var resource = context.Resources.SingleOrDefault(v => v.Id == id && v.State != 3);
             if (resource != null)
             {
-                resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
-                    .OrderByDescending(v => v.CreateTime).Take(20).ToList();
+                if (selectComments)
+                {
+                    resource.CommentList = context.Comments.Where(v => v.ResourceId == id)
+                        .OrderByDescending(v => v.CreateTime).Take(20).ToList();
+                }
 
                 if (filterSensitiveWords)
                 {

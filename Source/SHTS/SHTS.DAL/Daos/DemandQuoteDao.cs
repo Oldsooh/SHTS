@@ -15,6 +15,7 @@ namespace Witbird.SHTS.DAL.Daos
         const string Parameter_QuoteId = "@QuoteId";
         const string Parameter_WeChatUserId = "@WeChatUserId";
         const string Parameter_DemandId = "@DemandId";
+        const string Parameter_ResourceId = "@ResourceId";
         const string Parameter_ContactName = "@ContactName";
         const string Parameter_ContactPhoneNumber = "@ContactPhoneNumber";
         const string Parameter_QuotePrice = "@QuotePrice";
@@ -54,6 +55,7 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(Parameter_QuoteId, quote.QuoteId),
                 new SqlParameter(Parameter_WeChatUserId, quote.WeChatUserId),
                 new SqlParameter(Parameter_DemandId, quote.DemandId),
+                new SqlParameter(Parameter_ResourceId, quote.ResourceId),
                 new SqlParameter(Parameter_ContactName, quote.ContactName),
                 new SqlParameter(Parameter_ContactPhoneNumber, quote.ContactPhoneNumber),
                 new SqlParameter(Parameter_QuotePrice, quote.QuotePrice),
@@ -342,6 +344,7 @@ namespace Witbird.SHTS.DAL.Daos
                 ContactName = reader["ContactName"].DBToString(),
                 ContactPhoneNumber = reader["ContactPhoneNumber"].DBToString(),
                 DemandId = reader["DemandId"].DBToInt32(),
+                ResourceId = reader["ResourceId"].DBToNullableInt32(),
                 HandleStatus = reader["HandleStatus"].DBToBoolean(),
                 InsertedTimestamp = reader["InsertedTimestamp"].DBToDateTime().Value,
                 IsActive = reader["IsActive"].DBToBoolean(),

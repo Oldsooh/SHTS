@@ -65,11 +65,17 @@
 
         .button {
             width: 100% !important;
-            border-radius:5px;
+            border-radius: 5px;
         }
     </style>
     <script>
         function addQuote() {
+            var selectedResourceId = $('#selectedResourceId').val();
+            if (selectedResourceId == -1) {
+                alert('请选择您参与报价对应的资源信息。如您还未发布资源，请点击【立即发布】按钮。');
+                return;
+            }
+
             var contactName = $('#js-mobile_ipt').val();
             //var contactPhone = $('#contactPhone').val();
             var quotePrice = $('#quotePrice').val();
@@ -94,6 +100,10 @@
             }
 
             $('#quoteForm').submit();
+        }
+
+        function onSelectedResourceIdChanged(obj) {
+            $('#selectedResourceId').val(obj.value);
         }
     </script>
 }
@@ -167,6 +177,28 @@
                 {
                     <form action="/wechat/quote/quote" id="quoteForm" class="reg-form" method="post">
                         <input type="hidden" name="demandId" value="@Model.Demand.Id" />
+
+                        <div class="cell">
+                            <input type="hidden" id="selectedResourceId" name="selectedResourceId" value="-1" />
+                            @if (Model.PostedResources.Count == 0)
+                            {
+                                <div class="text">
+                                    <span class="yellow">需求报价需要提供您的资源信息，以便于需求方查看。请点击下方按钮立即创建吧！</span>
+                                    <br />
+                                    <button type="button" class="button btn-green" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">立即发布</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <select name="resourceId" class="text" onchange="onSelectedResourceIdChanged(this);">
+                                    <option value="-1">请选择您参与报价对应的资源信息</option>
+                                    @foreach (var resource in Model.PostedResources)
+                                    {
+                                        <option value="@resource.Id">@resource.Title</option>
+                                    }
+                                </select>
+                            }
+                        </div>
                         <div class="cell">
                             <input type="text" name="contactName" id="js-mobile_ipt" placeholder="请输入您的姓名" class="text" style="width: 48%; position: initial;">
                             <input type="radio" id="maleTitle" name="contactTitle" value="1" checked="checked" style="width: 20px; height: 20px; position: initial; vertical-align: middle;" />
@@ -179,26 +211,6 @@
                             </div>*@
                         <div class="cell">
                             <input type="number" id="quotePrice" name="quotePrice" placeholder="请输入您的报价金额或报名人数" class="text" min="0">
-                        </div>
-                        <div class="cell">
-                            @if (Model.PostedResources.Count == 0)
-                            {
-                                <div class="text">
-                                    <span>需求报价需要提供您的资源信息，以便于需求方查看。您还未发布任何资源信息， 请点击下方按钮立即创建吧！</span>
-                                    <br />
-                                    <button type="button" class="button btn-green" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">立即发布</button>
-                                </div>
-                            }
-                            else
-                            {
-                                <select class="text">
-                                    <option value="-1">请选择您参与报价对应的资源信息</option>
-                                    @foreach (var resource in Model.PostedResources)
-                                    {
-                                        <option value="@resource.Id">@resource.Title</option>
-                                    }
-                                </select>
-                            }
                         </div>
                         <div class="cell" style="height: 160px;">
                             <textarea id="quoteDetail" name="quoteDetail" placeholder="请填写您的报价/报名细则，填写电话或将被屏蔽" class="text" style="height: 150px; width: 95%;"></textarea>
