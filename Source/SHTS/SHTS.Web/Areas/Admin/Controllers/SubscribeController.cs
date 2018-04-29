@@ -64,7 +64,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             model.PushHistories.AddRange(subscriptionManager.GetSubscriptionPushHistories(15, page, out allCount));
 
             //分页
-            if (model.Subscriptions != null && model.Subscriptions.Count > 0)
+            if (model.PushHistories != null && model.PushHistories.Count > 0)
             {
                 model.PageIndex = page;//当前页数
                 model.PageSize = 15;//每页显示多少条
