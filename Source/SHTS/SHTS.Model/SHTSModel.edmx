@@ -498,6 +498,22 @@
           <Property Name="ViewCount" Type="int" />
           <Property Name="InsertTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="SmsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Userid" Type="int" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ip" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hascheck" Type="tinyint" />
+          <Property Name="CheckTime" Type="datetime" />
+          <Property Name="TplId" Type="nvarchar" MaxLength="10" />
+          <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nchar" MaxLength="100" />
+          <Property Name="AddTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Space">
           <Key>
             <PropertyRef Name="Id" />
@@ -560,6 +576,25 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="MarkForDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="PKG_PSID" />
+          </Key>
+          <Property Name="PKG_PSID" Type="int" Nullable="false" />
+          <Property Name="ProviderID" Type="int" Nullable="false" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ProviderPrefix" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="BrandPrefix" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProviderDesc" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ProviderLogo" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="BrandLogo" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ProviderCity" Type="int" Nullable="false" />
+          <Property Name="DataStatus" Type="int" Nullable="false" />
+          <Property Name="DataChange_CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="DataChange_Lasttime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Trade">
           <Key>
@@ -755,12 +790,14 @@
           <EntitySet Name="Resource" EntityType="Self.Resource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShortMessage" EntityType="Self.ShortMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SinglePage" EntityType="Self.SinglePage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SmsRecord" EntityType="Self.SmsRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Space" EntityType="Self.Space" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFacility" EntityType="Self.SpaceFacility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceFeature" EntityType="Self.SpaceFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpacePeople" EntityType="Self.SpacePeople" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceSize" EntityType="Self.SpaceSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpaceType" EntityType="Self.SpaceType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trade" EntityType="Self.Trade" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TradeHistory" EntityType="Self.TradeHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TradeOrder" EntityType="Self.TradeOrder" Schema="dbo" store:Type="Tables" />
@@ -781,6 +818,7 @@
           <EntitySet Name="Activity" EntityType="shtsModel.Activity" />
           <EntitySet Name="ActivityType" EntityType="shtsModel.ActivityType" />
           <EntitySet Name="ActivityVote" EntityType="shtsModel.ActivityVote" />
+          <EntitySet Name="Actor" EntityType="shtsModel.Actor" />
           <EntitySet Name="ActorFrom" EntityType="shtsModel.ActorFrom" />
           <EntitySet Name="ActorSex" EntityType="shtsModel.ActorSex" />
           <EntitySet Name="ActorType" EntityType="shtsModel.ActorType" />
@@ -797,22 +835,29 @@
           <EntitySet Name="DemandSubscription" EntityType="shtsModel.DemandSubscription" />
           <EntitySet Name="DemandSubscriptionDetail" EntityType="shtsModel.DemandSubscriptionDetail" />
           <EntitySet Name="DemandSubscriptionPushHistory" EntityType="shtsModel.DemandSubscriptionPushHistory" />
+          <EntitySet Name="Equipment" EntityType="shtsModel.Equipment" />
           <EntitySet Name="EquipType" EntityType="shtsModel.EquipType" />
+          <EntitySet Name="Facility" EntityType="shtsModel.Facility" />
           <EntitySet Name="FinanceBalance" EntityType="shtsModel.FinanceBalance" />
           <EntitySet Name="FinanceRecord" EntityType="shtsModel.FinanceRecord" />
           <EntitySet Name="FinanceWithdrawRecord" EntityType="shtsModel.FinanceWithdrawRecord" />
           <EntitySet Name="GuestBook" EntityType="shtsModel.GuestBook" />
           <EntitySet Name="Image" EntityType="shtsModel.Image" />
+          <EntitySet Name="Other" EntityType="shtsModel.Other" />
           <EntitySet Name="OtherType" EntityType="shtsModel.OtherType" />
           <EntitySet Name="PublicConfig" EntityType="shtsModel.PublicConfig" />
+          <EntitySet Name="RentSection" EntityType="shtsModel.RentSection" />
           <EntitySet Name="Resource" EntityType="shtsModel.Resource" />
           <EntitySet Name="ShortMessage" EntityType="shtsModel.ShortMessage" />
           <EntitySet Name="SinglePage" EntityType="shtsModel.SinglePage" />
+          <EntitySet Name="SmsRecord" EntityType="shtsModel.SmsRecord" />
+          <EntitySet Name="Space" EntityType="shtsModel.Space" />
           <EntitySet Name="SpaceFacility" EntityType="shtsModel.SpaceFacility" />
           <EntitySet Name="SpaceFeature" EntityType="shtsModel.SpaceFeature" />
           <EntitySet Name="SpacePeople" EntityType="shtsModel.SpacePeople" />
           <EntitySet Name="SpaceSize" EntityType="shtsModel.SpaceSize" />
           <EntitySet Name="SpaceType" EntityType="shtsModel.SpaceType" />
+          <EntitySet Name="Test" EntityType="shtsModel.Test" />
           <EntitySet Name="Trade" EntityType="shtsModel.Trade" />
           <EntitySet Name="TradeHistory" EntityType="shtsModel.TradeHistory" />
           <EntitySet Name="TradeOrder" EntityType="shtsModel.TradeOrder" />
@@ -822,13 +867,6 @@
           <EntitySet Name="UserVip" EntityType="shtsModel.UserVip" />
           <EntitySet Name="Video" EntityType="shtsModel.Video" />
           <EntitySet Name="WeChatUser" EntityType="shtsModel.WeChatUser" />
-          <EntitySet Name="Actor" EntityType="shtsModel.Actor" />
-          <EntitySet Name="ActorView" EntityType="shtsModel.ActorView" />
-          <EntitySet Name="Equipment" EntityType="shtsModel.Equipment" />
-          <EntitySet Name="Facility" EntityType="shtsModel.Facility" />
-          <EntitySet Name="Other" EntityType="shtsModel.Other" />
-          <EntitySet Name="RentSection" EntityType="shtsModel.RentSection" />
-          <EntitySet Name="Space" EntityType="shtsModel.Space" />
         </EntityContainer>
         <EntityType Name="AccessAnalytics">
           <Key>
@@ -905,6 +943,14 @@
           <Property Name="IsVoted" Type="Boolean" Nullable="false" />
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ActorFrom">
           <Key>
@@ -1057,6 +1103,7 @@
           <Property Name="QuoteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WeChatUserId" Type="Int32" Nullable="false" />
           <Property Name="DemandId" Type="Int32" Nullable="false" />
+          <Property Name="ResourceId" Type="Int32" />
           <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ContactPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="QuotePrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
@@ -1065,7 +1112,6 @@
           <Property Name="InsertedTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTimestamp" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" />
         </EntityType>
         <EntityType Name="DemandQuoteHistory">
           <Key>
@@ -1118,7 +1164,24 @@
           <Property Name="EmailExceptionMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="EquipType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Facility">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1185,6 +1248,14 @@
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
           <Property Name="State" Type="Int32" />
         </EntityType>
+        <EntityType Name="Other">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="OtherType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1203,6 +1274,17 @@
           <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="RentSection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MinCount" Type="Int32" Nullable="false" />
+          <Property Name="MaxCount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -1279,6 +1361,35 @@
           <Property Name="ViewCount" Type="Int32" />
           <Property Name="InsertTime" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="SmsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Userid" Type="Int32" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ip" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Hascheck" Type="Byte" />
+          <Property Name="CheckTime" Type="DateTime" Precision="3" />
+          <Property Name="TplId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Space">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
+          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
+          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
+          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="SpaceFacility">
           <Key>
             <PropertyRef Name="Id" />
@@ -1328,6 +1439,25 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Test">
+          <Key>
+            <PropertyRef Name="PKG_PSID" />
+          </Key>
+          <Property Name="PKG_PSID" Type="Int32" Nullable="false" />
+          <Property Name="ProviderID" Type="Int32" Nullable="false" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="ProviderName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderPrefix" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BrandPrefix" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProviderDesc" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderLogo" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BrandLogo" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderCity" Type="Int32" Nullable="false" />
+          <Property Name="DataStatus" Type="Int32" Nullable="false" />
+          <Property Name="DataChange_CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DataChange_Lasttime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Trade">
           <Key>
@@ -1485,121 +1615,6 @@
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastRequestTimestamp" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="Actor">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="ActorTypeId" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ActorView">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceType" />
-            <PropertyRef Name="Title" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="CanFriendlyLink" />
-            <PropertyRef Name="CreateTime" />
-            <PropertyRef Name="LastUpdatedTime" />
-            <PropertyRef Name="State" />
-            <PropertyRef Name="ActorTypeId" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceType" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="ProvinceId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CityId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AreaId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DetailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CanFriendlyLink" Type="Boolean" Nullable="false" />
-          <Property Name="Href" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="ShortDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImageUrls" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
-          <Property Name="Contract" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="QQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Telephone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Mobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="WeChat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="ActorTypeId" Type="Int32" Nullable="false" />
-          <Property Name="ReadCount" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Equipment">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="EquipTypeId" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="EquipTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Facility">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="MarkForDelete" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Other">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="OtherTypeId" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="OtherTypeId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RentSection">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="MinCount" />
-            <PropertyRef Name="MaxCount" />
-            <PropertyRef Name="MarkForDelete" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MinCount" Type="Int32" Nullable="false" />
-          <Property Name="MaxCount" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MarkForDelete" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Space">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ResourceId" />
-            <PropertyRef Name="SpaceTypeId" />
-            <PropertyRef Name="SpaceFeatureValue" />
-            <PropertyRef Name="SpaceFacilityValue" />
-            <PropertyRef Name="SpaceSizeId" />
-            <PropertyRef Name="SpacePeopleId" />
-            <PropertyRef Name="SpaceTreat" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ResourceId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTypeId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFeatureValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceFacilityValue" Type="Int32" Nullable="false" />
-          <Property Name="SpaceSizeId" Type="Int32" Nullable="false" />
-          <Property Name="SpacePeopleId" Type="Int32" Nullable="false" />
-          <Property Name="SpaceTreat" Type="Int32" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1684,6 +1699,15 @@
                 <ScalarProperty Name="WechatUserOpenId" ColumnName="WechatUserOpenId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="VoteId" ColumnName="VoteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Actor">
+            <EntityTypeMapping TypeName="shtsModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1845,7 +1869,6 @@
           <EntitySetMapping Name="DemandQuote">
             <EntityTypeMapping TypeName="shtsModel.DemandQuote">
               <MappingFragment StoreEntitySet="DemandQuote">
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LastUpdatedTimestamp" ColumnName="LastUpdatedTimestamp" />
                 <ScalarProperty Name="InsertedTimestamp" ColumnName="InsertedTimestamp" />
@@ -1854,6 +1877,7 @@
                 <ScalarProperty Name="QuotePrice" ColumnName="QuotePrice" />
                 <ScalarProperty Name="ContactPhoneNumber" ColumnName="ContactPhoneNumber" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="DemandId" ColumnName="DemandId" />
                 <ScalarProperty Name="WeChatUserId" ColumnName="WeChatUserId" />
                 <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
@@ -1915,9 +1939,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Equipment">
+            <EntityTypeMapping TypeName="shtsModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EquipType">
             <EntityTypeMapping TypeName="shtsModel.EquipType">
               <MappingFragment StoreEntitySet="EquipType">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facility">
+            <EntityTypeMapping TypeName="shtsModel.Facility">
+              <MappingFragment StoreEntitySet="Facility">
                 <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1988,6 +2031,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Other">
+            <EntityTypeMapping TypeName="shtsModel.Other">
+              <MappingFragment StoreEntitySet="Other">
+                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OtherType">
             <EntityTypeMapping TypeName="shtsModel.OtherType">
               <MappingFragment StoreEntitySet="OtherType">
@@ -2006,6 +2058,18 @@
                 <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
                 <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
                 <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentSection">
+            <EntityTypeMapping TypeName="shtsModel.RentSection">
+              <MappingFragment StoreEntitySet="RentSection">
+                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2087,6 +2151,37 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SmsRecord">
+            <EntityTypeMapping TypeName="shtsModel.SmsRecord">
+              <MappingFragment StoreEntitySet="SmsRecord">
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TplId" ColumnName="TplId" />
+                <ScalarProperty Name="CheckTime" ColumnName="CheckTime" />
+                <ScalarProperty Name="Hascheck" ColumnName="Hascheck" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Space">
+            <EntityTypeMapping TypeName="shtsModel.Space">
+              <MappingFragment StoreEntitySet="Space">
+                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
+                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
+                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
+                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
+                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
+                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SpaceFacility">
             <EntityTypeMapping TypeName="shtsModel.SpaceFacility">
               <MappingFragment StoreEntitySet="SpaceFacility">
@@ -2139,6 +2234,26 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Test">
+            <EntityTypeMapping TypeName="shtsModel.Test">
+              <MappingFragment StoreEntitySet="Test">
+                <ScalarProperty Name="DataChange_Lasttime" ColumnName="DataChange_Lasttime" />
+                <ScalarProperty Name="DataChange_CreateTime" ColumnName="DataChange_CreateTime" />
+                <ScalarProperty Name="DataStatus" ColumnName="DataStatus" />
+                <ScalarProperty Name="ProviderCity" ColumnName="ProviderCity" />
+                <ScalarProperty Name="BrandLogo" ColumnName="BrandLogo" />
+                <ScalarProperty Name="ProviderLogo" ColumnName="ProviderLogo" />
+                <ScalarProperty Name="ProviderDesc" ColumnName="ProviderDesc" />
+                <ScalarProperty Name="BrandPrefix" ColumnName="BrandPrefix" />
+                <ScalarProperty Name="ProviderPrefix" ColumnName="ProviderPrefix" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
+                <ScalarProperty Name="PKG_PSID" ColumnName="PKG_PSID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2303,69 +2418,6 @@
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Actor">
-            <EntityTypeMapping TypeName="shtsModel.Actor">
-              <MappingFragment StoreEntitySet="Actor">
-                <ScalarProperty Name="ActorTypeId" ColumnName="ActorTypeId" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Equipment">
-            <EntityTypeMapping TypeName="shtsModel.Equipment">
-              <MappingFragment StoreEntitySet="Equipment">
-                <ScalarProperty Name="EquipTypeId" ColumnName="EquipTypeId" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Facility">
-            <EntityTypeMapping TypeName="shtsModel.Facility">
-              <MappingFragment StoreEntitySet="Facility">
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Other">
-            <EntityTypeMapping TypeName="shtsModel.Other">
-              <MappingFragment StoreEntitySet="Other">
-                <ScalarProperty Name="OtherTypeId" ColumnName="OtherTypeId" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RentSection">
-            <EntityTypeMapping TypeName="shtsModel.RentSection">
-              <MappingFragment StoreEntitySet="RentSection">
-                <ScalarProperty Name="MarkForDelete" ColumnName="MarkForDelete" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
-                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Space">
-            <EntityTypeMapping TypeName="shtsModel.Space">
-              <MappingFragment StoreEntitySet="Space">
-                <ScalarProperty Name="SpaceTreat" ColumnName="SpaceTreat" />
-                <ScalarProperty Name="SpacePeopleId" ColumnName="SpacePeopleId" />
-                <ScalarProperty Name="SpaceSizeId" ColumnName="SpaceSizeId" />
-                <ScalarProperty Name="SpaceFacilityValue" ColumnName="SpaceFacilityValue" />
-                <ScalarProperty Name="SpaceFeatureValue" ColumnName="SpaceFeatureValue" />
-                <ScalarProperty Name="SpaceTypeId" ColumnName="SpaceTypeId" />
-                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

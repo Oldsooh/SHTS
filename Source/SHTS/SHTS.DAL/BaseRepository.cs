@@ -74,21 +74,24 @@ namespace Witbird.SHTS.DAL
         /// <returns>分页实体集</returns>
         public IQueryable<T> FindPage<S>(int pageSize, int pageIndex, out int total, Func<T, bool> whereLambda, Func<T, S> orderByLambda, bool isASC)
         {
-            var temp = db.Set<T>().Where<T>(whereLambda);
-            total = temp.Count();
+            var result = default(IQueryable<T>);
+
+            total = db.Set<T>().Where<T>(whereLambda).Count();
             if (isASC)
             {
-                temp = temp.OrderBy<T, S>(orderByLambda)
-                    .Skip<T>((pageIndex - 1) * pageSize)
-                    .Take<T>(pageSize);
+                result = db.Set<T>().Where<T>(whereLambda)
+                        .OrderBy<T, S>(orderByLambda)
+                       .Skip<T>((pageIndex - 1) * pageSize)
+                       .Take<T>(pageSize).AsQueryable();
             }
             else
             {
-                temp = temp.OrderByDescending(orderByLambda)
-                    .Skip<T>((pageIndex - 1) * pageSize)
-                    .Take<T>(pageSize);
+                result = db.Set<T>().Where<T>(whereLambda)
+                        .OrderByDescending(orderByLambda)
+                       .Skip<T>((pageIndex - 1) * pageSize)
+                       .Take<T>(pageSize).AsQueryable();
             }
-            return temp.AsQueryable();
+            return result;
         }
 
         /// <summary>

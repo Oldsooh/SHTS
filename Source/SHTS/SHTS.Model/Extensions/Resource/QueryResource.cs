@@ -48,7 +48,7 @@
         /// <summary>
         /// 报价范围
         /// </summary>
-        public string BudgetCondition { get; set; }
+        public string BudgetCondition { get; set; } = string.Empty;
         #endregion
 
         #region Space

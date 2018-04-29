@@ -79,9 +79,6 @@
     <Compile Include="ActorType.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ActorView.cs">
-      <DependentUpon>SHTSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="AdminRole.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
@@ -136,6 +133,7 @@
     <Compile Include="Extensions\DemandQuoteHistory.cs" />
     <Compile Include="Extensions\DemandSubscriptionDetail.cs" />
     <Compile Include="Extensions\DemandSubscription.cs" />
+    <Compile Include="Extensions\DemandSubscriptionPushHistory.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\FinanceWithdrawRecord.cs" />
     <Compile Include="Extensions\MailConfig.cs" />
@@ -205,6 +203,9 @@
     <Compile Include="SinglePage.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SmsRecord.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Space.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
@@ -221,6 +222,9 @@
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SpaceType.cs">
+      <DependentUpon>SHTSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Test.cs">
       <DependentUpon>SHTSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Trade.cs">
@@ -252,6 +256,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <None Include="packages.config" />
     <EntityDeploy Include="SHTSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

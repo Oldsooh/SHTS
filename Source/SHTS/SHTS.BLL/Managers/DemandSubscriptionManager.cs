@@ -47,12 +47,66 @@ namespace Witbird.SHTS.BLL.Managers
             out int totalCount)
         {
             totalCount = 0;
-            var histories = new List<DemandSubscriptionPushHistory>();
+            List<DemandSubscriptionPushHistory> histories = new List<DemandSubscriptionPushHistory>();
 
             try
             {
-                histories = pushHistoryRepository.FindPage(pageSize, pageIndex, out totalCount, (x => true),
-                    (x => x.Id), false).ToList();
+                var context = DemandSubscriptionPushHistoryRepository.GetDbContext();
+
+                totalCount = context.DemandSubscriptionPushHistory.Count();
+                var temp = context.DemandSubscriptionPushHistory.OrderByDescending(item => item.CreatedDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize)
+                    .Join(context.WeChatUser, history => history.WechatUserId, wechatUser => wechatUser.Id,
+                    (history, wechatUser) => new
+                    {
+                        history,
+                        WechatUserName = wechatUser.NickName,
+                        wechatUser.UserId
+                    })
+                    .GroupJoin(context.User, history => history.UserId, user => user.UserId,
+                    (history, users) => new
+                    {
+                        history,
+                        UserName = (users.Count() > 0) ? users.FirstOrDefault().UserName : ""
+                    })
+                    .GroupJoin(context.Demand, history => history.history.history.DemandId, demand => demand.Id,
+                    (history, demands) => new
+                    {
+                        history.history.history.Id,
+                        history.history.history.DemandId,
+                        history.history.history.CreatedDateTime,
+                        DemandTitle = (demands.Count() > 0 )? demands.FirstOrDefault().Title : "",
+                        history.history.history.EmailAddress,
+                        history.history.history.EmailExceptionMessage,
+                        history.history.history.EmailStatus,
+                        history.history.history.IsMailSubscribed,
+                        history.history.history.OpenId,
+                        history.UserName,
+                        history.history.history.WechatExceptionMessage,
+                        history.history.history.WechatStatus,
+                        history.history.history.WechatUserId,
+                        history.history.WechatUserName
+                    });
+
+                foreach (var item in temp)
+                {
+                    histories.Add(new DemandSubscriptionPushHistory()
+                    {
+                        Id = item.Id,
+                        DemandId = item.DemandId,
+                        CreatedDateTime = item.CreatedDateTime,
+                        DemandTitle = item.DemandTitle,
+                        EmailAddress = item.EmailAddress,
+                        EmailExceptionMessage = item.EmailExceptionMessage,
+                        EmailStatus = item.EmailStatus,
+                        IsMailSubscribed = item.IsMailSubscribed,
+                        OpenId = item.OpenId,
+                        UserName = item.UserName,
+                        WechatExceptionMessage = item.WechatExceptionMessage,
+                        WechatStatus = item.WechatStatus,
+                        WechatUserId = item.WechatUserId,
+                        WechatUserName = item.WechatUserName
+                    });
+                }
             }
             catch (Exception ex)
             {

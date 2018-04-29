@@ -57,7 +57,7 @@ namespace Witbird.SHTS.DAL.Daos
             
             int actorFromId,
             int actorSex,
-            string quotePriceCondition)//pageindex from 0
+            string budgetCondition)//pageindex from 0
         {
             QueryResourceResult result = new QueryResourceResult();
 
@@ -80,7 +80,7 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(col_pageSize,pagesize),
                 new SqlParameter(col_actorFromId,actorFromId),
                 new SqlParameter(col_actorSex,actorSex),
-                new SqlParameter(col_BudgetCondition, quotePriceCondition)
+                new SqlParameter(col_BudgetCondition, budgetCondition)
             };
 
             SqlDataReader reader = DBHelper.RunProcedure(sqlConn, sp_GetResourceByFilter, sqlParameters);

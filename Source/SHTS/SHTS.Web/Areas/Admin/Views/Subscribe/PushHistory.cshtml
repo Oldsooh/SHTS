@@ -74,11 +74,11 @@
             <thead>
                 <tr>
                     <th>序号</th>
-                    <th>微信ID</th>
-                    <th>OpenId</th>
+                    <th>微信昵称</th>
+                    <th>会员昵称</th>
                     <th>是否开启邮箱推送</th>
                     <th>订阅邮箱</th>
-                    <th>需求连接</th>
+                    <th>需求信息</th>
                     <th>微信推送状态</th>
                     <th  style="max-width:200px!important">微信推送失败原因</th>
                     <th>邮箱推送状态</th>
@@ -96,10 +96,10 @@
                                 @item.Id
                             </td>
                             <td>
-                                @item.WechatUserId
+                                @item.WechatUserName
                             </td>
                             <td>
-                                @item.OpenId
+                                @item.UserName
                             </td>
                             <td>
                                 @if (item.IsMailSubscribed)
@@ -115,7 +115,7 @@
                                 @item.EmailAddress
                             </td>
                             <td>
-                                <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">点击查看需求</a>
+                                <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">@item.DemandTitle</a>
                             </td>
                             <td>
                                 @item.WechatStatus
