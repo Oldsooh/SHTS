@@ -9,6 +9,7 @@ namespace Witbird.SHTS.Model
     public partial class DemandSubscriptionPushHistory
     {
         public string WechatUserName { get; set; }
+        public int UserId { get; set; }
         public string UserName { get; set; }
         public string DemandTitle { get; set; }
     }

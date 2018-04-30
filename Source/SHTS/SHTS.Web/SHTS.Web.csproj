@@ -385,11 +385,13 @@
     <Content Include="Areas\Admin\Content\editor\skins\tinymce.gif" />
     <Content Include="Areas\Admin\Content\editor\skins\ul.gif" />
     <Content Include="Areas\Admin\Content\images\001.jpg" />
+    <Content Include="Areas\Admin\Content\images\currency_yuan_red.png" />
     <Content Include="Areas\Admin\Content\images\d022.png" />
     <Content Include="Areas\Admin\Content\images\d033.png" />
     <Content Include="Areas\Admin\Content\images\d044.png" />
     <Content Include="Areas\Admin\Content\images\d055.png" />
     <Content Include="Areas\Admin\Content\images\d066.png" />
+    <Content Include="Areas\Admin\Content\images\feeds.png" />
     <Content Include="Areas\Admin\Content\images\i07ico.png" />
     <Content Include="Areas\Admin\Content\images\icon07.png" />
     <Content Include="Areas\Admin\Content\images\leftico07.png" />
@@ -493,10 +495,12 @@
     <Content Include="Areas\Admin\Content\images\msg.png" />
     <Content Include="Areas\Admin\Content\images\navbg.png" />
     <Content Include="Areas\Admin\Content\images\next.gif" />
+    <Content Include="Areas\Admin\Content\images\notification_done.png" />
     <Content Include="Areas\Admin\Content\images\pre.gif" />
     <Content Include="Areas\Admin\Content\images\px.gif" />
     <Content Include="Areas\Admin\Content\images\righttop.gif" />
     <Content Include="Areas\Admin\Content\images\rlist.gif" />
+    <Content Include="Areas\Admin\Content\images\sale.png" />
     <Content Include="Areas\Admin\Content\images\search.png" />
     <Content Include="Areas\Admin\Content\images\sj.png" />
     <Content Include="Areas\Admin\Content\images\sun.png" />

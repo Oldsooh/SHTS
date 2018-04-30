@@ -39,13 +39,43 @@
             });
         });
 
+        function searchHistories() {
+            var demandIds = '@(Model.FilterDemandIdString)';
+            var wechatStatus = $('#wechatStatus').val();
+            var emailStatus = $('#emailStatus').val();
+            var wechatUserNickName = $('#wechatUserNickName').val();
+
+            var link = "/admin/subscribe/pushhistory?id=1&" + demandIds +
+                "&wechatStatus=" + wechatStatus +
+                "&emailStatus=" + emailStatus +
+                "&wechatUserNickName=" + wechatUserNickName;
+            window.location = link;
+        }
+
+        function clearAllFilters() {
+            $('#wechatStatus').val("");
+            $('#emailStatus').val("");
+            $('#wechatUserNickName').val("");
+
+            this.searchHistories();
+        }
+
+        function doWechatNickNameClickEvent(nickName) {
+            $('#wechatUserNickName').val(nickName);
+
+            this.searchHistories();
+        }
+
+        function doWechatNickNameFilterChanged() {
+            this.searchHistories();
+        }
     </script>
     <style>
         .tablelist td, .tablelist th {
-            max-width:100px!important;
-            text-overflow : ellipsis; 
-            white-space : nowrap; 
-            overflow : hidden; 
+            max-width: 100px !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .on {
@@ -55,6 +85,23 @@
         .off {
             color: firebrick;
         }
+
+        .toolbar {
+            width: 100%;
+        }
+
+            .toolbar > li img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .toolbar > li input, .toolbar > li select {
+                padding: 5px;
+                border: solid 1px burlywood;
+                /* height: 70%; */
+                vertical-align: middle;
+                opacity: 1;
+            }
     </style>
 </head>
 
@@ -63,26 +110,69 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
-            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/index/main/">首页</a></li>
             <li><a href="/admin/subscribe/pushhistory?id=1">业务推送历史</a></li>
         </ul>
     </div>
 
     <div class="rightinfo">
+        <div class="tools">
 
+            <ul class="toolbar">
+                <li>
+                    &nbsp;微信昵称：
+                    <input type="search" value="@Model.FilterWechatUserNickName" name="wechatUserNickName" id="wechatUserNickName"
+                           onchange="doWechatNickNameFilterChanged();" placeholder="请输入微信昵称进行筛选" />
+                </li>
+                <li>
+                    @{
+                        var wechatSuccess = Model.FilterWechatStatus.Equals("微信推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var wechatFail = Model.FilterWechatStatus.Equals("微信推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var allSelected = wechatSuccess == "" && wechatFail == "" ? "selected" : "";
+                    }
+                    &nbsp;微信推送状态:
+                    <select id="wechatStatus" name="wechatStatus" onchange="searchHistories();">
+                        <option value="" @allSelected>--所有状态--</option>
+                        <option value="微信推送成功" @wechatSuccess )>微信推送成功</option>
+                        <option value="微信推送失败" @wechatFail>微信推送失败</option>
+                    </select>
+                </li>
+                <li>
+                    @{
+                        var emailSuccess = Model.FilterEmailStatus.Equals("邮箱推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var emailFail = Model.FilterEmailStatus.Equals("邮箱推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var emailAll = emailSuccess == "" && emailFail == "" ? "selected" : "";
+                    }
+                    &nbsp;邮箱推送状态:
+                    <select id="emailStatus" name="emailStatus" onchange="searchHistories();">
+                        <option value="" @emailAll>--所有状态--</option>
+                        <option value="邮箱推送成功" @emailSuccess>邮箱推送成功</option>
+                        <option value="邮箱推送失败" @emailFail>邮箱推送失败</option>
+                    </select>
+                </li>
+                <li onclick="clearAllFilters();">
+                    <span><img src="/areas/admin/content/images/close.png" /></span>
+                    清空筛选条件
+                </li>
+                <li onclick="searchHistories();">
+                    <span><img src="/areas/admin/content/images/ico06.png" /></span>
+                    重新查询
+                </li>
+            </ul>
+        </div>
         <table class="tablelist">
             <thead>
                 <tr>
                     <th>序号</th>
+                    <th>需求信息</th>
                     <th>微信昵称</th>
                     <th>会员昵称</th>
+                    <th>微信推送状态</th>
+                    <th style="max-width:200px!important">微信推送失败原因</th>
                     <th>是否开启邮箱推送</th>
                     <th>订阅邮箱</th>
-                    <th>需求信息</th>
-                    <th>微信推送状态</th>
-                    <th  style="max-width:200px!important">微信推送失败原因</th>
                     <th>邮箱推送状态</th>
-                    <th  style="max-width:200px!important">邮箱推送失败原因</th>
+                    <th style="max-width:200px!important">邮箱推送失败原因</th>
                     <th>推送时间</th>
                 </tr>
             </thead>
@@ -96,10 +186,37 @@
                                 @item.Id
                             </td>
                             <td>
-                                @item.WechatUserName
+                                <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">@item.DemandTitle</a>
                             </td>
                             <td>
-                                @item.UserName
+                                <span onclick="doWechatNickNameClickEvent('@item.WechatUserName');" title="点击搜索当前用户" style="cursor:pointer;color: #3858FA;" >@item.WechatUserName</span>
+                            </td>
+                            <td>
+                                @if (string.IsNullOrWhiteSpace(item.UserName))
+                                {
+                                    <span>未绑定会员账号</span>
+                                }
+                                else
+                                {
+                                    <a href="/admin/member/EditUser/@item.UserId" style="color: #3858FA;">@item.UserName</a>
+                                }
+                            </td>
+                            <td>
+                                @if ((item.WechatStatus ?? "").IndexOf("成功") != -1)
+                                {
+                                    <span class="on">
+                                        @item.WechatStatus
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="off">
+                                        @item.WechatStatus
+                                    </span>
+                                }
+                            </td>
+                            <td style="max-width: 200px !important" title="@item.WechatExceptionMessage">
+                                <span class="off">@item.WechatExceptionMessage</span>
                             </td>
                             <td>
                                 @if (item.IsMailSubscribed)
@@ -115,19 +232,21 @@
                                 @item.EmailAddress
                             </td>
                             <td>
-                                <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">@item.DemandTitle</a>
+                                @if ((item.EmailStatus ?? "").IndexOf("成功") != -1)
+                                {
+                                    <span class="on">
+                                        @item.EmailStatus
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="off">
+                                        @item.EmailStatus
+                                    </span>
+                                }
                             </td>
-                            <td>
-                                @item.WechatStatus
-                            </td>
-                            <td style="max-width: 200px !important">
-                                @item.WechatExceptionMessage
-                            </td>
-                            <td>
-                                @item.EmailStatus
-                            </td>
-                            <td style="max-width: 200px !important">
-                                @item.EmailExceptionMessage
+                            <td style="max-width: 200px !important" title="@item.EmailExceptionMessage<">
+                                <span class="off">@item.EmailExceptionMessage</span>
                             </td>
                             <td>
                                 <span>@(item.CreatedDateTime.ToString("yyyy-MM-dd HH:mm:ss"))</span>
@@ -151,12 +270,12 @@
                         //上一页
                         if (Model.PageIndex > 1)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex - 1)&@Model.FilterDemandIdString" class="prv">上一页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex - 1)&@Model.FilterString" class="prv">上一页</a></span>
                         }
                         //首页
                         if (Model.PageStep < Model.PageIndex)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=1&@Model.FilterDemandIdString">首页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=1&@Model.FilterString">首页</a></span>
                         }
                         //分页
                         for (int i = step; i < step + Model.PageStep; i++)
@@ -165,27 +284,28 @@
                             {
                                 if (i == Model.PageIndex)
                                 {
-                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterDemandIdString" class="no">@i</a></span>
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterString" class="no">@i</a></span>
                                 }
                                 else
                                 {
-                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterDemandIdString">@i</a></span>
+                                    <span><a href="/admin/subscribe/pushhistory?id=@i&@Model.FilterString">@i</a></span>
                                 }
                             }
                         }
                         //末页
                         if (step + Model.PageStep <= Model.PageCount)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageCount)&@Model.FilterDemandIdString">末页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageCount)&@Model.FilterString">末页</a></span>
                         }
                         //下一页
                         if (Model.PageIndex < Model.PageCount)
                         {
-                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex + 1)&@Model.FilterDemandIdString" class="next">下一页</a></span>
+                            <span><a href="/admin/subscribe/pushhistory?id=@(Model.PageIndex + 1)&@Model.FilterString" class="next">下一页</a></span>
                         }
                     }
                 }
             }
+            <span>共@(Model.AllCount)条记录，共@(Model.PageCount)页，当前第@(Model.PageIndex)页</span>
         </div>
         <!--分页结束-->
 

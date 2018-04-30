@@ -49,7 +49,8 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         }
 
         [Permission(EnumRole.Normal)]
-        public ActionResult PushHistory(string id, string demandIds="")
+        public ActionResult PushHistory(string id, string demandIds="", string wechatUserNickName= "", 
+            string wechatStatus="", string emailStatus="")
         {
             SubscriptionModel model = new SubscriptionModel();
 
@@ -76,8 +77,12 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
 
             model.FilterDemandIdList.AddRange(demandIdList);
+            model.FilterWechatStatus = wechatStatus;
+            model.FilterWechatUserNickName = wechatUserNickName;
+            model.FilterEmailStatus = emailStatus;
 
-            model.PushHistories.AddRange(subscriptionManager.GetSubscriptionPushHistories(15, page, out allCount, demandIdList));
+            model.PushHistories.AddRange(subscriptionManager.GetSubscriptionPushHistories(15, page, out allCount, 
+                demandIdList, wechatUserNickName, wechatStatus, emailStatus));
 
             //分页
             if (model.PushHistories != null && model.PushHistories.Count > 0)

@@ -44,7 +44,7 @@ namespace Witbird.SHTS.BLL.Managers
         /// <param name="totalCount"></param>
         /// <returns></returns>
         public List<DemandSubscriptionPushHistory> GetSubscriptionPushHistories(int pageSize, int pageIndex,
-            out int totalCount, List<int> filterDemandIdList)
+            out int totalCount, List<int> filterDemandIdList, string wechatUserNickName, string wechatStatus, string emailStatus)
         {
             totalCount = 0;
             List<DemandSubscriptionPushHistory> histories = new List<DemandSubscriptionPushHistory>();
@@ -54,13 +54,17 @@ namespace Witbird.SHTS.BLL.Managers
                 var context = DemandSubscriptionPushHistoryRepository.GetDbContext();
                 
                 // Selects the total data count out.
-                totalCount = context.DemandSubscriptionPushHistory.Where((item) => !filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId)).Count();
-
-                // Selects detail history joined with wechatuser, user and demand informaion
-                var temp = context.DemandSubscriptionPushHistory
-                    // filters by demand id list
-                    .Where((item) => !filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId))
-                    .OrderByDescending(item => item.CreatedDateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize)
+                totalCount = context.DemandSubscriptionPushHistory.Where
+                    (
+                        // History entity to be filterd
+                        (item) =>
+                        // Filters by demandId list
+                        (!filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId)) &&
+                        // Filters by wechatStatus
+                        (wechatStatus == "" || item.WechatStatus.Equals(wechatStatus, StringComparison.CurrentCultureIgnoreCase)) &&
+                        // Filters by emailStatus
+                        (emailStatus == "" || item.EmailStatus.Equals(emailStatus, StringComparison.CurrentCultureIgnoreCase))
+                    )
                     // select wechat user information
                     .Join(context.WeChatUser, history => history.WechatUserId, wechatUser => wechatUser.Id,
                     (history, wechatUser) => new
@@ -69,11 +73,41 @@ namespace Witbird.SHTS.BLL.Managers
                         WechatUserName = wechatUser.NickName,
                         wechatUser.UserId
                     })
+                    // Filters by wechatUserNickName
+                    .Where(item => wechatUserNickName == "" || item.WechatUserName.IndexOf(wechatUserNickName) != -1)
+                    .Count();
+
+                // Selects detail history joined with wechatuser, user and demand informaion
+                var temp = context.DemandSubscriptionPushHistory.Where
+                    (
+                        // History entity to be filterd
+                        (item) =>
+                        // Filters by demandId list
+                        (!filterDemandIdList.Any() || filterDemandIdList.Contains(item.DemandId)) &&
+                        // Filters by wechatStatus
+                        (wechatStatus == "" || item.WechatStatus.Equals(wechatStatus, StringComparison.CurrentCultureIgnoreCase)) &&
+                        // Filters by emailStatus
+                        (emailStatus == "" || item.EmailStatus.Equals(emailStatus, StringComparison.CurrentCultureIgnoreCase))
+                    )
+                    // select wechat user information
+                    .Join(context.WeChatUser, history => history.WechatUserId, wechatUser => wechatUser.Id,
+                    (history, wechatUser) => new
+                    {
+                        history,
+                        WechatUserName = wechatUser.NickName,
+                        wechatUser.UserId
+                    })
+                    // Filters by wechatUserNickName
+                    .Where(item => wechatUserNickName == "" || item.WechatUserName.IndexOf(wechatUserNickName) != -1)
+
+                    .OrderByDescending(item => item.history.CreatedDateTime)
+                    .Skip((pageIndex - 1) * pageSize).Take(pageSize)
                     // selects user information
                     .GroupJoin(context.User, history => history.UserId, user => user.UserId,
                     (history, users) => new
                     {
                         history,
+                        UserId = (users.Count() > 0) ? users.FirstOrDefault().UserId : -1,
                         UserName = (users.Count() > 0) ? users.FirstOrDefault().UserName : ""
                     })
                     // select demand information
@@ -89,6 +123,7 @@ namespace Witbird.SHTS.BLL.Managers
                         history.history.history.EmailStatus,
                         history.history.history.IsMailSubscribed,
                         history.history.history.OpenId,
+                        history.UserId,
                         history.UserName,
                         history.history.history.WechatExceptionMessage,
                         history.history.history.WechatStatus,
@@ -109,6 +144,7 @@ namespace Witbird.SHTS.BLL.Managers
                         EmailStatus = item.EmailStatus,
                         IsMailSubscribed = item.IsMailSubscribed,
                         OpenId = item.OpenId,
+                        UserId = item.UserId,
                         UserName = item.UserName,
                         WechatExceptionMessage = item.WechatExceptionMessage,
                         WechatStatus = item.WechatStatus,

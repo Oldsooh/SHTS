@@ -265,6 +265,24 @@
             }
         }
 
+        function showSubscriptionResult() {
+            var allSelectedIds = getAllSelectedDemandsID();
+            if (allSelectedIds.length == 0) {
+                alert('请选择需要查看的需求信息！');
+                return false;
+            }
+            else {
+                var demandIds = '';
+
+                allSelectedIds.forEach(function (e) {
+                    demandIds += e + ',';
+                });
+
+                var resultLink = '/admin/subscribe/pushhistory?id=1&demandIds=' + demandIds;
+                window.location = resultLink;
+            }
+        }
+
         function deleteDemand() {
             var allSelectedIds = getAllSelectedDemandsID();
             if (allSelectedIds.length == 0) {
@@ -312,6 +330,11 @@
             max-width: 300px !important;
         }
 
+        .tablelist input[type=checkbox] {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
         .weixinpart {
             float: right;
             font-weight: bold;
@@ -343,6 +366,15 @@
                 .weixinpart button:hover {
                     cursor: pointer;
                 }
+
+        .toolbar {
+            width:100%;
+        }
+
+        .toolbar>li img{
+            width:24px;
+            height:24px;
+        }
     </style>
 </head>
 
@@ -351,7 +383,7 @@
     <div class="place">
         <span>位置：</span>
         <ul class="placeul">
-            <li><a href="/admin/">首页</a></li>
+            <li><a href="/admin/index/main/">首页</a></li>
             <li><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">需求列表</a></li>
         </ul>
     </div>
@@ -363,20 +395,25 @@
             <ul class="toolbar">
                 <li onclick="showDemandBonusPanel();" title="设置需求鼓励金给发布用户">
                     <span>
-                        <img src="/areas/admin/content/images/t01.png" />
-                    </span>需求奖励
+                        <img src="/areas/admin/content/images/currency_yuan_red.png" />
+                    </span>设置鼓励金
                 </li>
                 <li onclick="showWechatBuyDemandFeePanel();" title="设置微信购买联系方式金额">
                     <span>
-                        <img src="/areas/admin/content/images/t05.png" />
-                    </span>微信金额
+                        <img src="/areas/admin/content/images/sale.png" />
+                    </span>设置微信购买金额
                 </li>
                 <li onclick="UpdateDemandStatusAsComplete();" title="更新需求信息为已完成状态">
                     <span>
-                        <img src="/areas/admin/content/images/t02.png" />
-                    </span>需求完成
+                        <img src="/areas/admin/content/images/notification_done.png" />
+                    </span>需求已完成
                 </li>
-                <li onclick="deleteDemand();" title="删除需求记录">
+                <li onclick="showSubscriptionResult();" title="查看需求推送详情">
+                    <span>
+                        <img src="/areas/admin/content/images/feeds.png" />
+                    </span>查看推送详情
+                </li>
+                <li onclick="deleteDemand();" title="删除需求记录" style="float:right;">
                     <span>
                         <img src="/areas/admin/content/images/t03.png" />
                     </span>删除需求

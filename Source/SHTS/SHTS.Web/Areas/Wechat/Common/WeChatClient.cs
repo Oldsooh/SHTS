@@ -136,7 +136,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     else
                     {
                         result.IsSuccessful = false;
-                        result.ErrorMessage = wxResult.errmsg;
+                        result.ErrorMessage = wxResult.errcode.ToString();
                         var paramsData = new { openId = openId, errorMessage = wxResult.errmsg };
                         LogService.LogWexin("Failed to send SendArticles message to user, parameters info: ", paramsData.ToString());
                     }
@@ -171,7 +171,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     else
                     {
                         result.IsSuccessful = false;
-                        result.ErrorMessage = wxResult.errmsg;
+                        result.ErrorMessage = wxResult.errcode.ToString();
                         var paramsData = new { openId = openId, message = message, errorMessage = wxResult.errmsg };
                         LogService.LogWexin("Failed to send SendText message to user, parameters info: ", paramsData.ToString());
                     }
@@ -212,7 +212,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
                     else
                     {
                         result.IsSuccessful = false;
-                        result.ErrorMessage = sendResult.errmsg;
+                        result.ErrorMessage = sendResult.errcode.ToString();
                         var paramsData = new { openId = openId, templateId = templateId, url = url, sendResult = sendResult.errmsg };
                         LogService.LogWexin("Failed to send template message to user, parameters info: ", paramsData.ToString());
                     }
