@@ -112,5 +112,115 @@ namespace Witbird.SHTS.BLL.Managers
             return context.OtherTypes.FirstOrDefault(v => v.Id == id);
         }
         #endregion
+
+        #region 更新类型配置
+
+        public void CreateNewResourceType(string typeName, string name, string description, int displayOrder)
+        {
+            switch(typeName)
+            {
+                case "ActorType":
+                    var actorType = new ActorType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    InsertActorType(actorType);
+                    break;
+                case "SpaceType":
+                    var spaceType = new SpaceType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    InsertSpaceType(spaceType);
+                    break;
+                case "EquipType":
+                    var equipType = new EquipType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    InsertEquipType(equipType);
+                    break;
+                case "OtherType":
+                    var otherType = new OtherType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    InsertOtherType(otherType);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        public void InsertActorType(ActorType type)
+        {
+            context.ActorTypes.InsertOnSubmit(type);
+            context.SubmitChanges();
+        }
+
+        public void UpdateActorType(ActorType type)
+        {
+            var originalType = context.ActorTypes.FirstOrDefault(item => item.Id == type.Id);
+            if (originalType != null)
+            {
+                originalType.Description = type.Description;
+                originalType.DisplayOrder = type.DisplayOrder;
+                originalType.MarkForDelete = type.MarkForDelete;
+                originalType.Name = type.Name;
+            }
+
+            context.SubmitChanges();
+        }
+
+        public void InsertSpaceType(SpaceType type)
+        {
+            context.SpaceTypes.InsertOnSubmit(type);
+            context.SubmitChanges();
+        }
+
+        public void UpdateSpaceType(SpaceType type)
+        {
+            var originalType = context.SpaceTypes.FirstOrDefault(item => item.Id == type.Id);
+            if (originalType != null)
+            {
+                originalType.Description = type.Description;
+                originalType.DisplayOrder = type.DisplayOrder;
+                originalType.MarkForDelete = type.MarkForDelete;
+                originalType.Name = type.Name;
+            }
+
+            context.SubmitChanges();
+        }
+
+        public void InsertEquipType(EquipType type)
+        {
+            context.EquipTypes.InsertOnSubmit(type);
+            context.SubmitChanges();
+        }
+
+        public void UpdateEquipType(EquipType type)
+        {
+            var originalType = context.EquipTypes.FirstOrDefault(item => item.Id == type.Id);
+            if (originalType != null)
+            {
+                originalType.Description = type.Description;
+                originalType.DisplayOrder = type.DisplayOrder;
+                originalType.MarkForDelete = type.MarkForDelete;
+                originalType.Name = type.Name;
+            }
+
+            context.SubmitChanges();
+        }
+
+        public void InsertOtherType(OtherType type)
+        {
+            context.OtherTypes.InsertOnSubmit(type);
+            context.SubmitChanges();
+        }
+
+        public void UpdateOtherType(OtherType type)
+        {
+            var originalType = context.OtherTypes.FirstOrDefault(item => item.Id == type.Id);
+            if (originalType != null)
+            {
+                originalType.Description = type.Description;
+                originalType.DisplayOrder = type.DisplayOrder;
+                originalType.MarkForDelete = type.MarkForDelete;
+                originalType.Name = type.Name;
+            }
+
+            context.SubmitChanges();
+        }
+
+        #endregion
     }
 }

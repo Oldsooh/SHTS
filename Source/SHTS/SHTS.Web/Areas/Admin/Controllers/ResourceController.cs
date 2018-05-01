@@ -5,7 +5,9 @@ using System.Linq;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
+using Witbird.SHTS.Common;
 using Witbird.SHTS.Web.Areas.Admin.Authorize;
+using Witbird.SHTS.Web.Areas.Admin.Models;
 using Witbird.SHTS.Web.Areas.Admin.Models.Resource;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Controllers
@@ -15,6 +17,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
     {
         ResourceManager resourceManager = new ResourceManager();
         ResourceService resourceService = new ResourceService();
+        MiscManager miscManager = new MiscManager();
 
         #region 列表页
         /// <summary>
@@ -253,6 +256,74 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
             return Json(result);
         }
+        #endregion
+
+        #region 资源类型设置
+
+        public ActionResult Manage()
+        {
+            ResourceMiscModel model = new ResourceMiscModel();
+
+            model.SpaceTypeList.AddRange(miscManager.GetSpaceTypeList());
+            model.ActorTypeList.AddRange(miscManager.GetActorTypeList());
+            model.EquipTypeList.AddRange(miscManager.GetEquipTypeList());
+            model.OtherTypeList.AddRange(miscManager.GetOtherTypeList());
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateNewType(string typeName, string name, string description, int displayOrder = 99)
+        {
+            AjaxResponse response = new AjaxResponse();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    response.Status = -1;
+                    response.Message = "请填写类型名称";
+                }
+                else
+                {
+                    miscManager.CreateNewResourceType(typeName, name, description, displayOrder);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = -1;
+                response.Message = "创建资源类型失败";
+                LogService.Log("创建资源类型失败", ex.ToString());
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateType(string typeName, int typeId, string name, string description, bool markForDelete, int displayOrder = 99)
+        {
+            AjaxResponse response = new AjaxResponse();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    response.Status = -1;
+                    response.Message = "请填写类型名称";
+                }
+                else
+                {
+                    miscManager.CreateNewResourceType(typeName, name, description, displayOrder);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Status = -1;
+                response.Message = "更新资源类型失败";
+                LogService.Log("更新资源类型失败", ex.ToString());
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

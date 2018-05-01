@@ -179,6 +179,7 @@
     <Compile Include="Areas\Admin\Models\DemandModel.cs" />
     <Compile Include="Areas\Admin\Models\FinanceModel.cs" />
     <Compile Include="Areas\Admin\Models\MemberViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ResourceModel.cs" />
     <Compile Include="Areas\Admin\Models\Resource\AjaxResponse.cs" />
     <Compile Include="Areas\Admin\Models\SinglePageModel.cs" />
     <Compile Include="Areas\Admin\Models\SiteBIViewModel.cs" />
@@ -737,6 +738,7 @@
     <Content Include="Content\images\ewm1.png" />
     <Content Include="Content\images\ewm2.png" />
     <Content Include="Content\images\question1.png" />
+    <Content Include="Content\js\city-helper.js" />
     <Content Include="Content\js\resource-helper.js" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\bin\avcodec-57.dll" />
     <Content Include="VideoConverter\ffmpeg-3.2.4-win64-shared\bin\avdevice-57.dll" />
@@ -1233,6 +1235,7 @@
     <Content Include="Areas\Admin\Views\Subscribe\Subscription.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribe\PushHistory.cshtml" />
     <Content Include="Areas\Wechat\Views\Index\SubscribeRequired.cshtml" />
+    <Content Include="Areas\Admin\Views\Resource\Manage.cshtml" />
     <None Include="VideoConverter\ffmpeg-3.2.4-win64-shared\presets\ffprobe.xsd">
       <SubType>Designer</SubType>
     </None>
