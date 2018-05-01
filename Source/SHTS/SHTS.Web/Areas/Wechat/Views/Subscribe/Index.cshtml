@@ -10,7 +10,8 @@
     <link href="/content/css/login.css" rel="stylesheet" />
     <link href="/Content/dialog/css/base.css" rel="stylesheet" />
     <link href="/Content/webuploader/webuploader.css" rel="stylesheet" />
-    <script src="~/Content/js/city.js"></script>
+    <script src="~/Content/js/city-helper.js"></script>
+    <script src="~/Content/js/resource-helper.js"></script>
     <script src="~/Areas/Wechat/Content/scipts/validate.js"></script>
     <style type="text/css">
         .reg-form .cell label {
@@ -53,6 +54,7 @@
                 .reg-form .cell select {
                     height: 100%;
                     width: 31%;
+                    border: solid 1px green;
                 }
 
                 .reg-form .cell textarea {
@@ -182,6 +184,13 @@
             var cityId = $('#ddlCity').val();
             var areaId = $('#ddlArea').val();
 
+            if (areaId == '') {
+                return;
+            }
+
+            if (areaId == '-1') {
+                areaId = '';
+            }
             if (provinceId == '' || cityId == '') {
                 alert('请选择需求区域省份与城市，区/县可不选！');
                 return;
@@ -205,6 +214,7 @@
             var newAreaValue = provinceName + '/' + cityName + '/' + areaName;
 
             if (isNewAreaAlreadySelected(subscribedAreasList, newAreaId)) {
+                $('#ddlArea').val('');
                 alert('您当前选择的区域位置已经包含到所选区域位置中，请勿重复添加。');
                 return;
             }
@@ -221,9 +231,9 @@
         function resetCities() {
             $('#ddlProvince').get(0).selectedIndex = 0;
             $('#ddlCity').empty();
-            $('#ddlCity').append('<option value="">全省/市</option>');
+            $('#ddlCity').append('<option value="">请选择城市</option>');
             $('#ddlArea').empty();
-            $('#ddlArea').append('<option value="">全县/区</option>');
+            $('#ddlArea').append('<option value="">请选择区(县)</option>');
         }
 
         function saveNewAreaInfo(newAreaId) {
@@ -419,7 +429,7 @@
             return splitIgnoreEmptyValue(subscribedTypes, ',');
         }
 
-        function addType() {
+        function addType(subTypeOptions) {
             if (!isEnableSubscription()) {
                 return;
             }
@@ -434,35 +444,21 @@
                 return;
             }
 
-            switch (typeId) {
-                case '1':
-                    subTypeId = $('#SpaceTypeId').val();
-                    subTypeName = $('#SpaceTypeId').find('option:selected').text();
-                    break;
-                case '2':
-                    subTypeId = $('#ActorTypeId').val();
-                    subTypeName = $('#ActorTypeId').find('option:selected').text();
-                    break;
-                case '3':
-                    subTypeId = $('#EquipTypeId').val();
-                    subTypeName = $('#EquipTypeId').find('option:selected').text();
-                    break;
-                case '4':
-                    subTypeId = $('#OtherTypeId').val();
-                    subTypeName = $('#OtherTypeId').find('option:selected').text();
-                    break;
-                default:
-                    alert('请选择正确的需求类别！');
-                    return;
-            }
+            subTypeId = $(subTypeOptions).val();
+            subTypeName = $(subTypeOptions).find('option:selected').text();
 
             if (typeof (subTypeId) == 'undefined') {
                 subTypeId = '-1';
             }
 
+            if (subTypeId == '') {
+                return;
+            }
+
             var subscriedTypes = getAllSubscriedTypes();
 
             if (isNewTypeAlreadySelected(subscriedTypes, typeId, subTypeId)) {
+                $(subTypeOptions).val('');
                 alert('您当前选择的需求类别与类型已包含在已选列表中，请勿重复添加！');
             }
             else {
@@ -487,15 +483,8 @@
                 $('#subscriedTypes').val(typeCache);
 
                 // Resets dropdown list
-                $('#ResourceType').get(0).selectedIndex = 0;
-                $('#SpaceTypeId').get(0).selectedIndex = 0;
-                $('#SpaceTypeId').addClass('hd');
-                $('#ActorTypeId').get(0).selectedIndex = 0;
-                $('#ActorTypeId').addClass('hd');
-                $('#EquipTypeId').get(0).selectedIndex = 0;
-                $('#EquipTypeId').addClass('hd');
-                $('#OtherTypeId').get(0).selectedIndex = 0;
-                $('#OtherTypeId').addClass('hd');
+                $('#ResourceType').val('-1');
+                $(subTypeOptions).html('<option value="">请选择需求类型</option>');
             }
         }
 
@@ -674,6 +663,14 @@
 
             $('#emailAddress').val($('#emailText').val());
         }
+        
+        function onCityChanged(cityOptions) {
+            if ($(cityOptions).val() == '') {
+                $('#ddlArea').html('<option value=>请选择区(县)</option>');
+                return;
+            }
+            loadAreas(cityOptions, $('#ddlArea'), '<option value=>请选择区(县)</option><option value=-1>全区(县)</option>');
+        }
     </script>
     <script language="javascript">
         // string.trim()
@@ -713,12 +710,11 @@
             <br />
             <div class="subscribeDetails">
                 <div class="subscribe">
-                    <h3 class="" style="font-size:14px; padding: 5px;">设置需求类型：</h3>
+                    <h3 class="" style="font-size:14px; padding: 5px;">设置需要订阅需求类型：</h3>
                     @{
                         var subscriedTypes = string.Empty;
 
                         <div id="selectedTypes">
-
                             @for (int i = 0; i < Model.SubscribedTypes.Count; i++)
                             {
                                 var subcribedTypeId = Model.SubscribedTypes[i].SubscriptionValue;
@@ -756,45 +752,16 @@
                         <input type="hidden" id="subscriedTypes" name="subscriedTypes" value="@subscriedTypes">
 
                         <div class="cell selecttype">
-                            <select name="ResourceType" class="text candisabled" id="ResourceType" onchange="demandCategoryChange()">
+                            <select name="ResourceType" class="text candisabled" id="ResourceType" onchange="loadSubResourceTypes(this, $('#SubResourceType'));">
                                 <option value="-1">请选择需求类别</option>
                                 @foreach (var item in Html.ResourceList())
                                 {
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <select name="SpaceTypeId" class="text sp hd candisabled" id="SpaceTypeId">
-                                <option value="-1">不限类型</option>
-                                @foreach (var item in Html.SpaceTypeList())
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
+                            <select name="SubResourceType" class="text sp candisabled" id="SubResourceType" onchange="addType(this);">
+                                <option value="">请选择具体类型</option>
                             </select>
-                            <select name="ActorTypeId" class="text ac hd candisabled" id="ActorTypeId">
-                                <option value="-1">不限类型</option>
-                                @foreach (var item in Html.ActorTypeList())
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                            <select name="EquipTypeId" class="text eq hd candisabled" id="EquipTypeId">
-                                <option value="-1">不限类型</option>
-                                @foreach (var item in Html.EquipTypeList())
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                            <select name="OtherTypeId" class="text ot hd candisabled" id="OtherTypeId">
-                                <option value="-1">不限类型</option>
-                                @foreach (var item in Html.OtherTypeList())
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="">
-                            <a href="javascript:void(0);" class="candisabled" title="添加类型" onclick="addType();" style="font-weight:bold;">添加</a>
-                            <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完需求类别后点击添加按钮！</span>
                         </div>
                     }
                 </div>
@@ -810,11 +777,11 @@
                                 {
                                     if (item.Condition.Trim() == (Model.SubscribedBudgetCondition ?? string.Empty).Trim())
                                     {
-                                        <option value="@item.Condition" selected="selected">@item.DisplayName</option>
+                                        <option value="@item.Condition" selected="selected">只关注:@(item.DisplayName)</option>
                                     }
                                     else
                                     {
-                                        <option value="@item.Condition">@item.DisplayName</option>
+                                        <option value="@item.Condition">只关注:@(item.DisplayName)</option>
                                     }
 
                                 }
@@ -877,8 +844,8 @@
 
                     </div>
                     <div class="cell">
-                        <select id="ddlProvince" class="text candisabled" name="Province" onchange="loadCities() ">
-                            <option value="">省份</option>
+                        <select id="ddlProvince" class="text candisabled" name="Province" onchange="loadCities(this, $('#ddlCity'), $('#ddlArea'), '<option value=>请选择城市</option>');">
+                            <option value="">请选择省份</option>
                             @if (Witbird.SHTS.Web.Public.StaticUtility.GetProvice() != null)
                             {
                                 foreach (var item in Witbird.SHTS.Web.Public.StaticUtility.GetProvice())
@@ -887,16 +854,12 @@
                                 }
                             }
                         </select>
-                        <select id="ddlCity" class="text candisabled" name="City" onchange="loadAreas() ">
-                            <option value="">全省/市</option>
+                        <select id="ddlCity" class="text candisabled" name="City" onchange="onCityChanged(this);">
+                            <option value="">请选择城市</option>
                         </select>
-                        <select id="ddlArea" class="text candisabled" name="Area">
-                            <option value="">全县/区</option>
+                        <select id="ddlArea" class="text candisabled" name="Area" onchange="addArea();">
+                            <option value="">请选择县(区)</option>
                         </select>
-                    </div>
-                    <div class="">
-                        <a href="javascript:void(0);" class="candisabled" title="添加区域" onclick="addArea();" style="font-weight:bold;">添加</a>
-                        <span style="color:#ff0000;">&nbsp;&nbsp;&nbsp;选择完区域位置后点击添加按钮！</span>
                     </div>
                 </div>
             </div>

@@ -143,9 +143,9 @@
             <ul class="toolbar">
                 <li>
                     @{
-            var wechatSuccess = Model.FilterWechatStatus.Equals("微信推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-            var wechatFail = Model.FilterWechatStatus.Equals("微信推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-            var allSelected = wechatSuccess == "" && wechatFail == "" ? "selected" : "";
+                        var wechatSuccess = Model.FilterWechatStatus.Equals("微信推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var wechatFail = Model.FilterWechatStatus.Equals("微信推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var allSelected = wechatSuccess == "" && wechatFail == "" ? "selected" : "";
                     }
                     &nbsp;微信推送状态:
                     <select id="wechatStatus" name="wechatStatus" onchange="searchHistories();">
@@ -156,9 +156,9 @@
                 </li>
                 <li>
                     @{
-            var emailSuccess = Model.FilterEmailStatus.Equals("邮箱推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-            var emailFail = Model.FilterEmailStatus.Equals("邮箱推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-            var emailAll = emailSuccess == "" && emailFail == "" ? "selected" : "";
+                        var emailSuccess = Model.FilterEmailStatus.Equals("邮箱推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var emailFail = Model.FilterEmailStatus.Equals("邮箱推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+                        var emailAll = emailSuccess == "" && emailFail == "" ? "selected" : "";
                     }
                     &nbsp;邮箱推送状态:
                     <select id="emailStatus" name="emailStatus" onchange="searchHistories();">
@@ -173,7 +173,7 @@
                            onchange="doWechatNickNameFilterChanged();" placeholder="请输入微信昵称进行筛选" />
                 </li>
                 <li onclick="searchHistories();" class="button btn-primary">
-                    <span><img src="/areas/admin/content/images/ico06.png"  /></span>
+                    <span><img src="/areas/admin/content/images/ico06.png" /></span>
                     重新查询
                 </li>
                 <li onclick="clearAllFilters();" class="button">
@@ -211,7 +211,7 @@
                                 <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">@item.DemandTitle</a>
                             </td>
                             <td>
-                                <span onclick="doWechatNickNameClickEvent('@item.WechatUserName');" title="点击搜索当前用户" style="cursor:pointer;color: #3858FA;" >@item.WechatUserName</span>
+                                <span onclick="doWechatNickNameClickEvent('@item.WechatUserName');" title="点击搜索当前用户" style="cursor:pointer;color: #3858FA;">@item.WechatUserName</span>
                             </td>
                             <td>
                                 @if (string.IsNullOrWhiteSpace(item.UserName))
