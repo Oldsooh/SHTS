@@ -9,80 +9,52 @@ namespace Witbird.SHTS.DAL
     public class DemandSubscriptionRepository : BaseRepository<DemandSubscription>
     {
         /// <summary>
-        /// {0}: pageSize, {1} pageIndex * pageSize
+        /// {0}: pageSize, {1} pageIndex * pageSize, {2}: wherecondition for subscription
         /// </summary>
         private const string SelectSqlFormat = @"
-SELECT 
-[Limit1].[SubscriptionId] AS [SubscriptionId], 
-[Limit1].[EmailAddress] AS [EmailAddress], 
-[Limit1].[InsertedTimestamp] AS [InsertedTimestamp], 
-[Limit1].[IsEnableEmailSubscription] AS [IsEnableEmailSubscription], 
-[Limit1].[IsSubscribed] AS [IsSubscribed], 
-[Limit1].[LastPushTimestamp] AS [LastPushTimestamp], 
-[Limit1].[LastUpdatedTimestamp] AS [LastUpdatedTimestamp], 
-[Join1].[OpenId] AS [OpenId], 
-[Join1].[UserId] AS [UserId], 
-[Join1].[Id] AS [Id], 
-[Join1].[NickName] AS [NickName], 
-[Join3].[UserName] AS [UserName],
-Join4.SubscriptionDetailId,
-Join4.SubscriptionId AS DetailSubscriptionId,
-Join4.SubscriptionType,
-Join4.SubscriptionValue,
-Join4.InsertedTimestamp,
-filters.DisplayName
-FROM    (SELECT TOP ({0}) [Extent1].[SubscriptionId] AS [SubscriptionId], [Extent1].[WeChatUserId] AS [WeChatUserId], [Extent1].[IsSubscribed] AS [IsSubscribed], [Extent1].[LastPushTimestamp] AS [LastPushTimestamp], [Extent1].[InsertedTimestamp] AS [InsertedTimestamp], [Extent1].[LastUpdatedTimestamp] AS [LastUpdatedTimestamp], [Extent1].[IsEnableEmailSubscription] AS [IsEnableEmailSubscription], [Extent1].[EmailAddress] AS [EmailAddress]
-	FROM ( SELECT [Extent1].[SubscriptionId] AS [SubscriptionId], [Extent1].[WeChatUserId] AS [WeChatUserId], [Extent1].[IsSubscribed] AS [IsSubscribed], [Extent1].[LastPushTimestamp] AS [LastPushTimestamp], [Extent1].[InsertedTimestamp] AS [InsertedTimestamp], [Extent1].[LastUpdatedTimestamp] AS [LastUpdatedTimestamp], [Extent1].[IsEnableEmailSubscription] AS [IsEnableEmailSubscription], [Extent1].[EmailAddress] AS [EmailAddress], row_number() OVER (ORDER BY [Extent1].[SubscriptionId] DESC) AS [row_number]
-		FROM [dbo].[DemandSubscription] AS [Extent1]
-	)  AS [Extent1]
-	WHERE [Extent1].[row_number] > {1}
-	ORDER BY [Extent1].[SubscriptionId] DESC ) AS [Limit1]
-INNER JOIN  (SELECT [Extent2].[Id] AS [Id], [Extent2].[UserId] AS [UserId], [Extent2].[OpenId] AS [OpenId], [Extent2].[NickName] AS [NickName]
-	FROM   ( SELECT 1 AS X ) AS [SingleRowTable1]
-	LEFT OUTER JOIN [dbo].[WeChatUser] AS [Extent2] ON 1 = 1 ) AS [Join1] ON [Limit1].[WeChatUserId] = [Join1].[Id]
-LEFT JOIN  (SELECT [Extent3].[UserId] AS [UserId], [Extent3].[UserName] AS [UserName]
-	FROM   ( SELECT 1 AS X ) AS [SingleRowTable2]
-	LEFT OUTER JOIN [dbo].[User] AS [Extent3] ON 1 = 1 ) AS [Join3] ON ([Join1].[UserId] = [Join3].[UserId]) OR (([Join1].[UserId] IS NULL) AND ([Join3].[UserId] IS NULL))
-LEFT JOIN [dbo].[DemandSubscriptionDetail] Join4 ON Join4.SubscriptionId = [Limit1].SubscriptionId
-LEFT JOIN [dbo].[BudgetFilters] filters ON Join4.SubscriptionType = N'Budget' and filters.Condition = Join4.SubscriptionValue
-ORDER BY [Limit1].[SubscriptionId] DESC";
+SELECT subscription.[SubscriptionId] AS [SubscriptionId], subscription.[EmailAddress] AS [EmailAddress], subscription.[InsertedTimestamp] AS [SubscriptionInsertedTimestamp], subscription.[IsEnableEmailSubscription] AS [IsEnableEmailSubscription], subscription.[IsSubscribed] AS [IsSubscribed]
+	, subscription.[LastPushTimestamp] AS [LastPushTimestamp], subscription.[LastUpdatedTimestamp] AS [LastUpdatedTimestamp], wechatUser.[OpenId] AS [OpenId], wechatUser.[UserId] AS [UserId], wechatUser.[Id] AS [Id]
+	, wechatUser.[NickName] AS [NickName], [user].[UserName] AS [UserName], detail.SubscriptionDetailId, detail.SubscriptionId AS DetailSubscriptionId
+	, detail.SubscriptionType, detail.SubscriptionValue, detail.InsertedTimestamp AS [DetailInsertedTimestamp]
+	,filters.DisplayName
+FROM (
+	SELECT rowNum.SubscriptionId
+	FROM (
+		SELECT temp.[SubscriptionId], ROW_NUMBER() OVER (ORDER BY temp.[SubscriptionId] DESC) AS [row_number]
+		FROM [DemandSubscription] temp
+			INNER JOIN [dbo].[WeChatUser] wechatUser ON temp.[WeChatUserId] = wechatUser.[Id]
+			LEFT JOIN [dbo].[DemandSubscriptionDetail] detail ON detail.SubscriptionId = temp.SubscriptionId
+        WHERE {2}
+		GROUP BY temp.[SubscriptionId]
+	) rowNum
+	WHERE rowNum.[row_number] > {0}
+		AND rowNum.[row_number] <= {1}
+) subscriptionIds
+	INNER JOIN [DemandSubscription] subscription ON subscription.SubscriptionId = subscriptionIds.SubscriptionId
+	LEFT JOIN [dbo].[DemandSubscriptionDetail] detail ON detail.SubscriptionId = subscription.SubscriptionId
+	INNER JOIN [dbo].[WeChatUser] wechatUser ON subscription.[WeChatUserId] = wechatUser.[Id]
+	LEFT JOIN [dbo].[User] [user] ON wechatUser.[UserId] = [user].[UserId]
+	LEFT JOIN [dbo].[BudgetFilters] filters
+	ON detail.SubscriptionType = N'Budget'
+		AND filters.Condition = detail.SubscriptionValue
+    ORDER BY subscription.SubscriptionId DESC
+;
 
-        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int total)
+SELECT COUNT(1) FROM
+(
+SELECT DISTINCT subscription.SubscriptionId
+FROM [DemandSubscription] subscription
+	INNER JOIN [dbo].[WeChatUser] wechatUser ON subscription.[WeChatUserId] = wechatUser.[Id]
+	LEFT JOIN [dbo].[DemandSubscriptionDetail] detail ON detail.SubscriptionId = subscription.SubscriptionId
+WHERE {2} -- same where condition with above
+GROUP BY subscription.SubscriptionId
+) AS result
+";
+
+        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int total, string whereCondition = "")
         {
-            var db = GetDbContext();
-            total = db.DemandSubscription.Count();
-
-            //var queryResult = db.DemandSubscription.OrderByDescending(item => item.SubscriptionId).Skip((pageIndex - 1) * pageSize).Take(pageSize)
-            //    .Join(db.WeChatUser.DefaultIfEmpty(), subscritpion => subscritpion.WeChatUserId, wechatUser => wechatUser.Id,
-            //        (subscription, wechatUser) => new
-            //        {
-            //            subscription.EmailAddress,
-            //            subscription.InsertedTimestamp,
-            //            subscription.IsEnableEmailSubscription,
-            //            subscription.IsSubscribed,
-            //            subscription.LastPushTimestamp,
-            //            subscription.LastUpdatedTimestamp,
-            //            wechatUser.OpenId,
-            //            subscription.SubscriptionId,
-            //            wechatUser.UserId,
-            //            WechatUserId = wechatUser.Id,
-            //            WeChatUserName = wechatUser.NickName
-            //        }).Join(db.User.DefaultIfEmpty(), temp => temp.UserId.Value, user => user.UserId, (temp, user) => new
-            //        {
-            //            temp.EmailAddress,
-            //            temp.InsertedTimestamp,
-            //            temp.IsEnableEmailSubscription,
-            //            temp.IsSubscribed,
-            //            temp.LastPushTimestamp,
-            //            temp.LastUpdatedTimestamp,
-            //            temp.OpenId,
-            //            temp.SubscriptionId,
-            //            temp.UserId,
-            //            temp.WechatUserId,
-            //            temp.WeChatUserName,
-            //            user.UserName
-            //        });
-
+            total = 0;
+            
             var subscriptions = new List<DemandSubscription>();
 
             using (var conn = DBHelper.GetSqlConnection())
@@ -90,7 +62,7 @@ ORDER BY [Limit1].[SubscriptionId] DESC";
                 conn.Open();
 
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = string.Format(SelectSqlFormat, pageSize, (pageIndex - 1) * pageSize);
+                cmd.CommandText = string.Format(SelectSqlFormat, (pageIndex - 1) * pageSize, pageIndex * pageSize, whereCondition);
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 using (var reader = cmd.ExecuteReader())
@@ -112,9 +84,9 @@ ORDER BY [Limit1].[SubscriptionId] DESC";
                             WeChatUserName = reader[10].DBToString(),
                             UserName = reader[11].DBToString()
                         };
-
+                        
                         DemandSubscriptionDetail detail = null;
-                        if (reader[12] != DBNull.Value)
+                        if (reader[12] != DBNull.Value) // SubscripitionDetailId
                         {
                             detail = new DemandSubscriptionDetail()
                             {
@@ -141,6 +113,15 @@ ORDER BY [Limit1].[SubscriptionId] DESC";
                             }
 
                             subscriptions.Add(subscription);
+                        }
+                    }
+
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            total = reader[0].DBToInt32();
+                            break;
                         }
                     }
                 }

@@ -37,6 +37,8 @@
 
         public string City { get; set; }
 
+        public string Area { get; set; }
+
         public string StartTime { get; set; }
 
         public string EndTime { get; set; }
@@ -46,7 +48,5 @@
         public string EndPrice { get; set; }
 
         public string OrderBy { get; set; }
-
-        public string SC { get; set; }
     }
 }

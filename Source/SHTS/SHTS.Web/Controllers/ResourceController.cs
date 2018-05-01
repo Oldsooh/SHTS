@@ -75,7 +75,7 @@ namespace Witbird.SHTS.Web.Controllers
                     resource.ClickTime = DateTime.Now;
                     resource.UserName = UserInfo.UserName;
                     resource.Budget = model.QuotePrice;
-                    
+
 
                     resource.ActorFromId = string.IsNullOrEmpty(model.ActorFromId) ? 1 : int.Parse(model.ActorFromId);
                     resource.ActorSex = string.IsNullOrEmpty(model.ActorSex) ? 1 : int.Parse(model.ActorSex);
@@ -848,6 +848,24 @@ namespace Witbird.SHTS.Web.Controllers
             }
 
             return errorMessage;
+        }
+
+        [HttpPost]
+        public ActionResult LoadSubResourceTypes(int resourceTypeId)
+        {
+            var subTypeList = HtmlHelperExtension.SubResourceList(null, resourceTypeId) ?? new List<SelectListItem>();
+
+            var jsonResult = new
+            {
+                Result = from s in subTypeList
+                         select new
+                         {
+                             Id = s.Value,
+                             s.Text
+                         }
+            };
+
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
     }
 }

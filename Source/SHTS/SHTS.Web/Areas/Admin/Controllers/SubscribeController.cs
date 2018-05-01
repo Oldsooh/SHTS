@@ -13,8 +13,21 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
         private DemandSubscriptionManager subscriptionManager = new DemandSubscriptionManager();
 
         [Permission(EnumRole.Normal)]
-        public ActionResult Subscription(string id)
+        public ActionResult Subscription(string id, int resourceTypeId = -1, int subResourceTypeId = -1,
+            string province = "", string city = "", string area = "",
+            string emailStatus = "-1", string keywords = "", string wechatUserNickName = "", string budgetCondition = "")
         {
+            
+            /*
+             resourceTypeId=" + resourceTypeId +
+                "&subResourceTypeId=" + subResourceTypeId +
+                "&province=" + province +
+                "&city=" + city +
+                "&area=" + area +
+                "&emailStatus=" + emailStatus +
+                "&keywords=" + keywords +
+                "wechatUserNickName" + wechatUserNickName;
+             */
             SubscriptionModel model = new SubscriptionModel();
 
             //页码，总数重置
@@ -25,8 +38,19 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             }
             int allCount = 0;
 
+            model.FilterResourceType = resourceTypeId;
+            model.FilterSubResourceType = subResourceTypeId;
+            model.Province = province;
+            model.City = city;
+            model.Area = area;
+            model.FilterEmailStatus = emailStatus;
+            model.Keywords = keywords;
+            model.FilterWechatUserNickName = wechatUserNickName;
+            model.FilterBudget = budgetCondition;
 
-            model.Subscriptions.AddRange(subscriptionManager.GetSubscriptions(15, page, out allCount));
+            model.Subscriptions.AddRange(subscriptionManager.GetSubscriptions(15, page, out allCount, 
+                resourceTypeId, subResourceTypeId, province, city, area, budgetCondition,
+                emailStatus, keywords, wechatUserNickName));
             
             //分页
             if (model.Subscriptions != null && model.Subscriptions.Count > 0)

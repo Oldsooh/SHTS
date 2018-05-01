@@ -24,6 +24,32 @@ namespace System.Web.Mvc
             return list;
         }
 
+
+        public static List<SelectListItem> SubResourceList(this HtmlHelper helper, int resourceTypeId)
+        {
+            var subTypeList = new List<SelectListItem>();
+
+            switch (resourceTypeId)
+            {
+                case 1:
+                    subTypeList = SpaceTypeList(helper);
+                    break;
+                case 2:
+                    subTypeList = ActorTypeList(helper);
+                    break;
+                case 3:
+                    subTypeList = EquipTypeList(helper);
+                    break;
+                case 4:
+                    subTypeList = OtherTypeList(helper);
+                    break;
+                default:
+                    break;
+            }
+
+            return subTypeList;
+        }
+
         #region 资源类型
         /// <summary>
         /// 活动场地类型

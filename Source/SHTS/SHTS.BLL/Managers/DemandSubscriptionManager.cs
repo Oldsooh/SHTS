@@ -52,7 +52,7 @@ namespace Witbird.SHTS.BLL.Managers
             try
             {
                 var context = DemandSubscriptionPushHistoryRepository.GetDbContext();
-                
+
                 // Selects the total data count out.
                 totalCount = context.DemandSubscriptionPushHistory.Where
                     (
@@ -168,32 +168,70 @@ namespace Witbird.SHTS.BLL.Managers
         /// <param name="pageIndex"></param>
         /// <param name="totalSubscriptionCount"></param>
         /// <returns></returns>
-        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int totalSubscriptionCount)
+        public List<DemandSubscription> GetSubscriptions(int pageSize, int pageIndex, out int totalSubscriptionCount,
+            int resourceTypeId, int subResourceTypeId,
+            string province, string city, string area, string budgetCondition,
+            string emailStatus, string keywords, string wechatUserNickName)
         {
             var subscriptions = new List<DemandSubscription>();
             totalSubscriptionCount = 0;
 
             try
             {
-                var tempResult = subscriptionRepository.GetSubscriptions(pageSize, pageIndex, out totalSubscriptionCount);
-                subscriptions.AddRange(tempResult);
+                var filterList = new List<string>();
 
-                //if (subscriptions.HasItem())
-                //{
-                //    // 获取订阅详细信息
-                //    foreach (var item in subscriptions)
-                //    {
-                //        if (item.IsNotNull())
-                //        {
-                //            var details = subscriptionDetailRepository.FindAll(
-                //                (x => x.SubscriptionId == item.SubscriptionId), (x => x.InsertedTimestamp), true);
-                //            if (details.HasItem())
-                //            {
-                //                item.SubscriptionDetails.AddRange(details);
-                //            }
-                //        }
-                //    }
-                //}
+                var categoryFilter = "";
+                if (resourceTypeId != -1)
+                {
+                    if (subResourceTypeId != -1)
+                    {
+                        categoryFilter = $"(SubscriptionType=N'Category' AND SubscriptionValue = N'{resourceTypeId}_{subResourceTypeId}')";
+                    }
+                    else
+                    {
+                        categoryFilter = $"(SubscriptionType=N'Category' AND SubscriptionValue LIKE N'{resourceTypeId}%')";
+                    }
+                }
+                filterList.Add(categoryFilter);
+
+                var areaFilter = "";
+                if (!string.IsNullOrWhiteSpace(province))
+                {
+                    if (!string.IsNullOrWhiteSpace(city))
+                    {
+                        if (!string.IsNullOrWhiteSpace(area))
+                        {
+                            areaFilter = $"(SubscriptionType = N'Area' AND SubscriptionValue = N'{province}_{city}_{area}')";
+                        }
+                        else
+                        {
+                            areaFilter = $"(SubscriptionType = N'Area' AND SubscriptionValue LIKE N'{province}_{city}%')";
+                        }
+                    }
+                    else
+                    {
+                        areaFilter = $"(SubscriptionType = N'Area' AND SubscriptionValue LIKE N'{province}_%')";
+                    }
+                }
+                filterList.Add(areaFilter);
+
+                var emailEnabledFilter = emailStatus != "-1" ? $"(IsEnableEmailSubscription = {emailStatus})" : "";
+                filterList.Add(emailEnabledFilter);
+
+                var keywordsFilter = !string.IsNullOrWhiteSpace(keywords) ? $"(SubscriptionType = N'Keywords' AND SubscriptionValue LIKE N'%{keywords}%')" : "";
+                filterList.Add(keywordsFilter);
+
+                var budgetFilter = !string.IsNullOrWhiteSpace(budgetCondition) ? $"(SubscriptionType = N'Budget' AND SubscriptionValue = N'{budgetCondition}')" : "";
+                filterList.Add(budgetFilter);
+
+                var nickNameFilter = !string.IsNullOrWhiteSpace(wechatUserNickName) ? $"(NickName LIKE N'%{wechatUserNickName}%')" : "";
+                filterList.Add(nickNameFilter);
+
+                var filterCondition = string.Join(" OR ", filterList.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray());
+                var whereCondition = $"({(string.IsNullOrWhiteSpace(filterCondition) ? "1=1" : filterCondition)})";
+
+                var tempResult = subscriptionRepository.GetSubscriptions(pageSize, pageIndex, out totalSubscriptionCount, whereCondition);
+                subscriptions.AddRange(tempResult);
             }
             catch (Exception ex)
             {
@@ -202,6 +240,5 @@ namespace Witbird.SHTS.BLL.Managers
 
             return subscriptions;
         }
-
     }
 }

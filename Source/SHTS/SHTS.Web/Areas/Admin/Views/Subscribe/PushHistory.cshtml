@@ -90,18 +90,40 @@
             width: 100%;
         }
 
-            .toolbar > li img {
-                width: 24px;
-                height: 24px;
+            .toolbar > li {
+                margin-bottom: 5px;
+                font-weight: bold;
+                text-align: center;
             }
 
-            .toolbar > li input, .toolbar > li select {
-                padding: 5px;
-                border: solid 1px burlywood;
-                /* height: 70%; */
-                vertical-align: middle;
-                opacity: 1;
-            }
+                .toolbar > li img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .toolbar > li.button {
+                    font-size: 16px;
+                    border-radius: 5px;
+                    background: #9ed04d;
+                    color: white;
+                }
+
+                    .toolbar > li.button.btn-primary {
+                        background: #167efb;
+                    }
+
+                .toolbar > li input, .toolbar > li select {
+                    padding: 5px;
+                    border: solid 1px burlywood;
+                    /* height: 70%; */
+                    width: 120px;
+                    vertical-align: middle;
+                    opacity: 1;
+                }
+
+                    .toolbar > li input[type=text], .toolbar > li input[type=search] {
+                        width: 244px;
+                    }
     </style>
 </head>
 
@@ -120,15 +142,10 @@
 
             <ul class="toolbar">
                 <li>
-                    &nbsp;微信昵称：
-                    <input type="search" value="@Model.FilterWechatUserNickName" name="wechatUserNickName" id="wechatUserNickName"
-                           onchange="doWechatNickNameFilterChanged();" placeholder="请输入微信昵称进行筛选" />
-                </li>
-                <li>
                     @{
-                        var wechatSuccess = Model.FilterWechatStatus.Equals("微信推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-                        var wechatFail = Model.FilterWechatStatus.Equals("微信推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-                        var allSelected = wechatSuccess == "" && wechatFail == "" ? "selected" : "";
+            var wechatSuccess = Model.FilterWechatStatus.Equals("微信推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+            var wechatFail = Model.FilterWechatStatus.Equals("微信推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+            var allSelected = wechatSuccess == "" && wechatFail == "" ? "selected" : "";
                     }
                     &nbsp;微信推送状态:
                     <select id="wechatStatus" name="wechatStatus" onchange="searchHistories();">
@@ -139,9 +156,9 @@
                 </li>
                 <li>
                     @{
-                        var emailSuccess = Model.FilterEmailStatus.Equals("邮箱推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-                        var emailFail = Model.FilterEmailStatus.Equals("邮箱推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
-                        var emailAll = emailSuccess == "" && emailFail == "" ? "selected" : "";
+            var emailSuccess = Model.FilterEmailStatus.Equals("邮箱推送成功", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+            var emailFail = Model.FilterEmailStatus.Equals("邮箱推送失败", StringComparison.CurrentCultureIgnoreCase) ? "selected" : "";
+            var emailAll = emailSuccess == "" && emailFail == "" ? "selected" : "";
                     }
                     &nbsp;邮箱推送状态:
                     <select id="emailStatus" name="emailStatus" onchange="searchHistories();">
@@ -150,13 +167,18 @@
                         <option value="邮箱推送失败" @emailFail>邮箱推送失败</option>
                     </select>
                 </li>
-                <li onclick="clearAllFilters();">
+                <li>
+                    &nbsp;微信昵称：
+                    <input type="search" value="@Model.FilterWechatUserNickName" name="wechatUserNickName" id="wechatUserNickName"
+                           onchange="doWechatNickNameFilterChanged();" placeholder="请输入微信昵称进行筛选" />
+                </li>
+                <li onclick="searchHistories();" class="button btn-primary">
+                    <span><img src="/areas/admin/content/images/ico06.png"  /></span>
+                    重新查询
+                </li>
+                <li onclick="clearAllFilters();" class="button">
                     <span><img src="/areas/admin/content/images/close.png" /></span>
                     清空筛选条件
-                </li>
-                <li onclick="searchHistories();">
-                    <span><img src="/areas/admin/content/images/ico06.png" /></span>
-                    重新查询
                 </li>
             </ul>
         </div>
