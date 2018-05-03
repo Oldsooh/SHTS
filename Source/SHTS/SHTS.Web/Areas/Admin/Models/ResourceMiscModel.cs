@@ -8,12 +8,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Models
 {
     public class ResourceMiscModel : BaseModel
     {
-        public List<SpaceType> SpaceTypeList { get; } = new List<SpaceType>();
-
-        public List<ActorType> ActorTypeList { get; } = new List<ActorType>();
-
-        public List<EquipType> EquipTypeList { get; } = new List<EquipType>();
-
-        public List<OtherType> OtherTypeList { get; } = new List<OtherType>();
+        public List<ResourceType> ResourceTypes { get; } = new List<ResourceType>();
+        public string ResourceTypeKey { get; set; } = "";
     }
 }

@@ -39,61 +39,66 @@
             });
         });
 
-        function showDemandBonusPanel() {
-            var allSelectedIds = getAllSelectedDemandsID();
+        function showResourceBonusPanel() {
+            var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
             }
             else {
-                $("#demandBonusPanel").fadeIn(200);
+                $("#resourceBonusPanel").fadeIn(200);
             }
         }
 
-        function showWechatBuyDemandFeePanel() {
-            var allSelectedIds = getAllSelectedDemandsID();
+        function loadData() {
+            var resourceTypeKey = $('#ddlResourceType').val();
+            window.location = '/admin/resource/manage?resourceTypeKey=' + resourceTypeKey;
+        }
+
+        function showWechatBuyResourceFeePanel() {
+            var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
             }
             else {
-                $("#wechatBuyDemandFeePanel").fadeIn(200);
+                $("#wechatBuyResourceFeePanel").fadeIn(200);
             }
         }
 
-        var hasAllDemandsSelected = false;
+        var hasAllResourcesSelected = false;
 
-        function selectAllDemands(cbxSelectAll) {
-            if (!hasAllDemandsSelected) {
-                $('.cbxDemand').each(function () {
+        function selectAllResources(cbxSelectAll) {
+            if (!hasAllResourcesSelected) {
+                $('.cbxResource').each(function () {
                     $(this).attr("checked", "checked");
                 });
 
                 $(cbxSelectAll).attr("checked", "checked");
 
-                hasAllDemandsSelected = true;
+                hasAllResourcesSelected = true;
             }
             else {
-                $('.cbxDemand').each(function () {
+                $('.cbxResource').each(function () {
                     $(this).removeAttr("checked");
                 });
 
                 $(cbxSelectAll).removeAttr("checked");
 
-                hasAllDemandsSelected = false;
+                hasAllResourcesSelected = false;
             }
         }
 
-        function onCbxDemandSelectChanged(cbxDemand) {
-            if ($(cbxDemand).attr('checked') == false) {
-                hasAllDemandsSelected = false;
+        function onCbxResourceSelectChanged(cbxResource) {
+            if ($(cbxResource).attr('checked') == false) {
+                hasAllResourcesSelected = false;
                 $('#cbxSelectAll').removeAttr("checked");
             }
         }
 
-        function getAllSelectedDemandsID() {
+        function getAllSelectedResourcesID() {
             var ids = new Array();
-            $('.cbxDemand').each(function () {
+            $('.cbxResource').each(function () {
                 if ($(this).attr("checked") == true) {
                     ids.push($(this).val());
                 }
@@ -102,12 +107,12 @@
             return ids;
         }
 
-        function doBtnSetWeChatBuyDemandFeeClickEvent() {
-            var allSelectedIds = getAllSelectedDemandsID();
+        function doBtnSetWeChatBuyResourceFeeClickEvent() {
+            var allSelectedIds = getAllSelectedResourcesID();
             //allSelectedIds.forEach(function (item) {
             //    alert(item);
             //});
-            var fee = $('#txtWeChatBuyDemandFee').val();
+            var fee = $('#txtWeChatBuyResourceFee').val();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
@@ -115,26 +120,26 @@
             else if (checkValidFee(fee)) {
                 if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗?')) {
                     // Invoke service
-                    var demandIds = '';
+                    var resourceIds = '';
 
                     allSelectedIds.forEach(function (e) {
-                        demandIds += e + ',';
+                        resourceIds += e + ',';
                     });
 
                     $.post(
-                        '/admin/demand/UpdateDemandWeixinBuyFee',
+                        '/admin/resource/UpdateResourceWeixinBuyFee',
                         {
-                            demandIds: demandIds,
+                            resourceIds: resourceIds,
                             weixinBuyFee: fee
                         },
                         function (data) {
                             if (data.IsSuccessFul) {
                                 alert('设置成功！');
-                                $('.cbxDemand').each(function () {
+                                $('.cbxResource').each(function () {
                                     $(this).removeAttr('checked');
                                 });
                                 $('#cbxSelectAll').removeAttr("checked");
-                                hasAllDemandsSelected = false;
+                                hasAllResourcesSelected = false;
                                 window.location = window.location;
                             }
                             else {
@@ -169,7 +174,7 @@
 
         function rechargeUserBalance() {
             var amount = $('#amountString').val();
-            var allSelectedIds = getAllSelectedDemandsID();
+            var allSelectedIds = getAllSelectedResourcesID();
 
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
@@ -178,37 +183,37 @@
             else if (checkValidFee(amount)) {
                 if (confirm('您确认要奖励' + amount + '元给' + allSelectedIds.length + '条需求信息的发布者吗?')) {
                     // Invoke service
-                    var demandIds = '';
+                    var resourceIds = '';
 
                     allSelectedIds.forEach(function (e) {
-                        demandIds += e + ',';
+                        resourceIds += e + ',';
                     });
 
                     $.post(
                         '/admin/finance/recharge',
                         {
-                            demandIdString: demandIds,
+                            resourceIdString: resourceIds,
                             amountString: amount
                         },
                         function (data) {
                             var isSuccessful = data.IsSuccessful;
                             var errorMessage = data.ErrorMessage;
-                            var failedDemands = data.FailedDemands;
-                            var successDemands = data.SuccessDemands;
+                            var failedResources = data.FailedResources;
+                            var successResources = data.SuccessResources;
 
                             if (isSuccessful) {
-                                if (successDemands.length > 0 && failedDemands.length > 0) {
-                                    alert('奖励金成功发放给' + successDemands.length + '位需求发布用户, 有' + failedDemands.length + '位用户发放未成功。请刷新页面后再试。');
+                                if (successResources.length > 0 && failedResources.length > 0) {
+                                    alert('奖励金成功发放给' + successResources.length + '位需求发布用户, 有' + failedResources.length + '位用户发放未成功。请刷新页面后再试。');
                                 }
                                 else {
-                                    alert('奖励金成功发放给' + successDemands.length + '位需求发布用户');
+                                    alert('奖励金成功发放给' + successResources.length + '位需求发布用户');
                                 }
 
-                                $('.cbxDemand').each(function () {
+                                $('.cbxResource').each(function () {
                                     $(this).removeAttr('checked');
                                 });
                                 $('#cbxSelectAll').removeAttr("checked");
-                                hasAllDemandsSelected = false;
+                                hasAllResourcesSelected = false;
                                 window.location.href = window.location.href;
                             }
                         });
@@ -219,8 +224,8 @@
             }
         }
 
-        function UpdateDemandStatusAsComplete() {
-            var allSelectedIds = getAllSelectedDemandsID();
+        function UpdateResourceStatusAsComplete() {
+            var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
@@ -228,16 +233,16 @@
             else {
                 if (confirm('您确认所选择的需求都已经找到资源提供商了吗？该操作不可恢复！')) {
                     // Invoke service
-                    var demandIds = '';
+                    var resourceIds = '';
 
                     allSelectedIds.forEach(function (e) {
-                        demandIds += e + ',';
+                        resourceIds += e + ',';
                     });
 
                     $.post(
-                        '/admin/demand/UpdateDemandStatusAsComplete',
+                        '/admin/resource/UpdateResourceStatusAsComplete',
                         {
-                            demandIdString: demandIds,
+                            resourceIdString: resourceIds,
                         },
                         function (data) {
                             var isSuccessful = data.IsSuccessful;
@@ -245,11 +250,11 @@
                             if (isSuccessful) {
                                 alert('标记需求为已完成状态成功');
 
-                                $('.cbxDemand').each(function () {
+                                $('.cbxResource').each(function () {
                                     $(this).removeAttr('checked');
                                 });
                                 $('#cbxSelectAll').removeAttr("checked");
-                                hasAllDemandsSelected = false;
+                                hasAllResourcesSelected = false;
                                 window.location.href = window.location.href;
                             }
                             else {
@@ -266,25 +271,25 @@
         }
 
         function showSubscriptionResult() {
-            var allSelectedIds = getAllSelectedDemandsID();
+            var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要查看的需求信息！');
                 return false;
             }
             else {
-                var demandIds = '';
+                var resourceIds = '';
 
                 allSelectedIds.forEach(function (e) {
-                    demandIds += e + ',';
+                    resourceIds += e + ',';
                 });
 
-                var resultLink = '/admin/subscribe/pushhistory?id=1&demandIds=' + demandIds;
+                var resultLink = '/admin/subscribe/pushhistory?id=1&resourceIds=' + resourceIds;
                 window.location = resultLink;
             }
         }
 
-        function deleteDemand() {
-            var allSelectedIds = getAllSelectedDemandsID();
+        function deleteResourceType() {
+            var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
                 alert('请选择需要设置的需求信息！');
                 return false;
@@ -292,16 +297,16 @@
             else {
                 if (confirm('您确认所选择的需求吗？该操作不可恢复！')) {
                     // Invoke service
-                    var demandIds = '';
+                    var resourceIds = '';
 
                     allSelectedIds.forEach(function (e) {
-                        demandIds += e + ',';
+                        resourceIds += e + ',';
                     });
 
                     $.post(
-                        '/admin/demand/Delete',
+                        '/admin/resource/Delete',
                         {
-                            demandIdString: demandIds,
+                            resourceIdString: resourceIds,
                         },
                         function (data) {
                             var isSuccessful = data.IsSuccessful;
@@ -309,11 +314,11 @@
                             if (isSuccessful) {
                                 alert('需求删除成功');
 
-                                $('.cbxDemand').each(function () {
+                                $('.cbxResource').each(function () {
                                     $(this).removeAttr('checked');
                                 });
                                 $('#cbxSelectAll').removeAttr("checked");
-                                hasAllDemandsSelected = false;
+                                hasAllResourcesSelected = false;
                                 window.location.href = window.location.href;
                             }
                             else {
@@ -372,10 +377,41 @@
             width: 100%;
         }
 
-            .toolbar > li img {
-                width: 24px;
-                height: 24px;
+            .toolbar > li {
+                margin-bottom: 5px;
+                font-weight: bold;
+                text-align: center;
             }
+
+                .toolbar > li img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .toolbar > li.button {
+                    font-size: 16px;
+                    border-radius: 5px;
+                    background: #9ed04d;
+                    color: white;
+                }
+
+                    .toolbar > li.button.btn-primary {
+                        background: #167efb;
+                    }
+
+                .toolbar > li input, .toolbar > li select {
+                    padding: 5px;
+                    border: solid 1px burlywood;
+                    /* height: 70%; */
+                    width: 120px;
+                    vertical-align: middle;
+                    opacity: 1;
+                    text-align:center;
+                }
+
+                    .toolbar > li input[type=text], .toolbar > li input[type=search] {
+                        width: 244px;
+                    }
     </style>
 </head>
 
@@ -385,7 +421,7 @@
         <span>位置：</span>
         <ul class="placeul">
             <li><a href="/admin/index/main/">首页</a></li>
-            <li><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">需求列表</a></li>
+            <li><a href="/admin/resource/manage?id=1">资源类型管理</a></li>
         </ul>
     </div>
 
@@ -394,30 +430,40 @@
         <div class="tools">
 
             <ul class="toolbar">
-                <li onclick="showDemandBonusPanel();" title="设置需求鼓励金给发布用户">
-                    <span>
-                        <img src="/areas/admin/content/images/currency_yuan_red.png" />
-                    </span>设置鼓励金
+                <li>
+                    &nbsp;筛选：
+                <select id="ddlResourceType" onchange="loadData();">
+
+                    <option value="">所有资源类型</option>
+
+                    @foreach (var item in Html.ResourceList())
+                    {
+                        if (item.Value == Model.ResourceTypeKey)
+                        {
+
+                            <option value="@item.Value" selected="selected">@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text </option>
+                        }
+                    }
+                </select>
                 </li>
-                <li onclick="showWechatBuyDemandFeePanel();" title="设置微信购买联系方式金额">
+                <li onclick="showResourceBonusPanel();" title="新增资源类型" @*style="float:right;"*@>
                     <span>
-                        <img src="/areas/admin/content/images/sale.png" />
-                    </span>设置微信购买金额
+                        <img src="/areas/admin/content/images/iadd.png" />
+                    </span>新增资源类型
                 </li>
-                <li onclick="UpdateDemandStatusAsComplete();" title="更新需求信息为已完成状态">
+                <li onclick="showResourceBonusPanel();" title="设置需求鼓励金给发布用户" @*style="float:right;"*@>
                     <span>
-                        <img src="/areas/admin/content/images/notification_done.png" />
-                    </span>需求已完成
+                        <img src="/areas/admin/content/images/t02.png" />
+                    </span>修改资源类型
                 </li>
-                <li onclick="showSubscriptionResult();" title="查看需求推送详情">
-                    <span>
-                        <img src="/areas/admin/content/images/feeds.png" />
-                    </span>查看推送详情
-                </li>
-                <li onclick="deleteDemand();" title="删除需求记录" style="float:right;">
+                <li onclick="deleteResourceType();" title="删除选中的资源类型" @*style="float:right;"*@>
                     <span>
                         <img src="/areas/admin/content/images/t03.png" />
-                    </span>删除需求
+                    </span>删除资源类型
                 </li>
             </ul>
         </div>
@@ -425,62 +471,40 @@
         <table class="tablelist">
             <thead>
                 <tr>
-                    <th>
-                        <input id="cbxSelectAll" onclick="selectAllDemands(this);" type="checkbox" value="" />
+                    <th width="40px;">
                     </th>
-                    <th>序号</th>
-                    @*<th>需求类型</th>*@
-                    <th>需求状态</th>
-                    <th style="min-width:250px;">标题</th>
-                    <th>发布者</th>
-                    <th>地区</th>
-                    <th>发布时间</th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>微信金额</th>
-                    <th>鼓励金额</th>
+                    @*<th>类型编号</th>*@
+                    <th>资源分类</th>
+                    <th>类型名称</th>
+                    <th>类型描述</th>
+                    <th>显示顺序</th>
                 </tr>
             </thead>
             <tbody>
-                @if (Model.Demands != null && Model.Demands.Count > 0)
+                @if (Model.ResourceTypes != null && Model.ResourceTypes.Count > 0)
                 {
-                    foreach (var item in Model.Demands)
+                    foreach (var item in Model.ResourceTypes)
                     {
                         <tr>
                             <td>
-                                <input onchange="onCbxDemandSelectChanged(this);" class="cbxDemand" type="checkbox" value="@item.Id" />
-                            </td>
-                            <td>
-                                <span>@item.RowNumber</span>
+                                <input onchange="onCbxResourceSelectChanged(this);" class="cbxResource" type="checkbox" value="@item.Id" />
                             </td>
                             @*<td>
-                                    <span>@item.ResourceTypeName</span>
+                                    <span>@item.Id</span>
                                 </td>*@
                             <td>
                                 <span>
-                                    @item.StatusValueString
+                                    @item.ResourceTypeName
                                 </span>
                             </td>
                             <td>
-                                <a href="/demand/show/@item.Id" target="_blank" style="color: #3858FA;">@item.Title</a>
+                                <span>@item.Name</span>
                             </td>
-                            <td>@item.UserName</td>
+                            <td><span>@item.Description</span></td>
+
                             <td>
-                                @Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(item.Province, item.City, item.Area)
+                                <span>@item.DisplayOrder</span>
                             </td>
-                            <td>
-                                <span>@item.InsertTime.ToString("yyyy-MM-dd")</span>
-                            </td>
-                            <td>
-                                <span>@item.StartTime.Value.ToString("yyyy-MM-dd")</span>
-                            </td>
-                            <td>
-                                <span>@item.EndTime.Value.ToString("yyyy-MM-dd")</span>
-                            </td>
-                            <td>
-                                @item.WeixinBuyFee 元
-                            </td>
-                            <td>@item.DemandBonus 元</td>
                         </tr>
                     }
                 }
@@ -500,12 +524,12 @@
                         //上一页
                         if (Model.PageIndex > 1)
                         {
-                            <span><a href="/admin/demand/index?id=@(Model.PageIndex - 1)&resourceType=@Model.ResourceType" class="prv">上一页</a></span>
+                            <span><a href="/admin/resource/manage?id=@(Model.PageIndex - 1)&resourceTypeKey=@Model.ResourceTypeKey" class="prv">上一页</a></span>
                         }
                         //首页
                         if (Model.PageStep < Model.PageIndex)
                         {
-                            <span><a href="/admin/demand/index?id=1&resourceType=@Model.ResourceType">首页</a></span>
+                            <span><a href="/admin/resource/manage?id=1&resourceTypeKey=@Model.ResourceTypeKey">首页</a></span>
                         }
                         //分页
                         for (int i = step; i < step + Model.PageStep; i++)
@@ -514,23 +538,23 @@
                             {
                                 if (i == Model.PageIndex)
                                 {
-                                    <span><a href="/admin/demand/index?id=@i&&resourceType=@Model.ResourceType" class="no">@i</a></span>
+                                    <span><a href="/admin/resource/manage?id=@i&&resourceTypeKey=@Model.ResourceTypeKey" class="no">@i</a></span>
                                 }
                                 else
                                 {
-                                    <span><a href="/admin/demand/index?id=@i&resourceType=@Model.ResourceType">@i</a></span>
+                                    <span><a href="/admin/resource/manage?id=@i&resourceTypeKey=@Model.ResourceTypeKey">@i</a></span>
                                 }
                             }
                         }
                         //末页
                         if (step + Model.PageStep <= Model.PageCount)
                         {
-                            <span><a href="/admin/demand/index?id=@(Model.PageCount)&resourceType=@Model.ResourceType">末页</a></span>
+                            <span><a href="/admin/resource/manage?id=@(Model.PageCount)&resourceTypeKey=@Model.ResourceTypeKey">末页</a></span>
                         }
                         //下一页
                         if (Model.PageIndex < Model.PageCount)
                         {
-                            <span><a href="/admin/demand/index?id=@(Model.PageIndex + 1)&resourceType=@Model.ResourceType" class="next">下一页</a></span>
+                            <span><a href="/admin/resource/manage?id=@(Model.PageIndex + 1)&resourceTypeKey=@Model.ResourceTypeKey" class="next">下一页</a></span>
                         }
                     }
                 }
@@ -548,7 +572,7 @@
 
     </div>
 
-    <div class="tip" id="demandBonusPanel">
+    <div class="tip" id="resourceBonusPanel">
         <div class="tiptop">
             <span>设置需求发布鼓励金</span><a></a>
         </div>
@@ -571,7 +595,7 @@
             </div>
         </div>
     </div>
-    <div class="tip" id="wechatBuyDemandFeePanel">
+    <div class="tip" id="wechatBuyResourceFeePanel">
         <div class="tiptop">
             <span>设置微信购买需求联系方式金额</span><a></a>
         </div>
@@ -580,12 +604,12 @@
                 <ul class="forminfo">
                     <li>
                         <label>购买金额<b>*</b></label>
-                        <input id="txtWeChatBuyDemandFee" name="txtWeChatBuyDemandFee" type="number" min="0"
+                        <input id="txtWeChatBuyResourceFee" name="txtWeChatBuyResourceFee" type="number" min="0"
                                class="scinput" placeholder="请输入购买金额" onkeyup="validateInput(this)" onafterpaste="validateInput(this)" />
                     </li>
                     <li>
                         <label>&nbsp;</label>
-                        <input type="button" class="btn submitbtn" value="立即设置" onclick="doBtnSetWeChatBuyDemandFeeClickEvent();" />
+                        <input type="button" class="btn submitbtn" value="立即设置" onclick="doBtnSetWeChatBuyResourceFeeClickEvent();" />
                     </li>
                 </ul>
             </div>

@@ -179,7 +179,7 @@
     <Compile Include="Areas\Admin\Models\DemandModel.cs" />
     <Compile Include="Areas\Admin\Models\FinanceModel.cs" />
     <Compile Include="Areas\Admin\Models\MemberViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ResourceModel.cs" />
+    <Compile Include="Areas\Admin\Models\ResourceMiscModel.cs" />
     <Compile Include="Areas\Admin\Models\Resource\AjaxResponse.cs" />
     <Compile Include="Areas\Admin\Models\SinglePageModel.cs" />
     <Compile Include="Areas\Admin\Models\SiteBIViewModel.cs" />

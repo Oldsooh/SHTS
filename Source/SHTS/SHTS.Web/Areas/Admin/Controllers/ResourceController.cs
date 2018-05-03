@@ -260,20 +260,33 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
         #region 资源类型设置
 
-        public ActionResult Manage()
+        public ActionResult Manage(string resourceTypeKey="", int id=1)
         {
             ResourceMiscModel model = new ResourceMiscModel();
 
-            model.SpaceTypeList.AddRange(miscManager.GetSpaceTypeList());
-            model.ActorTypeList.AddRange(miscManager.GetActorTypeList());
-            model.EquipTypeList.AddRange(miscManager.GetEquipTypeList());
-            model.OtherTypeList.AddRange(miscManager.GetOtherTypeList());
+            var totalCount = 0;
+            int pageSize = 15;
+            model.ResourceTypes.AddRange(miscManager.GetResourceTypes(resourceTypeKey, id, pageSize, out totalCount));
+
+            model.ResourceTypeKey = resourceTypeKey;
+            model.PageIndex = id;//当前页数
+            model.PageSize = 15;//每页显示多少条
+            model.PageStep = 10;//每页显示多少页码
+            model.AllCount = totalCount;//总条数
+            if (model.AllCount % model.PageSize == 0)
+            {
+                model.PageCount = model.AllCount / model.PageSize;
+            }
+            else
+            {
+                model.PageCount = model.AllCount / model.PageSize + 1;
+            }
 
             return View(model);
         }
-
+        
         [HttpPost]
-        public ActionResult CreateNewType(string typeName, string name, string description, int displayOrder = 99)
+        public ActionResult CreateOrUpdateType(string resourceTypeKey, string name, string description, bool markForDelete, int displayOrder = 99, int typeId = -1)
         {
             AjaxResponse response = new AjaxResponse();
 
@@ -286,40 +299,14 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    miscManager.CreateNewResourceType(typeName, name, description, displayOrder);
+                    miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, name, description, displayOrder);
                 }
             }
             catch (Exception ex)
             {
                 response.Status = -1;
-                response.Message = "创建资源类型失败";
-                LogService.Log("创建资源类型失败", ex.ToString());
-            }
-            return Json(response, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult UpdateType(string typeName, int typeId, string name, string description, bool markForDelete, int displayOrder = 99)
-        {
-            AjaxResponse response = new AjaxResponse();
-
-            try
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    response.Status = -1;
-                    response.Message = "请填写类型名称";
-                }
-                else
-                {
-                    miscManager.CreateNewResourceType(typeName, name, description, displayOrder);
-                }
-            }
-            catch (Exception ex)
-            {
-                response.Status = -1;
-                response.Message = "更新资源类型失败";
-                LogService.Log("更新资源类型失败", ex.ToString());
+                response.Message = "创建或更新资源类型失败";
+                LogService.Log("创建或更新资源类型失败", ex.ToString());
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }

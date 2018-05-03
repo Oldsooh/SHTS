@@ -113,27 +113,154 @@ namespace Witbird.SHTS.BLL.Managers
         }
         #endregion
 
-        #region 更新类型配置
+        #region 资源类型配置
 
-        public void CreateNewResourceType(string typeName, string name, string description, int displayOrder)
+        public List<ResourceType> GetResourceTypes(string resourceTypeKey, int pageIndex, int pageSize, out int totalCount)
         {
-            switch(typeName)
+            var resourceTypes = new List<ResourceType>();
+            totalCount = 0;
+
+            // selects all types
+            if (string.IsNullOrWhiteSpace(resourceTypeKey))
             {
-                case "ActorType":
-                    var actorType = new ActorType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
-                    InsertActorType(actorType);
+                var allTypes = context.SpaceTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                {
+                    ResourceTypeKey = "1",
+                    ResourceTypeName = "活动场地",
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    DisplayOrder = item.DisplayOrder,
+                    MarkForDelete = item.MarkForDelete
+                }).Concat(context.ActorTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                {
+                    ResourceTypeKey = "2",
+                    ResourceTypeName = "演艺人员",
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    DisplayOrder = item.DisplayOrder,
+                    MarkForDelete = item.MarkForDelete
+                })).Concat(context.EquipTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                {
+                    ResourceTypeKey = "3",
+                    ResourceTypeName = "活动设备",
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    DisplayOrder = item.DisplayOrder,
+                    MarkForDelete = item.MarkForDelete
+                })).Concat(context.OtherTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                {
+                    ResourceTypeKey = "4",
+                    ResourceTypeName = "其他资源",
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    DisplayOrder = item.DisplayOrder,
+                    MarkForDelete = item.MarkForDelete
+                }));
+
+                totalCount = allTypes.Count();
+                resourceTypes.AddRange(allTypes.Skip((pageIndex - 1) * pageSize).Take(pageSize));
+            }
+            else
+            {
+                switch (resourceTypeKey)
+                {
+                    case "1":
+                        totalCount = context.SpaceTypes.Where(item => !item.MarkForDelete).Count();
+                        resourceTypes.AddRange(context.SpaceTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                        {
+                            ResourceTypeKey = "2",
+                            ResourceTypeName = "活动场地",
+                            Id = item.Id,
+                            Name = item.Name,
+                            Description = item.Description,
+                            DisplayOrder = item.DisplayOrder,
+                            MarkForDelete = item.MarkForDelete
+                        }).Skip((pageIndex - 1) * pageSize).Take(pageSize));
+                        break;
+                    case "2":
+                        totalCount = context.ActorTypes.Where(item => !item.MarkForDelete).Count();
+                        resourceTypes.AddRange(context.ActorTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                        {
+                            ResourceTypeKey = "1",
+                            ResourceTypeName = "演艺人员",
+                            Id = item.Id,
+                            Name = item.Name,
+                            Description = item.Description,
+                            DisplayOrder = item.DisplayOrder,
+                            MarkForDelete = item.MarkForDelete
+                        }).Skip((pageIndex - 1) * pageSize).Take(pageSize));
+                        break;
+                    case "3":
+                        totalCount = context.EquipTypes.Where(item => !item.MarkForDelete).Count();
+                        resourceTypes.AddRange(context.EquipTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                        {
+                            ResourceTypeKey = "3",
+                            ResourceTypeName = "活动设备",
+                            Id = item.Id,
+                            Name = item.Name,
+                            Description = item.Description,
+                            DisplayOrder = item.DisplayOrder,
+                            MarkForDelete = item.MarkForDelete
+                        }).Skip((pageIndex - 1) * pageSize).Take(pageSize));
+                        break;
+                    case "4":
+                        totalCount = context.OtherTypes.Where(item => !item.MarkForDelete).Count();
+                        resourceTypes.AddRange(context.OtherTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                        {
+                            ResourceTypeKey = "4",
+                            ResourceTypeName = "其他资源",
+                            Id = item.Id,
+                            Name = item.Name,
+                            Description = item.Description,
+                            DisplayOrder = item.DisplayOrder,
+                            MarkForDelete = item.MarkForDelete
+                        }).Skip((pageIndex - 1) * pageSize).Take(pageSize));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return resourceTypes;
+        }
+
+        public void CreateOrUpdateResourceType(string resourceTypeKey, int typeId, string name, string description, int displayOrder)
+        {
+            var isUpdate = typeId > 0;
+            switch (resourceTypeKey)
+            {
+                case "1":
+                    var spaceType = new SpaceType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    if (isUpdate)
+                        UpdateSpaceType(spaceType);
+                    else
+                        InsertSpaceType(spaceType);
                     break;
-                case "SpaceType":
-                    var spaceType = new SpaceType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
-                    InsertSpaceType(spaceType);
+                case "2":
+                    var actorType = new ActorType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+
+                    if (isUpdate)
+                        UpdateActorType(actorType);
+                    else
+                        InsertActorType(actorType);
                     break;
-                case "EquipType":
-                    var equipType = new EquipType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
-                    InsertEquipType(equipType);
+                case "3":
+                    var equipType = new EquipType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    if (isUpdate)
+                        UpdateEquipType(equipType);
+                    else
+                        InsertEquipType(equipType);
                     break;
-                case "OtherType":
-                    var otherType = new OtherType() { Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
-                    InsertOtherType(otherType);
+                case "4":
+                    var otherType = new OtherType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
+                    if (isUpdate)
+                        UpdateOtherType(otherType);
+                    else
+                        InsertOtherType(otherType);
                     break;
                 default:
                     break;
@@ -141,13 +268,13 @@ namespace Witbird.SHTS.BLL.Managers
             }
         }
 
-        public void InsertActorType(ActorType type)
+        private void InsertActorType(ActorType type)
         {
             context.ActorTypes.InsertOnSubmit(type);
             context.SubmitChanges();
         }
 
-        public void UpdateActorType(ActorType type)
+        private void UpdateActorType(ActorType type)
         {
             var originalType = context.ActorTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
@@ -161,13 +288,13 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        public void InsertSpaceType(SpaceType type)
+        private void InsertSpaceType(SpaceType type)
         {
             context.SpaceTypes.InsertOnSubmit(type);
             context.SubmitChanges();
         }
 
-        public void UpdateSpaceType(SpaceType type)
+        private void UpdateSpaceType(SpaceType type)
         {
             var originalType = context.SpaceTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
@@ -181,13 +308,13 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        public void InsertEquipType(EquipType type)
+        private void InsertEquipType(EquipType type)
         {
             context.EquipTypes.InsertOnSubmit(type);
             context.SubmitChanges();
         }
 
-        public void UpdateEquipType(EquipType type)
+        private void UpdateEquipType(EquipType type)
         {
             var originalType = context.EquipTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
@@ -201,13 +328,13 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        public void InsertOtherType(OtherType type)
+        private void InsertOtherType(OtherType type)
         {
             context.OtherTypes.InsertOnSubmit(type);
             context.SubmitChanges();
         }
 
-        public void UpdateOtherType(OtherType type)
+        private void UpdateOtherType(OtherType type)
         {
             var originalType = context.OtherTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)

@@ -78,6 +78,7 @@
     <Compile Include="Daos\UserDao.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="New\Resource.cs" />
+    <Compile Include="New\ResourceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ActivityTypeRespoitory.cs" />
     <Compile Include="Repositories\AdminRoleRepository.cs" />
