@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Witbird.SHTS.DAL;
 using Witbird.SHTS.DAL.New;
@@ -12,7 +13,7 @@ namespace Witbird.SHTS.BLL.Managers
         #region 获取杂项列表
         public List<SpaceType> GetSpaceTypeList()
         {
-            return context.SpaceTypes.Where(item => item != null && !item.MarkForDelete).ToList();
+            return context.SpaceTypes.Where(item => item != null && !item.MarkForDelete).OrderBy(x => x.DisplayOrder).ToList();
         }
 
         public List<SpaceFeature> GetSpaceFeatureList()
@@ -47,12 +48,12 @@ namespace Witbird.SHTS.BLL.Managers
 
         public List<EquipType> GetEquipTypeList()
         {
-            return context.EquipTypes.Where(item => item != null && !item.MarkForDelete).ToList();
+            return context.EquipTypes.Where(item => item != null && !item.MarkForDelete).OrderBy(x => x.DisplayOrder).ToList();
         }
 
         public List<OtherType> GetOtherTypeList()
         {
-            return context.OtherTypes.Where(item => item != null && !item.MarkForDelete).ToList();
+            return context.OtherTypes.Where(item => item != null && !item.MarkForDelete).OrderBy(x => x.DisplayOrder).ToList();
         }
 
         public List<BudgetFilter> GetBudgetFilters()
@@ -228,7 +229,7 @@ namespace Witbird.SHTS.BLL.Managers
             return resourceTypes;
         }
 
-        public void CreateOrUpdateResourceType(string resourceTypeKey, int typeId, string name, string description, int displayOrder)
+        public void CreateOrUpdateResourceType(string resourceTypeKey, int typeId, string name, string description, int displayOrder, bool isDelete)
         {
             var isUpdate = typeId > 0;
             switch (resourceTypeKey)
@@ -236,7 +237,7 @@ namespace Witbird.SHTS.BLL.Managers
                 case "1":
                     var spaceType = new SpaceType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
                     if (isUpdate)
-                        UpdateSpaceType(spaceType);
+                        UpdateSpaceType(spaceType, isDelete);
                     else
                         InsertSpaceType(spaceType);
                     break;
@@ -244,21 +245,21 @@ namespace Witbird.SHTS.BLL.Managers
                     var actorType = new ActorType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
 
                     if (isUpdate)
-                        UpdateActorType(actorType);
+                        UpdateActorType(actorType, isDelete);
                     else
                         InsertActorType(actorType);
                     break;
                 case "3":
                     var equipType = new EquipType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
                     if (isUpdate)
-                        UpdateEquipType(equipType);
+                        UpdateEquipType(equipType, isDelete);
                     else
                         InsertEquipType(equipType);
                     break;
                 case "4":
                     var otherType = new OtherType() { Id = typeId, Description = description, DisplayOrder = displayOrder, MarkForDelete = false, Name = name };
                     if (isUpdate)
-                        UpdateOtherType(otherType);
+                        UpdateOtherType(otherType, isDelete);
                     else
                         InsertOtherType(otherType);
                     break;
@@ -268,21 +269,89 @@ namespace Witbird.SHTS.BLL.Managers
             }
         }
 
+        public ResourceType GetResourceById(string resourceTypeKey, int typeId)
+        {
+            ResourceType resourceType = null;
+            switch (resourceTypeKey)
+            {
+                case "1":
+                    var spaceType = GetSpaceTypeById(typeId);
+                    resourceType = new ResourceType()
+                    {
+                        Description = spaceType.Description,
+                        DisplayOrder = spaceType.DisplayOrder,
+                        Id = spaceType.Id,
+                        MarkForDelete = spaceType.MarkForDelete,
+                        Name = spaceType.Name,
+                        ResourceTypeKey = resourceTypeKey,
+                        ResourceTypeName = "活动场地"
+                    };
+                    break;
+                case "2":
+                    var actorType = GetActorTypeById(typeId);
+                    resourceType = new ResourceType()
+                    {
+                        Description = actorType.Description,
+                        DisplayOrder = actorType.DisplayOrder,
+                        Id = actorType.Id,
+                        MarkForDelete = actorType.MarkForDelete,
+                        Name = actorType.Name,
+                        ResourceTypeKey = resourceTypeKey,
+                        ResourceTypeName = "演艺人员"
+                    };
+                    break;
+                case "3":
+                    var equipType = GetEquipTypeById(typeId);
+                    resourceType = new ResourceType()
+                    {
+                        Description = equipType.Description,
+                        DisplayOrder = equipType.DisplayOrder,
+                        Id = equipType.Id,
+                        MarkForDelete = equipType.MarkForDelete,
+                        Name = equipType.Name,
+                        ResourceTypeKey = resourceTypeKey,
+                        ResourceTypeName = "活动设备"
+                    };
+                    break;
+                case "4":
+                    var otherType = GetOtherTypeById(typeId);
+                    resourceType = new ResourceType()
+                    {
+                        Description = otherType.Description,
+                        DisplayOrder = otherType.DisplayOrder,
+                        Id = otherType.Id,
+                        MarkForDelete = otherType.MarkForDelete,
+                        Name = otherType.Name,
+                        ResourceTypeKey = resourceTypeKey,
+                        ResourceTypeName = "其他资源"
+                    };
+                    break;
+                default:
+                    throw new Exception("资源类型分类不正确");
+            }
+
+            return resourceType;
+        }
+
         private void InsertActorType(ActorType type)
         {
             context.ActorTypes.InsertOnSubmit(type);
             context.SubmitChanges();
         }
 
-        private void UpdateActorType(ActorType type)
+        private void UpdateActorType(ActorType type, bool isDelete = false)
         {
             var originalType = context.ActorTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
             {
-                originalType.Description = type.Description;
-                originalType.DisplayOrder = type.DisplayOrder;
-                originalType.MarkForDelete = type.MarkForDelete;
-                originalType.Name = type.Name;
+                if (!isDelete)
+                {
+                    originalType.Description = type.Description;
+                    originalType.DisplayOrder = type.DisplayOrder;
+                    originalType.Name = type.Name;
+                }
+
+                originalType.MarkForDelete = isDelete;
             }
 
             context.SubmitChanges();
@@ -294,15 +363,19 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        private void UpdateSpaceType(SpaceType type)
+        private void UpdateSpaceType(SpaceType type, bool isDelete = false)
         {
             var originalType = context.SpaceTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
             {
-                originalType.Description = type.Description;
-                originalType.DisplayOrder = type.DisplayOrder;
-                originalType.MarkForDelete = type.MarkForDelete;
-                originalType.Name = type.Name;
+                if (!isDelete)
+                {
+                    originalType.Description = type.Description;
+                    originalType.DisplayOrder = type.DisplayOrder;
+                    originalType.Name = type.Name;
+                }
+
+                originalType.MarkForDelete = isDelete;
             }
 
             context.SubmitChanges();
@@ -314,15 +387,19 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        private void UpdateEquipType(EquipType type)
+        private void UpdateEquipType(EquipType type, bool isDelete = false)
         {
             var originalType = context.EquipTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
             {
-                originalType.Description = type.Description;
-                originalType.DisplayOrder = type.DisplayOrder;
-                originalType.MarkForDelete = type.MarkForDelete;
-                originalType.Name = type.Name;
+                if (!isDelete)
+                {
+                    originalType.Description = type.Description;
+                    originalType.DisplayOrder = type.DisplayOrder;
+                    originalType.Name = type.Name;
+                }
+
+                originalType.MarkForDelete = isDelete;
             }
 
             context.SubmitChanges();
@@ -334,15 +411,19 @@ namespace Witbird.SHTS.BLL.Managers
             context.SubmitChanges();
         }
 
-        private void UpdateOtherType(OtherType type)
+        private void UpdateOtherType(OtherType type, bool isDelete = false)
         {
             var originalType = context.OtherTypes.FirstOrDefault(item => item.Id == type.Id);
             if (originalType != null)
             {
-                originalType.Description = type.Description;
-                originalType.DisplayOrder = type.DisplayOrder;
-                originalType.MarkForDelete = type.MarkForDelete;
-                originalType.Name = type.Name;
+                if (!isDelete)
+                {
+                    originalType.Description = type.Description;
+                    originalType.DisplayOrder = type.DisplayOrder;
+                    originalType.Name = type.Name;
+                }
+
+                originalType.MarkForDelete = isDelete;
             }
 
             context.SubmitChanges();

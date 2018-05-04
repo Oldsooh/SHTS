@@ -9,126 +9,55 @@ namespace Witbird.SHTS.Web.Public
     {
         static MiscManager manager = new MiscManager();
 
-        static List<SpaceType> spaceTypeList = manager.GetSpaceTypeList();
+
+        public static void RefreshResourceTypesCache()
+        {
+            SpaceTypeList = manager.GetSpaceTypeList();
+            ActorTypeList = manager.GetActorTypeList();
+            EquipTypeList = manager.GetEquipTypeList();
+            OtherTypeList = manager.GetOtherTypeList();
+        }
 
         /// <summary>
         /// 场地类型
         /// </summary>
-        public static List<SpaceType> SpaceTypeList
-        {
-            get
-            {
-                return spaceTypeList;
-            }
-        }
-
-        static List<SpaceFeature> spaceFeatureList = manager.GetSpaceFeatureList();
+        public static List<SpaceType> SpaceTypeList { get; private set; } = manager.GetSpaceTypeList();
         /// <summary>
         /// 场地特点
         /// </summary>
-        public static List<SpaceFeature> SpaceFeatureList
-        {
-            get
-            {
-                return spaceFeatureList;
-            }
-        }
-
-        static List<SpaceFacility> spaceFacilityList = manager.GetSpaceFacilityList();
+        public static List<SpaceFeature> SpaceFeatureList { get; } = manager.GetSpaceFeatureList();
         /// <summary>
         /// 场地设施
         /// </summary>
-        public static List<SpaceFacility> SpaceFacilityList
-        {
-            get
-            {
-                return spaceFacilityList;
-            }
-        }
-
-        static List<SpaceSize> spaceSizeList = manager.GetSpaceSizeList();
+        public static List<SpaceFacility> SpaceFacilityList { get; } = manager.GetSpaceFacilityList();
         /// <summary>
         /// 场地面积
         /// </summary>
-        public static List<SpaceSize> SpaceSizeList
-        {
-            get
-            {
-                return spaceSizeList;
-            }
-        }
-
-        static List<SpacePeople> spacePeopleList = manager.GetSpacePeopleList();
+        public static List<SpaceSize> SpaceSizeList { get; } = manager.GetSpaceSizeList();
         /// <summary>
         /// 场地人数
         /// </summary>
-        public static List<SpacePeople> SpacePeopleList
-        {
-            get
-            {
-                return spacePeopleList;
-            }
-        }
-
-        static List<ActorType> actorTypeList = manager.GetActorTypeList();
+        public static List<SpacePeople> SpacePeopleList { get; } = manager.GetSpacePeopleList();
         /// <summary>
         /// 演员工作
         /// </summary>
-        public static List<ActorType> ActorTypeList
-        {
-            get
-            {
-                return actorTypeList;
-            }
-        }
-
-        static List<ActorFrom> actorFromList = manager.GetActorFromList();
+        public static List<ActorType> ActorTypeList { get; private set; } = manager.GetActorTypeList();
         /// <summary>
         /// 演员组织类别
         /// </summary>
-        public static List<ActorFrom> ActorFromList
-        {
-            get
-            {
-                return actorFromList;
-            }
-        }
-
-        static List<ActorSex> actorSexList = manager.GetActorSexList();
+        public static List<ActorFrom> ActorFromList { get; } = manager.GetActorFromList();
         /// <summary>
         /// 演员性别
         /// </summary>
-        public static List<ActorSex> ActorSexList
-        {
-            get
-            {
-                return actorSexList;
-            }
-        }
-
-        static List<EquipType> equipTypeList = manager.GetEquipTypeList();
+        public static List<ActorSex> ActorSexList { get; } = manager.GetActorSexList();
         /// <summary>
         /// 设备类别
         /// </summary>
-        public static List<EquipType> EquipTypeList
-        {
-            get
-            {
-                return equipTypeList;
-            }
-        }
-
-        static List<OtherType> otherTypeList = manager.GetOtherTypeList();
+        public static List<EquipType> EquipTypeList { get; private set; } = manager.GetEquipTypeList();
         /// <summary>
         /// 其他类别
         /// </summary>
-        public static List<OtherType> OtherTypeList
-        {
-            get
-            {
-                return otherTypeList;
-            }
-        }
+        public static List<OtherType> OtherTypeList { get; private set; } = manager.GetOtherTypeList();
 
         /// <summary>
         /// 其他类别
@@ -140,7 +69,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return spaceTypeList.FirstOrDefault(t => t.Id == x);
+                return SpaceTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -153,7 +82,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return spaceFeatureList.FirstOrDefault(t => t.Id == x);
+                return SpaceFeatureList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -166,7 +95,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return spaceFacilityList.FirstOrDefault(t => t.Id == x);
+                return SpaceFacilityList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -178,7 +107,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return spaceSizeList.FirstOrDefault(t => t.Id == x);
+                return SpaceSizeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -190,7 +119,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return spacePeopleList.FirstOrDefault(t => t.Id == x);
+                return SpacePeopleList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -202,7 +131,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return actorTypeList.FirstOrDefault(t => t.Id == x);
+                return ActorTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -214,7 +143,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return equipTypeList.FirstOrDefault(t => t.Id == x);
+                return EquipTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -227,7 +156,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return otherTypeList.FirstOrDefault(t => t.Id == x);
+                return OtherTypeList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -240,7 +169,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return actorFromList.FirstOrDefault(t => t.Id == x);
+                return ActorFromList.FirstOrDefault(t => t.Id == x);
             }
             else
             {
@@ -253,7 +182,7 @@ namespace Witbird.SHTS.Web.Public
             int x = 0;
             if (int.TryParse(id, out x))
             {
-                return actorSexList.FirstOrDefault(t => t.Id == x);
+                return ActorSexList.FirstOrDefault(t => t.Id == x);
             }
             else
             {

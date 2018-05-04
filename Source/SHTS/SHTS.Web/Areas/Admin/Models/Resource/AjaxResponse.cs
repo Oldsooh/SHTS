@@ -3,7 +3,7 @@
     /// <summary>
     /// Ajax请求的返回结果
     /// </summary>
-    public class AjaxResponse
+    public class AjaxResponse<T>
     {
         /// <summary>
         /// 状态码
@@ -19,6 +19,12 @@
         /// <summary>
         /// 内容
         /// </summary>
-        public string Data { get; set; }
+        public T Data { get; set; }
     }
+
+    public class AjaxResponse :AjaxResponse<string>
+    {
+
+    }
+
 }

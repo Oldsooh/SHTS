@@ -39,31 +39,85 @@
             });
         });
 
-        function showResourceBonusPanel() {
+        function btnUpdateResourceTypeClick() {
+
             var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
+                alert('请选择需要修改的类型记录！');
                 return false;
             }
+            else if (allSelectedIds.length > 1) {
+                alert('修改时只能选中一条记录进行修改，请不要勾选不需要修改的类型记录！');
+                return false;
+            }
+
+            showResourceTypePanel(allSelectedIds[0]);
+        }
+
+        function btnCreateResourceTypeClick() {
+            showResourceTypePanel({ 'Id': -1, 'ResourceTypeKey': -1 });
+        }
+
+        function createOrUpdateResourceType() {
+            $.post(
+                '/admin/resource/CreateOrUpdateType',
+                {
+                    typeId: $('#typeIdForUpdate').val(),
+                    resourceTypeKey: $('#ddlResourceTypeForUpdate').val(),
+                    name: $('#typeNameForUpdate').val(),
+                    description: $('#typeDescForUpdate').val(),
+                    displayOrder: $('#displayOrderForUpdate').val()
+                },
+                function (response) {
+                    if (response && response.Status == 0) {
+                        alert('保存成功');
+                        window.location.href = window.location.href;
+                    }
+                    else {
+                        alert('保存失败！请稍后重试');
+                        return false;
+                    }
+                });
+        }
+
+        function showResourceTypePanel(type) {
+
+            // clear data
+            $('#typeIdForUpdate').val('');
+            $('#ddlResourceTypeForUpdate').val('');
+            $('#typeNameForUpdate').val('');
+            $('#typeDescForUpdate').val('');
+            $('#displayOrderForUpdate').val('');
+
+            var typeId = type.Id;
+            var resourceTypeKey = type.ResourceTypeKey
+            if (typeId != -1) {
+                var url = "/admin/resource/SelectResourceType?resourceTypeKey=" + resourceTypeKey + "&typeId=" + typeId;
+                $.get(url, function (response) {
+                    if (response.Status === 0) {
+                        var typeDetail = response.Data;
+                        $('#typeIdForUpdate').val(typeDetail.Id);
+                        $('#ddlResourceTypeForUpdate').val(typeDetail.ResourceTypeKey);
+                        $('#typeNameForUpdate').val(typeDetail.Name);
+                        $('#typeDescForUpdate').val(typeDetail.Description);
+                        $('#displayOrderForUpdate').val(typeDetail.DisplayOrder);
+
+                        $("#resourceUpdatePanel").fadeIn(200);
+                    }
+                    else {
+                        alert('加载资源类型失败，请稍后重试');
+                        return false;
+                    }
+                });
+            }
             else {
-                $("#resourceBonusPanel").fadeIn(200);
+                $("#resourceUpdatePanel").fadeIn(200);
             }
         }
 
         function loadData() {
             var resourceTypeKey = $('#ddlResourceType').val();
             window.location = '/admin/resource/manage?resourceTypeKey=' + resourceTypeKey;
-        }
-
-        function showWechatBuyResourceFeePanel() {
-            var allSelectedIds = getAllSelectedResourcesID();
-            if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
-                return false;
-            }
-            else {
-                $("#wechatBuyResourceFeePanel").fadeIn(200);
-            }
         }
 
         var hasAllResourcesSelected = false;
@@ -100,229 +154,42 @@
             var ids = new Array();
             $('.cbxResource').each(function () {
                 if ($(this).attr("checked") == true) {
-                    ids.push($(this).val());
+                    ids.push({ 'Id': $(this).val(), 'ResourceTypeKey': $(this).attr("typekey") });
                 }
             });
 
             return ids;
         }
 
-        function doBtnSetWeChatBuyResourceFeeClickEvent() {
-            var allSelectedIds = getAllSelectedResourcesID();
-            //allSelectedIds.forEach(function (item) {
-            //    alert(item);
-            //});
-            var fee = $('#txtWeChatBuyResourceFee').val();
-            if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
-                return false;
-            }
-            else if (checkValidFee(fee)) {
-                if (confirm('您确认需要设置' + allSelectedIds.length + '条需求信息吗?')) {
-                    // Invoke service
-                    var resourceIds = '';
-
-                    allSelectedIds.forEach(function (e) {
-                        resourceIds += e + ',';
-                    });
-
-                    $.post(
-                        '/admin/resource/UpdateResourceWeixinBuyFee',
-                        {
-                            resourceIds: resourceIds,
-                            weixinBuyFee: fee
-                        },
-                        function (data) {
-                            if (data.IsSuccessFul) {
-                                alert('设置成功！');
-                                $('.cbxResource').each(function () {
-                                    $(this).removeAttr('checked');
-                                });
-                                $('#cbxSelectAll').removeAttr("checked");
-                                hasAllResourcesSelected = false;
-                                window.location = window.location;
-                            }
-                            else {
-                                alert('设置微信购买金额失败！');
-                            }
-                        });
-                }
-            }
-            else {
-                // do nothing
-            }
-        }
-
-        function checkValidFee(fee) {
-            if (fee == '' || fee <= 0) {
-                alert('请输入正确的金额');
-                return false;
-            }
-
-            return true;
-        }
-
-        function validateInput(input) {
-            var value = $(input).val();
-            if (value.length == 1) {
-                $(input).val(value.replace(/[^1-9]/g, ''));
-            }
-            else {
-                $(input).val(value.replace(/\D/g, ''));
-            }
-        }
-
-        function rechargeUserBalance() {
-            var amount = $('#amountString').val();
-            var allSelectedIds = getAllSelectedResourcesID();
-
-            if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
-                return false;
-            }
-            else if (checkValidFee(amount)) {
-                if (confirm('您确认要奖励' + amount + '元给' + allSelectedIds.length + '条需求信息的发布者吗?')) {
-                    // Invoke service
-                    var resourceIds = '';
-
-                    allSelectedIds.forEach(function (e) {
-                        resourceIds += e + ',';
-                    });
-
-                    $.post(
-                        '/admin/finance/recharge',
-                        {
-                            resourceIdString: resourceIds,
-                            amountString: amount
-                        },
-                        function (data) {
-                            var isSuccessful = data.IsSuccessful;
-                            var errorMessage = data.ErrorMessage;
-                            var failedResources = data.FailedResources;
-                            var successResources = data.SuccessResources;
-
-                            if (isSuccessful) {
-                                if (successResources.length > 0 && failedResources.length > 0) {
-                                    alert('奖励金成功发放给' + successResources.length + '位需求发布用户, 有' + failedResources.length + '位用户发放未成功。请刷新页面后再试。');
-                                }
-                                else {
-                                    alert('奖励金成功发放给' + successResources.length + '位需求发布用户');
-                                }
-
-                                $('.cbxResource').each(function () {
-                                    $(this).removeAttr('checked');
-                                });
-                                $('#cbxSelectAll').removeAttr("checked");
-                                hasAllResourcesSelected = false;
-                                window.location.href = window.location.href;
-                            }
-                        });
-                }
-            }
-            else {
-                // do nothing
-            }
-        }
-
-        function UpdateResourceStatusAsComplete() {
-            var allSelectedIds = getAllSelectedResourcesID();
-            if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
-                return false;
-            }
-            else {
-                if (confirm('您确认所选择的需求都已经找到资源提供商了吗？该操作不可恢复！')) {
-                    // Invoke service
-                    var resourceIds = '';
-
-                    allSelectedIds.forEach(function (e) {
-                        resourceIds += e + ',';
-                    });
-
-                    $.post(
-                        '/admin/resource/UpdateResourceStatusAsComplete',
-                        {
-                            resourceIdString: resourceIds,
-                        },
-                        function (data) {
-                            var isSuccessful = data.IsSuccessful;
-
-                            if (isSuccessful) {
-                                alert('标记需求为已完成状态成功');
-
-                                $('.cbxResource').each(function () {
-                                    $(this).removeAttr('checked');
-                                });
-                                $('#cbxSelectAll').removeAttr("checked");
-                                hasAllResourcesSelected = false;
-                                window.location.href = window.location.href;
-                            }
-                            else {
-                                if (errorMessage == '') {
-                                    alert('标记需求为已完成状态失败，请刷新页面后重试');
-                                }
-                                else {
-                                    alert(errorMessage);
-                                }
-                            }
-                        });
-                }
-            }
-        }
-
-        function showSubscriptionResult() {
-            var allSelectedIds = getAllSelectedResourcesID();
-            if (allSelectedIds.length == 0) {
-                alert('请选择需要查看的需求信息！');
-                return false;
-            }
-            else {
-                var resourceIds = '';
-
-                allSelectedIds.forEach(function (e) {
-                    resourceIds += e + ',';
-                });
-
-                var resultLink = '/admin/subscribe/pushhistory?id=1&resourceIds=' + resourceIds;
-                window.location = resultLink;
-            }
-        }
-
         function deleteResourceType() {
             var allSelectedIds = getAllSelectedResourcesID();
             if (allSelectedIds.length == 0) {
-                alert('请选择需要设置的需求信息！');
+                alert('请勾选需要删除的资源类型记录！');
                 return false;
             }
             else {
-                if (confirm('您确认所选择的需求吗？该操作不可恢复！')) {
+                if (confirm('您确认所选择的类型吗？该操作不可恢复！')) {
                     // Invoke service
-                    var resourceIds = '';
+                    var typeIds = '';
 
                     allSelectedIds.forEach(function (e) {
-                        resourceIds += e + ',';
+                        typeIds += e.Id + '_' + e.ResourceTypeKey + ',';
                     });
-
+                    console.log(typeIds);
                     $.post(
-                        '/admin/resource/Delete',
+                        '/admin/resource/DeleteResourceTypes',
                         {
-                            resourceIdString: resourceIds,
+                            typeIds: typeIds,
                         },
-                        function (data) {
-                            var isSuccessful = data.IsSuccessful;
-
-                            if (isSuccessful) {
-                                alert('需求删除成功');
-
-                                $('.cbxResource').each(function () {
-                                    $(this).removeAttr('checked');
-                                });
-                                $('#cbxSelectAll').removeAttr("checked");
-                                hasAllResourcesSelected = false;
+                        function (response) {
+                            console.log(response);
+                            if (response && response.Status == 0) {
+                                alert('删除成功');
                                 window.location.href = window.location.href;
                             }
                             else {
-                                alert('需求删除失败，请刷新页面后重试');
+                                alert('删除失败，请重试');
+                                return false;
                             }
                         });
                 }
@@ -406,12 +273,16 @@
                     width: 120px;
                     vertical-align: middle;
                     opacity: 1;
-                    text-align:center;
+                    text-align: center;
                 }
 
                     .toolbar > li input[type=text], .toolbar > li input[type=search] {
                         width: 244px;
                     }
+
+        select {
+            opacity: 1 !important;
+        }
     </style>
 </head>
 
@@ -432,30 +303,30 @@
             <ul class="toolbar">
                 <li>
                     &nbsp;筛选：
-                <select id="ddlResourceType" onchange="loadData();">
+                    <select id="ddlResourceType" onchange="loadData();">
 
-                    <option value="">所有资源类型</option>
+                        <option value="">所有资源类型</option>
 
-                    @foreach (var item in Html.ResourceList())
-                    {
-                        if (item.Value == Model.ResourceTypeKey)
+                        @foreach (var item in Html.ResourceList())
                         {
+                            if (item.Value == Model.ResourceTypeKey)
+                            {
 
-                            <option value="@item.Value" selected="selected">@item.Text</option>
+                                <option value="@item.Value" selected="selected">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text </option>
+                            }
                         }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text </option>
-                        }
-                    }
-                </select>
+                    </select>
                 </li>
-                <li onclick="showResourceBonusPanel();" title="新增资源类型" @*style="float:right;"*@>
+                <li onclick="btnCreateResourceTypeClick();" title="新增资源类型" @*style="float:right;"*@>
                     <span>
                         <img src="/areas/admin/content/images/iadd.png" />
                     </span>新增资源类型
                 </li>
-                <li onclick="showResourceBonusPanel();" title="设置需求鼓励金给发布用户" @*style="float:right;"*@>
+                <li onclick="btnUpdateResourceTypeClick();" title="修改资源类型" @*style="float:right;"*@>
                     <span>
                         <img src="/areas/admin/content/images/t02.png" />
                     </span>修改资源类型
@@ -487,7 +358,7 @@
                     {
                         <tr>
                             <td>
-                                <input onchange="onCbxResourceSelectChanged(this);" class="cbxResource" type="checkbox" value="@item.Id" />
+                                <input onchange="onCbxResourceSelectChanged(this);" class="cbxResource" type="checkbox" value="@item.Id" typekey="@item.ResourceTypeKey" />
                             </td>
                             @*<td>
                                     <span>@item.Id</span>
@@ -572,44 +443,38 @@
 
     </div>
 
-    <div class="tip" id="resourceBonusPanel">
+    <div class="tip" id="resourceUpdatePanel" style="height:300px;">
         <div class="tiptop">
-            <span>设置需求发布鼓励金</span><a></a>
+            <span>修改资源类型</span><a></a>
         </div>
         <div class="tipinfo">
+            <input type="hidden" id="typeIdForUpdate" name="typeIdForUpdate" />
             <div class="tipright">
                 <ul class="forminfo">
                     <li>
-                        <label>鼓励金额<b>*</b></label>
-                        <input id="amountString" name="amountString" type="number" min="0" class="scinput" placeholder="请输入鼓励金额" />
+                        <label>资源分类<b>*</b></label>
+                        <select id="ddlResourceTypeForUpdate" name="resourceTypeKeyForUpdate">
+                            @foreach (var item in Html.ResourceList())
+                            {
+                                <option value="@item.Value">@item.Text </option>
+                            }
+                        </select>
                     </li>
                     <li>
-                        <label><b></b></label>
-                        <b>奖励金额一旦发出，将不能退回</b>
+                        <label>类型名称<b>*</b></label>
+                        <input id="typeNameForUpdate" name="typeNameForUpdate" type="text" class="scinput" maxlength="10" placeholder="请输入类型名称" />
                     </li>
                     <li>
-                        <label>&nbsp;</label>
-                        <input type="button" class="btn submitbtn" value="立即发放" onclick="rechargeUserBalance();" />
+                        <label>类型描述</label>
+                        <input id="typeDescForUpdate" name="typeDescForUpdate" type="text" class="scinput" maxlength="200" placeholder="请输入类型描述，可不填" />
                     </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="tip" id="wechatBuyResourceFeePanel">
-        <div class="tiptop">
-            <span>设置微信购买需求联系方式金额</span><a></a>
-        </div>
-        <div class="tipinfo">
-            <div class="tipright">
-                <ul class="forminfo">
                     <li>
-                        <label>购买金额<b>*</b></label>
-                        <input id="txtWeChatBuyResourceFee" name="txtWeChatBuyResourceFee" type="number" min="0"
-                               class="scinput" placeholder="请输入购买金额" onkeyup="validateInput(this)" onafterpaste="validateInput(this)" />
+                        <label>显示顺序</label>
+                        <input id="displayOrderForUpdate" name="displayOrderForUpdate" type="number" class="scinput" maxlength="200" placeholder="请输入显示顺序，数字越大越靠后" />
                     </li>
                     <li>
                         <label>&nbsp;</label>
-                        <input type="button" class="btn submitbtn" value="立即设置" onclick="doBtnSetWeChatBuyResourceFeeClickEvent();" />
+                        <input type="button" class="btn submitbtn" value="立即保存" onclick="createOrUpdateResourceType();" />
                     </li>
                 </ul>
             </div>

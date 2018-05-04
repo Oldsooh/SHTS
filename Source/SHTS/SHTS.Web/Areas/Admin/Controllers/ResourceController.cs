@@ -2,13 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Managers;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
+using Witbird.SHTS.DAL.New;
 using Witbird.SHTS.Web.Areas.Admin.Authorize;
 using Witbird.SHTS.Web.Areas.Admin.Models;
 using Witbird.SHTS.Web.Areas.Admin.Models.Resource;
+using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 {
@@ -284,9 +287,29 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult SelectResourceType(string resourceTypeKey, int typeId)
+        {
+            AjaxResponse<ResourceType> response = new AjaxResponse<ResourceType>();
+
+            try
+            {
+                response.Data = miscManager.GetResourceById(resourceTypeKey, typeId);
+            }
+            catch(Exception ex)
+            {
+                response.Status = -1;
+                response.Message = ex.Message;
+                LogService.Log("获取资源类型失败", ex.ToString());
+            }
+
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
         
         [HttpPost]
-        public ActionResult CreateOrUpdateType(string resourceTypeKey, string name, string description, bool markForDelete, int displayOrder = 99, int typeId = -1)
+        public ActionResult CreateOrUpdateType(string resourceTypeKey, string name, string description, 
+            int displayOrder = 99, int typeId = -1, bool markForDelete = false)
         {
             AjaxResponse response = new AjaxResponse();
 
@@ -299,16 +322,52 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, name, description, displayOrder);
+                    miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, name, description, displayOrder, false);
                 }
+
+                Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
             }
             catch (Exception ex)
             {
                 response.Status = -1;
-                response.Message = "创建或更新资源类型失败";
+                response.Message = "创建或更新资源类型失败: " + ex.Message;
                 LogService.Log("创建或更新资源类型失败", ex.ToString());
             }
             return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteResourceTypes(string typeIds)
+        {
+            AjaxResponse result = new AjaxResponse();
+
+            try
+            {
+                if (string.IsNullOrEmpty(typeIds))
+                {
+                    result.Status = -1;
+                    result.Message = "请选择要删除的资源类型";
+                }
+                else
+                {
+                    List<string> idWithTypeKeyList = typeIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    
+                    foreach (var idWithTypeKey in idWithTypeKeyList)
+                    {
+                        var tempArray = idWithTypeKey.Split('_');
+                        miscManager.CreateOrUpdateResourceType(tempArray[1], Convert.ToInt32(tempArray[0]), "", "", -1, true);
+                    }
+                }
+
+                Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+
+            return Json(result);
         }
 
         #endregion
