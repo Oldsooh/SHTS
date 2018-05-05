@@ -16,7 +16,7 @@ SELECT subscription.[SubscriptionId] AS [SubscriptionId], subscription.[EmailAdd
 	, subscription.[LastPushTimestamp] AS [LastPushTimestamp], subscription.[LastUpdatedTimestamp] AS [LastUpdatedTimestamp], wechatUser.[OpenId] AS [OpenId], wechatUser.[UserId] AS [UserId], wechatUser.[Id] AS [Id]
 	, wechatUser.[NickName] AS [NickName], [user].[UserName] AS [UserName], detail.SubscriptionDetailId, detail.SubscriptionId AS DetailSubscriptionId
 	, detail.SubscriptionType, detail.SubscriptionValue, detail.InsertedTimestamp AS [DetailInsertedTimestamp]
-	,filters.DisplayName
+	,filters.DisplayName, wechatUser.[HasSubscribed] AS [HasSubscribed]
 FROM (
 	SELECT rowNum.SubscriptionId
 	FROM (
@@ -82,6 +82,7 @@ GROUP BY subscription.SubscriptionId
                             UserId = reader[8].DBToNullableInt32(),
                             WeChatUserId = reader[9].DBToInt32(),
                             WeChatUserName = reader[10].DBToString(),
+                            HasSubscribed = reader[18].DBToBoolean(),
                             UserName = reader[11].DBToString()
                         };
                         

@@ -92,6 +92,11 @@
             this.searchSubscriptions();
         }
 
+        function doWechatNickNameClickEvent(nickName) {
+            $('#wechatUserNickName').val(nickName);
+
+            this.searchSubscriptions();
+        }
     </script>
     <style>
         .tablelist td, .tablelist th {
@@ -118,21 +123,23 @@
                 font-weight: bold;
                 text-align: center;
             }
-            .toolbar > li img {
-                width: 24px;
-                height: 24px;
-            }
 
-            .toolbar > li.button {
-                font-size: 16px;
-                border-radius: 5px;
-                background: #9ed04d;
-                color:white;
-            }
-
-                .toolbar > li.button.btn-primary {
-                    background: #167efb;
+                .toolbar > li img {
+                    width: 24px;
+                    height: 24px;
                 }
+
+                .toolbar > li.button {
+                    font-size: 16px;
+                    border-radius: 5px;
+                    background: #9ed04d;
+                    color: white;
+                }
+
+                    .toolbar > li.button.btn-primary {
+                        background: #167efb;
+                    }
+
                 .toolbar > li input, .toolbar > li select {
                     padding: 5px;
                     border: solid 1px burlywood;
@@ -142,9 +149,9 @@
                     opacity: 1;
                 }
 
-                .toolbar > li input[type=text], .toolbar > li input[type=search] {
-                    width: 244px;
-                }
+                    .toolbar > li input[type=text], .toolbar > li input[type=search] {
+                        width: 244px;
+                    }
     </style>
 </head>
 
@@ -335,7 +342,7 @@
                 <li>
                     &nbsp;微信昵称包含：
                     <input type="search" value="@Model.FilterWechatUserNickName" name="wechatUserNickName" id="wechatUserNickName"
-                           onchange="searchSubscriptions();" placeholder="请输入微信昵称进行筛选" style="width:364px;"/>
+                           onchange="searchSubscriptions();" placeholder="请输入微信昵称进行筛选" style="width:364px;" />
                 </li>
                 <li onclick="searchSubscriptions();" class="button btn-primary">
                     <span><img src="/areas/admin/content/images/ico06.png" /></span>
@@ -352,7 +359,8 @@
                 <tr>
                     <th>序号</th>
                     <th>微信昵称</th>
-                    <th>会员昵称</th>
+                    @*<th>会员昵称</th>*@
+                    <th>是否关注</th>
                     <th>是否开启订阅</th>
                     <th style="max-width:350px!important">订阅规则</th>
                     <th>是否开启邮箱订阅</th>
@@ -371,18 +379,29 @@
                                 @item.SubscriptionId
                             </td>
                             <td>
-                                @item.WeChatUserName
+                                <a href="/admin/subscribe/pushhistory?wechatUserNickName=@(item.WeChatUserName)" 
+                                   title="点击查看用户的推送历史记录" style="cursor:pointer;color: #3858FA;">@item.WeChatUserName</a>
+
                             </td>
+                            @*<td>
+                                    @if (item.UserId.HasValue)
+                                    {
+                                        <a href="/admin/member/editUser/@item.UserId.Value" title="点击查看会员详情" style="color: #3858FA;">@item.UserName</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="off">未绑定</span>
+                                    }
+                                </td>*@
                             <td>
-                                @if (item.UserId.HasValue)
+                                @if (item.HasSubscribed)
                                 {
-                                    <a href="/admin/member/editUser/@item.UserId.Value" title="点击查看会员详情" style="color: #3858FA;">@item.UserName</a>
+                                    <span class="on">已关注</span>
                                 }
                                 else
                                 {
-                                    <span class="off">未绑定</span>
+                                    <span class="off">已取消关注</span>
                                 }
-                            </td>
                             <td>
                                 @if (item.IsSubscribed)
                                 {

@@ -211,7 +211,9 @@
                                 <a href="/demand/show/@item.DemandId" target="_blank" style="color: #3858FA;">@item.DemandTitle</a>
                             </td>
                             <td>
-                                <span onclick="doWechatNickNameClickEvent('@item.WechatUserName');" title="点击搜索当前用户" style="cursor:pointer;color: #3858FA;">@item.WechatUserName</span>
+                                @*<span onclick="doWechatNickNameClickEvent('@item.WechatUserName');" title="点击搜索当前用户" style="cursor:pointer;color: #3858FA;">@item.WechatUserName</span>*@
+                                <a href="/admin/subscribe/subscription?wechatUserNickName=@(item.WechatUserName)"
+                                   title="点击查看用户的订阅详情" style="cursor:pointer;color: #3858FA;">@item.WechatUserName</a>
                             </td>
                             <td>
                                 @if (string.IsNullOrWhiteSpace(item.UserName))

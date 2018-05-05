@@ -182,7 +182,7 @@
     <Build Include="StoredProcedure\User\sp_WeChatUserUpdate.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByUserId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserDeleteById.sql" />
-    <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByOpentId.sql" />
+    <Build Include="StoredProcedure\User\sp_WeChatUserDeleteByOpenId.sql" />
     <Build Include="StoredProcedure\User\sp_WeChatUserSelectByOpenId.sql" />
     <Build Include="StoredProcedure\Order\sp_DeleteOrderByOpenIdAndDemandIdForWeChatClient.sql" />
     <Build Include="StoredProcedure\Order\sp_SelectUserPaidDemands.sql" />

@@ -19,6 +19,11 @@ namespace Witbird.SHTS.Model
         public string UserName { get; set; }
 
         /// <summary>
+        /// 是否关注了公众号
+        /// </summary>
+        public bool HasSubscribed { get; set; }
+
+        /// <summary>
         /// 用户订阅内容详细集合
         /// </summary>
         public List<DemandSubscriptionDetail> SubscriptionDetails

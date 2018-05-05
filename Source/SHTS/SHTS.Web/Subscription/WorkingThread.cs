@@ -339,6 +339,12 @@ namespace Witbird.SHTS.Web.Subscription
                                 {
                                     history.WechatStatus = sendResult.IsSuccessful ? "微信推送成功" : "微信推送失败";
                                     history.WechatExceptionMessage = sendResult.ErrorMessage ?? string.Empty;
+
+                                    // 如果用户已取关，更新为取关状态，下次不再推送，直到用户已重新关注
+                                    if (sendResult.ErrorMessage == Senparc.Weixin.ReturnCode.需要接收者关注.ToString())
+                                    {
+                                        Task.Factory.StartNew(() => userService.UnSubscribeWeChatUser(openId));
+                                    }
                                 }
                             }
                         }
