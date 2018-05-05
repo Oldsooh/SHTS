@@ -58,6 +58,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Common
             public const string FollowUrlBeforeAccess = "http://mp.weixin.qq.com/s/XEWi6MFylTIs6xfM5lUIsA";
             // 使用自定义关注页面
             //public const string FollowUrlBeforeAccess = "/wechat/QAuthCallBack/subscriberequired";
+            //public const string FollowUrlBeforeAccess = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzODAzMjg1Mg==#wechat_redirect";
 
 
             public class TemplateMessage

@@ -151,8 +151,10 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 //用户还未关注，提示用户关注我们先。
                 if (wechatUser == null || !wechatUser.HasSubscribed.HasValue || !wechatUser.HasSubscribed.Value)
                 {
-                    filterContext.Result = new RedirectResult(WeChatClient.Constant.FollowUrlBeforeAccess);
                     Caching.Set(wechatOpenIdCookie.Value + "_LastUrl", GetOriginalUrlString(filterContext));
+
+                    filterContext.HttpContext = null;
+                    filterContext.Result = new RedirectResult(WeChatClient.Constant.FollowUrlBeforeAccess);
                 }
                 // 未获得用户数据，重新授权
                 else if (!wechatUser.HasAuthorized.HasValue || !wechatUser.HasAuthorized.Value)
