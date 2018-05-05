@@ -59,12 +59,17 @@
         }
 
         function createOrUpdateResourceType() {
+            var typeName = $('#typeNameForUpdate').val();
+            if (!typeName || typeName == '') {
+                alert('请输入类型名称');
+                return false;
+            }
             $.post(
                 '/admin/resource/CreateOrUpdateType',
                 {
                     typeId: $('#typeIdForUpdate').val(),
                     resourceTypeKey: $('#ddlResourceTypeForUpdate').val(),
-                    name: $('#typeNameForUpdate').val(),
+                    name: typeName,
                     description: $('#typeDescForUpdate').val(),
                     displayOrder: $('#displayOrderForUpdate').val()
                 },
@@ -266,22 +271,16 @@
                         background: #167efb;
                     }
 
-                .toolbar > li input, .toolbar > li select {
-                    padding: 5px;
-                    border: solid 1px burlywood;
-                    /* height: 70%; */
-                    width: 120px;
-                    vertical-align: middle;
-                    opacity: 1;
-                    text-align: center;
-                }
-
-                    .toolbar > li input[type=text], .toolbar > li input[type=search] {
-                        width: 244px;
-                    }
-
-        select {
-            opacity: 1 !important;
+        input[type=text], input[type=search], input[type=number], select {
+            padding-left: 5px;
+            border: solid 1px burlywood;
+            /* height: 70%; */
+            width: 200px !important;
+            height: 28px !important;
+            line-height:28px !important;
+            vertical-align: middle;
+            opacity: 1;
+            text-align: left;
         }
     </style>
 </head>
@@ -462,7 +461,7 @@
                     </li>
                     <li>
                         <label>类型名称<b>*</b></label>
-                        <input id="typeNameForUpdate" name="typeNameForUpdate" type="text" class="scinput" maxlength="10" placeholder="请输入类型名称" />
+                        <input id="typeNameForUpdate" name="typeNameForUpdate" required type="text" class="scinput" maxlength="10" placeholder="请输入类型名称" />
                     </li>
                     <li>
                         <label>类型描述</label>
