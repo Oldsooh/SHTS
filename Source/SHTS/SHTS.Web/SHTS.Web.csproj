@@ -1234,7 +1234,7 @@
     <Content Include="Areas\Wechat\Views\Demand\TestWXShare.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribe\Subscription.cshtml" />
     <Content Include="Areas\Admin\Views\Subscribe\PushHistory.cshtml" />
-    <Content Include="Areas\Wechat\Views\Index\SubscribeRequired.cshtml" />
+    <Content Include="Areas\Wechat\Views\QAuthCallBack\SubscribeRequired.cshtml" />
     <Content Include="Areas\Admin\Views\Resource\Manage.cshtml" />
     <None Include="VideoConverter\ffmpeg-3.2.4-win64-shared\presets\ffprobe.xsd">
       <SubType>Designer</SubType>

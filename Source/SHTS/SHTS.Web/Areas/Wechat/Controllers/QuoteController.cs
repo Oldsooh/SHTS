@@ -306,11 +306,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             {
                 quote.Demand = demandService.GetDemandById(quote.DemandId);
 
-                // 如果是自己发布的需求，无需购买即可查看
-                var isPostedByMyself = (quote.Demand.UserId == CurrentWeChatUser.UserId);
-                quote.HasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
-                quote.HasWeChatUserSharedForDemand = isPostedByMyself || demandService.HasWeChatUserSharedForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
-                quote.WechatShareParametersForQuote = PrepareWechatShareParameter(quote.Demand.Title ?? "");
+                if (quote.Demand.IsNotNull())
+                {
+                    // 如果是自己发布的需求，无需购买即可查看
+                    var isPostedByMyself = (quote.Demand.UserId == CurrentWeChatUser.UserId);
+                    quote.HasWeChatUserBoughtForDemand = isPostedByMyself || demandService.HasWeChatUserBoughtForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
+                    quote.HasWeChatUserSharedForDemand = isPostedByMyself || demandService.HasWeChatUserSharedForDemand(CurrentWeChatUser.OpenId, quote.Demand.Id);
+                    quote.WechatShareParametersForQuote = PrepareWechatShareParameter(quote.Demand.Title ?? "");
+                }
                 // 屏蔽联系方式
                 foreach (var history in quote.QuoteHistories)
                 {

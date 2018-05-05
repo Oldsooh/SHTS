@@ -178,15 +178,12 @@
                     <form action="/wechat/quote/quote" id="quoteForm" class="reg-form" method="post">
                         <input type="hidden" name="demandId" value="@Model.Demand.Id" />
 
-                        <div class="cell">
+                        <div class="cell" style="height:80px;">
                             <input type="hidden" id="selectedResourceId" name="selectedResourceId" value="-1" />
                             @if (Model.PostedResources.Count == 0)
                             {
-                                <div class="text">
-                                    <span class="yellow">需求报价需要提供您的资源信息，以便于需求方查看。请点击下方按钮立即创建吧！</span>
-                                    <br />
-                                    <button type="button" class="button btn-green" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">立即发布</button>
-                                </div>
+                                <span class="yellow">需求报价需要提供您的资源信息，以便于需求方查看。请点击下方按钮立即创建吧！</span>
+                                <button type="button" class="button btn-green" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">立即发布</button>
                             }
                             else
                             {

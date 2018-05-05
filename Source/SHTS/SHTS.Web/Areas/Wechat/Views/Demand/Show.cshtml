@@ -131,10 +131,8 @@
             {
                 <li>
                     联系微信：
-                    <span class="yellow2">
-                        <span class="qqWeixinValue yellow2">分享朋友圈后即可免费查看</span>
-                        <input type="hidden" id="qqWeixinHiddenValue" value="@Model.Demand.QQWeixin" />
-                    </span>
+                    <span class="qqWeixinValue yellow2">分享朋友圈后即可免费查看</span>
+                    <span class="qqWeixinHidden yellow2 hide">@Model.Demand.QQWeixin</span>
                 </li>
             }
         }
@@ -217,16 +215,18 @@
                     {
                         if (!Model.HasCurrentUserSharedWechat)
                         {
-                            <button id="btnShareTimeline" type="button" class="button btn-default" style="margin-top:30px;" onclick="_system._guide(true)">
+                            <button id="btnShareTimeline" type="button" class="qqWeixinValue button btn-default" style="margin-top:30px;" onclick="_system._guide(true)">
                                 <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />&nbsp;免费查看联系微信
                             </button>
-                            <button type="button" class="qqWeixinValue button btn-default hide" style="margin-top:30px;" onclick="return;">
-                                <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />
+
+                            <button type="button" class="qqWeixinHidden button btn-default hide" style="margin-top:30px;" onclick="return;">
+                                <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />联系微信：@Model.Demand.QQWeixin
                             </button>
                         }
                         else
                         {
-                            <button type="button" class="qqWeixinValue button btn-default" style="margin-top:30px;" onclick="return;">
+
+                            <button type="button" class="qqWeixinHidden button btn-default" style="margin-top:30px;" onclick="return;">
                                 <img src="~/Areas/Wechat/Content/images/share_timeine_icon.png" width="22" />联系微信：@Model.Demand.QQWeixin
                             </button>
                         }
@@ -266,7 +266,7 @@
     </ul>
 
     @if (Model.Demand.ImgUrls.Length > 0)
-            {
+    {
         <div style="clear: both; height: 10px;"></div>
         <div class="container">
             <div class="row clearfix">
@@ -359,17 +359,17 @@
     function buyDemand(demandId) {
         //wechat/demand/Buy
         $.post("/wechat/demand/Buy",
-        {
-            id: demandId
-        },
-        function (data) {
-            if (data.IsSuccessFul) {
-                callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
-            }
-            else {
-                alert(data.Message);
-            }
-        }).error(function (data) { alert(data); });
+            {
+                id: demandId
+            },
+            function (data) {
+                if (data.IsSuccessFul) {
+                    callPayApi(data.AppId, data.TimeStamp, data.NonceStr, data.Package, data.PaySign);
+                }
+                else {
+                    alert(data.Message);
+                }
+            }).error(function (data) { alert(data); });
     }
 
     function showWechat() {
@@ -385,7 +385,13 @@
     var title = '活动在线-' + '@Model.WechatShareParameters.Title';
     var link = '@Model.WechatShareParameters.Link';
     var demandId = @Model.Demand.Id;
-    var description = '预算费用：' + @Model.Demand.Budget > 0 ? @Model.Demand.Budget + '元' : '面议';
+    var description = '预算费用: ';
+    if (@Model.Demand.Budget > 0) {
+        description += '@Model.Demand.Budget' + '元';
+    }
+    else {
+        description += '面议';
+    }
 
     wx.config({
         //debug: true,
@@ -395,6 +401,7 @@
         signature: signature,
         jsApiList: [
             'checkJsApi',
+            'onMenuShareAppMessage',
             'onMenuShareTimeline'
         ]
     });
@@ -423,26 +430,14 @@
             imgUrl: 'http://www.huodongzaixian.com/areas/wechat/content/images/wechat_share_icon.png',
             success: function () {
                 console.log('分享成功');
-                $.post("/wechat/demand/sharewechat",
-                {
-                    id: demandId
-                },
-                function (data) {
-                    console.log(data);
-                    if (data.IsSuccessFul) {
-                        if ($('.qqWeixinValue')){
-                            $('.qqWeixinValue').html($('#qqWeixinHiddenValue').val());
-                            $('.qqWeixinValue').removeClass('hide');
-                        }
-                        if ($('#btnShareTimeline')){
-                            $('#btnShareTimeline').addClass('hide');
-                        }
-                    }
-                }).error(function (data) {
-                    if ($('.qqWeixinValue')) {
-                        alert('分享发生了点小故障，请刷新一下页面后再试试哦');
-                    }
-                });
+                if ($('.qqWeixinHidden')) {
+                    $('.qqWeixinHidden').removeClass('hide');
+                }
+                if ($('.qqWeixinValue')) {
+                    $('.qqWeixinValue').addClass('hide');
+                }
+
+                $.get("/wechat/demand/sharewechat?id=" + demandId);
             },
             cancel: function () {
                 if ($('.qqWeixinValue')){
@@ -463,37 +458,39 @@
 </script>
 
 <script type="text/javascript">
-    var _system={
-        $:function(id){return document.getElementById(id);},
-        _client:function(){
-            return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+    var _system = {
+        $: function (id) { return document.getElementById(id); },
+        _client: function () {
+            return { w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight, bw: document.documentElement.clientWidth, bh: document.documentElement.clientHeight };
         },
-        _scroll:function(){
-            return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+        _scroll: function () {
+            return { x: document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft, y: document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop };
         },
-        _cover:function(show){
-            if(show){
-                this.$("cover").style.display="block";
-                this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
-                this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
-            }else{
-                this.$("cover").style.display="none";
+        _cover: function (show) {
+            if (show) {
+                this.$("cover").style.display = "block";
+                this.$("cover").style.width = (this._client().bw > this._client().w ? this._client().bw : this._client().w) + "px";
+                this.$("cover").style.height = (this._client().bh > this._client().h ? this._client().bh : this._client().h) + "px";
+            } else {
+                this.$("cover").style.display = "none";
             }
         },
-        _guide:function(click){
+        _guide: function (click) {
             this._cover(true);
-            this.$("guide").style.display="block";
-            this.$("guide").style.top=(_system._scroll().y+5)+"px";
-            window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
-            if(click){_system.$("cover").onclick=function(){
-                _system._cover();
-                _system.$("guide").style.display="none";
-                _system.$("cover").onclick=null;
-                window.onresize=null;
-            };}
+            this.$("guide").style.display = "block";
+            this.$("guide").style.top = (_system._scroll().y + 5) + "px";
+            window.onresize = function () { _system._cover(true); _system.$("guide").style.top = (_system._scroll().y + 5) + "px"; };
+            if (click) {
+                _system.$("cover").onclick = function () {
+                    _system._cover();
+                    _system.$("guide").style.display = "none";
+                    _system.$("cover").onclick = null;
+                    window.onresize = null;
+                };
+            }
         },
-        _zero:function(n){
-            return n<0?0:n;
+        _zero: function (n) {
+            return n < 0 ? 0 : n;
         }
     }
 </script>
