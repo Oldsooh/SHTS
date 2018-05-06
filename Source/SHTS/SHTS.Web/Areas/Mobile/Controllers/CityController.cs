@@ -39,7 +39,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                         CurrentCityId = item.Id;
                         CurrentCityName = item.Name;
 
-                        UpdateDefaultCity(item.Id);
+                        //UpdateDefaultCity(item.Id);
 
                         break;
                     }
@@ -116,7 +116,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
                             CurrentCityName = item.Name;
                             result = item.Name;
 
-                            UpdateDefaultCity(item.Id);
+                            //UpdateDefaultCity(item.Id);
 
                             break;
                         }

@@ -35,7 +35,7 @@ namespace Witbird.SHTS.Web.Controllers
                         CurrentCityId = item.Id;
                         CurrentCityName = item.Name;
 
-                        UpdateDefaultCity(item.Id);
+                        //UpdateDefaultCity(item.Id);
                         break;
                     }
                 }
@@ -115,7 +115,7 @@ namespace Witbird.SHTS.Web.Controllers
                                 CurrentCityName = item.Name;
                                 result = item.Name;
 
-                                UpdateDefaultCity(item.Id);
+                                //UpdateDefaultCity(item.Id);
 
                                 break;
                             }

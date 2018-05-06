@@ -12,7 +12,7 @@ namespace Witbird.SHTS.Web.Areas.Mobile.Controllers
         /// <param name="filterContext"></param>
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            SetDefaultCityToSession();
+            // SetDefaultCityToSession();
 
             if (!filterContext.HttpContext.Request.Url.OriginalString.Contains("/content/") &&
                 !filterContext.HttpContext.Request.Url.OriginalString.Contains("/common/") &&

@@ -10,5 +10,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Models
 
         public List<Resource> PostedResources { get; set; } = new List<Resource>();
         public string ActionName { get; set; }
+        public DemandQuote DemandQuote { get; set; }
+        public WechatParameters WechatParameters { get; set; }
     }
 }

@@ -49,16 +49,5 @@ namespace Witbird.SHTS.Model
         }
 
         public bool HasWeChatUserSharedForDemand { get; set; }
-        public WechatShareParametersForQuote WechatShareParametersForQuote { get; set; }
-    }
-
-    public class WechatShareParametersForQuote
-    {
-        public string AppId;
-        public string Timestamp;
-        public string NonceStr;
-        public string Title;
-        public string Link;
-        public string Signature;
     }
 }

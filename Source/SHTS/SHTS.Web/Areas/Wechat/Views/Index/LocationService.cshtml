@@ -1,0 +1,86 @@
+﻿
+@model Witbird.SHTS.Web.Areas.Wechat.Models.WechatParameters
+
+@if (Session["CityName"] == null)
+{
+    <script type="text/JavaScript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+            wx.config({
+                //debug: true,
+                appId: '@Model.AppId',
+                timestamp: '@Model.Timestamp',
+                nonceStr: '@Model.NonceStr',
+                signature: '@Model.Signature',
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareAppMessage',
+                    'onMenuShareTimeline',
+                    'getLocation'
+                ]
+            });
+
+            wx.ready(function () {
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (res) {
+                            handleGetLocationResult(res);
+                        },
+                        cancel: function () {
+                            alert('系统获取您的地址位置失败，将不能正确展示资源信息给您。请手动选择城市信息。');
+                            window.location = "/wechat/city/index";
+                        }
+                    });
+            });
+
+
+            wx.error(function (res) {
+                //alert('error');
+            });
+
+            function setLocalCity(cityName) {
+                    var nowTime = new Date().getTime();
+                    var url = encodeURI("/wechat/city/setlocalcity?cityName=" + cityName + "&time=" + nowTime);
+                    $.get(url, function (data, status) {
+                        if (status == "success") {
+                            if (data != "" && data != "no") {
+                                var html = '<span id="currentCityName" onclick="window.location = "/wechat/city/index"" style="font-size: 18px;">' + data + '</span><span style="font-size: 18px;">▼</span>';
+                                $('#city').html(html);
+                            }
+                            else {
+                                $('#city').html("选择城市");
+                            }
+                        }
+
+                        window.location = window.location;
+                    });
+        }
+
+        function handleGetLocationResult(res) {
+            console.log(JSON.stringify(res));
+
+            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            var speed = res.speed; // 速度，以米/每秒计
+            var accuracy = res.accuracy; // 位置精度
+
+            var url = 'http://api.map.baidu.com/geocoder/v2/?ak=r8BS6ef7I1L7GTVhRbMosG18KzI3yUdB&callback=renderReverse&location=' + latitude + ',' + longitude + '&output=json&pois=1';
+            $.ajax({
+                url: url,
+                type: "get",
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+                    //var province = data.result.addressComponent.province;
+                    var cityName = (data.result.addressComponent.city);
+                    //var district = data.result.addressComponent.district;
+                    //var street = data.result.addressComponent.street;
+                    //var street_number = data.result.addressComponent.street_number;
+                    //var formatted_address = data.result.formatted_address;
+
+                    setLocalCity(cityName);
+                }
+            });
+        }
+    </script>
+}

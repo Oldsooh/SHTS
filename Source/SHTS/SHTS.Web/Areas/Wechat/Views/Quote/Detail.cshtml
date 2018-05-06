@@ -1,4 +1,4 @@
-﻿@model Witbird.SHTS.Model.DemandQuote
+﻿@model Witbird.SHTS.Web.Areas.Wechat.Models.DemandQuoteModel
 @{
     ViewBag.Title = "需求报价详情";
     Layout = "~/Areas/Wechat/Views/Shared/WechatLayoutPage.cshtml";
@@ -337,22 +337,22 @@
 <div class="main">
     <div class="register-box" style="width: 100%;height: auto; background-color: #ffffff;">
 
-        @if (Model != null)
+        @if (Model.DemandQuote != null)
         {
-            var contactName = "联系人：" + Model.ContactName;
-            //var contactPhone = "电话：" + Model.ContactPhoneNumber;
-            var quotePrice = "报价/报名：" + Model.QuotePrice;
-            var quoteTime = Model.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
+            var contactName = "联系人：" + Model.DemandQuote.ContactName;
+            //var contactPhone = "电话：" + Model.DemandQuote.ContactPhoneNumber;
+            var quotePrice = "报价/报名：" + Model.DemandQuote.QuotePrice;
+            var quoteTime = Model.DemandQuote.InsertedTimestamp.ToString("yyyy-MM-dd HH:mm:ss");
 
-            <input type="hidden" id="quoteId" value="@Model.QuoteId" />
+            <input type="hidden" id="quoteId" value="@Model.DemandQuote.QuoteId" />
 
             var quoteStatus = string.Empty;
-            var isPostedByMySelf = (Model.WeChatUserId == currentWeChatUser.Id);
-            if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            var isPostedByMySelf = (Model.DemandQuote.WeChatUserId == currentWeChatUser.Id);
+            if (Model.DemandQuote.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Accept.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
                 if (isPostedByMySelf)
                 {
-                    if (Model.HasWeChatUserBoughtForDemand)
+                    if (Model.DemandQuote.HasWeChatUserBoughtForDemand)
                     {
                         quoteStatus = "您的报价已被客户接受，请拨打客户电话赶紧进一步洽谈吧！";
                     }
@@ -366,11 +366,11 @@
                     quoteStatus = "您已采纳该报价/报名！";
                 }
             }
-            else if (Model.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Denied.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            else if (Model.DemandQuote.AcceptStatus.Equals(Witbird.SHTS.Model.DemandQuoteStatus.Denied.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
                 if (isPostedByMySelf)
                 {
-                    if (Model.HasWeChatUserBoughtForDemand)
+                    if (Model.DemandQuote.HasWeChatUserBoughtForDemand)
                     {
                         quoteStatus = "该报价/报名已被拒绝！预祝下次报价成功！";
                     }
@@ -388,7 +388,7 @@
             {
                 if (isPostedByMySelf)
                 {
-                    if (Model.HasWeChatUserBoughtForDemand)
+                    if (Model.DemandQuote.HasWeChatUserBoughtForDemand)
                     {
                         quoteStatus = "客户正在查看您的报价！如果长时间未回复，请拨打客户电话联系客户。";
                     }
@@ -410,16 +410,16 @@
                             @(new HtmlString(quoteStatus))
                         </td>
                     </tr>
-                    @if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1) && (Model.AcceptStatus == "Wait" || Model.AcceptStatus == "Denied"))
+                    @if (Model.DemandQuote.Demand.UserId == (currentWeChatUser.UserId ?? -1) && (Model.DemandQuote.AcceptStatus == "Wait" || Model.DemandQuote.AcceptStatus == "Denied"))
                     {
                         <tr>
                             <td>
-                                @if (Model.AcceptStatus == "Wait")
+                                @if (Model.DemandQuote.AcceptStatus == "Wait")
                                 {
                                     <button type="button" id="btnAccept" class="btn btn-primary" style="float:left;width:45%;">接受报价/报名</button>
                                     <button type="button" id="btnReject" class="btn btn-danger" style="float:right;width:45%;">拒绝</button>
                                 }
-                                else if (Model.AcceptStatus == "Denied")
+                                else if (Model.DemandQuote.AcceptStatus == "Denied")
                                 {
                                     <button type="button" id="btnAccept" class="btn btn-primary" style="float:left;width:100%;">接受报价/报名</button>
                                 }
@@ -433,28 +433,28 @@
                 <table class="table table-striped">
                     <tr>
                         <td class="left">需求内容：</td>
-                        <td class=""><a href="/wechat/demand/show/@Model.Demand.Id" style="padding-left:0;">@Model.Demand.Title</a></td>
+                        <td class=""><a href="/wechat/demand/show/@Model.DemandQuote.Demand.Id" style="padding-left:0;">@Model.DemandQuote.Demand.Title</a></td>
                     </tr>
                     <tr>
                         <td class="left">区域位置：</td>
-                        <td class="">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.Demand.Province, Model.Demand.City, Model.Demand.Area)</td>
+                        <td class="">@Witbird.SHTS.Web.Public.StaticUtility.GetProvinceAndCityNameById(Model.DemandQuote.Demand.Province, Model.DemandQuote.Demand.City, Model.DemandQuote.Demand.Area)</td>
                     </tr>
                     <tr>
                         <td class="left">预算金额：</td>
                         <td class="">
-                            @if (Model.Demand.Budget == 0)
+                            @if (Model.DemandQuote.Demand.Budget == 0)
                             {
                                 <span>面议</span>
                             }
                             else
                             {
-                                <span>@(Model.Demand.Budget)元</span>
+                                <span>@(Model.DemandQuote.Demand.Budget)元</span>
                             }
                         </td>
                     </tr>
                     <tr>
                         <td class="left">起止时间：</td>
-                        <td class="">@Model.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.Demand.EndTime.Value.ToString("yyyy/MM/dd")</td>
+                        <td class="">@Model.DemandQuote.Demand.StartTime.Value.ToString("yyyy/MM/dd") - @Model.DemandQuote.Demand.EndTime.Value.ToString("yyyy/MM/dd")</td>
                     </tr>
                 </table>
             </div>
@@ -463,16 +463,16 @@
                 var phone = "***********";
                 var weixin = "分享朋友圈后即可免费查看";
                 var email = "***********";
-                if (Model.HasWeChatUserBoughtForDemand)
+                if (Model.DemandQuote.HasWeChatUserBoughtForDemand)
                 {
-                    phone = string.IsNullOrWhiteSpace(Model.Demand.Phone) ? "未填" : Model.Demand.Phone;
-                    email = string.IsNullOrWhiteSpace(Model.Demand.Email) ? "未填" : Model.Demand.Email;
+                    phone = string.IsNullOrWhiteSpace(Model.DemandQuote.Demand.Phone) ? "未填" : Model.DemandQuote.Demand.Phone;
+                    email = string.IsNullOrWhiteSpace(Model.DemandQuote.Demand.Email) ? "未填" : Model.DemandQuote.Demand.Email;
 
                 }
 
-                if (Model.HasWeChatUserSharedForDemand)
+                if (Model.DemandQuote.HasWeChatUserSharedForDemand)
                 {
-                    weixin = string.IsNullOrWhiteSpace(Model.Demand.QQWeixin) ? "未填" : Model.Demand.QQWeixin;
+                    weixin = string.IsNullOrWhiteSpace(Model.DemandQuote.Demand.QQWeixin) ? "未填" : Model.DemandQuote.Demand.QQWeixin;
                 }
 
                 <div class="panel panel-info">
@@ -482,7 +482,7 @@
                             <td class="left">联系电话：</td>
                             <td class="">@phone</td>
                             <td class="right">
-                                @if (Model.HasWeChatUserBoughtForDemand)
+                                @if (Model.DemandQuote.HasWeChatUserBoughtForDemand)
                                 {
                                     <a class="btn btn-success" href="tel:@phone"><i class="glyphicon glyphicon-earphone"></i>&nbsp;拨打</a>
                                 }
@@ -499,7 +499,7 @@
                             </td>
                         </tr>
 
-                        @if (!Model.HasWeChatUserSharedForDemand)
+                        @if (!Model.DemandQuote.HasWeChatUserSharedForDemand)
                         {
                             <tr>
                                 <td colspan="3">
@@ -507,11 +507,11 @@
                                 </td>
                             </tr>
                         }
-                        @if (!Model.HasWeChatUserBoughtForDemand)
+                        @if (!Model.DemandQuote.HasWeChatUserBoughtForDemand)
                         {
                             <tr>
                                 <td colspan="3">
-                                    <a href="javascript:void(0);" class="btn btn-success" style="width:100%;height:30px;line-height:30px;" onclick="buyDemand(@Model.Demand.Id);">获取联系方式</a>
+                                    <a href="javascript:void(0);" class="btn btn-success" style="width:100%;height:30px;line-height:30px;" onclick="buyDemand(@Model.DemandQuote.Demand.Id);">获取联系方式</a>
                                 </td>
                             </tr>
                         }
@@ -530,7 +530,7 @@
                             var leftDisplayName = "";
                             var rightDisplayName = "我";
 
-                            if (Model.Demand.UserId == (currentWeChatUser.UserId ?? -1))
+                            if (Model.DemandQuote.Demand.UserId == (currentWeChatUser.UserId ?? -1))
                             {
                                 leftPhotoUrl = "/content/wechat/images/quoteUserPhoto.png";
                                 leftDisplayName = "报价方";
@@ -542,22 +542,24 @@
                             }
                         }
 
-                        @if (Model.WeChatUserId == currentWeChatUser.Id)
+                        @if (Model.DemandQuote.WeChatUserId == currentWeChatUser.Id)
                         {
                             <li class="time"><span class="spanright">@quoteTime&nbsp;@(rightDisplayName)</span></li>
                             <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactName</span></li>
-                            @*<li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>*@
+                            @*
+                                <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@contactPhone</span></li>*@
                             <li><img src="@rightPhotoUrl" class="imgright"><span class="spanright">@quotePrice</span></li>
                         }
                         else
                         {
                             <li class="time"><span class="spanleft">@(leftDisplayName)&nbsp;@quoteTime</span></li>
                             <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactName</span></li>
-                            @*<li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>*@
+                            @*
+                                <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@contactPhone</span></li>*@
                             <li><img src="@leftPhotoUrl" class="imgleft"><span class="spanleft">@quotePrice</span></li>
                         }
 
-                        @foreach (var history in Model.QuoteHistories)
+                        @foreach (var history in Model.DemandQuote.QuoteHistories)
                         {
                             if (!string.IsNullOrWhiteSpace(history.Comments))
                             {
@@ -1099,42 +1101,44 @@
         }
     </script>
     <script>
-        var appId = '@Model.WechatShareParametersForQuote.AppId';
-        var timestamp = @Model.WechatShareParametersForQuote.Timestamp;
-        var nonceStr = '@Model.WechatShareParametersForQuote.NonceStr';
-        var signature = '@Model.WechatShareParametersForQuote.Signature';
-        var title = '活动在线-' + '@Model.WechatShareParametersForQuote.Title';
-        var link = '@Model.WechatShareParametersForQuote.Link';
-        var demandId = @Model.Demand.Id;
-        var description = '预算费用: ';
-        if (@Model.Demand.Budget > 0) {
-            description += '@Model.Demand.Budget' + '元';
-        }
-        else {
-            description += '面议';
-        }
-        description += ' \r\n详细需求：@Model.Demand.ContentText';
+        var appId = '@Model.WechatParameters.AppId';
+    var timestamp = @Model.WechatParameters.Timestamp;
+    var nonceStr = '@Model.WechatParameters.NonceStr';
+    var signature = '@Model.WechatParameters.Signature';
+    var title = '活动在线-' + '@Model.WechatParameters.Title';
+    var link = '@Model.WechatParameters.Link';
+    var demandId = @Model.DemandQuote.Demand.Id;
+    var description = '预算费用: ';
+    if (@Model.DemandQuote.Demand.Budget > 0) {
+        description += '@Model.DemandQuote.Demand.Budget' + '元';
+    }
+    else {
+        description += '面议';
+    }
+
+    description += ' \r\n详细需求：@Model.DemandQuote.Demand.ContentText';
 
     wx.config({
-        //debug: true,
+        debug: true,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
         signature: signature,
         jsApiList: [
             'checkJsApi',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage'
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
         ]
     });
 
-    wx.ready(function () {
+   wx.ready(function () {
+
         wx.onMenuShareAppMessage({
             title: title, // 分享标题
             desc: description, // 分享描述
             link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: 'http://www.huodongzaixian.com/areas/wechat/content/images/wechat_share_icon_small.png',
-            type: '', // 分享类型,music、video或link，不填默认为link
+            imgUrl: 'http://www.huodongzaixian.com/areas/wechat/content/images/wechat_share_icon.png',
+            type: 'link', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
             success: function () {
                 // 用户确认分享后执行的回调函数
@@ -1150,18 +1154,19 @@
             imgUrl: 'http://www.huodongzaixian.com/areas/wechat/content/images/wechat_share_icon.png',
             success: function () {
                 console.log('分享成功');
-                $.get("/wechat/demand/sharewechat?id=" + demandId,
-                function (data) {
-                    console.log(data);
-                    if (data.IsSuccessFul) {
-                        window.location = window.location;
-                    }
-                }).error(function (data) {
-                    alert('分享发生了点小故障，请刷新一下页面后再试试哦');
-                });
+                if ($('.qqWeixinHidden')) {
+                    $('.qqWeixinHidden').removeClass('hide');
+                }
+                if ($('.qqWeixinValue')) {
+                    $('.qqWeixinValue').addClass('hide');
+                }
+
+                $.get("/wechat/demand/sharewechat?id=" + demandId);
             },
             cancel: function () {
-                alert('分享朋友圈就可以免费查看微信哦');
+                if ($('.qqWeixinValue')){
+                    alert('分享朋友圈就可以免费查看微信哦');
+                }
             },
             complete: function(){
                 document.getElementById('cover').style.display = "none";
@@ -1169,7 +1174,6 @@
             }
         });
     });
-
 
     wx.error(function (res) {
         //alert('error');

@@ -349,7 +349,7 @@
                     //alert("您取消了购买。");
                 }
                 else {
-                    alert(res.err_msg);
+                    //alert(res.err_msg);
                     alert("购买发生错误！请刷新重试，如频繁发生该错误，请联系管理员.");
                 }
             }
@@ -378,12 +378,12 @@
 </script>
 
 <script>
-    var appId = '@Model.WechatShareParameters.AppId';
-    var timestamp = @Model.WechatShareParameters.Timestamp;
-    var nonceStr = '@Model.WechatShareParameters.NonceStr';
-    var signature = '@Model.WechatShareParameters.Signature';
-    var title = '活动在线-' + '@Model.WechatShareParameters.Title';
-    var link = '@Model.WechatShareParameters.Link';
+    var appId = '@Model.WechatParameters.AppId';
+    var timestamp = @Model.WechatParameters.Timestamp;
+    var nonceStr = '@Model.WechatParameters.NonceStr';
+    var signature = '@Model.WechatParameters.Signature';
+    var title = '活动在线-' + '@Model.WechatParameters.Title';
+    var link = '@Model.WechatParameters.Link';
     var demandId = @Model.Demand.Id;
     var description = '预算费用: ';
     if (@Model.Demand.Budget > 0) {
@@ -392,7 +392,8 @@
     else {
         description += '面议';
     }
-    //description += ' 详细需求：@Model.Demand.ContentText';
+
+    description += ' \r\n详细需求：@Model.Demand.ContentText';
 
     wx.config({
         //debug: true,

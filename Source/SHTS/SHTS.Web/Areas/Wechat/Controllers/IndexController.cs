@@ -4,13 +4,16 @@ using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Common;
 using Witbird.SHTS.Model;
 using Witbird.SHTS.Model.Criteria;
-using Witbird.SHTS.Web.Models;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 using WitBird.Com.SearchEngine;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 {
     public class IndexController : WechatBaseController
     {
+
+        CityService cityService = new CityService();
+
         #region 搜索
 
         public const string IndexPath = "~/IndexData";
@@ -64,7 +67,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         public ActionResult Search(string keyWords, int page = 1)
         {
-            SearchViewModel viewModel = new SearchViewModel();
+            Web.Models.SearchViewModel viewModel = new Web.Models.SearchViewModel();
             try
             {
                 int totalHit = 0;
@@ -93,6 +96,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             return View(viewModel);
+        }
+
+        public ActionResult LocationService()
+        {
+            var wechatParameters = PrepareWechatShareParameter();
+            return View(wechatParameters);
         }
     }
 }

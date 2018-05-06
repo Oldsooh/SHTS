@@ -3,8 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Witbird.SHTS.BLL.Services;
 using Witbird.SHTS.Model;
+using Witbird.SHTS.Web.Areas.Wechat.Models;
 using Witbird.SHTS.Web.Controllers;
-using Witbird.SHTS.Web.Models;
 using Witbird.SHTS.Web.Public;
 
 namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
@@ -53,7 +53,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         CurrentCityId = item.Id;
                         CurrentCityName = item.Name;
 
-                        UpdateDefaultCity(item.Id);
+                        //UpdateDefaultCity(item.Id);
 
                         break;
                     }
@@ -116,7 +116,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             string result = "no";
 
-            if (!string.IsNullOrEmpty(cityName) && CurrentCityId == null)
+            if (!string.IsNullOrEmpty(cityName))
             {
                 var allCities = Witbird.SHTS.Web.Public.StaticUtility.AllCities;
                 if (allCities != null && allCities.Count > 0)
@@ -129,7 +129,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                             CurrentCityName = item.Name;
                             result = item.Name;
 
-                            UpdateDefaultCity(item.Id);
+                            //UpdateDefaultCity(item.Id);
 
                             break;
                         }
