@@ -849,8 +849,7 @@ namespace Witbird.SHTS.Web.Controllers
 
             return errorMessage;
         }
-
-        [HttpPost]
+        
         public ActionResult LoadSubResourceTypes(int resourceTypeId)
         {
             var subTypeList = HtmlHelperExtension.SubResourceList(null, resourceTypeId) ?? new List<SelectListItem>();

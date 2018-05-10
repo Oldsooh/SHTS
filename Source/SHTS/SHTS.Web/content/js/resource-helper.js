@@ -3,11 +3,7 @@
 
     var resourceTypeId = $(resourceTypeOptions).val();
     var nowTime = new Date().getTime();
-    $.post('/resource/LoadSubResourceTypes',
-        {
-            resourceTypeId: resourceTypeId,
-            time: nowTime
-        },
+    $.get('/resource/LoadSubResourceTypes?resourceTypeId=' + resourceTypeId + "&time=" + nowTime,
         function (data, status) {
             if (data != null && data.Result != null && data.Result.length > 0) {
                 var html = '<option value="">请选择具体类型</option>';

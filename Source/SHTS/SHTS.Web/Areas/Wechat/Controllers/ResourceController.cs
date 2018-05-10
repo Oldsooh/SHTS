@@ -853,5 +853,21 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         #endregion
 
+        public ActionResult LoadSubResourceTypes(int resourceTypeId)
+        {
+            var subTypeList = HtmlHelperExtension.SubResourceList(null, resourceTypeId) ?? new List<SelectListItem>();
+
+            var jsonResult = new
+            {
+                Result = from s in subTypeList
+                         select new
+                         {
+                             Id = s.Value,
+                             s.Text
+                         }
+            };
+
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
     }
 }
