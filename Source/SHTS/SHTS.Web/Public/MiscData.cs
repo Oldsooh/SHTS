@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Witbird.SHTS.BLL.Managers;
+using Witbird.SHTS.Common;
 using Witbird.SHTS.DAL.New;
 
 namespace Witbird.SHTS.Web.Public
@@ -8,14 +10,25 @@ namespace Witbird.SHTS.Web.Public
     public static class MiscData
     {
         static MiscManager manager = new MiscManager();
+        static object locker = new object();
 
 
         public static void RefreshResourceTypesCache()
         {
-            SpaceTypeList = manager.GetSpaceTypeList();
-            ActorTypeList = manager.GetActorTypeList();
-            EquipTypeList = manager.GetEquipTypeList();
-            OtherTypeList = manager.GetOtherTypeList();
+            try
+            {
+                lock (locker)
+                {
+                    SpaceTypeList = manager.GetSpaceTypeList();
+                    ActorTypeList = manager.GetActorTypeList();
+                    EquipTypeList = manager.GetEquipTypeList();
+                    OtherTypeList = manager.GetOtherTypeList();
+                }
+            }
+            catch(Exception ex)
+            {
+                LogService.Log("刷新资源类型失败", ex.ToString());
+            }
         }
 
         /// <summary>

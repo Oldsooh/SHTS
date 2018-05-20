@@ -323,9 +323,8 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 else
                 {
                     miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, name, description, displayOrder, false);
+                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
                 }
-
-                Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
             }
             catch (Exception ex)
             {
@@ -357,9 +356,10 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                         var tempArray = idWithTypeKey.Split('_');
                         miscManager.CreateOrUpdateResourceType(tempArray[1], Convert.ToInt32(tempArray[0]), "", "", -1, true);
                     }
+
+                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
                 }
 
-                Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
             }
             catch (Exception ex)
             {

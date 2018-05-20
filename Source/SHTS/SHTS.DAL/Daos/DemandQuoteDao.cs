@@ -55,7 +55,7 @@ namespace Witbird.SHTS.DAL.Daos
                 new SqlParameter(Parameter_QuoteId, quote.QuoteId),
                 new SqlParameter(Parameter_WeChatUserId, quote.WeChatUserId),
                 new SqlParameter(Parameter_DemandId, quote.DemandId),
-                new SqlParameter(Parameter_ResourceId, quote.ResourceId),
+                new SqlParameter(Parameter_ResourceId, quote.ResourceId ?? -1),
                 new SqlParameter(Parameter_ContactName, quote.ContactName),
                 new SqlParameter(Parameter_ContactPhoneNumber, quote.ContactPhoneNumber),
                 new SqlParameter(Parameter_QuotePrice, quote.QuotePrice),

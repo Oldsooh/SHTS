@@ -66,11 +66,13 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             try
             {
                 // Check parameters.
-                if (selectedResourceId < 1)
-                {
-                    errorMessage = "请选择您参与报价对应的资源信息。如您还未发布资源，请点击【立即发布】按钮。";
-                }
-                else if (string.IsNullOrWhiteSpace(contactName) ||
+                // 资源信息不是必选的
+                //if (selectedResourceId < 1)
+                //{
+                //    errorMessage = "请选择您参与报价对应的资源信息。如您还未发布资源，请点击【立即发布】按钮。";
+                //}
+                //else
+                if (string.IsNullOrWhiteSpace(contactName) ||
                     //string.IsNullOrWhiteSpace(contactPhone) ||
                     string.IsNullOrWhiteSpace(quoteDetail))
                 {
@@ -82,69 +84,75 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 }
                 else
                 {
-                    var selectedResource = resourceManager.GetResourceById(selectedResourceId, false, false);
+                    var demand = demandService.GetDemandById(demandId);
 
-                    if (selectedResource == null)
+                    if (demand.IsNotNull())
                     {
-                        errorMessage = "您选择的资源信息不存在或已被删除，请刷新页面后重试";
+                        contactTitle = contactTitle.Equals("2", StringComparison.InvariantCultureIgnoreCase) ? "女士" : "先生";
+                        DemandQuote quote = new DemandQuote()
+                        {
+                            ContactName = contactName + contactTitle,
+                            ContactPhoneNumber = string.Empty,//contactPhone,
+                            DemandId = demandId,
+                            WeChatUserId = CurrentWeChatUser.Id,
+                            QuotePrice = quotePrice
+                        };
+
+                        // 展示报价放联系信息
+                        DemandQuoteHistory quoteHistory = new DemandQuoteHistory()
+                        {
+                            Comments = quoteDetail,
+                            Operation = Operation.Add,
+                            WeChatUserId = quote.WeChatUserId
+                        };
+
+                        quote.QuoteHistories.Add(quoteHistory);
+
+
+                        DAL.New.Resource selectedResource = null;
+                        if (selectedResourceId > 0)
+                        {
+                            selectedResource = resourceManager.GetResourceById(selectedResourceId, false, false);
+
+                            //if (selectedResource == null)
+                            //{
+                            //    errorMessage = "您选择的资源信息不存在或已被删除，请刷新页面后重试";
+                            //}
+
+                            if (selectedResource != null)
+                            {
+                                quote.ResourceId = selectedResource.Id;
+                                // 展示报价放选择的资源信息
+                                var resourceHistory = new DemandQuoteHistory()
+                                {
+                                    Comments = $"点击查看报价资源信息：<a href='/resource/show/{selectedResource.Id}'>{selectedResource.Title}</a>",
+                                    Operation = Operation.Add,
+                                    WeChatUserId = quote.WeChatUserId
+                                };
+                                quote.QuoteHistories.Add(resourceHistory);
+                            }
+
+                        }
+                        // Savas to database.
+                        quote = quoteService.NewQuoteRecord(quote);
+                        quoteId = quote.QuoteId;
+
+                        // Sends notification to wechat client.
+                        //var message = quote.ContactName + "报价/报名" + (int)quote.QuotePrice + "元/人";
+                        var message = string.Empty;
+                        Task.Factory.StartNew(() =>
+                        {
+                            var toWeChatUser = userService.GetWeChatUser(demand.UserId);
+                            if (toWeChatUser.IsNotNull())
+                            {
+                                var messageData = ConstrunctNewQuoteData(quoteId, CurrentWeChatUser.NickName, quote.InsertedTimestamp, quote.QuotePrice.ToString());
+                                SendNotification(quoteId, toWeChatUser.OpenId, messageData);
+                            }
+                        });
                     }
                     else
                     {
-                        var demand = demandService.GetDemandById(demandId);
-
-                        if (demand.IsNotNull())
-                        {
-                            contactTitle = contactTitle.Equals("2", StringComparison.InvariantCultureIgnoreCase) ? "女士" : "先生";
-                            DemandQuote quote = new DemandQuote()
-                            {
-                                ContactName = contactName + contactTitle,
-                                ContactPhoneNumber = string.Empty,//contactPhone,
-                                DemandId = demandId,
-                                WeChatUserId = CurrentWeChatUser.Id,
-                                QuotePrice = quotePrice,
-                                ResourceId = selectedResource.Id
-                            };
-
-                            // 展示报价放联系信息
-                            DemandQuoteHistory quoteHistory = new DemandQuoteHistory()
-                            {
-                                Comments = quoteDetail,
-                                Operation = Operation.Add,
-                                WeChatUserId = quote.WeChatUserId
-                            };
-
-                            quote.QuoteHistories.Add(quoteHistory);
-
-                            // 展示报价放选择的资源信息
-                            var resourceHistory = new DemandQuoteHistory()
-                            {
-                                Comments = $"点击查看报价资源信息：<a href='/resource/show/{selectedResource.Id}'>{selectedResource.Title}</a>",
-                                Operation = Operation.Add,
-                                WeChatUserId = quote.WeChatUserId
-                            };
-                            quote.QuoteHistories.Add(resourceHistory);
-
-                            // Savas to database.
-                            quote = quoteService.NewQuoteRecord(quote);
-                            quoteId = quote.QuoteId;
-
-                            // Sends notification to wechat client.
-                            //var message = quote.ContactName + "报价/报名" + (int)quote.QuotePrice + "元/人";
-                            var message = string.Empty;
-                            Task.Factory.StartNew(() =>
-                            {
-                                var toWeChatUser = userService.GetWeChatUser(demand.UserId);
-                                if (toWeChatUser.IsNotNull())
-                                {
-                                    var messageData = ConstrunctNewQuoteData(quoteId, CurrentWeChatUser.NickName, quote.InsertedTimestamp, quote.QuotePrice.ToString());
-                                    SendNotification(quoteId, toWeChatUser.OpenId, messageData);
-                                }
-                            });
-                        }
-                        else
-                        {
-                            errorMessage = "需求信息不存在或已删除！";
-                        }
+                        errorMessage = "需求信息不存在或已删除！";
                     }
                 }
             }
@@ -498,7 +506,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         {
             try
             {
-                var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain +"/wechat/quote/detail?quoteId=" + quoteId;
+                var viewUrl = "http://" + Witbird.SHTS.Web.Public.StaticUtility.Config.Domain + "/wechat/quote/detail?quoteId=" + quoteId;
                 WeChatClient.Sender.SendTemplateMessage(openId, WeChatClient.Constant.TemplateMessage.QuoteRemind, messageData, viewUrl);
             }
             catch (Exception ex)
