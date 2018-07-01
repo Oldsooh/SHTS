@@ -103,9 +103,9 @@
             $('#quoteForm').submit();
         }
 
-        function onSelectedResourceIdChanged(obj) {
-            $('#selectedResourceId').val(obj.value);
-        }
+        //function onSelectedResourceIdChanged(obj) {
+        //    $('#selectedResourceId').val(obj.value);
+        //}
     </script>
 }
 
@@ -196,7 +196,7 @@
                             <textarea id="quoteDetail" name="quoteDetail" placeholder="请填写您的报价/报名细则，填写电话或将被屏蔽" class="text" style="height: 150px; width: 95%;"></textarea>
                         </div>
 
-                        <div class="cell" style="height:80px;">
+                        @*<div class="cell" style="height:80px;">
                             <input type="hidden" id="selectedResourceId" name="selectedResourceId" value="-1" />
                             @if (Model.PostedResources.Count == 0)
                             {
@@ -218,7 +218,7 @@
                                     }
                                 </select>
                             }
-                        </div>
+                        </div>*@
                     </form>
                     <div class="bottom" style="margin:0 auto;">
                         <button id="js-mobile_btn" type="button" class="button btn-default" onclick="addQuote();">立即报价/报名</button>

@@ -482,14 +482,14 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
         /// </summary>
         private void SetWeChatUserSessionForTestingUseOnly()
         {
-            WeChatUser wechatUser = new UserService().GetWeChatUserByWeChatUserId(112816);// 112818
+            WeChatUser wechatUser = userService.GetWeChatUserByWeChatUserId(112816);// 112818
             if (wechatUser.IsNotNull())
             {
                 CurrentWeChatUser = wechatUser;
                 if (wechatUser.UserId.HasValue)
                 {
 
-                    User user = new UserService().GetUserById(wechatUser.UserId.Value);
+                    User user = userService.GetUserById(wechatUser.UserId.Value);
                     if (user.IsNotNull())
                     {
                         CurrentUser = user;

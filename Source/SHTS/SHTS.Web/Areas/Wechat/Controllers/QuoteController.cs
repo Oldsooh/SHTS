@@ -47,11 +47,11 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             // Gets posted resouces for current user
-            if (CurrentWeChatUser.IsUserLoggedIn)
-            {
-                model.PostedResources.AddRange(resourceService
-                    .GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
-            }
+            //if (CurrentWeChatUser.IsUserLoggedIn)
+            //{
+            //    model.PostedResources.AddRange(resourceService
+            //        .GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
+            //}
 
             return View(model);
         }
@@ -309,6 +309,12 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             }
 
             model.WechatParameters = PrepareWechatShareParameter(model.DemandQuote?.Demand?.Title);
+            // Gets posted resouces for current user
+            if (CurrentWeChatUser.IsUserLoggedIn)
+            {
+                model.PostedResources.AddRange(resourceService
+                    .GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
+            }
 
             return View(model);
         }
