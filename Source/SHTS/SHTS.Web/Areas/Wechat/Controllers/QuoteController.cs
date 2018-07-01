@@ -58,7 +58,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
 
         [HttpPost]
         public ActionResult Quote(int demandId, string contactName, string contactTitle, //string contactPhone,
-            decimal quotePrice, string quoteDetail, int selectedResourceId)
+            decimal quotePrice, string quoteDetail, int selectedResourceId = -1)
         {
             string errorMessage = string.Empty;
             int quoteId = 0;

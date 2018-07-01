@@ -100,16 +100,17 @@
             .footer .input-dialog {
                 width: 68%;
                 height: 40px;
-                float:left;
+                float: left;
             }
-            .footer .input-dialog textarea, .footer .input-dialog select {
-                width:100%;
-                height:100%;
-                padding: 5px;
-                font-size: 18px;
-                border-radius: 5px;
-                outline: none;
-            }
+
+                .footer .input-dialog textarea, .footer .input-dialog select {
+                    width: 100%;
+                    height: 100%;
+                    padding: 5px;
+                    font-size: 18px;
+                    border-radius: 5px;
+                    outline: none;
+                }
 
             .footer button {
                 border-radius: 5px !important;
@@ -134,7 +135,7 @@
                     width: 34px;
                     height: 34px;
                     padding: 0 !important;
-                    line-height:34px;
+                    line-height: 34px;
                 }
 
         .content {
@@ -610,7 +611,7 @@
                     <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
                     @if (Model.PostedResources.Count == 0)
                     {
-                            @*<a id="resourceId" class="hide" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">发布资源</a>*@
+                        @*<a id="resourceId" class="hide" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">发布资源</a>*@
                     }
                     else
                     {
@@ -625,7 +626,8 @@
                 <div class="btn-group dropup">
                     <button id="btnSend" class="btn btn-primary">发送</button>
                     <button id="btnCancelResource" class="btn btn-more hide" onclick="showResourceSelection(false);">
-                    <i class="glyphicon glyphicon-remove"></i></button>
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
                     <button id="btnMore" type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background:none;">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -1110,17 +1112,20 @@
         }
 
         function showResourceSelection(isShow) {
-            if (document.getElementById('resourceId') == null) {
-                ds.dialog.confirm("您还未发布任何资源，是否立即前往发布?", function () {
-                    window.location = '/wechat/resource/create';
-                });
-            }
-            else {
-                if (isShow) {
-                    $('#resourceId').removeClass('hide');
-                    $('#btnCancelResource').removeClass('hide');
-                    $('#text').addClass('hide');
-                    $('#btnMore').addClass('hide');
+
+                if (isShow) {                    
+                    if (document.getElementById('resourceId') == null) {
+                        ds.dialog.confirm("您还未发布任何资源，是否立即前往发布?", function () {
+                            window.location = '/wechat/resource/create';
+                        });
+                    }
+                    else {
+
+                        $('#resourceId').removeClass('hide');
+                        $('#btnCancelResource').removeClass('hide');
+                        $('#text').addClass('hide');
+                        $('#btnMore').addClass('hide');
+                    }
                 }
                 else {
                     $('#resourceId').addClass('hide');
@@ -1129,9 +1134,8 @@
                     $('#btnMore').removeClass('hide');
                 }
 
-                if (document.getElementById('resourceId').tagName == 'SELECT') {
-                    $('#resourceId').val(0);
-                }
+            if (document.getElementById('resourceId').tagName == 'SELECT') {
+                $('#resourceId').val(0);
             }
         }
 
@@ -1182,7 +1186,7 @@
     description += ' \r\n详细需求：@Model.DemandQuote.Demand.ContentText';
 
     wx.config({
-        debug: true,
+        //debug: true,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
