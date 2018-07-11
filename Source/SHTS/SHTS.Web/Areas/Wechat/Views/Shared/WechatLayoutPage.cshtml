@@ -64,7 +64,7 @@
     <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer&PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
     @if (Session["CityId"] == null)
     {
-        <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+        @*<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
         <script>
             function setLocalCity() {
                 // 新浪根据ip获取地址
@@ -94,6 +94,9 @@
             }
 
             setLocalCity();
+        </script>*@
+        <script>
+            document.getElementById("currentCityName").innerHTML = "选择城市";
         </script>
     }
 

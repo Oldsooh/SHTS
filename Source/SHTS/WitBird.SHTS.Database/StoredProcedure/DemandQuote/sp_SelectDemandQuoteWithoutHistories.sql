@@ -2,7 +2,13 @@
 	@QuoteId int
 AS
 BEGIN
-	SELECT TOP 1 quote.*, demand.Title, wechatUser.NickName FROM dbo.DemandQuote quote
+	SELECT TOP 1 quote.*, demand.Title, wechatUser.NickName, demand.UserId AS DemandUserId, demand.ResourceType AS DemandResourceType,
+     demand.ResourceTypeId AS DemandResourceTypeId, demand.Province AS DemandProvince, demand.City AS DemandCity, demand.Area AS DemandArea,
+     demand.Address AS DemandAddress, demand.Phone AS DemandPhone, demand.StartTime AS DemandStartTime, demand.EndTime AS DemandEndTime,
+     demand.TimeLength AS DemandTimeLength, demand.PeopleNumber AS DemandPeopleNumber, demand.Budget AS DemandBudget, demand.QQWeixin AS DemandQQWeixin,
+     demand.Email AS DemandEmail, demand.IsActive AS DemandIsActive, demand.InsertTime AS DemandInsertTime, demand.WeixinBuyFee AS DemandWeixinBuyFee,
+     demand.Status AS DemandStatus, demand.ImageUrls AS DemandImageUrls
+	FROM dbo.DemandQuote quote
 	INNER JOIN dbo.Demand demand ON demand.Id = quote.DemandId
 	INNER JOIN dbo.WeChatUser wechatUser ON wechatUser.Id = quote.WeChatUserId
 	WHERE quote.QuoteId = @QuoteId AND quote.IsActive = 1;

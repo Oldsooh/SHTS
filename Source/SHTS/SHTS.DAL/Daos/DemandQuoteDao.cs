@@ -351,7 +351,31 @@ namespace Witbird.SHTS.DAL.Daos
                 LastUpdatedTimestamp = reader["LastUpdatedTimestamp"].DBToDateTime().Value,
                 QuoteId = reader["QuoteId"].DBToInt32(),
                 QuotePrice = reader["QuotePrice"].DBToDecimal(),
-                WeChatUserId = reader["WeChatUserId"].DBToInt32()
+                WeChatUserId = reader["WeChatUserId"].DBToInt32(),
+                Demand = new Demand()
+                {
+                    Address = reader["DemandAddress"].DBToString(),
+                    Area = reader["DemandArea"].DBToString(),
+                    Budget = reader["DemandBudget"].DBToInt32(),
+                    City = reader["DemandCity"].DBToString(),
+                    Email = reader["DemandEmail"].DBToString(),
+                    EndTime = reader["DemandEndTime"].DBToDateTime(),
+                    Id = reader["DemandId"].DBToInt32(),
+                    ImageUrls = reader["DemandImageUrls"].DBToString(),
+                    InsertTime = reader["DemandInsertTime"].DBToDateTime(DateTime.Now),
+                    IsActive = reader["DemandIsActive"].DBToBoolean(),
+                    PeopleNumber = reader["DemandPeopleNumber"].DBToString(),
+                    Phone = reader["DemandPhone"].DBToString(),
+                    Province = reader["DemandProvince"].DBToString(),
+                    QQWeixin = reader["DemandQQWeixin"].DBToString(),
+                    ResourceType = reader["DemandResourceType"].DBToInt32(),
+                    ResourceTypeId = reader["DemandResourceTypeId"].DBToInt32(),
+                    Status = reader["DemandStatus"].DBToInt32(),
+                    StartTime = reader["DemandStartTime"].DBToDateTime(),
+                    Title = reader["Title"].DBToString(),
+                    UserId = reader["DemandUserId"].DBToInt32(),
+                    WeixinBuyFee = reader["DemandWeixinBuyFee"].DBToInt32()
+                }
             };
         }
 

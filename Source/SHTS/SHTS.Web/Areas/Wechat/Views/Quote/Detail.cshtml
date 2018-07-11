@@ -335,6 +335,60 @@
         .panel-body {
             padding: 15px 0px !important;
         }
+
+        .ui-dialog-titlebar-close {
+            display: none !important;
+        }
+
+        #btnDialogYes {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #fff !important;
+            background-color: #337ab7 !important;
+            border-color: #2e6da4 !important;
+        }
+
+        #btnDialogNo {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #333 !important;
+            background-color: #d4d4d4 !important;
+            border-color: #8c8c8c !important;
+        }
     </style>
     @*for chat history*@
 
@@ -609,25 +663,26 @@
                 <div class="input-dialog">
 
                     <textarea id="text" name="comments" type="text" placeholder="输入您的回复内容..."></textarea>
-                    @if (Model.PostedResources.Count == 0)
-                    {
-                        @*<a id="resourceId" class="hide" style="margin:0 auto;" onclick="window.location = '/wechat/resource/create'">发布资源</a>*@
-                    }
-                    else
-                    {
+                    @*
+                            @if (Model.PostedResources.Count == 0)
+                            {
+                        }
+                        else
+                        {
                         <select id="resourceId" name="resourceId" class="text hide">
                             @foreach (var resource in Model.PostedResources)
                             {
                                 <option value="@resource.Id">@resource.Title</option>
                             }
                         </select>
-                    }
+                        }
+                    *@
                 </div>
                 <div class="btn-group dropup">
-                    <button id="btnSend" class="btn btn-primary">发送</button>
-                    <button id="btnCancelResource" class="btn btn-more hide" onclick="showResourceSelection(false);">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>
+                    <button id="btnSend" class="btn btn-primary" onclick="sendMessage(true);">发送</button>
+                    @*<button id="btnCancelResource" class="btn btn-more hide" onclick="showResourceSelection(false);">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>*@
                     <button id="btnMore" type="button" class="btn btn-more dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background:none;">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -657,12 +712,28 @@
         }
     </div>
 </div>
+<div id="sendResourceDialog" title="发送资料" style="display:none;">
+    <div style="height:90%">
+        <input type="hidden" id="resourceCount" value="@Model.PostedResources.Count" />
+        @foreach (var resource in Model.PostedResources)
+        {
+            <div class="radio">
+                <label>
+                    <input type="radio" id="resourceId_@(resource.Id)" name="resourceId" value="@resource.Id" title="@resource.Title" />&nbsp;@resource.Title
+                </label>
+            </div>
+        }
+    </div>
+</div>
+
 @{
     var errorMessage = ViewData["ErrorMessage"] ?? string.Empty;
 }
 <input type="hidden" id="txtMessage" value="@errorMessage" />
 @section FooterJS
 {
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="~/Content/uploadifive/jquery.uploadifive.js"></script>
     <script src="~/Areas/Wechat/Content/scipts/autoHeightForTextArea.js?v=4"></script>
@@ -670,20 +741,28 @@
         autoTextarea('text');
     </script>
     <script>
-        $('#btnSend').click(function () {
+        function sendMessage(isText) {
             var arrIconSrc = '@currentWeChatUser.Photo';
-            var text = document.getElementById('text');
             var content = document.getElementById('chatHistory');
-            var comments = text.value;
+            var text = document.getElementById('text');
+            var comments = '';
 
-            var selectedResourceId = $('#resourceId').val();
-            var selectedResourceTitle = $('#resourceId').text();
-            if (selectedResourceId > 0) {
+            if (isText) {
+                comments = text.value;
+            }
+            else {
+
+                var selectedResourceId = $("input[name='resourceId']:checked").val();
+                var selectedResourceTitle = $("input[name='resourceId']:checked").attr('title');
+
+                if (selectedResourceId < 1 || selectedResourceTitle == undefined || selectedResourceTitle == '') {
+                    return;
+                }
+
                 comments = '资料：<a href="/resource/show/' + selectedResourceId + '">' + selectedResourceTitle + '</a>';
             }
 
             if (comments == '') {
-                text.focus();
                 return;
             } else {
                 var timeNode = document.createElement('li');
@@ -725,7 +804,7 @@
                     showMessage('消息发送失败!', false);
                 });
             }
-        });
+        };
 
         var isCancelledUploading = false;
         $('#file_upload').uploadifive({
@@ -1113,31 +1192,72 @@
 
         function showResourceSelection(isShow) {
 
-                if (isShow) {                    
-                    if (document.getElementById('resourceId') == null) {
-                        ds.dialog.confirm("您还未发布任何资源，是否立即前往发布?", function () {
-                            window.location = '/wechat/resource/create';
-                        });
-                    }
-                    else {
+            //    if (isShow) {
+            //        if (document.getElementById('resourceId') == null) {
+            //            ds.dialog.confirm("您还未发布任何资源，是否立即前往发布?", function () {
+            //                window.location = '/wechat/resource/create';
+            //            });
+            //        }
+            //        else {
 
-                        $('#resourceId').removeClass('hide');
-                        $('#btnCancelResource').removeClass('hide');
-                        $('#text').addClass('hide');
-                        $('#btnMore').addClass('hide');
-                    }
-                }
-                else {
-                    $('#resourceId').addClass('hide');
-                    $('#btnCancelResource').addClass('hide');
-                    $('#text').removeClass('hide');
-                    $('#btnMore').removeClass('hide');
+            //            $('#resourceId').removeClass('hide');
+            //            $('#btnCancelResource').removeClass('hide');
+            //            $('#text').addClass('hide');
+            //            $('#btnMore').addClass('hide');
+            //        }
+            //    }
+            //    else {
+            //        $('#resourceId').addClass('hide');
+            //        $('#btnCancelResource').addClass('hide');
+            //        $('#text').removeClass('hide');
+            //        $('#btnMore').removeClass('hide');
+            //    }
+
+            //if (document.getElementById('resourceId').tagName == 'SELECT') {
+            //    $('#resourceId').val(0);
+            //}
+
+            if (isShow) {
+                var resourceCount = $('#resourceCount').val();
+                if (resourceCount < 1) {
+                    ds.dialog.confirm("您还未发布任何资源，是否立即前往发布?", function () {
+                        window.location = '/wechat/resource/create';
+                    });
+
+                    return false;
                 }
 
-            if (document.getElementById('resourceId').tagName == 'SELECT') {
-                $('#resourceId').val(0);
+                $('#sendResourceDialog').dialog("open");
+            }
+            else {
+                $('#sendResourceDialog').dialog("close");
             }
         }
+        $('#sendResourceDialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            draggable: false,
+            modal: true,
+            width: '90%',
+            height: 'auto',
+            maxHeight: 400,
+            buttons: [
+                {
+                    id:'btnDialogYes',
+                    text: '确定',
+                    click: function() {
+                        sendMessage(false);
+                    }
+                },
+                {
+                    id: 'btnDialogNo',
+                    text: '取消',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
 
         function scrollToButtom() {
             window.scrollTo(0, document.body.scrollHeight);
@@ -1307,6 +1427,16 @@
                 height: 180px;
             }
     </style>
+
+    <link href="~/Content/icheck/skins/all.css?v=1.0.2" rel="stylesheet">
+    <script src="~/Content/icheck/icheck.js?v=1.0.2"></script>
+    <script>
+        $('.radio input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '10%'
+        });
+    </script>
     <div id="cover"></div>
     <div id="guide"><img src="~/Areas/Wechat/Content/images/share_guide1.png" /></div>
 }

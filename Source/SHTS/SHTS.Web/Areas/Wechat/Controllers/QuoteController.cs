@@ -289,7 +289,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             model.DemandQuote = quoteService.GetDemandQuote(quoteId, true);
             if (model.DemandQuote.IsNotNull())
             {
-                model.DemandQuote.Demand = demandService.GetDemandById(model.DemandQuote.DemandId);
+                // model.DemandQuote.Demand = demandService.GetDemandById(model.DemandQuote.DemandId);
 
                 if (model.DemandQuote.Demand.IsNotNull())
                 {
@@ -303,7 +303,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                 {
                     if (!history.Comments.Contains("<img") && !history.Comments.Contains("<video"))
                     {
-                        history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
+                        // history.Comments = FilterHelper.Filter(FilterLevel.PhoneAndEmail, history.Comments);
                     }
                 }
             }
@@ -312,8 +312,7 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
             // Gets posted resouces for current user
             if (CurrentWeChatUser.IsUserLoggedIn)
             {
-                model.PostedResources.AddRange(resourceService
-                    .GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
+                model.PostedResources.AddRange(resourceService.GetResourceByUser(CurrentWeChatUser.UserId.Value, 0, 1000).Items);
             }
 
             return View(model);
