@@ -124,7 +124,7 @@ namespace Witbird.SHTS.BLL.Managers
             // selects all types
             if (string.IsNullOrWhiteSpace(resourceTypeKey))
             {
-                var allTypes = context.SpaceTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                var allTypes = context.SpaceTypes.Where(item => !item.MarkForDelete).Select(item => new ResourceType()
                 {
                     ResourceTypeKey = "1",
                     ResourceTypeName = "活动场地",
@@ -133,7 +133,7 @@ namespace Witbird.SHTS.BLL.Managers
                     Description = item.Description,
                     DisplayOrder = item.DisplayOrder,
                     MarkForDelete = item.MarkForDelete
-                }).Concat(context.ActorTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                }).Concat(context.ActorTypes.Where(item => !item.MarkForDelete).Select(item => new ResourceType()
                 {
                     ResourceTypeKey = "2",
                     ResourceTypeName = "演艺人员",
@@ -142,7 +142,7 @@ namespace Witbird.SHTS.BLL.Managers
                     Description = item.Description,
                     DisplayOrder = item.DisplayOrder,
                     MarkForDelete = item.MarkForDelete
-                })).Concat(context.EquipTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                })).Concat(context.EquipTypes.Where(item => !item.MarkForDelete).Select(item => new ResourceType()
                 {
                     ResourceTypeKey = "3",
                     ResourceTypeName = "活动设备",
@@ -151,7 +151,7 @@ namespace Witbird.SHTS.BLL.Managers
                     Description = item.Description,
                     DisplayOrder = item.DisplayOrder,
                     MarkForDelete = item.MarkForDelete
-                })).Concat(context.OtherTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
+                })).Concat(context.OtherTypes.Where(item => !item.MarkForDelete).Select(item => new ResourceType()
                 {
                     ResourceTypeKey = "4",
                     ResourceTypeName = "其他资源",
@@ -160,7 +160,9 @@ namespace Witbird.SHTS.BLL.Managers
                     Description = item.Description,
                     DisplayOrder = item.DisplayOrder,
                     MarkForDelete = item.MarkForDelete
-                }));
+                }))
+                ?.OrderBy(item => item.ResourceTypeKey)
+                .ThenBy(item => item.DisplayOrder);
 
                 totalCount = allTypes.Count();
                 resourceTypes.AddRange(allTypes.Skip((pageIndex - 1) * pageSize).Take(pageSize));
@@ -173,7 +175,7 @@ namespace Witbird.SHTS.BLL.Managers
                         totalCount = context.SpaceTypes.Where(item => !item.MarkForDelete).Count();
                         resourceTypes.AddRange(context.SpaceTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
                         {
-                            ResourceTypeKey = "2",
+                            ResourceTypeKey = "1",
                             ResourceTypeName = "活动场地",
                             Id = item.Id,
                             Name = item.Name,
@@ -186,7 +188,7 @@ namespace Witbird.SHTS.BLL.Managers
                         totalCount = context.ActorTypes.Where(item => !item.MarkForDelete).Count();
                         resourceTypes.AddRange(context.ActorTypes.Where(item => !item.MarkForDelete).OrderBy(item => item.DisplayOrder).Select(item => new ResourceType()
                         {
-                            ResourceTypeKey = "1",
+                            ResourceTypeKey = "2",
                             ResourceTypeName = "演艺人员",
                             Id = item.Id,
                             Name = item.Name,

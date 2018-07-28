@@ -11,18 +11,31 @@ namespace Witbird.SHTS.Web.Public
     {
         static MiscManager manager = new MiscManager();
         static object locker = new object();
-
-
-        public static void RefreshResourceTypesCache()
+        
+        public static void RefreshResourceTypesCache(string resourceTypeKey)
         {
             try
             {
-                lock (locker)
+                switch (resourceTypeKey)
                 {
-                    SpaceTypeList = manager.GetSpaceTypeList();
-                    ActorTypeList = manager.GetActorTypeList();
-                    EquipTypeList = manager.GetEquipTypeList();
-                    OtherTypeList = manager.GetOtherTypeList();
+                    case "1":
+                        var spaceTypes = manager.GetSpaceTypeList();
+                        SpaceTypeList = spaceTypes;
+                        break;
+                    case "2":
+                        var actorTypes = manager.GetActorTypeList();
+                        ActorTypeList = actorTypes;
+                        break;
+                    case "3":
+                        var equipTypes = manager.GetEquipTypeList();
+                        EquipTypeList = equipTypes;
+                        break;
+                    case "4":
+                        var otherTypes = manager.GetOtherTypeList();
+                        OtherTypeList = otherTypes;
+                        break;
+                    default:
+                        break;
                 }
             }
             catch(Exception ex)

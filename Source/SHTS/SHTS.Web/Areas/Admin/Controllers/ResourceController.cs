@@ -263,7 +263,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
         #region 资源类型设置
 
-        public ActionResult Manage(string resourceTypeKey="", int id=1)
+        public ActionResult Manage(string resourceTypeKey = "", int id = 1)
         {
             ResourceMiscModel model = new ResourceMiscModel();
 
@@ -297,7 +297,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
             {
                 response.Data = miscManager.GetResourceById(resourceTypeKey, typeId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Status = -1;
                 response.Message = ex.Message;
@@ -306,9 +306,9 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
 
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
-        public ActionResult CreateOrUpdateType(string resourceTypeKey, string name, string description, 
+        public ActionResult CreateOrUpdateType(string resourceTypeKey, string name, string description,
             int displayOrder = 99, int typeId = -1, bool markForDelete = false)
         {
             AjaxResponse response = new AjaxResponse();
@@ -323,7 +323,7 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 else
                 {
                     miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, name, description, displayOrder, false);
-                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
+                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache(resourceTypeKey));
                 }
             }
             catch (Exception ex)
@@ -350,14 +350,18 @@ namespace Witbird.SHTS.Web.Areas.Admin.Controllers
                 else
                 {
                     List<string> idWithTypeKeyList = typeIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    
+
+                    var resourceTypeKey = "-1";
+                    var typeId = -1;
                     foreach (var idWithTypeKey in idWithTypeKeyList)
                     {
                         var tempArray = idWithTypeKey.Split('_');
-                        miscManager.CreateOrUpdateResourceType(tempArray[1], Convert.ToInt32(tempArray[0]), "", "", -1, true);
+                        resourceTypeKey = tempArray[1];
+                        typeId = Convert.ToInt32(tempArray[0]);
+                        miscManager.CreateOrUpdateResourceType(resourceTypeKey, typeId, "", "", 999, true);
                     }
 
-                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache());
+                    Task.Factory.StartNew(() => MiscData.RefreshResourceTypesCache(resourceTypeKey));
                 }
 
             }
