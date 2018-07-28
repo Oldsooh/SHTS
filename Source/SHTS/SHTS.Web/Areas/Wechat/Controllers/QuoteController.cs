@@ -457,11 +457,15 @@ namespace Witbird.SHTS.Web.Areas.Wechat.Controllers
                         {
                             if (comments.Contains("<video"))
                             {
-                                comments = "视频消息";
+                                comments = "对方给您发了一个视频消息";
                             }
                             else if (comments.Contains("<img"))
                             {
-                                comments = "图片消息";
+                                comments = "对方给您发了一个图片消息";
+                            }
+                            else if (comments.Contains("<a"))
+                            {
+                                comments = "对方给您发了一个资料链接";
                             }
                             else
                             {
