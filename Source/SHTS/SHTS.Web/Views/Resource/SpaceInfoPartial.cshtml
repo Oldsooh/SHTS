@@ -24,11 +24,11 @@
         <font color="black">场地面积</font>&nbsp;&nbsp;&nbsp;&nbsp;
         @HtmlHelperExtension.SpaceSizeListProperty.Find(t => t.Id == Model.SpaceSizeId).Name
     </div>
-    <div class="hotel_same_box ">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">容纳人数</font>&nbsp;&nbsp;&nbsp;&nbsp;
         @HtmlHelperExtension.SpacePeopleListProperty.Find(t => t.Id == Model.SpacePeopleId).Name（人数可根据具体活动人数调整）
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">配置设备</font>&nbsp;&nbsp;&nbsp;&nbsp;
         @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFacilityList)
         {
@@ -38,7 +38,7 @@
             }
         }
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">场地特点</font>&nbsp;&nbsp;&nbsp;&nbsp;
         @foreach (var item in Witbird.SHTS.Web.Public.MiscData.SpaceFeatureList)
         {
@@ -64,7 +64,7 @@
     <div class="hotel_same_box connectioninfo">
         <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">详细地址</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.DetailAddress
     </div>
 </div>

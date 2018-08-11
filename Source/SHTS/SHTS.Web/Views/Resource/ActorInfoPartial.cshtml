@@ -32,13 +32,13 @@
     <div class="hotel_same_box connectioninfo">
         <font color="black">微信&nbsp;/&nbsp;QQ</font>&nbsp;&nbsp;&nbsp;&nbsp;@string.Join("/", string.IsNullOrEmpty(Model.WeChat) ? "未填" : Model.WeChat, string.IsNullOrEmpty(Model.QQ) ? "未填" : Model.QQ)
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Email
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">演出视频</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.Href
     </div>
-    <div class="hotel_same_box">
+    <div class="hotel_same_box connectioninfo">
         <font color="black">详细地址</font>&nbsp;&nbsp;&nbsp;&nbsp;@Model.DetailAddress
     </div>
 </div>
