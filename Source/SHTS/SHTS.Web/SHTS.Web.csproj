@@ -1286,7 +1286,7 @@
     <Content Include="Areas\Wechat\Views\Resource\PagingPartial.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\ResourceListView.cshtml" />
     <Content Include="Areas\Wechat\Views\Resource\Show.cshtml" />
-    <Content Include="Areas\Wechat\Views\Shared\WechatLayoutPage.cshtml" />
+    <Content Include="Areas\Wechat\Views\Shared\WechatLayoutPageOld.cshtml" />
     <Content Include="Areas\Wechat\Views\Trade\Index.cshtml" />
     <Content Include="Areas\Wechat\Views\User\Identify.cshtml" />
     <Content Include="Areas\Wechat\Views\User\ToVip.cshtml" />
@@ -1389,7 +1389,7 @@
     <Content Include="Areas\Wechat\Views\QAuthCallBack\SubscribeRequired.cshtml" />
     <Content Include="Areas\Admin\Views\Resource\Manage.cshtml" />
     <Content Include="Areas\Wechat\Views\Index\LocationService.cshtml" />
-    <Content Include="Areas\Wechat\Views\Shared\WechatLayoutPageNew.cshtml" />
+    <Content Include="Areas\Wechat\Views\Shared\WechatLayoutPage.cshtml" />
     <Content Include="Content\icheck\css\custom.styl" />
     <Content Include="Content\icheck\css\montserrat-bold.eot" />
     <Content Include="Content\icheck\css\montserrat-bold.ttf" />
