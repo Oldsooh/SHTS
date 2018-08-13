@@ -24,7 +24,6 @@
     @RenderSection("head", false)
 </head>
 <body>
-    @Html.Action("LocationService", "Index")
     <div class="wrap">
         <div id="top">
             <div class="back">
@@ -63,7 +62,44 @@
 
     </div>
     <script src="~/Analysis.ashx?title=@ViewBag.Title&operation=@ViewBag.Operation&from=@Request.UrlReferrer&PageType=@ViewBag.PageType&PageId=@ViewBag.PageId" type="text/javascript" async="async"></script>
-    
+    @if (Session["CityId"] == null)
+    {
+        @*<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+        <script>
+            function setLocalCity() {
+                // 新浪根据ip获取地址
+                var localprovince = '';
+                var localcity = '';
+                localprovince = remote_ip_info["province"];
+                localcity = remote_ip_info["city"];
+                var nowTime = new Date().getTime();
+                var url = encodeURI("/wechat/city/setlocalcity?cityName=" + localcity + "&time=" + nowTime);
+                $.get(url, function (data, status) {
+                    if (status == "success") {
+                        if (data != "" && data != "no") {
+                            var selectIconHtml = '<span style="font-size: 18px;">▼</span>';
+                            var currentCityName = document.getElementById("currentCityName");
+                            currentCityName.innerHTML = data;
+                            $(currentCityName).parent().append(selectIconHtml);
+                            //自动定位到城市后刷新获取相应数据
+                            //if (confirm('系统自动定位到' + data + '，是否立即刷新加载最新数据？')) {
+                            //    window.location.href = window.location.href;
+                            //}
+                        }
+                        else {
+                            document.getElementById("currentCityName").innerHTML = "选择城市";
+                        }
+                    }
+                });
+            }
+
+            setLocalCity();
+        </script>*@
+        <script>
+            document.getElementById("currentCityName").innerHTML = "选择城市";
+        </script>
+    }
+
     @RenderSection("FooterJS", false)
 </body>
 </html>
